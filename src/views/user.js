@@ -1,16 +1,15 @@
 var log = console.log.bind(console);
 var localStorage = window.localStorage;
 
-const AxiosConfig = {
-    headers: {
-        "Authorization": `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-    }
-};
-
 const AuthorizeBungie = async () => {
     var AuthorizationCode = window.location.search.replace('?code=','');
     var components = {};
+    var AxiosConfig = {
+        headers: {
+            "Authorization": `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+    };
 
     try {
         await axios.post('https://www.bungie.net/platform/app/oauth/token/', `grant_type=authorization_code&code=${AuthorizationCode}`, AxiosConfig)
@@ -18,9 +17,6 @@ const AuthorizeBungie = async () => {
             components = res.data;
             components['authorization_code'] = AuthorizationCode;
             localStorage.setItem('components', JSON.stringify(components));
-        })
-        .catch(err => {
-            throw err;
         });
     } 
     catch (error) {
@@ -30,26 +26,40 @@ const AuthorizeBungie = async () => {
 };
 
 const FetchBungieUserDetails = async () => {
-    var AuthorizationCode = JSON.parse(localStorage.getItem('components'))['authorization_code'];
-    var MembershipId = JSON.parse(localStorage.getItem('components'))['membership_id'];
+    var components = JSON.parse(localStorage.getItem('components'));
     var bungieNetUser = {};
+    var AxiosConfig = {
+        headers: {
+            "X-API-Key": 'e62a8257ba2747d4b8450e7ad469785d',
+            Authorization: `Bearer ${components['access_token']}`
+        }
+    };
 
     try {
-        await axios.post(`https://www.bungie.net/Platform/User/GetBungieNetUserById/${MembershipId}/`, `grant_type=authorization_code&code=${AuthorizationCode}`, AxiosConfig)
-        .then(res => {
-            bungieNetUser = res.data;
-            localStorage.setItem('bungieNetUser', bungieNetUser);
-        })
-        .catch(err => {
-            log(err)
-        });
+        const GetBungieNetUserById = await axios.get(`https://www.bungie.net/Platform/User/GetBungieNetUserById/${components['membership_id']}/`, AxiosConfig);
+        bungieNetUser = GetBungieNetUserById.data['Response'];
+
+        const GetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/0/`, AxiosConfig);
+        bungieNetUser = GetMembershipsById.data['Response'];
+        localStorage.setItem('bungieNetUser', JSON.stringify(bungieNetUser))
+
+        // var MembershipType;
+        // for (item of bungieNetUser['destinyMemberships']) {
+        //     if (item['membershipId'] == bungieNetUser['primaryMembershipId']) {
+        //         MembershipType = item['membershipType'];
+        //     };
+        // };
+
+        // const GetProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${bungieNetUser['primaryMembershipId']}/`, AxiosConfig);
+        // log(GetProfile)
+        // bungieNetUser = GetProfile.data['Response'];
+        // localStorage.setItem('bungieNetUser', JSON.stringify(bungieNetUser))
+
+        // currently not working check for errors
     }
     catch (error) {
-        // Do something if it returns error; maybe a pop-up saying "do you want to try again or re-authorize completely (logout)"
+        // Ask to try again or authorize
     };
 };
 
-AuthorizeBungie()
-.then(() => {
-    FetchBungieUserDetails();
-});
+AuthorizeBungie();
