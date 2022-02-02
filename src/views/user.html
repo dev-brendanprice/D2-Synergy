@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet/less" type="text/css" href="../styles/user.scss" />
+    <script src="../styles/less.js" ></script>
 </head>
 <body>
-    <div id="text">user.html</div>
+    <div class="loading-bar loading-bar--inactive"></div>
+    <div id="text">user.htmls</div>
+
+    <div id="userEmblemsContainer">
+        
+        <div id="userEmblem1">
+            <img id="emblemPath1">
+        </div>
+
+        <div id="userEmblem2">
+            <img id="emblemPath2">
+        </div>
+
+        <div id="userEmblem3">
+            <img id="emblemPath3">
+        </div>
+    </div>
     
 </body>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="user.js"></script>
+<script src="../scripts/user.js"></script>
 </html>
