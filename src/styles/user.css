@@ -44,13 +44,11 @@ body {
 }
 
 #emblemPath2 {
-    display: none;
     height: auto;
     width: var(--emblemSizeW);
 }
 
 #emblemPath3 {
-    display: none;
     height: auto;
     width: var(--emblemSizeW);
 }
@@ -63,34 +61,34 @@ body {
     width: 100vw;
     height: 3px;
     overflow-x: hidden;
-  }
-  
-  .line{
+}
+
+.line{
     position: absolute;
     opacity: 0.4;
     background: #4a8df8;
     width: 100vw;
     height: 5px;
-  }
-  
-  .subline{
+}
+
+.subline{
     position: absolute;
     background: #4a8df8;
     height: 5px; 
-  }
-  .inc{
-  animation: increase 2s infinite;
-  }
-  .dec{
-  animation: decrease 2s 0.5s infinite;
-  }
-  
-  @keyframes increase {
-   from { left: -5%; width: 5%; }
-   to { left: 130%; width: 100%;}
-  }
-  @keyframes decrease {
-   from { left: -80%; width: 80%; }
-   to { left: 110%; width: 10%;}
-  }
+}
+.inc{
+    animation: increase 2s infinite;
+}
+.dec{
+    animation: decrease 2s 0.5s infinite;
+}
+
+@keyframes increase {
+    from { left: -5%; width: 5%; }
+    to { left: 130%; width: 100%; }
+}
+@keyframes decrease {
+    from { left: -80%; width: 80%; }
+    to { left: 110%; width: 10%; }
+}
   
