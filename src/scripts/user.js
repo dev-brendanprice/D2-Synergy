@@ -7,20 +7,20 @@ var localStorage = window.localStorage;
 const AuthorizeBungie = async () => {
 
     var AuthorizationCode = window.location.search.replace('?code=','');
-    if (AuthorizationCode && !localStorage.getItem('components')) {
+    try {
+        if (AuthorizationCode && !localStorage.getItem('components')) {
 
-        // If user does not have localStorage items
-        var AccessToken = {},
-        RefreshToken = {},
-        components = {};
-        const AxiosConfig = {
-            headers: {
-                "Authorization": `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
-                "Content-Type": "application/x-www-form-urlencoded",
-            }
-        };
-        
-        try {
+            // If user does not have localStorage items
+            var AccessToken = {},
+            RefreshToken = {},
+            components = {};
+            const AxiosConfig = {
+                headers: {
+                    "Authorization": `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                }
+            };
+    
             await axios.post('https://www.bungie.net/platform/app/oauth/token/', `grant_type=authorization_code&code=${AuthorizationCode}`, AxiosConfig)
             .then(res => {
                 var data = res.data;
@@ -28,23 +28,25 @@ const AuthorizeBungie = async () => {
                 components['membership_id'] = data['membership_id'];
                 components['token_type'] = data['token_type'];
                 components['authorization_code'] = AuthorizationCode;
-
+    
                 AccessToken['inception'] = Math.round(new Date().getTime()/1000);
                 AccessToken['expires_in'] = data['expires_in'];
                 AccessToken['value'] = data['access_token'];
-
+    
                 RefreshToken['inception'] = Math.round(new Date().getTime()/1000);
                 RefreshToken['expires_in'] = data['refresh_expires_in'];
                 RefreshToken['value'] = data['refresh_token'];
-
+    
                 localStorage.setItem('accessToken', JSON.stringify(AccessToken));
                 localStorage.setItem('components', JSON.stringify(components));
                 localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
             });
-
+    
             log('-> Authorized with Bungie.net!');
-        }
-        catch (error) { log(error); };
+        };
+    } 
+    catch (error) {
+        log(error);
     };
 
     // Check if user entered the URL in-directly
@@ -112,10 +114,8 @@ const FetchBungieUserDetails = async () => {
     var MembershipType = userComponents['DestinyUserMemberships'][0]['membershipType'];
 
     var GetProfileComponents = await axios.get(`https://www.bungie.net/Platform/Destiny2/${MembershipType}/Profile/${PrimaryMembershipId}/?components=200`, AxiosConfig);
-    userComponents['DestinyUserCharacters'] = GetProfileComponents.data['Response']['characters']['data'];
+    userComponents['DestinyUserCharacters'] = GetProfileComponents.data['Response'];
     localStorage.setItem('userComponents', JSON.stringify(userComponents));
-
-    log('-> API Fetch Complete!');
 };
 
 
@@ -152,6 +152,29 @@ const GetLocalStorageSize = async () => {
 };
 
 
+const GetUserClan = async () => {
+    var accessTokenKey = JSON.parse(localStorage.getItem('accessToken'));
+    var components = JSON.parse(localStorage.getItem('components'));
+    var userComponents = JSON.parse(localStorage.getItem('userComponents'));
+    const AxiosConfig = {
+        headers: {
+            "X-API-Key": 'e62a8257ba2747d4b8450e7ad469785d',
+            Authorization: `Bearer ${accessTokenKey['value']}`
+        }
+    };
+
+    var MembershipType = userComponents['DestinyUserMemberships'][0]['membershipType'];
+
+    const LinkedProfiles = await axios.get(`https://www.bungie.net/Platform/Destiny2/${MembershipType}/Profile/${components['membership_id']}/LinkedProfiles/?getAllMemberships=true`, AxiosConfig);
+    var LinkedMembershipType = LinkedProfiles['data']['Response']['bnetMembership']['membershipType'];
+
+    const GetGroupsForMember = await axios.get(`https://www.bungie.net/Platform/GroupV2/User/${LinkedMembershipType}/${components['membership_id']}/0/1/`, AxiosConfig);
+
+    userComponents['DestinyUserClan'] = GetGroupsForMember['data']['Response']['results'][0]['group'];
+    localStorage.setItem('userComponents', JSON.stringify(userComponents));
+};
+
+
 (async () => {
 
     // Authorization Process
@@ -164,9 +187,11 @@ const GetLocalStorageSize = async () => {
 
         // User Data
         // await ParseUserCharacters();
+        await GetUserClan();
         
         // Stop loading sequence
         document.getElementById('slider').style.display = 'none';
+        log('-> API Fetch Complete!');
     } 
     else {
         // 404
