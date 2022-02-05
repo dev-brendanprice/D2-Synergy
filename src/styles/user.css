@@ -6,7 +6,6 @@ body {
     margin: auto;
     margin-bottom: -50px;
     width: 65vw;
-    /* border: 1px solid black; */
 
 	text-align: center;
 	align-items: center;
@@ -57,7 +56,7 @@ body {
 /* imports */
 
 #slider{
-    position: absolute;
+    position: relative;
     width: 100vw;
     height: 3px;
     overflow-x: hidden;
@@ -69,12 +68,14 @@ body {
     background: #4a8df8;
     width: 100vw;
     height: 5px;
+    overflow-x: hidden;
 }
 
 .subline{
     position: absolute;
     background: #4a8df8;
     height: 5px; 
+    overflow-x: hidden;
 }
 .inc{
     animation: increase 2s infinite;

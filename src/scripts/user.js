@@ -164,6 +164,9 @@ const GetLocalStorageSize = async () => {
 
         // User Data
         await ParseUserCharacters();
+        
+        // Stop loading sequence
+        document.getElementById('slider').style.display = 'none';
     } 
     else {
         // 404
