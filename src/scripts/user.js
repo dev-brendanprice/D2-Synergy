@@ -7,7 +7,7 @@ var localStorage = window.localStorage;
 const AuthorizeBungie = async () => {
 
     var AuthorizationCode = window.location.search.replace('?code=','');
-    if (!localStorage.getItem('components')) {
+    if (AuthorizationCode && !localStorage.getItem('components')) {
 
         // If user does not have localStorage items
         var AccessToken = {},
@@ -46,16 +46,11 @@ const AuthorizeBungie = async () => {
         }
         catch (error) { log(error); };
     };
-    
+
     // Check if user entered the URL in-directly
     try {
-        if (!AuthorizationCode) {
+        if (AuthorizationCode && localStorage.getItem('components')) {
 
-            // User entered the URL directly
-            window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`; 
-        }
-        else {
-    
             // Refresh tokens completley
             var accessTokenKey = JSON.parse(localStorage.getItem('accessToken'));
             var components = JSON.parse(localStorage.getItem('components'));
@@ -70,6 +65,10 @@ const AuthorizeBungie = async () => {
                     return true;
                 };
             };
+        }
+        else if (!localStorage.getItem('components')) {
+            // User entered the URL directly
+            window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
         };
     } catch (error) { log(error); };
 };
@@ -156,9 +155,7 @@ const GetLocalStorageSize = async () => {
 (async () => {
 
     // Authorization Process
-    var isAuthorized = await AuthorizeBungie();
-    
-    if (isAuthorized) {
+    if (await AuthorizeBungie()) {
 
         // Utils n shit
         await GetDestinyManifest();
@@ -169,9 +166,6 @@ const GetLocalStorageSize = async () => {
         await ParseUserCharacters();
     } 
     else {
-        // -- Do 404.html or make an alternate authorization path -- //
-
-        // log('Authorization Failed, Redirecting back to root..')
-        // window.location.href = 'http://localhost:4645/D2Synergy-v3.0/src/views/app.html';
+        // 404
     };
 })();
