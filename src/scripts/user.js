@@ -112,7 +112,7 @@ const FetchBungieUserDetails = async () => {
     var MembershipType = userComponents['DestinyUserMemberships'][0]['membershipType'];
 
     var GetProfileComponents = await axios.get(`https://www.bungie.net/Platform/Destiny2/${MembershipType}/Profile/${PrimaryMembershipId}/?components=200`, AxiosConfig);
-    userComponents['DestinyUserComponents'] = GetProfileComponents.data['Response'];
+    userComponents['DestinyUserCharacters'] = GetProfileComponents.data['Response']['characters']['data'];
     localStorage.setItem('userComponents', JSON.stringify(userComponents));
 
     log('-> API Fetch Complete!');
@@ -148,7 +148,7 @@ const GetLocalStorageSize = async () => {
 
     while (i--) { values.push(localStorage.getItem(keys[i])); };
 
-    log('[Usage]: ', encodeURI(JSON.stringify(values)).split(/%..|./).length - 1);
+    log('[Usage Bytes]: ', encodeURI(JSON.stringify(values)).split(/%..|./).length - 1);
 };
 
 
