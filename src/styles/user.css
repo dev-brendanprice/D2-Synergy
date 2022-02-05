@@ -6,6 +6,9 @@ body {
     margin: auto;
     margin-bottom: -50px;
     width: 65vw;
+    
+    background-color: rgb(48, 48, 55);
+    border-radius: 3px;
 
 	text-align: center;
 	align-items: center;

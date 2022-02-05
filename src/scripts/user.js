@@ -105,11 +105,11 @@ const FetchBungieUserDetails = async () => {
     userComponents['BungieNetUser'] = GetBungieNetUserById.data['Response'];
 
     var GetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/0/`, AxiosConfig);
-    userComponents['DestinyUserMemberships'] = GetMembershipsById.data['Response'];
+    userComponents['DestinyUserMemberships'] = GetMembershipsById.data['Response']['destinyMemberships'];
 
-    // Find the primarymembershipid and membershiptype for the top most entry (unkown if this is rigid)
-    var PrimaryMembershipId = userComponents['DestinyUserMemberships']['destinyMemberships'][0]['membershipId'];
-    var MembershipType = userComponents['DestinyUserMemberships']['destinyMemberships'][0]['membershipType'];
+    // Index for primaryMembershipId and membershipType
+    var PrimaryMembershipId = userComponents['DestinyUserMemberships'][0]['membershipId'];
+    var MembershipType = userComponents['DestinyUserMemberships'][0]['membershipType'];
 
     var GetProfileComponents = await axios.get(`https://www.bungie.net/Platform/Destiny2/${MembershipType}/Profile/${PrimaryMembershipId}/?components=200`, AxiosConfig);
     userComponents['DestinyUserComponents'] = GetProfileComponents.data['Response'];
@@ -163,7 +163,7 @@ const GetLocalStorageSize = async () => {
         // await GetLocalStorageSize();
 
         // User Data
-        await ParseUserCharacters();
+        // await ParseUserCharacters();
         
         // Stop loading sequence
         document.getElementById('slider').style.display = 'none';
