@@ -86,7 +86,7 @@ const GetDestinyManifest = async () => {
     };
 
     const DestinyManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`, AxiosConfig);
-    localStorage.setItem('destinyManifestVersion', DestinyManifest['data']['Response']['version']);
+    localStorage.setItem('destinyManifestVersion', JSON.stringify(DestinyManifest['data']['Response']['version']));
 
     log('-> Manifest (Version) Accquired!');
 };
@@ -121,22 +121,22 @@ const FetchBungieUserDetails = async () => {
 
 const ParseUserCharacters = async () => {
     var userComponents = JSON.parse(localStorage.getItem('userComponents')),
-    CharacterIndex = Object.values(userComponents['DestinyUserComponents']['characters']['data']);
+    CharacterIndex = Object.values(userComponents['DestinyUserCharacters']);
 
     document.getElementById('displayName').innerHTML = userComponents['BungieNetUser']['uniqueName'];
 
-    if (CharacterIndex[0]['emblemBackgroundPath']) {
-        document.getElementById('userEmblem1').style.display = 'inline';
-        document.getElementById('emblemPath1').src = `https://www.bungie.net${CharacterIndex[0]['emblemBackgroundPath']}`;
-    };
-    if (CharacterIndex[1]['emblemBackgroundPath']) {
-        document.getElementById('userEmblem2').style.display = 'inline';
-        document.getElementById('emblemPath2').src = `https://www.bungie.net${CharacterIndex[1]['emblemBackgroundPath']}`;
-    };
-    if (CharacterIndex[2]['emblemBackgroundPath']) {
-        document.getElementById('userEmblem3').style.display = 'inline';
-        document.getElementById('emblemPath3').src = `https://www.bungie.net${CharacterIndex[2]['emblemBackgroundPath']}`;
-    };
+    // if (CharacterIndex[0]['emblemBackgroundPath']) {
+    //     document.getElementById('userEmblem1').style.display = 'inline';
+    //     document.getElementById('emblemPath1').src = `https://www.bungie.net${CharacterIndex[0]['emblemBackgroundPath']}`;
+    // };
+    // if (CharacterIndex[1]['emblemBackgroundPath']) {
+    //     document.getElementById('userEmblem2').style.display = 'inline';
+    //     document.getElementById('emblemPath2').src = `https://www.bungie.net${CharacterIndex[1]['emblemBackgroundPath']}`;
+    // };
+    // if (CharacterIndex[2]['emblemBackgroundPath']) {
+    //     document.getElementById('userEmblem3').style.display = 'inline';
+    //     document.getElementById('emblemPath3').src = `https://www.bungie.net${CharacterIndex[2]['emblemBackgroundPath']}`;
+    // };
 };
 
 
@@ -176,6 +176,10 @@ const GetUserClan = async () => {
 
 
 (async () => {
+    // var userComponents = JSON.parse(localStorage.getItem('userComponents')),
+    // accessTokenKey = JSON.parse(localStorage.getItem('accessToken')),
+    // refreshTokenKey = JSON.parse(localStorage.getItem('refreshToken')),
+    // components = JSON.parse(localStorage.getItem('components'));
 
     // Authorization Process
     if (await AuthorizeBungie()) {
@@ -186,8 +190,8 @@ const GetUserClan = async () => {
         // await GetLocalStorageSize();
 
         // User Data
-        // await ParseUserCharacters();
-        await GetUserClan();
+        await ParseUserCharacters();
+        // await GetUserClan();
         
         // Stop loading sequence
         document.getElementById('slider').style.display = 'none';
