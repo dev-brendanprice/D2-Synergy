@@ -3,15 +3,21 @@ console.log('// Please report any errors to @beru2003 on Twitter.')
 var log = console.log.bind(console);
 var localStorage = window.localStorage;
 
+const startTime = new Date();
+
+// has code
+// has localStorage items
 
 const AuthorizeBungie = async () => {
 
     var AuthorizationCode = window.location.search.replace('?code=','');
+    // var lsAuthorizationCode = localStorage.getItem('components')['authorization_code'];
+
     try {
         if (AuthorizationCode && !localStorage.getItem('components')) {
 
             // If user does not have localStorage items
-            var AccessToken = {},
+            var AccessToken = {}, 
             RefreshToken = {},
             components = {};
             const AxiosConfig = {
@@ -41,89 +47,103 @@ const AuthorizeBungie = async () => {
                 localStorage.setItem('components', JSON.stringify(components));
                 localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
             });
-    
+
             log('-> Authorized with Bungie.net!');
+        }
+        else if (!AuthorizationCode || !localStorage.getItem('components')) {
+            window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
         };
     } 
-    catch (error) {
-        log(error);
+    catch (error) { 
+        log(`Line 57: ${error}`);
+        window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
     };
 
     // Check if user entered the URL in-directly
-    try {
-        if (AuthorizationCode && localStorage.getItem('components')) {
+    // Check against userAuth localStorage variable to see if user has authorized before
+    //  and is entering the path directly
 
-            // Refresh tokens completley
-            var accessTokenKey = JSON.parse(localStorage.getItem('accessToken'));
-            var components = JSON.parse(localStorage.getItem('components'));
-            var refreshTokenKey = JSON.parse(localStorage.getItem('refreshToken'));
+
+    // try {
+    //     if (AuthorizationCode && localStorage.getItem('components')) {
+
+    //         // Refresh tokens completley
+    //         var accessTokenKey = JSON.parse(localStorage.getItem('accessToken'));
+    //         var components = JSON.parse(localStorage.getItem('components'));
+    //         var refreshTokenKey = JSON.parse(localStorage.getItem('refreshToken'));
     
-            if (accessTokenKey && refreshTokenKey && components) {
-                if (Math.round(new Date().getTime()/1000) - accessTokenKey['inception'] == accessTokenKey['expires_in']) {
-                    window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
-                }
-                else {
-                    log('-> LocalStorage items validated!');
-                    return true;
-                };
-            };
-        }
-        else if (!localStorage.getItem('components')) {
-            // User entered the URL directly
-            window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
-        };
-    } catch (error) { log(error); };
+    //         if (accessTokenKey && refreshTokenKey && components) {
+    //             if (Math.round(new Date().getTime()/1000) - accessTokenKey['inception'] == accessTokenKey['expires_in']) {
+    //                 window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
+    //             }
+    //             else {
+    //                 log('-> LocalStorage items validated!');
+    //                 // isUserAuthorized = true;
+    //                 // localStorage.setItem('userAuthorized', true);
+    //             };
+    //         };
+    //     }
+    //     else if (!localStorage.getItem('components')) {
+    //         log(`Line 82`)
+    //         // User entered the URL directly
+    //         // window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
+    //     };
+    // } catch (error) { 
+    //     log(`Line 86: ${error}`); 
+    // };
 };
 
 
-const GetDestinyManifest = async () => {
-    var accessTokenKey = JSON.parse(localStorage.getItem('accessToken'));
-    const AxiosConfig = {
-        headers: {
-            "X-API-Key": 'e62a8257ba2747d4b8450e7ad469785d',
-            Authorization: `Bearer ${accessTokenKey['value']}`
-        }
-    };
-
-    const DestinyManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`, AxiosConfig);
-    localStorage.setItem('destinyManifestVersion', JSON.stringify(DestinyManifest['data']['Response']['version']));
-
-    log('-> Manifest (Version) Accquired!');
+const GetDestinyManifest = async (conf) => {
+    try {
+        const DestinyManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`, conf);
+        localStorage.setItem('destinyManifestVersion', JSON.stringify(DestinyManifest['data']['Response']['version']));
+        log('-> Manifest (Version) Accquired!');
+    } catch (error) { window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`; };
 };
 
 
-const FetchBungieUserDetails = async () => {
-    var components = JSON.parse(localStorage.getItem('components')),
-    accessTokenKey = JSON.parse(localStorage.getItem('accessToken'));
+const FetchBungieUserDetails = async (self, conf) => {
+    var components = self.components;
     var userComponents = {};
-    const AxiosConfig = {
-        headers: {
-            "X-API-Key": 'e62a8257ba2747d4b8450e7ad469785d',
-            Authorization: `Bearer ${accessTokenKey['value']}`
-        }
-    };
+    var bungieMembershipId = components['membership_id'];
 
-    var GetBungieNetUserById = await axios.get(`https://www.bungie.net/Platform/User/GetBungieNetUserById/${components['membership_id']}/`, AxiosConfig);
-    userComponents['BungieNetUser'] = GetBungieNetUserById.data['Response'];
+    // Get bungie user by id
+    var GetBungieNetUserById = await axios.get(`https://www.bungie.net/Platform/User/GetBungieNetUserById/${bungieMembershipId}/`, conf);
+    userComponents['BungieNetUser'] = GetBungieNetUserById['data']['Response'];
 
-    var GetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/0/`, AxiosConfig);
-    userComponents['DestinyUserMemberships'] = GetMembershipsById.data['Response']['destinyMemberships'];
+    // Get memberships by id
+    var GetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${bungieMembershipId}/0/`, conf);
+    userComponents['DestinyUserMemberships'] = GetMembershipsById['data']['Response']['destinyMemberships'];
 
     // Index for primaryMembershipId and membershipType
-    var PrimaryMembershipId = userComponents['DestinyUserMemberships'][0]['membershipId'];
-    var MembershipType = userComponents['DestinyUserMemberships'][0]['membershipType'];
+    let index = userComponents['DestinyUserMemberships'][0];
+    var PrimaryMembershipId = index['membershipId'];
+    var MembershipType = index['membershipType'];
 
-    var GetProfileComponents = await axios.get(`https://www.bungie.net/Platform/Destiny2/${MembershipType}/Profile/${PrimaryMembershipId}/?components=200`, AxiosConfig);
-    userComponents['DestinyUserCharacters'] = GetProfileComponents.data['Response'];
+
+    // Get users clan info
+    var LinkedMembershipType;
+    const LinkedProfiles = await axios.get(`https://www.bungie.net/Platform/Destiny2/${MembershipType}/Profile/${bungieMembershipId}/LinkedProfiles/?getAllMemberships=true`, conf);
+    LinkedMembershipType = LinkedProfiles['data']['Response']['bnetMembership']['membershipType'];
+    const GetGroupsForMember = await axios.get(`https://www.bungie.net/Platform/GroupV2/User/${LinkedMembershipType}/${bungieMembershipId}/0/1/`, conf);
+    userComponents['DestinyUserClan'] = GetGroupsForMember['data']['Response']['results'][0]['group'];
+
+
+    // Get characters
+    var GetProfileComponents = await axios.get(`https://www.bungie.net/Platform/Destiny2/${MembershipType}/Profile/${PrimaryMembershipId}/?components=200`, conf);
+    userComponents['DestinyUserCharacters'] = GetProfileComponents['data']['Response'];
     localStorage.setItem('userComponents', JSON.stringify(userComponents));
+
+    // Configure UI
+    document.getElementById('userClan').innerHTML = '['+userComponents['DestinyUserClan']['clanInfo']['clanCallsign']+']';
+    document.getElementById('displayName').innerHTML = userComponents['BungieNetUser']['cachedBungieGlobalDisplayName'];
 };
 
 
-const ParseUserCharacters = async () => {
-    var userComponents = JSON.parse(localStorage.getItem('userComponents')),
+const ParseUserCharacters = async (self) => {
+    var userComponents = self.userComponents,
     CharacterIndex = Object.values(userComponents['DestinyUserCharacters']);
-
-    document.getElementById('displayName').innerHTML = userComponents['BungieNetUser']['uniqueName'];
 
     // if (CharacterIndex[0]['emblemBackgroundPath']) {
     //     document.getElementById('userEmblem1').style.display = 'inline';
@@ -141,7 +161,6 @@ const ParseUserCharacters = async () => {
 
 
 const GetLocalStorageSize = async () => {
-    
     var values = [],
     keys = Object.keys(localStorage),
     i = keys.length;
@@ -152,52 +171,42 @@ const GetLocalStorageSize = async () => {
 };
 
 
-const GetUserClan = async () => {
-    var accessTokenKey = JSON.parse(localStorage.getItem('accessToken'));
-    var components = JSON.parse(localStorage.getItem('components'));
-    var userComponents = JSON.parse(localStorage.getItem('userComponents'));
-    const AxiosConfig = {
+const Main = (self) => {
+
+    document.getElementById('displayName').innerHTML = userComponents['BungieNetUser']['cachedBungieGlobalDisplayName'];
+    document.getElementById('userClan').innerHTML    = '['+userComponents['DestinyUserClan']['clanInfo']['clanCallsign']+']';
+};
+
+
+(async () => {
+
+    await AuthorizeBungie();
+
+    var accessTokenKey = JSON.parse(localStorage.getItem('accessToken')),
+        components     = JSON.parse(localStorage.getItem('components')),
+        refreshToken   = JSON.parse(localStorage.getItem('refreshToken')),
+        userComponents = JSON.parse(localStorage.getItem('userComponents'));
+    var AxiosConfig = {
         headers: {
             "X-API-Key": 'e62a8257ba2747d4b8450e7ad469785d',
             Authorization: `Bearer ${accessTokenKey['value']}`
         }
     };
 
-    var MembershipType = userComponents['DestinyUserMemberships'][0]['membershipType'];
-
-    const LinkedProfiles = await axios.get(`https://www.bungie.net/Platform/Destiny2/${MembershipType}/Profile/${components['membership_id']}/LinkedProfiles/?getAllMemberships=true`, AxiosConfig);
-    var LinkedMembershipType = LinkedProfiles['data']['Response']['bnetMembership']['membershipType'];
-
-    const GetGroupsForMember = await axios.get(`https://www.bungie.net/Platform/GroupV2/User/${LinkedMembershipType}/${components['membership_id']}/0/1/`, AxiosConfig);
-
-    userComponents['DestinyUserClan'] = GetGroupsForMember['data']['Response']['results'][0]['group'];
-    localStorage.setItem('userComponents', JSON.stringify(userComponents));
-};
-
-
-(async () => {
-    // var userComponents = JSON.parse(localStorage.getItem('userComponents')),
-    // accessTokenKey = JSON.parse(localStorage.getItem('accessToken')),
-    // refreshTokenKey = JSON.parse(localStorage.getItem('refreshToken')),
-    // components = JSON.parse(localStorage.getItem('components'));
-
-    // Authorization Process
-    if (await AuthorizeBungie()) {
-
-        // Utils n shit
-        await GetDestinyManifest();
-        await FetchBungieUserDetails();
+        // Get utils and misc
+        // await GetDestinyManifest();
+        await FetchBungieUserDetails({components}, AxiosConfig);
         // await GetLocalStorageSize();
 
         // User Data
-        await ParseUserCharacters();
-        // await GetUserClan();
+        // await ParseUserCharacters();
+
+        // Main
+        // await Main({});
         
         // Stop loading sequence
         document.getElementById('slider').style.display = 'none';
         log('-> API Fetch Complete!');
-    } 
-    else {
-        // 404
-    };
+
+        log(`Runtime: ${(new Date() - startTime)}ms`);
 })();

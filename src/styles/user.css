@@ -11,25 +11,30 @@ body {
     margin: auto;
     margin-top: 20px;
 
-    text-align: left;
+    /* text-align: left;
 	align-items: left;
-	justify-content: left;
+	justify-content: left; */
+}
+
+#subTitleContainer {
+    display: flex;
+    margin-left: 10px;
 }
 
 #userClan {
     color: #e8e6e3;
     font-weight: 600;
-    font-size: 30px;
+    font-size: 20px;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    margin-left: 10px;
+    margin-top: 4px;
 }
 
 #displayName {
     color: #e8e6e3;
     font-weight: 600;
-    font-size: 30px;
+    font-size: 28px;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    margin-left: 10px;
+    /* margin-left: 10px; */
 }
 
 
