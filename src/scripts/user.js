@@ -167,9 +167,9 @@ var FetchBungieUserDetails = async (self, conf) => {
 };
 
 
-var ParseUserCharacters = async (self) => {
-    var userComponents = self.userComponents,
-    CharacterIndex = Object.values(userComponents['DestinyUserCharacters']);
+var ParseUserCharacters = async () => {
+    // var userComponents = self.userComponents,
+    // CharacterIndex = Object.values(userComponents['DestinyUserCharacters']);
 
     // if (CharacterIndex[0]['emblemBackgroundPath']) {
     //     document.getElementById('userEmblem1').style.display = 'inline';
@@ -186,7 +186,7 @@ var ParseUserCharacters = async (self) => {
 };
 
 
-var GetLocalStorageSize = async () => {
+var GetLsSize = async () => {
     var values = [],
     keys = Object.keys(localStorage),
     i = keys.length;
@@ -210,7 +210,7 @@ var GetLocalStorageSize = async () => {
     // Utils
     await GetDestinyManifest();
     await FetchBungieUserDetails();
-    // await GetLocalStorageSize();
+    // await GetLsSize();
 
     // User Data
     // await ParseUserCharacters();
