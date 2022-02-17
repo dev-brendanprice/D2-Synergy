@@ -17,15 +17,20 @@
         <div class="subline dec"></div>
     </div>
 
-    <div id="mainContainer">
-        <div id="charContainer0" onclick="LoadCharacter(0)">
-            <img id="charImg0" src=""><span id="classType0"></span>
+    <div class="mainContainer">
+        <div id="charSelect">
+            <div id="charContainer0" onclick="LoadCharacter(0)">
+                <img id="charImg0" src=""><span id="classType0"></span>
+            </div>
+            <div id="charContainer1" onclick="LoadCharacter(1)">
+                <img id="charImg1" src=""><span id="classType1"></span>
+            </div>
+            <div id="charContainer2" onclick="LoadCharacter(2)">
+                <img id="charImg2" src=""><span id="classType2"></span>
+            </div>
         </div>
-        <div id="charContainer1" onclick="LoadCharacter(1)">
-            <img id="charImg1" src=""><span id="classType1"></span>
-        </div>
-        <div id="charContainer2" onclick="LoadCharacter(2)">
-            <img id="charImg2" src=""><span id="classType2"></span>
+        <div id="charDisplay" style="display:none;">
+            <div id="classTypeName"></div>
         </div>
     </div>
 </body>

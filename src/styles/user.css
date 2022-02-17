@@ -2,7 +2,7 @@ body {
     --emblemSizeW: 400px;
 }
 
-#mainContainer {
+.mainContainer {
     background-color: #3e454e;
     border-radius: 5px;
     border: 1px #56606d solid;

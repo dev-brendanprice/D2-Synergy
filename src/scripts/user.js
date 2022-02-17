@@ -157,10 +157,37 @@ var FetchBungieUserDetails = async (self, conf) => {
 
 
 var LoadCharacter = async (classType) => {
-    log(classType);
+    
+    // Elements
+    document.getElementById('charSelect').style.display = 'none';
+    document.getElementById('charDisplay').style.display = 'inline-block';
+
+    // Globals
+    var className,
+        characterId;
+
+
+    // Struct
+    for (item in Characters) {
+        var char = Characters[item];
+        // log(char)
+        char.classType === classType ? (className=parseChar(classType), characterId=char.characterId) : null;
+    };
 };
 
 
+// Helper functions
+var parseChar = (classType) => {
+    var r;
+    if (classType === 0) {
+        r='Titan'
+    }else if (classType === 1) {
+        r='Hunter'
+    }else if (classType === 2) {
+        r='Warlock'
+    }else{ console.error('could not parse character, parseChar() @function'); };
+    return r;
+};
 var GetLsSize = async () => {
     var values = [],
     keys = Object.keys(localStorage),
@@ -186,10 +213,10 @@ var GetLsSize = async () => {
     // Stop loading sequence
     // Jank way to do it but apparently setTimeout() never fires before DOMContent is loaded
     setTimeout(() => {
-        isPageLoaded ? document.getElementById('slider').style.display = 'none' : null;
+        isPageLoaded === true ? document.getElementById('slider').style.display = 'none' : null;
     });
 
-    log('-> API Fetch Complete!');
+    log('-> Finished!');
 
     log(`Runtime: ${(new Date() - startTime)}ms`);
 })();
