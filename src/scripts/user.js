@@ -8,6 +8,20 @@ const startTime = new Date();
 var isPageLoaded = false;
 document.addEventListener('DOMContentLoaded', () => {
     isPageLoaded = true;
+
+    // Check to see if users' token has expired
+    // var components = localStorage.getItem('components'),
+    //     accessTokenKey = localStorage.getItem('accessToken'),
+    //     refreshTokenKey = localStorage.getItem('refreshToken');
+        
+    // if (components && accessTokenKey && refreshTokenKey) {
+    //     if (accessTokenKey['expires_in']+accessTokenKey['inception'] > new Date()) {
+    //         localStorage.clear();
+    //     } 
+    //     else if (accessTokenKey['expires_in']+accessTokenKey['inception'] < new Date()) {
+    //         // let user through
+    //     };
+    // };
 });
 
 var AuthorizeBungie = async () => {

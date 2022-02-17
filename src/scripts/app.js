@@ -23,17 +23,3 @@ window.addEventListener('DOMContentLoaded', () => {
         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
     });
 });
-
-// Check to see if users' token has expired
-// var components = localStorage.getItem('components'),
-//     accessTokenKey = localStorage.getItem('accessToken'),
-//     refreshTokenKey = localStorage.getItem('refreshToken');
-    
-// if (components && accessTokenKey && refreshTokenKey) {
-//     if (accessTokenKey['expires_in']+accessTokenKey['inception'] > new Date()) {
-//         localStorage.clear();
-//     } 
-//     else if (accessTokenKey['expires_in']+accessTokenKey['inception'] < new Date()) {
-//         // let user through
-//     };
-// };
