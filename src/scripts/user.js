@@ -1,15 +1,17 @@
 console.log('%cD2 SYNERGY _V0.3', 'font-weight: bold;font-size: 40px;color: white;');
-console.log('// Please report any errors to @beru2003 on Twitter.');
+console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
 var log = console.log.bind(console),
     localStorage = window.localStorage,
     startTime = new Date(),
     isPageLoaded = false,
     GetMembershipsById = {},
-    Characters = {};
+    UserProfile = {};
 
+
+// Default axios header
 axios.defaults.headers.common = {
-    "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d",
+    "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -31,6 +33,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // };
 });
 
+
+var ConfigIndexedDB = async () => {
+
+    let openRequest = indexedDB.open('Definitions', 1);
+
+    openRequest.onupgradeneeded = (event) => {
+        // the existing database version is less than 2 (or it doesn't exist)
+        if (event.oldVersion == 0) {
+            // client did not have a database
+            // initialize one
+        } else if (event.oldVersion != 1) {
+            // client has an outdated version
+            // update it
+        };
+    };
+};
+
+
 var AuthorizeBungie = async () => {
 
     var AuthorizationCode = window.location.search.replace('?code=','');
@@ -42,7 +62,7 @@ var AuthorizeBungie = async () => {
             components = {};
             const AuthorizationConfig = {
                 headers: {
-                    "Authorization": `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
+                    Authorization: `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
                     "Content-Type": "application/x-www-form-urlencoded",
                 }
             };
@@ -77,6 +97,7 @@ var AuthorizeBungie = async () => {
     catch (error) { 
         window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
     };
+
 
     // Check if user entered the URL in-directly
     // Check against userAuth localStorage variable to see if user has authorized before
@@ -114,11 +135,24 @@ var AuthorizeBungie = async () => {
 
 
 var GetDestinyManifest = async () => {
-    try {
-        const DestinyManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-        localStorage.setItem('destinyManifestVersion', JSON.stringify(DestinyManifest['data']['Response']['version']));
-        log('-> Manifest (Version) Accquired!');
-    } catch (error) { window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`; };
+
+    var manifestVersion,
+        sTime = new Date(),
+        manifestVersion = localStorage.getItem('destinyManifestVersion');
+
+    if (manifestVersion) {
+        var CurrentManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
+        if (CurrentManifest.data.Response.version != manifestVersion) {
+            log('-> New Manifest Version Available..');
+            
+            // request new manifest to be downloaded and update version
+            // save CurrentManifest to indexddb thing idfk
+            log(CurrentManifest.data.Response.jsonWorldComponentContentPaths.en)
+
+            localStorage.setItem('destinyManifestVersion', CurrentManifest.data.Response.version);
+            log(`-> Manifest Version Updated! [${new Date() - sTime}ms]`);
+        };
+    };
 };
 
 
@@ -127,17 +161,15 @@ var FetchBungieUserDetails = async (self, conf) => {
     var components = JSON.parse(localStorage.getItem('components'));
 
 
-    resGetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`);
+    var resGetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`);
     GetMembershipsById = resGetMembershipsById.data.Response;
-    // log(GetMembershipsById.data.Response.destinyMemberships[0]);
 
-    resCharacters = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${GetMembershipsById.destinyMemberships[0].membershipId}/?components=200`);
-    Characters = resCharacters.data.Response.characters.data
-    // log(resCharacters.data.Response.characters.data);
+    var resProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${GetMembershipsById.primaryMembershipId}/?components=200`);
+    UserProfile = resProfile.data.Response;
 
 
-    for (item in Characters) {
-        var char = Characters[item];
+    for (var item in UserProfile.characters.data) {
+        var char = UserProfile.characters.data[item];
         if (char.classType == 0) {
             // log(char.emblemPath);
             document.getElementById('charImg0').src = `https://www.bungie.net${char.emblemPath}`;
@@ -152,7 +184,7 @@ var FetchBungieUserDetails = async (self, conf) => {
             document.getElementById('classType2').innerHTML = 'Warlock';
         };
     };
-
+    log('-> Bungie User Fetched!');
 };
 
 
@@ -164,41 +196,37 @@ var LoadCharacter = async (classType) => {
 
     // Globals
     var className,
-        characterId;
+        characterId,
+        CharacterInventories;
 
 
-    // Struct
-    for (item in Characters) {
-        var char = Characters[item];
-        // log(char)
-        char.classType === classType ? (className=parseChar(classType), characterId=char.characterId) : null;
+    // Loop over available characters
+    for (var item in UserProfile.characters.data) {
+
+        var char = UserProfile.characters.data[item];
+        if (char.classType === classType) {
+            className=parseChar(classType);
+            characterId=char.characterId;
+        };
+    };
+
+
+    // OAuth header guarantees a response
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${GetMembershipsById.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}` }});
+    CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
+
+    
+    // iterate over this
+    var foo = CharacterInventories[characterId].items;
+
+    for (let i=0; i<foo.length; i++) {
+        // insert comparison against manifest here
+        // var bar = await QueryItemHash(foo[0].itemHash);
     };
 };
 
 
-// Helper functions
-var parseChar = (classType) => {
-    var r;
-    if (classType === 0) {
-        r='Titan'
-    }else if (classType === 1) {
-        r='Hunter'
-    }else if (classType === 2) {
-        r='Warlock'
-    }else{ console.error('could not parse character, parseChar() @function'); };
-    return r;
-};
-var GetLsSize = async () => {
-    var values = [],
-    keys = Object.keys(localStorage),
-    i = keys.length;
-
-    while (i--) { values.push(localStorage.getItem(keys[i])); };
-
-    log('[Usage Bytes]: ', encodeURI(JSON.stringify(values)).split(/%..|./).length - 1);
-};
-
-
+// Main
 (async () => {
 
     // Authorize user with bungie
@@ -208,7 +236,7 @@ var GetLsSize = async () => {
     await GetDestinyManifest();
     await FetchBungieUserDetails();
     
-    // await GetLsSize();
+    // await GetLsSize(localStorage);
 
     // Stop loading sequence
     // Jank way to do it but apparently setTimeout() never fires before DOMContent is loaded
@@ -216,7 +244,7 @@ var GetLsSize = async () => {
         isPageLoaded === true ? document.getElementById('slider').style.display = 'none' : null;
     });
 
-    log('-> Finished!');
+    log('-> OAuth Flow Done!');
 
-    log(`Runtime: ${(new Date() - startTime)}ms`);
+    log(`-> [${(new Date() - startTime)}ms]`);
 })();
