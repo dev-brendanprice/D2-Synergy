@@ -15,6 +15,16 @@ axios.defaults.headers.common = {
     "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
 };
 
+// Create IndexedDB database
+var db = new Dexie('ManifestDefinitions');
+
+// Configure the key for the database
+db.version(1).stores({
+    prefixes: `keyName`,
+    entries: `keyName`
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
     isPageLoaded = true;
 
@@ -33,30 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //     };
     // };
 });
-
-
-// var db = new Dexie("ManifestDefinitions");
-
-// // DB with single table 'entries'
-// db.version(1).stores({
-//   entries: `keyName`
-// });
-
-// // Adding values to the table 'entries'
-// db.entries.bulkPut([
-//   { keyName: 'DestinyMobileGlobalDefinitions', name: "Josephine", age: 21 },
-//   { keyName: 'urmum', name: "lmfao", age: 69420 }
-// ]);
-
-
-// GET VALUES
-// db.table('entries').toArray()
-//     .then(res => {
-//         log(res);
-//     });
-
-// CHANGE VALUES
-// db.entries.put({keyName: 'urmum', name: 'cum'});
 
 
 
@@ -137,57 +123,40 @@ var AuthorizeBungie = async () => {
 };
 
 
-var UpdateIndexedDB = async (obj) => {
-
-    // Create database
-    var db = new Dexie("ManifestDefinitions");
-
-    // Configure the key
-    db.version(1).stores({
-        entries: `keyName`
-    });
-
-    // Put objects into table
-    db.entries.bulkPut([
-        // { keyName: }
-    ]);
-    log('bruh')
-};
 var GetDestinyManifest = async () => {
-
-    // Create database
-    var db = new Dexie("ManifestDefinitions");
-
-    // Configure the key
-    db.version(1).stores({
-        entries: `keyName`
-    });
 
     var manifestVersion = localStorage.getItem('destinyManifestVersion'),
         sTime = new Date(),
-        ManifestContent = {};
+        ManifestContent = {},
+        LanguageType = 'en';
 
+    // Check for manifest version, if true replace all preixes with current ones
     var resManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
     if (resManifest.data.Response.version != manifestVersion) {
         log('-> New Manifest Version Available..');
 
+        // Get prefixes for definition urls
         ManifestContent = resManifest.data.Response;
-        // arrToCast = {};
         for (property in ManifestContent) {
-            // arrToCast[property] = ManifestContent[property];
-            // Put objects into table
-            db.entries.bulkPut([
+            db.prefixes.bulkPut([
                 { keyName: property, data: ManifestContent[property] }
             ]);
         };
-        // log(arrToCast)
-        // await UpdateIndexedDB(arrToCast);
+
+        // Get props data from definitions urls
+        var defs = await db.table('prefixes').toArray();
+        var defsURL = defs.find(item => item.keyName == 'jsonWorldContentPaths').data[LanguageType];
+        var defsResponse = await (await fetch(`https://www.bungie.net${defsURL}`)).json();
+        for (property in defsResponse) {
+            db.entries.bulkPut([
+                { keyName: property, data: defsResponse[property] }
+            ]);
+        };
 
         localStorage.setItem('destinyManifestVersion', resManifest.data.Response.version);
     };
 
-    log(`-> Manifest Upto Date! [${new Date() - sTime}ms]`);
-
+    log(`-> Manifest Up To Date! [${new Date() - sTime}ms]`);
 };
 
 
@@ -252,12 +221,36 @@ var LoadCharacter = async (classType) => {
 
     
     // iterate over this
-    var foo = CharacterInventories[characterId].items;
+    // var inventory = CharacterInventories[characterId].items;
+    // for (item in inventory) {
+    //     log(inventory[item])
+    // };
 
-    for (let i=0; i<foo.length; i++) {
-        // insert comparison against manifest here
-        // var bar = await QueryItemHash(foo[0].itemHash);
-    };
+            // for (prop of res) {
+        //     if (prop.keyName === 'jsonWorldComponentContentPaths') {
+        //         const defs = axios.get(`https://www.bungie.net${prop.data.en.DestinyInventoryItemDefinition}`)
+        //         // .then(res => res.json())
+        //         // .then(bruh => {
+        //         //     log(bruh)
+        //         // })
+        //         // log(defs);
+                
+        //             // .then(cum => cum.json())
+        //             // .then(out => {
+        //             //     log(out)
+        //             // });
+        //     };
+        // };
+
+
+    // for (let i=0; i<foo.length; i++) {
+    //     // insert comparison against manifest here
+    //     // var bar = await QueryItemHash(foo[0].itemHash);
+    //     log(foo)
+    // };
+
+
+    
 };
 
 
@@ -290,10 +283,40 @@ var GetLsSize = async (localStorage) => {
 // Query item against manifest via an itemHash
 // @int {itemHash}
 var QueryItemHash = async (itemHash) => {
-    var res = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/${itemHash}/`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}` }});
-    return res;
-};
+    
+    // Get prefixes from indexedDB and compare against to get item definitions
+    var defs = FetchDefinitions();
+    log(defs);
 
+    // jsonWorldComponentContentPaths
+    // DestinyInventoryItemDefinition
+    // https://www.bungie.net/common/destiny2_content/json/en/DestinyInventoryItemDefinition-09d0e9eb-a128-4d93-8517-feca2574149e.json
+
+    // Index through everything in the definitions > browser language as a param
+    // OR
+    // Get specific values and index through that value only > browser language as a param
+};
+// Fetch definitions via jsonWorldComponentContentPaths > DestinyInventoryItemDefinition
+// @ {}
+var FetchDefinitions = async () => {
+    db.table('entries').toArray()
+    .then(res => {
+        for (prop of res) {
+            if (prop.keyName === 'jsonWorldComponentContentPaths') {
+                fetch(`https://www.bungie.net${prop.data.en.DestinyInventoryItemDefinition}`)
+                .then(thing => thing.json())
+                .then(bruh => {
+                    return bruh;
+                });
+                
+                    // .then(cum => cum.json())
+                    // .then(out => {
+                    //     log(out)
+                    // });
+            };
+        };
+    });
+};
 
 
 
@@ -307,8 +330,8 @@ var QueryItemHash = async (itemHash) => {
     // Configure content
     await GetDestinyManifest();
     await FetchBungieUserDetails();
-    
     // await GetLsSize(localStorage);
+    // await QueryItemHash()
 
     // Stop loading sequence
     // Jank way to do it but apparently setTimeout() never fires before DOMContent is loaded
