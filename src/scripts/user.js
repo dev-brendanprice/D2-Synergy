@@ -253,6 +253,9 @@ var FetchBungieUserDetails = async (self, conf) => {
 // Load character from specific index
 var LoadCharacter = async (classType) => {
     
+    // Check tokens before anything else, in case user has not been validated for the duration of the accessToken timeout
+    await CheckTokens();
+
     // Elements
     document.getElementById('charSelect').style.display = 'none';
     document.getElementById('charDisplay').style.display = 'inline-block';
@@ -285,6 +288,7 @@ var LoadCharacter = async (classType) => {
     };
     log(new Date() - startTime);
 };
+
 
 
 // -- MODULES
@@ -320,25 +324,30 @@ var QueryItemHash = async (itemHash) => {
     // Get prefixes from indexedDB and compare against to get item definitions
     
 };
+// Check document is loaded
+// @ {}
+var CheckDocumentLoadState = () => {
+    return document.readyState === 'complete' ? true : false;
+};
 // Start loading sequence
 // @ {}
 var StartLoad = () => {
-    document.getElementById('slider').style.display = 'auto';
+    if (CheckDocumentLoadState()) {
+        document.getElementById('slider').style.display = 'auto';
+    };
 };
 // Stop loading sequence
+// @ {}
 var StopLoad = () => {
-    document.getElementById('slider').style.display = 'none';
+    if (CheckDocumentLoadState()) {
+        document.getElementById('slider').style.display = 'none';
+    };
 };
 
 
 
 // Main
 (async () => {
-    
-    // Start load sequence
-    document.addEventListener('DOMContentLoaded', () => {
-        StartLoad();
-    });
     
     // OAuth Flow
     await OAuthFlow();
@@ -362,8 +371,10 @@ var StopLoad = () => {
 
 // todo
 
+// - implement error catching and handling
 // - make page for errors with options for user
 // - change url to remove state and code params, dont refresh page after or make a way for it to ignore this process in the OAuthFlow
 // ^ above is to make the url look nice after authorization is done and will also apply when the user comes back to the website and has been authed before
 // ^ maybe middleware between BungieOAuth and CheckTokens...
 // - how to "duplicate" elements or have an undefined amouunt of elements with the same style properties
+// - if loading takes longer ~10 seconds, and manifest has been fetched, display message saying to refresh

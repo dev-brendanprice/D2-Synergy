@@ -41,7 +41,7 @@ body {
 /* loading bar */
 
 #slider{
-    display: none;
+    display: auto;
     position: relative;
     width: 100vw;
     height: 3px;
