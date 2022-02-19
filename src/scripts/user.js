@@ -1,10 +1,18 @@
 console.log('%cD2 SYNERGY _V0.3', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
+// Verify state (discretely)
+(() => {
+    var uP=new URLSearchParams(window.location.search);
+    var s=uP.get('state')
+    if (s!=window.localStorage.getItem('stateCode')) {
+        window.location.href=`http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
+    };
+});
+
 var log = console.log.bind(console),
     localStorage = window.localStorage,
     startTime = new Date(),
-    isPageLoaded = false,
     GetMembershipsById = {},
     UserProfile = {};
 
@@ -15,7 +23,8 @@ axios.defaults.headers.common = {
     "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
 };
 
-// Create IndexedDB database
+// Create IndexedDB database and URLSearchParams instance
+var urlParams = new URLSearchParams(window.location.search);
 var db = new Dexie('ManifestDefinitions');
 
 // Configure the key for the database
@@ -27,27 +36,8 @@ db.version(1).stores({
 // 'entries' contains the definitions that reside on those urls
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    isPageLoaded = true;
 
-    // Check to see if users' token has expired
-    // Idk if this needed in the long run
-    // var components = localStorage.getItem('components'),
-    //     accessTokenKey = localStorage.getItem('accessToken'),
-    //     refreshTokenKey = localStorage.getItem('refreshToken');
-        
-    // if (components && accessTokenKey && refreshTokenKey) {
-    //     if (accessTokenKey['expires_in']+accessTokenKey['inception'] > new Date()) {
-    //         localStorage.clear();
-    //     } 
-    //     else if (accessTokenKey['expires_in']+accessTokenKey['inception'] < new Date()) {
-    //         // let user through
-    //     };
-    // };
-});
-
-
-
+// Authorize with Bungie.net
 var BungieOAuth = async (authCode) => {
 
     var AccessToken = {},
@@ -55,8 +45,8 @@ var BungieOAuth = async (authCode) => {
         components = {},
         AuthConfig = {
             headers: {
-                Authorization: `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
-                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: 'Basic MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA==',
+                "Content-Type": "application/x-www-form-urlencoded"
             }
         };
 
@@ -80,11 +70,21 @@ var BungieOAuth = async (authCode) => {
             localStorage.setItem('accessToken', JSON.stringify(AccessToken));
             localStorage.setItem('components', JSON.stringify(components));
             localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
+
+            log('-> Authorized with Bungie.net!');
+        })
+        .catch(res => {
+            if (res.response.data['error_description'] == 'AuthorizationCodeInvalid') {
+                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
+            }
+            else {
+                console.error(err);
+            };
         });
-    log('-> Authorized with Bungie.net!');
 };
 
 
+// Check tokens for expiration
 var CheckTokens = async () => {
     
     var acToken = JSON.parse(localStorage.getItem('accessToken')),
@@ -129,10 +129,20 @@ var CheckTokens = async () => {
                 localStorage.setItem('accessToken', JSON.stringify(AccessToken));
                 localStorage.setItem('components', JSON.stringify(components));
                 localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
+            })
+            .catch(err => {
+                if (res.response.data['error_description'] == 'AuthorizationCodeInvalid') {
+                    window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
+                }
+                else {
+                    console.error(err);
+                };
             });
         isAcTokenExpired ? log('-> Access token reformed!') : log('-> Refresh token reformed!');
     };
+    log('-> Tokens Validated!');
 };
+
 
 // Main OAuth flow mechanism
 var OAuthFlow = async () => {
@@ -142,26 +152,36 @@ var OAuthFlow = async () => {
         comps = JSON.parse(localStorage.getItem('components')),
         authCode = window.location.search.replace('?code=', '');
 
-    // If user has no credentials
-    if (authCode && (!comps || !acToken || !rsToken)) {
-        BungieOAuth(authCode);
-        log('-> User Successfully Authorized!');
-    }
+    // Wrap in try.except for error catching
+    try {
 
-    // If user has authorize beforehand, but came back through empty param URL
-    else if (!authCode) {
-        CheckTokens();
-        log('-> Tokens Validated!');
-    }
+        // If user has no localStorage items and the code is incorrect
+        if (authCode && (!comps || !acToken || !rsToken)) {
+            await BungieOAuth(authCode);
+        }
 
-    // Otherwise, redirect the user back to the 'Authorize' page
-    else {
-        // debugger;
-        window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
+        // If user has authorize beforehand, but came back through empty param URL
+        else if (!authCode) {
+            await CheckTokens();
+        }
+
+        // User comes back but authCode in URL is still present
+        else if (authCode && (comps || acToken || rsToken)) {
+            await CheckTokens();
+        }
+
+        // Otherwise, redirect the user back to the 'Authorize' page
+        else {
+            window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
+        };
+    }
+    catch (err) {
+        console.error(err);
     };
 };
 
 
+// Validate and/or update manifest
 var GetDestinyManifest = async () => {
 
     var manifestVersion = localStorage.getItem('destinyManifestVersion'),
@@ -172,7 +192,7 @@ var GetDestinyManifest = async () => {
     // Check for manifest version, if true replace all preixes with current ones
     var resManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
     if (resManifest.data.Response.version != manifestVersion) {
-        log('-> New Manifest Version Available..');
+        log('-> Manifest Is Not Up To Date, Reforming Manifest..');
 
         // Get prefixes for definition urls
         ManifestContent = resManifest.data.Response;
@@ -199,6 +219,7 @@ var GetDestinyManifest = async () => {
 };
 
 
+// Fetch basic bungie user details
 var FetchBungieUserDetails = async (self, conf) => {
 
     var components = JSON.parse(localStorage.getItem('components'));
@@ -230,6 +251,7 @@ var FetchBungieUserDetails = async (self, conf) => {
 };
 
 
+// Load character from specific index
 var LoadCharacter = async (classType) => {
     
     // Elements
@@ -268,7 +290,7 @@ var LoadCharacter = async (classType) => {
 };
 
 
-// -- [Modules] -- 
+// -- MODULES
 
 // Returns corresponding class name using classType
 // @int {classType}
@@ -323,9 +345,8 @@ var QueryItemHash = async (itemHash) => {
     // await QueryItemHash()
 
     // Stop loading sequence
-    // Jank way to do it but apparently setTimeout() never fires before DOMContent is loaded
-    setTimeout(() => {
-        isPageLoaded === true ? document.getElementById('slider').style.display = 'none' : null;
+    document.addEventListener('DOMContentLoaded', () => { // I hate using this event fyi
+        document.getElementById('slider').style.display = 'none';
     });
 
     log(`-> OAuth Flow Done! [${(new Date() - startTime)}ms]`);
