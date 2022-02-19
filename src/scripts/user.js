@@ -345,9 +345,7 @@ var QueryItemHash = async (itemHash) => {
     // await QueryItemHash()
 
     // Stop loading sequence
-    document.addEventListener('DOMContentLoaded', () => { // I hate using this event fyi
-        document.getElementById('slider').style.display = 'none';
-    });
+    document.getElementById('slider').style.display = 'none';
 
     log(`-> OAuth Flow Done! [${(new Date() - startTime)}ms]`);
 })();
