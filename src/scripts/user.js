@@ -16,8 +16,6 @@ var log = console.log.bind(console),
     GetMembershipsById = {},
     UserProfile = {};
 
-    window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-
 // Default axios header
 axios.defaults.headers.common = {
     "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
@@ -150,7 +148,7 @@ var OAuthFlow = async () => {
     var rsToken = JSON.parse(localStorage.getItem('refreshToken')),
         acToken = JSON.parse(localStorage.getItem('accessToken')),
         comps = JSON.parse(localStorage.getItem('components')),
-        authCode = window.location.search.replace('?code=', '');
+        authCode = URLSearchParams.get('code');
 
     // Wrap in try.except for error catching
     try {
@@ -177,6 +175,7 @@ var OAuthFlow = async () => {
     }
     catch (err) {
         console.error(err);
+        // display error page, with error and options for user
     };
 };
 
@@ -285,8 +284,6 @@ var LoadCharacter = async (classType) => {
         log(CharacterInventories[characterId][item])
     };
     log(new Date() - startTime);
-
-
 };
 
 
@@ -341,11 +338,20 @@ var QueryItemHash = async (itemHash) => {
     // Main
     await GetDestinyManifest();
     await FetchBungieUserDetails();
-    // await GetLsSize(localStorage);
-    // await QueryItemHash()
 
-    // Stop loading sequence
+    // Processes done
     document.getElementById('slider').style.display = 'none';
-
     log(`-> OAuth Flow Done! [${(new Date() - startTime)}ms]`);
 })();
+
+
+
+
+// todo
+
+// - make start/stop loading functions
+// - make page for errors with options for user
+// - change url to remove state and code params, dont refresh page after or make a way for it to ignore this process in the OAuthFlow
+// ^ above is to make the url look nice after authorization is done and will also apply when the user comes back to the website and has been authed before
+// ^ maybe middleware between BungieOAuth and CheckTokens...
+// - how to "duplicate" elements or have an undefined amouunt of elements with the same style properties
