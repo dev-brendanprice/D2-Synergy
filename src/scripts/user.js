@@ -23,6 +23,8 @@ db.version(1).stores({
     prefixes: `keyName`,
     entries: `keyName`
 });
+// 'prefixes' contains urls for definitions keys
+// 'entries' contains the definitions that reside on those urls
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -46,80 +48,117 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-var AuthorizeBungie = async () => {
+var BungieOAuth = async (authCode) => {
 
-    var AuthorizationCode = window.location.search.replace('?code=', '');
-    try {
-        if (AuthorizationCode && !localStorage.getItem('components')) {
-
-            var AccessToken = {}, RefreshToken = {}, components = {};
-            const AuthorizationConfig = {
-                headers: {
-                    Authorization: `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
-                    "Content-Type": "application/x-www-form-urlencoded",
-                }
-            };
-
-            await axios.post('https://www.bungie.net/platform/app/oauth/token/', `grant_type=authorization_code&code=${AuthorizationCode}`, AuthorizationConfig)
-                .then(res => {
-                    var data = res.data;
-
-                    components['membership_id'] = data['membership_id'];
-                    components['token_type'] = data['token_type'];
-                    components['authorization_code'] = AuthorizationCode;
-
-                    AccessToken['inception'] = Math.round(new Date().getTime() / 1000);
-                    AccessToken['expires_in'] = data['expires_in'];
-                    AccessToken['value'] = data['access_token'];
-
-                    RefreshToken['inception'] = Math.round(new Date().getTime() / 1000);
-                    RefreshToken['expires_in'] = data['refresh_expires_in'];
-                    RefreshToken['value'] = data['refresh_token'];
-
-                    localStorage.setItem('accessToken', JSON.stringify(AccessToken));
-                    localStorage.setItem('components', JSON.stringify(components));
-                    localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
-                });
-
-            log('-> Authorized with Bungie.net!');
-        }
-        else if (!AuthorizationCode || !localStorage.getItem('components')) {
-            window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
+    var AccessToken = {},
+        RefreshToken = {},
+        components = {},
+        AuthConfig = {
+            headers: {
+                Authorization: `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
+                "Content-Type": "application/x-www-form-urlencoded",
+            }
         };
+
+    // Authorize user and get credentials (first time sign-on (usually))
+    await axios.post('https://www.bungie.net/platform/app/oauth/token/', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
+        .then(res => {
+            var data = res.data;
+
+            components['membership_id'] = data['membership_id'];
+            components['token_type'] = data['token_type'];
+            components['authorization_code'] = authCode;
+
+            AccessToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
+            AccessToken['expires_in'] = data['expires_in'];
+            AccessToken['value'] = data['access_token'];
+
+            RefreshToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
+            RefreshToken['expires_in'] = data['refresh_expires_in'];
+            RefreshToken['value'] = data['refresh_token'];
+
+            localStorage.setItem('accessToken', JSON.stringify(AccessToken));
+            localStorage.setItem('components', JSON.stringify(components));
+            localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
+        });
+    log('-> Authorized with Bungie.net!');
+};
+
+
+var CheckTokens = async () => {
+    
+    var acToken = JSON.parse(localStorage.getItem('accessToken')),
+    rsToken = JSON.parse(localStorage.getItem('refreshToken')),
+    comps = JSON.parse(localStorage.getItem('components')),
+    RefreshToken = {},
+    AccessToken = {},
+    components = {},
+    AuthConfig = {
+        headers: {
+            Authorization: `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+    };
+    
+    // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
+    delete axios.defaults.headers.common['X-API-Key'];
+
+    // Check if either tokens have expired
+    isAcTokenExpired = (acToken.inception + acToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
+    isRsTokenExpired = (rsToken.inception + rsToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
+    if (isAcTokenExpired || isRsTokenExpired) {
+
+        // If either tokens have expired
+        isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
+        await axios.post('https://www.bungie.net/Platform/App/OAuth/token/', `grant_type=refresh_token&refresh_token=${rsToken.value}`, AuthConfig)
+            .then(res => {
+                var data = res.data;
+
+                components['membership_id'] = data['membership_id'];
+                components['token_type'] = data['token_type'];
+                components['authorization_code'] = comps['authorization_code'];
+    
+                AccessToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
+                AccessToken['expires_in'] = data['expires_in'];
+                AccessToken['value'] = data['access_token'];
+    
+                RefreshToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
+                RefreshToken['expires_in'] = data['refresh_expires_in'];
+                RefreshToken['value'] = data['refresh_token'];
+    
+                localStorage.setItem('accessToken', JSON.stringify(AccessToken));
+                localStorage.setItem('components', JSON.stringify(components));
+                localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
+            });
+        isAcTokenExpired ? log('-> Access token reformed!') : log('-> Refresh token reformed!');
+    };
+};
+
+// Main OAuth flow mechanism
+var OAuthFlow = async () => {
+
+    var rsToken = JSON.parse(localStorage.getItem('refreshToken')),
+        acToken = JSON.parse(localStorage.getItem('accessToken')),
+        comps = JSON.parse(localStorage.getItem('components')),
+        authCode = window.location.search.replace('?code=', '');
+
+    // If user has no credentials
+    if (authCode && (!comps || !acToken || !rsToken)) {
+        BungieOAuth(authCode);
+        log('-> User Successfully Authorized!');
     }
-    catch (error) {
+
+    // If user has authorize beforehand, but came back through empty param URL
+    else if (!authCode) {
+        CheckTokens();
+        log('-> Tokens Validated!');
+    }
+
+    // Otherwise, redirect the user back to the 'Authorize' page
+    else {
+        // debugger;
         window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
     };
-
-
-    // Check if user entered the URL in-directly
-    // Check against userAuth localStorage variable to see if user has authorized before
-    //  and is entering the path directly
-    // try {
-    //     if (AuthorizationCode && localStorage.getItem('components')) {
-    //         // Refresh tokens completley
-    //         var accessTokenKey = JSON.parse(localStorage.getItem('accessToken'));
-    //         var components = JSON.parse(localStorage.getItem('components'));
-    //         var refreshTokenKey = JSON.parse(localStorage.getItem('refreshToken'));
-    //         if (accessTokenKey && refreshTokenKey && components) {
-    //             if (Math.round(new Date().getTime()/1000) - accessTokenKey['inception'] == accessTokenKey['expires_in']) {
-    //                 window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
-    //             }
-    //             else {
-    //                 log('-> LocalStorage items validated!');
-    //                 // isUserAuthorized = true;
-    //                 // localStorage.setItem('userAuthorized', true);
-    //             };
-    //         };
-    //     }
-    //     else if (!localStorage.getItem('components')) {
-    //         log(`Line 82`)
-    //         // User entered the URL directly
-    //         // window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
-    //     };
-    // } catch (error) { 
-    //     log(`Line 86: ${error}`);
-    // };
 };
 
 
@@ -163,7 +202,6 @@ var GetDestinyManifest = async () => {
 var FetchBungieUserDetails = async (self, conf) => {
 
     var components = JSON.parse(localStorage.getItem('components'));
-
 
     var resGetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`);
     GetMembershipsById = resGetMembershipsById.data.Response;
@@ -219,38 +257,14 @@ var LoadCharacter = async (classType) => {
     var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${GetMembershipsById.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
 
-    
-    // iterate over this
-    // var inventory = CharacterInventories[characterId].items;
-    // for (item in inventory) {
-    //     log(inventory[item])
-    // };
-
-            // for (prop of res) {
-        //     if (prop.keyName === 'jsonWorldComponentContentPaths') {
-        //         const defs = axios.get(`https://www.bungie.net${prop.data.en.DestinyInventoryItemDefinition}`)
-        //         // .then(res => res.json())
-        //         // .then(bruh => {
-        //         //     log(bruh)
-        //         // })
-        //         // log(defs);
-                
-        //             // .then(cum => cum.json())
-        //             // .then(out => {
-        //             //     log(out)
-        //             // });
-        //     };
-        // };
+    // Iterate over CharacterInventories[characterId]
+    // var inventory = CharacterInventories[characterId];
+    for (item in CharacterInventories[characterId]) {
+        log(CharacterInventories[characterId][item])
+    };
+    log(new Date() - startTime);
 
 
-    // for (let i=0; i<foo.length; i++) {
-    //     // insert comparison against manifest here
-    //     // var bar = await QueryItemHash(foo[0].itemHash);
-    //     log(foo)
-    // };
-
-
-    
 };
 
 
@@ -285,37 +299,7 @@ var GetLsSize = async (localStorage) => {
 var QueryItemHash = async (itemHash) => {
     
     // Get prefixes from indexedDB and compare against to get item definitions
-    var defs = FetchDefinitions();
-    log(defs);
-
-    // jsonWorldComponentContentPaths
-    // DestinyInventoryItemDefinition
-    // https://www.bungie.net/common/destiny2_content/json/en/DestinyInventoryItemDefinition-09d0e9eb-a128-4d93-8517-feca2574149e.json
-
-    // Index through everything in the definitions > browser language as a param
-    // OR
-    // Get specific values and index through that value only > browser language as a param
-};
-// Fetch definitions via jsonWorldComponentContentPaths > DestinyInventoryItemDefinition
-// @ {}
-var FetchDefinitions = async () => {
-    db.table('entries').toArray()
-    .then(res => {
-        for (prop of res) {
-            if (prop.keyName === 'jsonWorldComponentContentPaths') {
-                fetch(`https://www.bungie.net${prop.data.en.DestinyInventoryItemDefinition}`)
-                .then(thing => thing.json())
-                .then(bruh => {
-                    return bruh;
-                });
-                
-                    // .then(cum => cum.json())
-                    // .then(out => {
-                    //     log(out)
-                    // });
-            };
-        };
-    });
+    
 };
 
 
@@ -324,10 +308,15 @@ var FetchDefinitions = async () => {
 // Main
 (async () => {
 
-    // Authorize user with bungie
-    await AuthorizeBungie();
+    // OAuth Flow
+    await OAuthFlow();
 
-    // Configure content
+    // Add default headers back, in case OAuthFlow needed a refresh
+    axios.defaults.headers.common = {
+        "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
+    };
+
+    // Main
     await GetDestinyManifest();
     await FetchBungieUserDetails();
     // await GetLsSize(localStorage);
