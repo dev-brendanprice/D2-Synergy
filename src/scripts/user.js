@@ -136,7 +136,7 @@ var CheckTokens = async () => {
                     console.error(err);
                 };
             });
-        isAcTokenExpired ? log('-> Access token reformed!') : log('-> Refresh token reformed!');
+        isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
     };
     log('-> Tokens Validated!');
 };
@@ -148,7 +148,7 @@ var OAuthFlow = async () => {
     var rsToken = JSON.parse(localStorage.getItem('refreshToken')),
         acToken = JSON.parse(localStorage.getItem('accessToken')),
         comps = JSON.parse(localStorage.getItem('components')),
-        authCode = URLSearchParams.get('code');
+        authCode = urlParams.get('code'); // Only place where authCode must be fetched from
 
     // Wrap in try.except for error catching
     try {
@@ -320,13 +320,26 @@ var QueryItemHash = async (itemHash) => {
     // Get prefixes from indexedDB and compare against to get item definitions
     
 };
-
+// Start loading sequence
+// @ {}
+var StartLoad = () => {
+    document.getElementById('slider').style.display = 'auto';
+};
+// Stop loading sequence
+var StopLoad = () => {
+    document.getElementById('slider').style.display = 'none';
+};
 
 
 
 // Main
 (async () => {
-
+    
+    // Start load sequence
+    document.addEventListener('DOMContentLoaded', () => {
+        StartLoad();
+    });
+    
     // OAuth Flow
     await OAuthFlow();
 
@@ -340,7 +353,7 @@ var QueryItemHash = async (itemHash) => {
     await FetchBungieUserDetails();
 
     // Processes done
-    document.getElementById('slider').style.display = 'none';
+    StopLoad();
     log(`-> OAuth Flow Done! [${(new Date() - startTime)}ms]`);
 })();
 
@@ -349,7 +362,6 @@ var QueryItemHash = async (itemHash) => {
 
 // todo
 
-// - make start/stop loading functions
 // - make page for errors with options for user
 // - change url to remove state and code params, dont refresh page after or make a way for it to ignore this process in the OAuthFlow
 // ^ above is to make the url look nice after authorization is done and will also apply when the user comes back to the website and has been authed before
