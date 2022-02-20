@@ -219,12 +219,14 @@ var GetDestinyManifest = async () => {
 // Fetch basic bungie user details
 var FetchBungieUserDetails = async (self, conf) => {
 
-    var components = JSON.parse(localStorage.getItem('components'));
+    var components = JSON.parse(localStorage.getItem('components')),
+        membershipType;
 
-    var resGetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`);
+    var resGetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
     GetMembershipsById = resGetMembershipsById.data.Response;
+    membershipType = GetMembershipsById.destinyMemberships[0].membershipType;
 
-    var resProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${GetMembershipsById.primaryMembershipId}/?components=200`);
+    var resProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${GetMembershipsById.primaryMembershipId}/?components=200`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
     UserProfile = resProfile.data.Response;
 
 
@@ -264,8 +266,8 @@ var LoadCharacter = async (classType) => {
     // Globals
     var className,
         characterId,
-        CharacterInventories;
-
+        CharacterInventories,
+        membershipType = GetMembershipsById.destinyMemberships[0].membershipType;
 
     // Loop over available characters
     for (var item in UserProfile.characters.data) {
@@ -285,7 +287,7 @@ var LoadCharacter = async (classType) => {
         });
 
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${GetMembershipsById.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${GetMembershipsById.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
 
     // Iterate over CharacterInventories[characterId].items
