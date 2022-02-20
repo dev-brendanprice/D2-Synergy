@@ -267,6 +267,7 @@ var LoadCharacter = async (classType) => {
     var className,
         characterId,
         CharacterInventories,
+        definitions = {},
         membershipType = GetMembershipsById.destinyMemberships[0].membershipType;
 
     // Loop over available characters
@@ -279,8 +280,7 @@ var LoadCharacter = async (classType) => {
         };
     };
 
-    // Get definitions
-    var definitions = {};
+    // Get manifest and return it
     await db.entries.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
         .then(massiveObj => {
             definitions = massiveObj[0].data;
@@ -292,28 +292,27 @@ var LoadCharacter = async (classType) => {
 
     // Iterate over CharacterInventories[characterId].items
     var charInventory = CharacterInventories[characterId].items,
-        amountOfItems = 0;
+        amountOfItems = 0,
+        amountOfBounties = 0;
     
-    for (item in charInventory) {
-        // log(charInventory[item])
-        var clone = document.querySelector('#entryData').cloneNode(true);
-        clone.setAttribute('id', 'entryData');
 
+    for (item in charInventory) {
         for (prop in definitions) {
+
             if (definitions[prop].itemType === 26) {
                 if (definitions[prop].hash === charInventory[item].itemHash) {
-                    // log(definitions[prop]);
-                    // log(definitions[prop].displayProperties.icon)
-                    clone.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+                    let newDiv = document.createElement('img');
+                    newDiv.setAttribute('id', 'entryData');
+                    newDiv.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+                    document.querySelector('#charDisplay').appendChild(newDiv);
+                    amountOfBounties++;
                 };
             };
         };
-
-        clone.innerHTML = charInventory[item].itemHash;
-        document.querySelector('#charDisplay').appendChild(clone);
         amountOfItems++;
     };
-    document.getElementById('classTypeName').innerHTML = `${amountOfItems} Item(s) Indexed`;
+    document.getElementById('subTitleOne').innerHTML = `${amountOfItems} Item(s) Indexed`;
+    document.getElementById('subTitleTwo').innerHTML = `${amountOfBounties} Bounty(s) Found`;
 
     // Stop loading sequence
     StopLoad();
@@ -348,18 +347,14 @@ var GetLsSize = async (localStorage) => {
 
     log('[Usage Bytes]: ', encodeURI(JSON.stringify(values)).split(/%..|./).length - 1);
 };
-// Query item against manifest via an itemHash
-// @int {itemHash}
-var QueryItemDefinition = async (itemHash) => {
+// Returns Definitions from the DestinyInventoryItemDefinition entry
+// @ {}
+var ReturnDefinitions = async () => {
     
-    // Compare against DestinyInventoryItemDefinition from the definitions
-    db.entries.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
+    // Get manifest and return it
+    await db.entries.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
     .then(massiveObj => {
-        massiveObj[0].data.forEach(entry => {
-            if (entry == itemHash) {
-                return entry;
-            };
-        });
+        return massiveObj;
     });
 };
 // Check document is loaded
