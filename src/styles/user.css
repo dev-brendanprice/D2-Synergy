@@ -37,6 +37,10 @@ body {
     /* margin-left: 10px; */
 }
 
+#entryData {
+    width: 75px;
+}
+
 
 /* loading bar */
 

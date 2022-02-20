@@ -27,11 +27,10 @@ var db = new Dexie('ManifestDefinitions');
 
 // Configure the key for the database
 db.version(1).stores({
-    prefixes: `keyName`,
-    entries: `keyName`
+    prefixes: `keyName`, // 'prefixes' contains urls for definitions keys
+    entries: `keyName`   // 'entries' contains the definitions that reside on those urls
 });
-// 'prefixes' contains urls for definitions keys
-// 'entries' contains the definitions that reside on those urls
+
 
 
 
@@ -252,6 +251,9 @@ var FetchBungieUserDetails = async (self, conf) => {
 // Load character from specific index
 var LoadCharacter = async (classType) => {
     
+    // Start load sequence
+    StartLoad();
+
     // Check tokens before anything else, in case user has not been validated for the duration of the accessToken timeout
     await CheckTokens();
 
@@ -270,26 +272,50 @@ var LoadCharacter = async (classType) => {
 
         var char = UserProfile.characters.data[item];
         if (char.classType === classType) {
-            className=parseChar(classType);
-            characterId=char.characterId;
+            className = parseChar(classType);
+            characterId = char.characterId;
         };
     };
+
+    // Get definitions
+    var definitions = {};
+    await db.entries.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
+        .then(massiveObj => {
+            definitions = massiveObj[0].data;
+        });
 
     // OAuth header guarantees a response
     var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${GetMembershipsById.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
 
-    // Iterate over CharacterInventories[characterId]
-    // var inventory = CharacterInventories[characterId];
-    var charInventory = CharacterInventories[characterId].items;
+    // Iterate over CharacterInventories[characterId].items
+    var charInventory = CharacterInventories[characterId].items,
+        amountOfItems = 0;
+    
     for (item in charInventory) {
         // log(charInventory[item])
         var clone = document.querySelector('#entryData').cloneNode(true);
         clone.setAttribute('id', 'entryData');
+
+        for (prop in definitions) {
+            if (definitions[prop].itemType === 26) {
+                if (definitions[prop].hash === charInventory[item].itemHash) {
+                    // log(definitions[prop]);
+                    // log(definitions[prop].displayProperties.icon)
+                    clone.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+                };
+            };
+        };
+
         clone.innerHTML = charInventory[item].itemHash;
         document.querySelector('#charDisplay').appendChild(clone);
+        amountOfItems++;
     };
-    log(new Date() - startTime);
+    document.getElementById('classTypeName').innerHTML = `${amountOfItems} Item(s) Indexed`;
+
+    // Stop loading sequence
+    StopLoad();
+    log(`-> Indexed Character ${classType}!`);
 };
 
 
@@ -322,10 +348,17 @@ var GetLsSize = async (localStorage) => {
 };
 // Query item against manifest via an itemHash
 // @int {itemHash}
-var QueryItemHash = async (itemHash) => {
+var QueryItemDefinition = async (itemHash) => {
     
-    // Get prefixes from indexedDB and compare against to get item definitions
-    
+    // Compare against DestinyInventoryItemDefinition from the definitions
+    db.entries.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
+    .then(massiveObj => {
+        massiveObj[0].data.forEach(entry => {
+            if (entry == itemHash) {
+                return entry;
+            };
+        });
+    });
 };
 // Check document is loaded
 // @ {}
@@ -335,16 +368,12 @@ var CheckDocumentLoadState = () => {
 // Start loading sequence
 // @ {}
 var StartLoad = () => {
-    if (CheckDocumentLoadState()) {
-        document.getElementById('slider').style.display = 'auto';
-    };
+    document.getElementById('slider').style.display = 'block';
 };
 // Stop loading sequence
 // @ {}
 var StopLoad = () => {
-    if (CheckDocumentLoadState()) {
-        document.getElementById('slider').style.display = 'none';
-    };
+    document.getElementById('slider').style.display = 'none';
 };
 
 
@@ -367,13 +396,20 @@ var StopLoad = () => {
     // Processes done
     StopLoad();
     log(`-> OAuth Flow Done! [${(new Date() - startTime)}ms]`);
+    log(`-> Awaiting User Input..`);
 })();
+
+
+
+
+
 
 
 
 
 // todo
 
+// - save chosen character index when refreshing
 // - implement error catching and handling
 // - make page for errors with options for user
 // - change url to remove state and code params, dont refresh page after or make a way for it to ignore this process in the OAuthFlow
