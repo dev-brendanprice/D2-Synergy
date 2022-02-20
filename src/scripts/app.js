@@ -14,7 +14,7 @@ const GenerateState = (len) => {
         };
     return result;
 };
-const stateCode = GenerateState(512);
+const stateCode = GenerateState(128);
 localStorage.setItem('stateCode', stateCode);
 
 window.addEventListener('DOMContentLoaded', () => {

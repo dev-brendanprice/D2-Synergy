@@ -172,9 +172,8 @@ var OAuthFlow = async () => {
         else {
             window.location.href = `http://86.2.10.33:4645/D2Synergy-v3.0/src/views/app.html`;
         };
-    }
-    catch (err) {
-        console.error(err);
+    } catch (error) {
+        console.error(error);
         // display error page, with error and options for user
     };
 };
@@ -276,15 +275,19 @@ var LoadCharacter = async (classType) => {
         };
     };
 
-
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${GetMembershipsById.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}` }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${GetMembershipsById.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
 
     // Iterate over CharacterInventories[characterId]
     // var inventory = CharacterInventories[characterId];
-    for (item in CharacterInventories[characterId]) {
-        log(CharacterInventories[characterId][item])
+    var charInventory = CharacterInventories[characterId].items;
+    for (item in charInventory) {
+        // log(charInventory[item])
+        var clone = document.querySelector('#entryData').cloneNode(true);
+        clone.setAttribute('id', 'entryData');
+        clone.innerHTML = charInventory[item].itemHash;
+        document.querySelector('#charDisplay').appendChild(clone);
     };
     log(new Date() - startTime);
 };
