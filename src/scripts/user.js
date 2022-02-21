@@ -14,7 +14,8 @@ var log = console.log.bind(console),
     localStorage = window.localStorage,
     startTime = new Date(),
     GetMembershipsById = {},
-    UserProfile = {};
+    UserProfile = {},
+    LanguageType = 'en'; // Get from browser or sumn idfk lol
 
 // Default axios header
 axios.defaults.headers.common = {
@@ -181,37 +182,49 @@ var OAuthFlow = async () => {
 // Validate and/or update manifest
 var GetDestinyManifest = async () => {
 
-    var manifestVersion = localStorage.getItem('destinyManifestVersion'),
-        sTime = new Date(),
-        ManifestContent = {},
-        LanguageType = 'en';
+    var ParseManifest = async (resManifest, bool) => {
 
-    // Check for manifest version, if true replace all preixes with current ones
-    var resManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-    if (resManifest.data.Response.version != manifestVersion) {
-        log('-> Manifest Is Not Up To Date, Reforming Manifest..');
-
-        // Get prefixes for definition urls
-        ManifestContent = resManifest.data.Response;
+        // Save prefixes for URLs
+        var ManifestContent = resManifest.data.Response;
         for (property in ManifestContent) {
             db.prefixes.bulkPut([
                 { keyName: property, data: ManifestContent[property] }
             ]);
         };
 
-        // Get props data from definitions urls
-        var defs = await db.table('prefixes').toArray();
-        var defsURL = defs.find(item => item.keyName == 'jsonWorldContentPaths').data[LanguageType];
-        var defsResponse = await (await fetch(`https://www.bungie.net${defsURL}`)).json();
+        // Get data from each prefix URL
+        var defs = await db.table('prefixes').toArray(),
+            defsURL = defs.find(item => item.keyName === 'jsonWorldContentPaths').data[LanguageType],
+            defsResponse = await (await fetch(`https://www.bungie.net${defsURL}`)).json();
         for (property in defsResponse) {
             db.entries.bulkPut([
                 { keyName: property, data: defsResponse[property] }
             ]);
         };
-
-        localStorage.setItem('destinyManifestVersion', resManifest.data.Response.version);
     };
 
+    var manifestVersion = localStorage.getItem('destinyManifestVersion'),
+        entries = await db.table('entries').toArray(),
+        sTime = new Date();
+
+    // Check for manifest version, if true replace all preixes with current ones
+    var resManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
+    if (entries.length === 0) {
+        log('-> Manifest Is Not Present On This Browser, Fetching Manifest..');
+
+        // User has the correct version in localStorage but has no indexedDB items
+        await ParseManifest(resManifest, true);
+
+    }
+    else if (resManifest.data.Response.version !== manifestVersion) {
+        log('-> Manifest Is Not Up To Date, Updating Manifest..');
+
+        // Parse manifest response
+        await ParseManifest(resManifest, false);
+    };
+
+    // Save manifest version number after either outcome
+    localStorage.setItem('destinyManifestVersion', resManifest.data.Response.version);
     log(`-> Manifest Up To Date! [${new Date() - sTime}ms]`);
 };
 
@@ -283,6 +296,7 @@ var LoadCharacter = async (classType) => {
     // Get manifest and return it
     await db.entries.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
         .then(massiveObj => {
+            // log(massiveObj)
             definitions = massiveObj[0].data;
         });
 
