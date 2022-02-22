@@ -316,9 +316,15 @@ var LoadCharacter = async (classType) => {
             if (definitions[prop].itemType === 26) {
                 if (definitions[prop].hash === charInventory[item].itemHash) {
                     let newDiv = document.createElement('img');
-                    newDiv.setAttribute('id', 'entryData');
+                    newDiv.setAttribute('class', 'entryData');
                     newDiv.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
                     document.querySelector('#charDisplay').appendChild(newDiv);
+
+                    // Add eventListener to new div
+                    document.getElementById('entryData').addEventListener('click', () => {
+                        log('bruh');
+                    });
+
                     amountOfBounties++;
                 };
             };
@@ -408,7 +414,10 @@ var StopLoad = () => {
     StopLoad();
     log(`-> OAuth Flow Done! [${(new Date() - startTime)}ms]`);
     log(`-> Awaiting User Input..`);
-})();
+})()
+.catch(error => {
+    log('-> Destiny API Is Not Available Right Now...');
+});
 
 
 
