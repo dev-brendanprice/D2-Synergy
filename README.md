@@ -1,6 +1,6 @@
 # D2Synergy_v0.3
 
-[![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://img.shields.io/badge/Version-BETA-yellow)
+[![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)
 
 ### Re-Production Steps
 
