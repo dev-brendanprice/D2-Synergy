@@ -1,6 +1,6 @@
 # D2Synergy_v0.3
 
-GitHub last commit
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/Naereen/badges)
 
 ### Re-Production Steps
 
