@@ -8,10 +8,9 @@ var log = console.log.bind(console),
 const GenerateState = (len) => {
     let result = ' ';
     let characters ='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let charactersLength = characters.length;
-        for ( let i = 0; i < len; i++ ) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        };
+    for (let i = 0; i < len; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    };
     return result;
 };
 const stateCode = GenerateState(128);

@@ -10,12 +10,14 @@ console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on T
     };
 });
 
+// Explicit globals
 var log = console.log.bind(console),
     localStorage = window.localStorage,
     startTime = new Date(),
     GetMembershipsById = {},
     UserProfile = {},
-    LanguageType = 'en'; // Get from browser or sumn idfk lol
+    LanguageType = 'en', // Get from browser info or sumn idfk lol
+    ElementKeys = [];
 
 // Default axios header
 axios.defaults.headers.common = {
@@ -296,7 +298,6 @@ var LoadCharacter = async (classType) => {
     // Get manifest and return it
     await db.entries.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
         .then(massiveObj => {
-            // log(massiveObj)
             definitions = massiveObj[0].data;
         });
 
@@ -315,16 +316,27 @@ var LoadCharacter = async (classType) => {
 
             if (definitions[prop].itemType === 26) {
                 if (definitions[prop].hash === charInventory[item].itemHash) {
-                    let newDiv = document.createElement('img');
-                    newDiv.setAttribute('class', 'entryData');
-                    newDiv.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
-                    document.querySelector('#charDisplay').appendChild(newDiv);
 
-                    // Add eventListener to new div
-                    document.getElementById('entryData').addEventListener('click', () => {
-                        log('bruh');
+                    // Create img tag for bounty image
+                    let imgDiv = document.createElement('img');
+                    imgDiv.setAttribute('class', 'entryData');
+                    imgDiv.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+
+                    // Create overlay div for mouse tracking event
+                    let divOverlay = document.createElement('div');
+                    divOverlay.setAttribute('id', `entryDataOverlay_${prop}`);
+                    divOverlay.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+
+                    // On mouse over event
+                    imgDiv.addEventListener('mouseover', () => {
+
+                        // Track cursor and apply overlay div to pos
+                        imgDiv.addEventListener('mousemove', (e) => {
+                            log(divOverlay)
+                            TrackCursour(e, imgDiv, divOverlay);
+                        });
                     });
-
+                    document.querySelector('#charDisplay').appendChild(imgDiv);
                     amountOfBounties++;
                 };
             };
@@ -392,6 +404,23 @@ var StartLoad = () => {
 var StopLoad = () => {
     document.getElementById('slider').style.display = 'none';
 };
+// Takes position of cursour and applies overlayElement to cursor
+// @mouse.obj {e}, @document.element {element}, @document.element {overlayElement}
+var TrackCursour = (e, element, overlayElement) =>{
+    log(overlayElement)
+    // overlayElement.style.left = `${e.pageX}px`;
+    // overlayElement.style.top = `${e.pageY}px`;
+};
+// Make random key and compare if it exists if(!true) make key again etc.
+// @int {len}
+var RandKey = (len) => {
+    let result = ' ';
+    let characters ='abcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < len; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    };
+    ElementKeys.indexOf(result) ? RandKey(len) : ElementKeys.push(result);
+};
 
 
 
@@ -429,7 +458,7 @@ var StopLoad = () => {
 
 // todo
 
-// - save chosen character index when refreshing
+// - save chosen character index when refreshing - session storage maybe
 // - implement error catching and handling
 // - make page for errors with options for user
 // - change url to remove state and code params, dont refresh page after or make a way for it to ignore this process in the OAuthFlow
