@@ -1,6 +1,6 @@
 # D2Synergy_v0.3
 
-[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/Naereen/badges)
+[![Version](https://img.shields.io/badge/Version-BETA-yellow)](https://img.shields.io/badge/Version-BETA-yellow)
 
 ### Re-Production Steps
 
