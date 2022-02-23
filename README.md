@@ -17,3 +17,5 @@ If these steps do not work for, please ensure that when (doing step 1) you confi
 
 XAMPP does not have to be running for Apache to be running.
 If there are any processes on your network that are using port `4645`, please change all references of port `4645`. within this project to your chosen port.
+
+The Bungie.net API will only redirect back to domains that possess a `https` protocol, this is circumvented whilst testing on localhost by removing the `s` from `https` after a redirect has occured. For example: user is directed to Bungie.net from the domain `http://localhost/` and is then redirected back to `https://localhost/` because Bunie.net does not support `http` protocols. So we just remove the `s` and shazam!
