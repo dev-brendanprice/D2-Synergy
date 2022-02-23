@@ -11,6 +11,8 @@
 7. Go to `<your external ip>:4645/D2Synergy-v3.0/src/views/app.html` (This url might be different, alternative is below)
 8. Or go to `htdocs` and navigate into `src/views` and then app.html, change the `file:///E:/xampp/htdocs/` segment of the url to `<your external ip>:4645/`
 
+### Notes To Keep in Mind:
+
 If these steps do not work for, please ensure that when (doing step 1) you configure ports on your firewall, that you open it for UDP and TCP on both inbound and outbound rules.
 
 XAMPP does not have to be running for Apache to be running.
