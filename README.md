@@ -1,5 +1,7 @@
 # D2Synergy_v0.3
 
+GitHub last commit
+
 ### Re-Production Steps
 
 1. Download XAMPP and configure your firewall(s) to have an open port at `4645`
