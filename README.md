@@ -21,4 +21,4 @@ If there are any processes on your network that are using port `4645`, please ch
 The Bungie.net API will only redirect back to domains that possess a `https` protocol, this is circumvented whilst testing on localhost by removing the `s` from `https` after a redirect has occured. 
 For example: user is directed to Bungie.net from the domain `http://localhost/` and is then redirected back to `https://localhost/` because Bungie.net does not support `http` protocols. So we just remove the `s` and shazam!
 
-Please keep in mind that this is not a production ready process that every user will have to experience, SSL certs must be implemented to fully circumvent this.
+Please keep in mind that this is just a feature that is present inside of development environments, SSL certs will be implemented to fully circumvent this.
