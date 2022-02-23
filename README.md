@@ -1,6 +1,12 @@
 # D2Synergy_v0.3
 
 [![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)
+[![API](https://img.shields.io/badge/API-Bungie.net-green)](https://bungie-net.github.io/multi/index.html)
+
+### Documentation Quick-Links
+
+Bungie.net API - https://bungie-net.github.io/multi/index.html
+Axios - https://axios-http.com/docs/api_intro
 
 ### Re-Production Steps
 
