@@ -5,7 +5,7 @@
 
 ### Documentation Quick-Links
 
-Bungie.net API - https://bungie-net.github.io/multi/index.html
+Bungie.net API - https://bungie-net.github.io/multi/index.html \n
 Axios - https://axios-http.com/docs/api_intro
 
 ### Re-Production Steps
