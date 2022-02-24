@@ -73,8 +73,8 @@ var BungieOAuth = async (authCode) => {
 
             log('-> Authorized with Bungie.net!');
         })
-        .catch(res => {
-            if (res.response.data['error_description'] == 'AuthorizationCodeInvalid') {
+        .catch(err => {
+            if (err.response.data['error_description'] == 'AuthorizationCodeInvalid') {
                 window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
             }
             else {
@@ -312,35 +312,41 @@ var LoadCharacter = async (classType) => {
     
 
     for (item in charInventory) {
-        for (prop in definitions) {
+        (async() => {
+            for await (var prop of definitions) {
 
-            if (definitions[prop].itemType === 26) {
-                if (definitions[prop].hash === charInventory[item].itemHash) {
-
-                    // Create img tag for bounty image
-                    let imgDiv = document.createElement('img');
-                    imgDiv.setAttribute('class', 'entryData');
-                    imgDiv.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
-
-                    // Create overlay div for mouse tracking event
-                    let divOverlay = document.createElement('div');
-                    divOverlay.setAttribute('id', `entryDataOverlay_${prop}`);
-                    divOverlay.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
-
-                    // On mouse over event
-                    imgDiv.addEventListener('mouseover', () => {
-
-                        // Track cursor and apply overlay div to pos
-                        imgDiv.addEventListener('mousemove', (e) => {
-                            log(divOverlay)
-                            TrackCursour(e, imgDiv, divOverlay);
-                        });
-                    });
-                    document.querySelector('#charDisplay').appendChild(imgDiv);
-                    amountOfBounties++;
-                };
+                log(prop)
+                // if (definitions[prop].itemType === 26) {
+                //     if (definitions[prop].hash === charInventory[item].itemHash) {
+    
+                //         // Create img tag for bounty image
+                //         let imgDiv = document.createElement('img');
+                //         imgDiv.setAttribute('class', 'entryData');
+                //         document.querySelector('#charDisplay').appendChild(imgDiv);
+                //         imgDiv.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+    
+                //         // Create overlay div for mouse tracking event
+                //         let divOverlay = document.createElement('div');
+                //         divOverlay.setAttribute('id', `entryDataOverlay`);
+                //         document.getElementById('charDisplay').insertBefore(divOverlay, imgDiv);
+                //         divOverlay.innerHTML = 'BRENDAN';
+    
+                //         // Add event listeners to elements
+                //         imgDiv.addEventListener('mousemove', (e) => {
+                //             divOverlay.style.display = 'block';
+                //             divOverlay.style.marginLeft = `${e.pageX}px`;
+                //             divOverlay.style.marginTop = `${e.pageY}px`;
+                //         });
+                
+                //         imgDiv.addEventListener('mouseleave', (e) => {
+                //             divOverlay.style.display = 'none';
+                //         });
+    
+                //         amountOfBounties++;
+                //     };
+                // };
             };
-        };
+        });
         amountOfItems++;
     };
     document.getElementById('subTitleOne').innerHTML = `${amountOfItems} Item(s) Indexed`;

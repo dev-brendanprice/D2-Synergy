@@ -38,7 +38,18 @@ body {
 }
 
 .entryData {
+    /* position: fixed; */
+    /* display: auto; */
     width: 60px;
+    z-index: 1;
+    opacity: 0.1;
+}
+
+#entryDataOverlay {
+    position: absolute;
+    display: none;
+    z-index: 10;
+    color: white;
 }
 
 
