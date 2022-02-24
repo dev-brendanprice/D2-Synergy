@@ -1,6 +1,6 @@
-body {
+/* body {
     --emblemSizeW: 400px;
-}
+} */
 
 .mainContainer {
     background-color: #3e454e;
@@ -10,10 +10,6 @@ body {
     height: auto;
     margin: auto;
     margin-top: 20px;
-
-    /* text-align: left;
-	align-items: left;
-	justify-content: left; */
 }
 
 #subTitleContainer {
@@ -34,21 +30,22 @@ body {
     font-weight: 600;
     font-size: 28px;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    /* margin-left: 10px; */
+}
+
+#charDisplay {
+    display: none;
 }
 
 .entryData {
-    /* position: fixed; */
-    /* display: auto; */
     width: 60px;
-    z-index: 1;
-    opacity: 0.1;
+    display: fixed;
+    z-index: 10;
 }
 
 #entryDataOverlay {
     position: absolute;
     display: none;
-    z-index: 10;
+    z-index: 1;
     color: white;
 }
 

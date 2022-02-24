@@ -62,10 +62,12 @@
     height: 22px;
     margin-right: 7px;
     margin-top: 2px;
+    cursor: pointer;
 }
 
 #githubIcon {
     width: 25px;
     height: auto;
     margin-right: 10px;
+    cursor: pointer;
 }

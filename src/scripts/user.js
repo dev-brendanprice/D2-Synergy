@@ -312,41 +312,61 @@ var LoadCharacter = async (classType) => {
     
 
     for (item in charInventory) {
-        (async() => {
-            for await (var prop of definitions) {
+        for (prop in definitions) {
 
-                log(prop)
-                // if (definitions[prop].itemType === 26) {
-                //     if (definitions[prop].hash === charInventory[item].itemHash) {
-    
-                //         // Create img tag for bounty image
-                //         let imgDiv = document.createElement('img');
-                //         imgDiv.setAttribute('class', 'entryData');
-                //         document.querySelector('#charDisplay').appendChild(imgDiv);
-                //         imgDiv.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
-    
-                //         // Create overlay div for mouse tracking event
-                //         let divOverlay = document.createElement('div');
-                //         divOverlay.setAttribute('id', `entryDataOverlay`);
-                //         document.getElementById('charDisplay').insertBefore(divOverlay, imgDiv);
-                //         divOverlay.innerHTML = 'BRENDAN';
-    
-                //         // Add event listeners to elements
-                //         imgDiv.addEventListener('mousemove', (e) => {
-                //             divOverlay.style.display = 'block';
-                //             divOverlay.style.marginLeft = `${e.pageX}px`;
-                //             divOverlay.style.marginTop = `${e.pageY}px`;
-                //         });
-                
-                //         imgDiv.addEventListener('mouseleave', (e) => {
-                //             divOverlay.style.display = 'none';
-                //         });
-    
-                //         amountOfBounties++;
-                //     };
-                // };
+            if (definitions[prop].itemType === 26) {
+                if (definitions[prop].hash === charInventory[item].itemHash) {
+
+                    // // Create img tag for bounty image
+                    // let imgDiv = document.createElement('img');
+                    // imgDiv.setAttribute('class', 'entryData');
+                    // document.querySelector('#charDisplay').appendChild(imgDiv);
+                    // imgDiv.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+
+                    // // Create overlay div for mouse tracking event
+                    // let divOverlay = document.createElement('img');
+                    // divOverlay.setAttribute('id', `entryDataOverlay`);
+                    // document.getElementById('charDisplay').insertBefore(divOverlay, imgDiv);
+                    // divOverlay.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+
+                    // // Add event listeners to elements
+                    // imgDiv.addEventListener('mousemove', (e) => {
+                    //     divOverlay.style.display = 'block';
+                    //     divOverlay.style.marginLeft = `${e.pageX}px`;
+                    //     divOverlay.style.marginBottom = `${e.pageY}px`;
+                    // });
+
+                    // imgDiv.addEventListener('mouseleave', (e) => {
+                    //     divOverlay.style.display = 'none';
+                    // });
+
+                    // Create img tag for bounty image
+                    let bottom = document.createElement('img');
+                    bottom.setAttribute('class', 'entryData');
+                    document.querySelector('#charDisplay').appendChild(bottom);
+                    // bottom.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+                    bottom.innerHTML = prop;
+
+                    // Create overlay div for mouse tracking event
+                    let top = document.createElement('img');
+                    top.setAttribute('id', 'entryDataOverlay');
+                    document.getElementById('charDisplay').insertBefore(top, bottom);
+                    top.src = `https://www.bungie.net${definitions[prop].displayProperties.icon}`;
+
+                    bottom.addEventListener('mousemove', (e) => {
+                        top.style.display = 'block';
+                        top.style.marginLeft = `${e.pageX}px`;
+                        top.style.marginTop = `${e.pageY}px`;
+                    });
+
+                    bottom.addEventListener('mouseleave', (e) => {
+                        top.style.display = 'none';
+                    });
+
+                    amountOfBounties++;
+                };
             };
-        });
+        };
         amountOfItems++;
     };
     document.getElementById('subTitleOne').innerHTML = `${amountOfItems} Item(s) Indexed`;
