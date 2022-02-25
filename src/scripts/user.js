@@ -360,6 +360,7 @@ var LoadCharacter = async (classType) => {
 
 
 
+
 // -- MODULES
 
 // Returns corresponding class name using classType
