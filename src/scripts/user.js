@@ -1,7 +1,7 @@
 console.log('%cD2 SYNERGY _V0.3', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
-// Verify state (discretely)
+// Verify state before anything else
 var uP = new URLSearchParams(window.location.search),
     state = uP.get('state'),
     url = `http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html`;
@@ -20,6 +20,7 @@ var log = console.log.bind(console),
     destinyMemberships = {},
     destinyUserProfile = {},
     membershipType;
+
 
 // Default axios header
 axios.defaults.headers.common = {
