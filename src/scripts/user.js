@@ -228,6 +228,9 @@ var GetDestinyManifest = async () => {
                 { keyName: property, data: indexedDefResponse[property] }
             ]);
         };
+
+        // Save manifest version
+        localStorage.setItem('destinyManifestVersion', resManifest.data.Response.version);
     };
 
     var manifestVersion = localStorage.getItem('destinyManifestVersion'),
@@ -249,7 +252,6 @@ var GetDestinyManifest = async () => {
         await ParseManifest(resManifest);
     };
 
-    localStorage.setItem('destinyManifestVersion', resManifest.data.Response.version);
     log(`-> Manifest Up To Date! [${new Date() - sTime}ms]`);
 };
 
@@ -443,6 +445,14 @@ var MakeElement = (item) => {
         top.style.display = 'none';
     });
 };
+// Log user out on request
+// @ {}
+var Logout = () => {
+    log('clicked')
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = 'http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html';
+};
 
 
 // Main
@@ -459,9 +469,6 @@ var MakeElement = (item) => {
     // Main
     await GetDestinyManifest();
     await FetchBungieUserDetails();
-    // log(membershipType)
-    log(destinyMemberships)
-    log(destinyUserProfile)
 
     // Processes done
     StopLoad();
@@ -479,7 +486,8 @@ var MakeElement = (item) => {
 
 // todo
 
+// - implement back to character select page
+// - implement logout button
 // - implement error catching and handling
 // - make page for errors with options for user
-// - fix whitespace on js-defined elements
-// - if loading takes longer ~10 seconds, and manifest has been fetched, display message saying to hard refresh
+//   ^ if loading takes longer ~10 seconds, and manifest has been fetched, display message saying to hard refresh
