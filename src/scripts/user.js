@@ -238,18 +238,18 @@ var GetDestinyManifest = async () => {
         sTime = new Date();
 
     // Check for manifest version, if true replace all preixes with current ones
-    var resManifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
+    var manifestFromResponse = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
     if (entries.length === 0) {
         log('-> Manifest Has Not Been Downloaded, Fetching Manifest..');
 
         // User has the correct version in localStorage but has no indexedDB items
-        await ParseManifest(resManifest);
+        await ParseManifest(manifestFromResponse);
     }
-    else if (resManifest.data.Response.version !== manifestVersion) {
+    else if (manifestFromResponse.data.Response.version !== manifestVersion) {
         log('-> Manifest Is Not Up To Date, Updating Manifest..');
 
         // Parse manifest response
-        await ParseManifest(resManifest);
+        await ParseManifest(manifestFromResponse);
     };
 
     log(`-> Manifest Up To Date! [${new Date() - sTime}ms]`);
@@ -487,7 +487,6 @@ var Logout = () => {
 // todo
 
 // - implement back to character select page
-// - implement logout button
 // - implement error catching and handling
 // - make page for errors with options for user
 //   ^ if loading takes longer ~10 seconds, and manifest has been fetched, display message saying to hard refresh
