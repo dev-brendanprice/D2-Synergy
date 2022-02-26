@@ -33,8 +33,7 @@ var db = new Dexie('ManifestDefinitions');
 
 // Configure the key for the database
 db.version(1).stores({
-    prefixes: `keyName`, // 'prefixes' contains urls for definitions keys
-    entries: `keyName`   // 'entries' contains the definitions that reside on those urls
+    entries: `keyName` // 'entries' contains the definitions that reside on 'jsonWorldContentPaths'
 });
 
 
@@ -211,21 +210,20 @@ var GetDestinyManifest = async () => {
 
     var ParseManifest = async (resManifest) => {
 
-        // Save prefixes for URLs
-        var ManifestContent = resManifest.data.Response;
-        for (var property in ManifestContent) {
-            db.prefixes.bulkPut([
-                { keyName: property, data: ManifestContent[property] }
-            ]);
-        };
+        // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
+        delete axios.defaults.headers.common['X-API-Key'];
 
-        // Get data from each prefix URL
-        var definitions = await db.table('prefixes').toArray(),
-            indexedDefURL = definitions.find(item => item.keyName === 'jsonWorldContentPaths').data[browserLanguageType],
-            indexedDefResponse = await (await fetch(`https://www.bungie.net${indexedDefURL}`)).json();
-        for (var property in indexedDefResponse) {
+        // Get jsonWorldContentPaths from definitions
+        var urlSuffix;
+        Object.keys(resManifest.data.Response).forEach(item => { item === 'jsonWorldContentPaths' ? urlSuffix = resManifest.data.Response[item][browserLanguageType] : null; });
+
+        // Fetch definitions
+        var definitionsFromResponse = await axios.get(`https://www.bungie.net${urlSuffix}`);
+
+        // Put properties of json Response into indexedDB
+        for (var property in definitionsFromResponse.data) {
             db.entries.bulkPut([
-                { keyName: property, data: indexedDefResponse[property] }
+                { keyName: property, data: definitionsFromResponse.data[property] }
             ]);
         };
 
@@ -233,26 +231,21 @@ var GetDestinyManifest = async () => {
         localStorage.setItem('destinyManifestVersion', resManifest.data.Response.version);
     };
 
+    // Get components from db and localStorage
     var manifestVersion = localStorage.getItem('destinyManifestVersion'),
         entries = await db.table('entries').toArray(),
         sTime = new Date();
 
     // Check for manifest version, if true replace all preixes with current ones
     var manifestFromResponse = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-    if (entries.length === 0) {
-        log('-> Manifest Has Not Been Downloaded, Fetching Manifest..');
-
-        // User has the correct version in localStorage but has no indexedDB items
-        await ParseManifest(manifestFromResponse);
-    }
-    else if (manifestFromResponse.data.Response.version !== manifestVersion) {
-        log('-> Manifest Is Not Up To Date, Updating Manifest..');
+    if (manifestFromResponse.data.Response.version !== manifestVersion || entries.length === 0) {
 
         // Parse manifest response
+        log('-> Manifest Not Up To Date, Updating Manifest..');
         await ParseManifest(manifestFromResponse);
     };
 
-    log(`-> Manifest Up To Date! [${new Date() - sTime}ms]`);
+    log(`-> Manifest Up To Date! [Elapsed: ${new Date() - sTime}ms]`);
 };
 
 
@@ -472,7 +465,7 @@ var Logout = () => {
 
     // Processes done
     StopLoad();
-    log(`-> OAuth Flow Done! [${(new Date() - startTime)}ms]`);
+    log(`-> OAuth Flow Done! [Elapsed: ${(new Date() - startTime)}ms]`);
 })()
 .catch(error => {
     console.error(error);
