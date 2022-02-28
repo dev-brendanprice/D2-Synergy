@@ -238,7 +238,7 @@ var GetDestinyManifest = async () => {
         else if (tableName !== 'jsonWorldComponentContentPaths') {
 
             // Fetch definitions & put response into indexedDB
-            var definitionsFromResponse = await axios.get(`https://www.bungie.net${urlSuffix}`);
+            var definitionsFromResponse = await axios.get(`https://www.bungie.net${definitionObjects}`);
             for (var property in definitionsFromResponse.data) {
                 db[tableName].bulkPut([ { keyName: property, data: definitionsFromResponse.data[property] } ]);
             };
@@ -332,6 +332,7 @@ var LoadCharacter = async (classType) => {
     document.getElementById('charSelect').style.display = 'none';
     document.getElementById('charDisplay').style.display = 'inline-block';
 
+
     // Globals
     var className,
         characterId,
@@ -350,7 +351,7 @@ var LoadCharacter = async (classType) => {
     };
 
     // Get manifest and return it
-    await db.entries.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
+    await db.jsonWorldContentPaths.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
     .then(massiveObj => {
         definitions = massiveObj[0].data;
     });
@@ -558,5 +559,6 @@ var MakeElement = (item) => {
 
 // - implement back to character select page
 // - implement error catching and handling
+// - find ---{{{{{READ ME}}}}} ---- tag
 // - make page for errors with options for user
 //   ^ if loading takes longer ~10 seconds, and manifest has been fetched, display message saying to hard refresh
