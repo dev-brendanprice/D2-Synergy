@@ -33,7 +33,8 @@ var db = new Dexie('ManifestDefinitions');
 
 // Configure the key for the database
 db.version(1).stores({
-    entries: `keyName` // 'entries' contains the definitions that reside on 'jsonWorldContentPaths'
+    jsonWorldContentPaths: 'keyName',
+    jsonWorldComponentContentPaths: 'keyName'
 });
 
 
@@ -106,7 +107,7 @@ var CheckComponents = async () => {
         };
 
 
-    // Remove items in localStorage that are not supposed to be there
+    // Remove items in localStorage that are not present within keyNames
     keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'];
     Object.keys(rsToken).forEach(item => {
         !keyNames.includes(item) ? (delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken))) : null;
@@ -208,23 +209,39 @@ var OAuthFlow = async () => {
 // Validate and/or update manifest
 var GetDestinyManifest = async () => {
 
-    var ParseManifest = async (resManifest) => {
+    var ParseManifest = async (resManifest, tableName) => {
+
+        log('-> Manifest Not Up To Date, Updating Manifest..');
 
         // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
         delete axios.defaults.headers.common['X-API-Key'];
 
         // Get jsonWorldContentPaths from definitions
-        var urlSuffix;
-        Object.keys(resManifest.data.Response).forEach(item => { item === 'jsonWorldContentPaths' ? urlSuffix = resManifest.data.Response[item][browserLanguageType] : null; });
+        var definitionObjects;
+        Object.keys(resManifest.data.Response).forEach(item => item === tableName ? definitionObjects = resManifest.data.Response[item][browserLanguageType] : null);
 
-        // Fetch definitions
-        var definitionsFromResponse = await axios.get(`https://www.bungie.net${urlSuffix}`);
+        // If tableName is the mobile version, we have to do a seperate install process because the structure is different
+        if (tableName === 'jsonWorldComponentContentPaths') {  
+            
+            // Fetch definitions
+            var destinyVendorDefinitionResponse = await axios.get(`https://www.bungie.net${definitionObjects.DestinyVendorDefinition}`);
+            var destinyVendorGroupDefinitionResponse = await axios.get(`https://www.bungie.net${definitionObjects.DestinyVendorGroupDefinition}`);
 
-        // Put properties of json Response into indexedDB
-        for (var property in definitionsFromResponse.data) {
-            db.entries.bulkPut([
-                { keyName: property, data: definitionsFromResponse.data[property] }
-            ]);
+            // Put response into indexedDB
+            for (var property in destinyVendorDefinitionResponse.data) {
+                db[tableName].bulkPut([ { keyName: property, data: destinyVendorDefinitionResponse.data[property] } ]);
+            };
+            for (var property in destinyVendorGroupDefinitionResponse.data) {
+                db[tableName].bulkPut([ { keyName: property, data: destinyVendorGroupDefinitionResponse.data[property] } ]);
+            };
+        }
+        else if (tableName !== 'jsonWorldComponentContentPaths') {
+
+            // Fetch definitions & put response into indexedDB
+            var definitionsFromResponse = await axios.get(`https://www.bungie.net${urlSuffix}`);
+            for (var property in definitionsFromResponse.data) {
+                db[tableName].bulkPut([ { keyName: property, data: definitionsFromResponse.data[property] } ]);
+            };
         };
 
         // Save manifest version
@@ -233,16 +250,21 @@ var GetDestinyManifest = async () => {
 
     // Get components from db and localStorage
     var manifestVersion = localStorage.getItem('destinyManifestVersion'),
-        entries = await db.table('entries').toArray(),
+        jsonWorldContentPaths = await db.table('jsonWorldContentPaths').toArray(),
+        jsonWorldComponentContentPaths = await db.table('jsonWorldComponentContentPaths').toArray(),
         sTime = new Date();
 
     // Check for manifest version, if true replace all preixes with current ones
     var manifestFromResponse = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-    if (manifestFromResponse.data.Response.version !== manifestVersion || entries.length === 0) {
+    if (manifestFromResponse.data.Response.version !== manifestVersion || jsonWorldContentPaths.length === 0) {
 
         // Parse manifest response
-        log('-> Manifest Not Up To Date, Updating Manifest..');
-        await ParseManifest(manifestFromResponse);
+        await ParseManifest(manifestFromResponse, 'jsonWorldContentPaths');
+    } 
+    else if (jsonWorldComponentContentPaths.length === 0) {
+
+        // Parse manifest response
+        await ParseManifest(manifestFromResponse, 'jsonWorldComponentContentPaths');
     };
 
     log(`-> Manifest Up To Date! [Elapsed: ${new Date() - sTime}ms]`);
@@ -342,8 +364,50 @@ var LoadCharacter = async (classType) => {
         amountOfItems = 0,
         amountOfBounties = 0;
 
+    
+    // Loop over char inventory and filter out non bounty items
+    // Append all bounty items to arr
+    // Sort bounty items via uniqueStackLabel
+    // Render to the DOM
+
+
+    // --- {{{{{{READ ME}}}}}} --- //
+
+    // Get all vendors that are actively selling bounties and formalize a list of names to compare against
+    // Sort this list by alphabetical order
+    // Compare player bounty items to this list and order bounties in the bounties arr according to the structure
+
+    // Example:
+    // bountieArr = ['transmog', 'gunsmith', 'strikes']
+    // vendorsArr = ['banshee', 'ada-1', 'zavala']
+
+    // We sort vendorsArr alhabetically, then order the bounties in bountiesArr relative to their respective vendors in vendorsArr
+
+    // --- {{{{{{READ ME}}}}}} --- //
+    
+
+    // var foo = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/Character/${characterId}/Vendors/?components=400`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
+    // var thing = foo.data.Response.vendors.data;
+    // for (item in thing) {
+    //     log(thing[item].vendorHash);
+    // };
+
+    // var bounties = {};
+    // var keyNames = ['gunsmith', 'repeatable'];
+    // // [bounties.gunsmith.repeatable].x => store x
+    // // [bounties.gunsmith.daily].x => store x
+    // for (item of charInventory) {
+    //     // log(definitions[item.itemHash])
+    //     // Is bounty
+    //     if (definitions[item.itemHash].itemType == 26) {
+    //         bounties[item.itemHash] = definitions[item.itemHash];
+    //     };
+    // };
+    // log(bounties);
+
+
     // Loop over each item and check to see if item is bounty, true = push to arr, false = just ignore execution.
-    charInventory.forEach(item => { definitions[item.itemHash].itemType === 26 ? (MakeElement(definitions[item.itemHash]), amountOfBounties++) : null; });
+    charInventory.forEach(item => { definitions[item.itemHash].itemType === 26 ? (MakeElement(definitions[item.itemHash]), amountOfBounties++, log(definitions[item.itemHash])) : null; });
 
     // document.getElementById('subTitleOne').innerHTML = `${amountOfItems} Item(s) Indexed`;
     document.getElementById('subTitleTwo').innerHTML = `${amountOfBounties} Bounty(s) Found`;
@@ -377,6 +441,14 @@ var parseChar = (classType) => {
     };
     return r;
 };
+// Log user out on request
+// @ {}
+var Logout = () => {
+    log('clicked')
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = 'http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html';
+};
 // Returns size of data that currently resides in localStorage
 // @window.obj {localStorage}
 var GetLsSize = async (localStorage) => {
@@ -389,12 +461,11 @@ var GetLsSize = async (localStorage) => {
     log('[Usage Bytes]: ', encodeURI(JSON.stringify(values)).split(/%..|./).length - 1);
 };
 // Returns Definitions from the DestinyInventoryItemDefinition entry
-// @ {}
-var ReturnDefinitions = async () => {
-    await db.entries.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
-        .then(massiveObj => {
-            return massiveObj;
-        });
+// @int {hash} @str {defType}
+var ReturnDefinition = async (hash, defType) => {
+    // Preload information in the future
+    var response = await db.entries.where({keyName: defType}).toArray();
+    return response[0].data[hash];
 };
 // Check document is loaded
 // @ {}
@@ -416,17 +487,18 @@ var StopLoad = () => {
 var MakeElement = (item) => {
 
     const bottom = document.createElement('img'),
-        top = document.createElement('img');
+        top = document.createElement('div');
 
     // Create bottom element
     bottom.className = `entryData`;
+    bottom.id = `${item.hash}`;
     document.querySelector('#charDisplay').appendChild(bottom);
     bottom.src = `https://www.bungie.net${item.displayProperties.icon}`;
 
     // Create element that overlays on mouseOver event
     top.className = `entryDataOverlay`;
     document.querySelector('#overlays').appendChild(top);
-    top.src = `https://www.bungie.net${item.displayProperties.icon}`;
+    top.innerHTML = item.displayProperties.name;
 
     // Watch for mouse movement and mouse leave
     bottom.addEventListener('mousemove', (e) => {
@@ -438,15 +510,20 @@ var MakeElement = (item) => {
         top.style.display = 'none';
     });
 };
-// Log user out on request
-// @ {}
-var Logout = () => {
-    log('clicked')
-    localStorage.clear();
-    sessionStorage.clear();
-    window.location.href = 'http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html';
-};
 
+
+// 484780086
+// 201433599
+// 296614670
+// var namesToMatch = ['trials', 'strikes', 'gunsmith', 'transmog'];
+// ReturnDefinition(484780086, 'DestinyInventoryItemDefinition')
+//     .then(res => {
+//         // single item, sorted via hash
+//         var bountySplitName = res.inventory.stackUniqueLabel.split('.');
+
+//         bountySplitName.forEach(item => namesToMatch.includes(item) ? log(item, true) : log(item, false));
+
+//     });
 
 // Main
 (async () => {
