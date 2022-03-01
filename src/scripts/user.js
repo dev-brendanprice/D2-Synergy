@@ -224,16 +224,19 @@ var GetDestinyManifest = async () => {
         if (tableName === 'jsonWorldComponentContentPaths') {  
             
             // Fetch definitions
-            var destinyVendorDefinitionResponse = await axios.get(`https://www.bungie.net${definitionObjects.DestinyVendorDefinition}`);
-            var destinyVendorGroupDefinitionResponse = await axios.get(`https://www.bungie.net${definitionObjects.DestinyVendorGroupDefinition}`);
+            var root = manifestFromResponse.data.Response.jsonWorldComponentContentPaths.en;
+            var destinyVendorDefinitionResponse = await axios.get(`https://www.bungie.net${root.DestinyVendorDefinition}`);
 
             // Put response into indexedDB
-            for (var property in destinyVendorDefinitionResponse.data) {
-                db[tableName].bulkPut([ { keyName: property, data: destinyVendorDefinitionResponse.data[property] } ]);
-            };
-            for (var property in destinyVendorGroupDefinitionResponse.data) {
-                db[tableName].bulkPut([ { keyName: property, data: destinyVendorGroupDefinitionResponse.data[property] } ]);
-            };
+            db[tableName].bulkPut([ { keyName: 'DestinyVendorDefinition', data: destinyVendorDefinitionResponse.data } ])
+            // db[tableName].bulkPut([ { keyName: 'jsonWorldComponentContentPaths', data: destinyVendorDefinitionResponse.data } ]);
+
+
+
+            // var destinyVendorGroupDefinitionResponse = await axios.get(`https://www.bungie.net${definitionObjects.DestinyVendorGroupDefinition}`);
+            // for (var property in destinyVendorGroupDefinitionResponse.data) {
+            //     db[tableName].bulkPut([ { keyName: property, data: destinyVendorGroupDefinitionResponse.data[property] } ]);
+            // };
         }
         else if (tableName !== 'jsonWorldComponentContentPaths') {
 
@@ -254,14 +257,15 @@ var GetDestinyManifest = async () => {
         jsonWorldComponentContentPaths = await db.table('jsonWorldComponentContentPaths').toArray(),
         sTime = new Date();
 
-    // Check for manifest version, if true replace all preixes with current ones
+    // Check for manifest version
     var manifestFromResponse = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
     if (manifestFromResponse.data.Response.version !== manifestVersion || jsonWorldContentPaths.length === 0) {
 
         // Parse manifest response
         await ParseManifest(manifestFromResponse, 'jsonWorldContentPaths');
-    } 
-    else if (jsonWorldComponentContentPaths.length === 0) {
+    };
+
+    if (jsonWorldComponentContentPaths.length === 0) {
 
         // Parse manifest response
         await ParseManifest(manifestFromResponse, 'jsonWorldComponentContentPaths');
@@ -338,6 +342,7 @@ var LoadCharacter = async (classType) => {
         characterId,
         CharacterInventories,
         definitions = {},
+        definitionsMobile = {},
         membershipType = sessionStorage.getItem('membershipType');
 
     // Get chosen character and save index  
@@ -350,10 +355,18 @@ var LoadCharacter = async (classType) => {
         };
     };
 
-    // Get manifest and return it
+    // Get manifest for world content and return it
     await db.jsonWorldContentPaths.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
     .then(massiveObj => {
         definitions = massiveObj[0].data;
+    });
+
+    // Get manivest for mobile content and return it
+    await db.jsonWorldComponentContentPaths.toArray()
+    .then(massiveObj => {
+        // log(massiveObj);
+        definitionsMobile = massiveObj;
+        // log(definitionsMobile)
     });
 
     // OAuth header guarantees a response
@@ -374,6 +387,19 @@ var LoadCharacter = async (classType) => {
 
     // --- {{{{{{READ ME}}}}}} --- //
 
+    // var vendors = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/Character/${characterId}/Vendors/?components=400`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
+    // var vendorsRootPath = vendors.data.Response.vendors.data;
+    // log(vendorsRootPath);
+    // log(definitionsMobile[0].data);
+
+    // for (var item in definitionsMobile[0].data) {
+    //     if (vendorsRootPath[item]) {
+    //         definitionsMobile[0].data[item].displayCategories.forEach(prop => prop.identifier.includes('bounties') ? log(definitionsMobile[0].data[item].displayProperties.name) : null);
+    //         // log(`Vendor Hash: ${item}, Data:`, definitionsMobile[0].data[item]);
+    //     };
+    // };
+
+
     // Get all vendors that are actively selling bounties and formalize a list of names to compare against
     // Sort this list by alphabetical order
     // Compare player bounty items to this list and order bounties in the bounties arr according to the structure
@@ -382,40 +408,52 @@ var LoadCharacter = async (classType) => {
     // bountieArr = ['transmog', 'gunsmith', 'strikes']
     // vendorsArr = ['banshee', 'ada-1', 'zavala']
 
-    // We sort vendorsArr alhabetically, then order the bounties in bountiesArr relative to their respective vendors in vendorsArr
+    // We sort vendorsArr alphabetically, then order the bounties in bountiesArr relative to their respective vendors in vendorsArr
 
     // --- {{{{{{READ ME}}}}}} --- //
     
 
-    // var foo = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/Character/${characterId}/Vendors/?components=400`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
-    // var thing = foo.data.Response.vendors.data;
-    // for (item in thing) {
-    //     log(thing[item].vendorHash);
-    // };
+    var bounties = [];
+    var keyNames = [ 
+        'bounties.strikes.repeatable', 
+        'tower.bounties.transmog', 
+        'bounties.crucible.daily',
+        'throneworld.bounties.freeroam',
+        'bounties.crucible.repeatable',
+        'bounties.strikes.daily'
+    ];
+    // [bounties.gunsmith.repeatable].x => store x
+    // [bounties.gunsmith.daily].x => store x
+    for (item of charInventory) {
+        if (definitions[item.itemHash].itemType === 26) {
+            bounties.push(definitions[item.itemHash])
+            // bounties[item.itemHash] = definitions[item.itemHash];
+        };
+    };
+    log(bounties);
 
-    // var bounties = {};
-    // var keyNames = ['gunsmith', 'repeatable'];
-    // // [bounties.gunsmith.repeatable].x => store x
-    // // [bounties.gunsmith.daily].x => store x
-    // for (item of charInventory) {
-    //     // log(definitions[item.itemHash])
-    //     // Is bounty
-    //     if (definitions[item.itemHash].itemType == 26) {
-    //         bounties[item.itemHash] = definitions[item.itemHash];
-    //     };
-    // };
-    // log(bounties);
+    // Sort bounties
+    bounties.sort((a, b) => {
+        var propA = `${a.inventory.stackUniqueLabel.split('.')[0]}.${a.inventory.stackUniqueLabel.split('.')[1]}.${a.inventory.stackUniqueLabel.split('.')[2]}`;
+        var propB = `${b.inventory.stackUniqueLabel.split('.')[0]}.${b.inventory.stackUniqueLabel.split('.')[1]}.${b.inventory.stackUniqueLabel.split('.')[2]}`;
+        // log(keyNames.indexOf(propA), keyNames.indexOf(propB));
+        if (keyNames.indexOf(propA) > keyNames.indexOf(propB)) {
+            log(true);
+            return -1;
+        };
+    });
+    log(bounties);
 
 
     // Loop over each item and check to see if item is bounty, true = push to arr, false = just ignore execution.
-    charInventory.forEach(item => { definitions[item.itemHash].itemType === 26 ? (MakeElement(definitions[item.itemHash]), amountOfBounties++, log(definitions[item.itemHash])) : null; });
+    // charInventory.forEach(item => { definitions[item.itemHash].itemType === 26 ? (MakeElement(definitions[item.itemHash]), amountOfBounties++, log(definitions[item.itemHash])) : null; });
 
     // document.getElementById('subTitleOne').innerHTML = `${amountOfItems} Item(s) Indexed`;
     document.getElementById('subTitleTwo').innerHTML = `${amountOfBounties} Bounty(s) Found`;
 
     // Stop loading sequence
     StopLoad();
-    log(`-> Indexed Character ${classType}!`);
+    log(`-> Indexed ${parseChar(classType)}!`);
 };
 
 
