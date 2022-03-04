@@ -339,6 +339,10 @@ var LoadCharacter = async (classType) => {
     // Elements
     document.getElementById('charSelect').style.display = 'none';
     document.getElementById('charDisplay').style.display = 'inline-block';
+    var thing = document.getElementsByClassName('mainContainer');
+    thing[0].style.background = 'none';
+    thing[0].style.border = 'none';
+    // log(thing[0].style)
 
 
     // Globals
@@ -362,7 +366,7 @@ var LoadCharacter = async (classType) => {
     // Get manifest for world content and return it
     await db.jsonWorldContentPaths.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
     .then(massiveObj => {
-        log(massiveObj)
+        // log(massiveObj)
         definitions = massiveObj[0].data;
     });
 
@@ -383,85 +387,10 @@ var LoadCharacter = async (classType) => {
         amountOfItems = 0,
         amountOfBounties = 0;
 
-    
-    // Loop over char inventory and filter out non bounty items
-    // Append all bounty items to arr
-    // Sort bounty items via uniqueStackLabel
-    // Render to the DOM
-
-
-    // --- {{{{{{READ ME}}}}}} --- //
-
-    // var vendors = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/Character/${characterId}/Vendors/?components=400`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
-    // var vendorsRootPath = vendors.data.Response.vendors.data;
-    // log(vendorsRootPath);
-    // log(definitionsMobile[0].data);
-
-    // for (var item in definitionsMobile[0].data) {
-    //     if (vendorsRootPath[item]) {
-    //         definitionsMobile[0].data[item].displayCategories.forEach(prop => prop.identifier.includes('bounties') ? log(definitionsMobile[0].data[item].displayProperties.name) : null);
-    //         // log(`Vendor Hash: ${item}, Data:`, definitionsMobile[0].data[item]);
-    //     };
-    // };
-
-
-    // Get all vendors that are actively selling bounties and formalize a list of names to compare against
-    // Sort this list by alphabetical order
-    // Compare player bounty items to this list and order bounties in the bounties arr according to the structure
-
-    // Example:
-    // bountieArr = ['transmog', 'gunsmith', 'strikes']
-    // vendorsArr = ['banshee', 'ada-1', 'zavala']
-
-    // We sort vendorsArr alphabetically, then order the bounties in bountiesArr relative to their respective vendors in vendorsArr
-
-    // --- {{{{{{READ ME}}}}}} --- //
-    
-
-    var bounties = [];
-    var checkKeyNames = [ 
-        'bounties.strikes.repeatable', 
-        'tower.bounties.transmog', 
-        'bounties.crucible.daily',
-        'throneworld.bounties.freeroam',
-        'bounties.crucible.repeatable',
-        'bounties.strikes.daily'
-    ];
-    // [bounties.gunsmith.repeatable].x => store x
-    // [bounties.gunsmith.daily].x => store x
-
-    for (item of charInventory) {
-        if (definitions[item.itemHash].itemType === 26) {
-            bounties.push(definitions[item.itemHash])
-            // bounties[item.itemHash] = definitions[item.itemHash];
-        };
-    };
-    // log(bounties);
-
-    // log(checkKeyNames.indexOf('bounties.strikes.daily') < checkKeyNames.indexOf('bounties.crucible.repeatable'));
-
-    // var fubar = [2,4,3,5,1];
-
-    // var compare = (a,b) => {
-    //     // log(a.inventory.stackUniqueLabel)
-    //     if (checkKeyNames.indexOf(a.inventory.stackUniqueLabel) > checkKeyNames.indexOf(b.inventory.stackUniqueLabel)) {
-    //         return -1;
-    //     };
-    //     if (checkKeyNames.indexOf(a.inventory.stackUniqueLabel) < checkKeyNames.indexOf(b.inventory.stackUniqueLabel)) {
-    //         return 1;
-    //     };
-    //     return 0;
-    // };
-    // bounties.sort(compare);
-    // log(bounties)
-    
-
-
 
     // Loop over each item and check to see if item is bounty, true = push to arr, false = just ignore execution.
-    // charInventory.forEach(item => { definitions[item.itemHash].itemType === 26 ? (MakeElement(definitions[item.itemHash]), amountOfBounties++, log(definitions[item.itemHash])) : null; });
+    charInventory.forEach(item => { definitions[item.itemHash].itemType === 26 ? (MakeBountyElement(definitions[item.itemHash]), amountOfBounties++, log(definitions[item.itemHash])) : null; });
 
-    // document.getElementById('subTitleOne').innerHTML = `${amountOfItems} Item(s) Indexed`;
     document.getElementById('subTitleTwo').innerHTML = `${amountOfBounties} Bounty(s) Found`;
 
     // Stop loading sequence
@@ -519,11 +448,6 @@ var ReturnDefinition = async (hash, defType) => {
     var response = await db.entries.where({keyName: defType}).toArray();
     return response[0].data[hash];
 };
-// Check document is loaded
-// @ {}
-var CheckDocumentLoadState = () => {
-    return document.readyState === 'complete' ? true : false;
-};
 // Start loading sequence
 // @ {}
 var StartLoad = () => {
@@ -536,7 +460,7 @@ var StopLoad = () => {
 };
 // Make element for entry data when hash is found in definitions
 // @obj {item}
-var MakeElement = (item) => {
+var MakeBountyElement = (item) => {
 
     const bottom = document.createElement('img'),
         top = document.createElement('div');
@@ -564,18 +488,6 @@ var MakeElement = (item) => {
 };
 
 
-// 484780086
-// 201433599
-// 296614670
-// var namesToMatch = ['trials', 'strikes', 'gunsmith', 'transmog'];
-// ReturnDefinition(484780086, 'DestinyInventoryItemDefinition')
-//     .then(res => {
-//         // single item, sorted via hash
-//         var bountySplitName = res.inventory.stackUniqueLabel.split('.');
-
-//         bountySplitName.forEach(item => namesToMatch.includes(item) ? log(item, true) : log(item, false));
-
-//     });
 
 // Main
 (async () => {
@@ -599,19 +511,3 @@ var MakeElement = (item) => {
 .catch(error => {
     console.error(error);
 });
-
-
-
-
-
-
-
-// todo
-
-// - implement more riguorous manifest validation
-// - implement more riguorous localStorage items validating
-// - implement back to character select page
-// - implement error catching and handling
-// - find ---{{{{{READ ME}}}}} ---- tag
-// - make page for errors with options for user
-//   ^ if loading takes longer ~10 seconds, and manifest has been fetched, display message saying to hard refresh
