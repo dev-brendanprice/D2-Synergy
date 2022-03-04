@@ -13,14 +13,13 @@ if (state != window.localStorage.getItem('stateCode')) {
 
 // Explicit globals
 var log = console.log.bind(console),
-    browserLanguageType = 'en', // Get from browser info or sumn idfk lol
+    browserLanguageType = window.navigator.language.split('-')[0], // Language from browser preference
     startTime = new Date(),
     localStorage = window.localStorage,
     sessionStorage = window.sessionStorage,
     destinyMemberships = {},
     destinyUserProfile = {},
     membershipType;
-
 
 // Default axios header
 axios.defaults.headers.common = {
@@ -36,8 +35,6 @@ db.version(1).stores({
     jsonWorldContentPaths: 'keyName',
     jsonWorldComponentContentPaths: 'keyName'
 });
-
-
 
 
 // Authorize with Bungie.net
@@ -342,7 +339,6 @@ var LoadCharacter = async (classType) => {
     var thing = document.getElementsByClassName('mainContainer');
     thing[0].style.background = 'none';
     thing[0].style.border = 'none';
-    // log(thing[0].style)
 
 
     // Globals
