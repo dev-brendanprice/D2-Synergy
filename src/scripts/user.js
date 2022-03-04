@@ -107,8 +107,11 @@ var CheckComponents = async () => {
         };
 
 
-    // Remove items in localStorage that are not present within keyNames
-    keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'];
+    // Remove items in localStorage => Remove invalid items and redirect back if required items are missing
+    var keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'],
+        compKeys = ['authorization_code', 'membership_id', 'token_type'],
+        acrsKeys = ['expires_in', 'inception', 'value'];
+
     Object.keys(rsToken).forEach(item => {
         !keyNames.includes(item) ? (delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken))) : null;
     });
@@ -118,14 +121,15 @@ var CheckComponents = async () => {
     Object.keys(comps).forEach(item => {
         !keyNames.includes(item) ? (delete comps[item], localStorage.setItem('components', JSON.stringify(comps))) : null;
     });
-    
-    // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
-    delete axios.defaults.headers.common['X-API-Key'];
+
 
     // Check if either tokens have expired
     isAcTokenExpired = (acToken.inception + acToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
     isRsTokenExpired = (rsToken.inception + rsToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
     if (isAcTokenExpired || isRsTokenExpired) {
+
+        // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
+        delete axios.defaults.headers.common['X-API-Key'];
 
         // If either tokens have expired
         isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
@@ -136,15 +140,15 @@ var CheckComponents = async () => {
                 components['membership_id'] = data['membership_id'];
                 components['token_type'] = data['token_type'];
                 components['authorization_code'] = comps['authorization_code'];
-    
+
                 AccessToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
                 AccessToken['expires_in'] = data['expires_in'];
                 AccessToken['value'] = data['access_token'];
-    
+
                 RefreshToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
                 RefreshToken['expires_in'] = data['refresh_expires_in'];
                 RefreshToken['value'] = data['refresh_token'];
-    
+
                 localStorage.setItem('accessToken', JSON.stringify(AccessToken));
                 localStorage.setItem('components', JSON.stringify(components));
                 localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
@@ -174,12 +178,10 @@ var OAuthFlow = async () => {
 
     // Wrap in try.except for error catching
     try {
-
         // If user has no localStorage items and the code is incorrect
         if (authCode && (!comps || !acToken || !rsToken)) {
             await BungieOAuth(authCode);
         }
-
         // User has no credentials, fired before other conditions
         else if (!authCode && (!comps || !acToken || !rsToken)) {
             window.location.href = `http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html`;
@@ -211,7 +213,8 @@ var GetDestinyManifest = async () => {
 
     var ParseManifest = async (resManifest, tableName) => {
 
-        log('-> Manifest Not Up To Date, Updating Manifest..');
+        // Check localStorage items before
+        await CheckComponents();
 
         // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
         delete axios.defaults.headers.common['X-API-Key'];
@@ -229,14 +232,6 @@ var GetDestinyManifest = async () => {
 
             // Put response into indexedDB
             db[tableName].bulkPut([ { keyName: 'DestinyVendorDefinition', data: destinyVendorDefinitionResponse.data } ])
-            // db[tableName].bulkPut([ { keyName: 'jsonWorldComponentContentPaths', data: destinyVendorDefinitionResponse.data } ]);
-
-
-
-            // var destinyVendorGroupDefinitionResponse = await axios.get(`https://www.bungie.net${definitionObjects.DestinyVendorGroupDefinition}`);
-            // for (var property in destinyVendorGroupDefinitionResponse.data) {
-            //     db[tableName].bulkPut([ { keyName: property, data: destinyVendorGroupDefinitionResponse.data[property] } ]);
-            // };
         }
         else if (tableName !== 'jsonWorldComponentContentPaths') {
 
@@ -259,15 +254,24 @@ var GetDestinyManifest = async () => {
 
     // Check for manifest version
     var manifestFromResponse = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-    if (manifestFromResponse.data.Response.version !== manifestVersion || jsonWorldContentPaths.length === 0) {
+    if (manifestFromResponse.data.Response.version !== manifestVersion) {
 
         // Parse manifest response
+        log('-> Manifest Not Up To Date, Updating Manifest..');
+        await ParseManifest(manifestFromResponse, 'jsonWorldContentPaths');
+    };
+
+    if (jsonWorldContentPaths.length === 0) {
+
+        // Parse manifest response
+        log('-> Manifest Not Correct, Updating Manifest..');
         await ParseManifest(manifestFromResponse, 'jsonWorldContentPaths');
     };
 
     if (jsonWorldComponentContentPaths.length === 0) {
 
         // Parse manifest response
+        log('-> Manifest Not Correct, Updating Manifest..');
         await ParseManifest(manifestFromResponse, 'jsonWorldComponentContentPaths');
     };
 
@@ -319,6 +323,9 @@ var FetchBungieUserDetails = async () => {
         };
     };
 
+    // Add history so that user can come back to this page
+    window.location.hash = 'chars';
+
     log('-> Bungie User Fetched!');
 };
 
@@ -335,6 +342,9 @@ var LoadCharacter = async (classType) => {
     // Elements
     document.getElementById('charSelect').style.display = 'none';
     document.getElementById('charDisplay').style.display = 'inline-block';
+
+    // Add history so that user can come back to this page
+    window.location.hash = 'inventory';
 
 
     // Globals
@@ -358,6 +368,7 @@ var LoadCharacter = async (classType) => {
     // Get manifest for world content and return it
     await db.jsonWorldContentPaths.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
     .then(massiveObj => {
+        log(massiveObj)
         definitions = massiveObj[0].data;
     });
 
@@ -414,7 +425,7 @@ var LoadCharacter = async (classType) => {
     
 
     var bounties = [];
-    var keyNames = [ 
+    var checkKeyNames = [ 
         'bounties.strikes.repeatable', 
         'tower.bounties.transmog', 
         'bounties.crucible.daily',
@@ -433,16 +444,16 @@ var LoadCharacter = async (classType) => {
     };
     // log(bounties);
 
-    // log(keyNames.indexOf('bounties.strikes.daily') < keyNames.indexOf('bounties.crucible.repeatable'));
+    // log(checkKeyNames.indexOf('bounties.strikes.daily') < checkKeyNames.indexOf('bounties.crucible.repeatable'));
 
     // var fubar = [2,4,3,5,1];
 
     // var compare = (a,b) => {
     //     // log(a.inventory.stackUniqueLabel)
-    //     if (keyNames.indexOf(a.inventory.stackUniqueLabel) > keyNames.indexOf(b.inventory.stackUniqueLabel)) {
+    //     if (checkKeyNames.indexOf(a.inventory.stackUniqueLabel) > checkKeyNames.indexOf(b.inventory.stackUniqueLabel)) {
     //         return -1;
     //     };
-    //     if (keyNames.indexOf(a.inventory.stackUniqueLabel) < keyNames.indexOf(b.inventory.stackUniqueLabel)) {
+    //     if (checkKeyNames.indexOf(a.inventory.stackUniqueLabel) < checkKeyNames.indexOf(b.inventory.stackUniqueLabel)) {
     //         return 1;
     //     };
     //     return 0;
@@ -603,6 +614,8 @@ var MakeElement = (item) => {
 
 // todo
 
+// - implement more riguorous manifest validation
+// - implement more riguorous localStorage items validating
 // - implement back to character select page
 // - implement error catching and handling
 // - find ---{{{{{READ ME}}}}} ---- tag

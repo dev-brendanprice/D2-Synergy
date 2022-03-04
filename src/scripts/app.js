@@ -17,24 +17,16 @@ var GenerateState = (len) => {
 
 // Check tokens for expiration
 var CheckSession = () => {
-    
-    var acToken = JSON.parse(localStorage.getItem('accessToken')),
-        rsToken = JSON.parse(localStorage.getItem('refreshToken')),
-        comps = JSON.parse(localStorage.getItem('components')),
-        AuthConfig = {
-            headers: {
-                Authorization: `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
-                "Content-Type": "application/x-www-form-urlencoded",
-            }
-        };
-    
-    
-    if (acToken && rsToken && comps) {
-        // Redirect user to user.html if they had already logged in
-        window.location.href = 'user.html';
-    };
 
-    log('-> Tokens Validated!');
+    var acToken = JSON.parse(localStorage.getItem('accessToken')),
+    rsToken = JSON.parse(localStorage.getItem('refreshToken')),
+    comps = JSON.parse(localStorage.getItem('components'))
+
+    // Redirect user to user.html if they had already logged in
+    if (acToken && rsToken && comps) {
+        window.location.href = 'user.html';
+        log('-> Session Exists, Redirecting..');
+    };
 };
 
 
