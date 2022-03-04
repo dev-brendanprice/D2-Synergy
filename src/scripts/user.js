@@ -424,25 +424,33 @@ var LoadCharacter = async (classType) => {
     ];
     // [bounties.gunsmith.repeatable].x => store x
     // [bounties.gunsmith.daily].x => store x
+
     for (item of charInventory) {
         if (definitions[item.itemHash].itemType === 26) {
             bounties.push(definitions[item.itemHash])
             // bounties[item.itemHash] = definitions[item.itemHash];
         };
     };
-    log(bounties);
+    // log(bounties);
 
-    // Sort bounties
-    bounties.sort((a, b) => {
-        var propA = `${a.inventory.stackUniqueLabel.split('.')[0]}.${a.inventory.stackUniqueLabel.split('.')[1]}.${a.inventory.stackUniqueLabel.split('.')[2]}`;
-        var propB = `${b.inventory.stackUniqueLabel.split('.')[0]}.${b.inventory.stackUniqueLabel.split('.')[1]}.${b.inventory.stackUniqueLabel.split('.')[2]}`;
-        // log(keyNames.indexOf(propA), keyNames.indexOf(propB));
-        if (keyNames.indexOf(propA) > keyNames.indexOf(propB)) {
-            log(true);
-            return -1;
-        };
-    });
-    log(bounties);
+    // log(keyNames.indexOf('bounties.strikes.daily') < keyNames.indexOf('bounties.crucible.repeatable'));
+
+    // var fubar = [2,4,3,5,1];
+
+    // var compare = (a,b) => {
+    //     // log(a.inventory.stackUniqueLabel)
+    //     if (keyNames.indexOf(a.inventory.stackUniqueLabel) > keyNames.indexOf(b.inventory.stackUniqueLabel)) {
+    //         return -1;
+    //     };
+    //     if (keyNames.indexOf(a.inventory.stackUniqueLabel) < keyNames.indexOf(b.inventory.stackUniqueLabel)) {
+    //         return 1;
+    //     };
+    //     return 0;
+    // };
+    // bounties.sort(compare);
+    // log(bounties)
+    
+
 
 
     // Loop over each item and check to see if item is bounty, true = push to arr, false = just ignore execution.
