@@ -323,9 +323,6 @@ var FetchBungieUserDetails = async () => {
         };
     };
 
-    // Add history so that user can come back to this page
-    window.location.hash = 'chars';
-
     log('-> Bungie User Fetched!');
 };
 
@@ -342,9 +339,6 @@ var LoadCharacter = async (classType) => {
     // Elements
     document.getElementById('charSelect').style.display = 'none';
     document.getElementById('charDisplay').style.display = 'inline-block';
-
-    // Add history so that user can come back to this page
-    window.location.hash = 'inventory';
 
 
     // Globals
