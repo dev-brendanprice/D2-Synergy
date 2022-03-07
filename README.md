@@ -21,7 +21,7 @@ Axios - https://axios-http.com/docs/api_intro
 
 ### Notes To Keep in Mind:
 
-If these steps do not work for, please ensure that when (doing step 1) you configure ports on your firewall, that you open it for UDP and TCP on both inbound and outbound rules.
+If these steps do not work for you, please ensure that when (doing step 1) you configure ports on your firewall, that you open it for UDP and TCP on both inbound and outbound rules.
 
 XAMPP does not have to be running for Apache to be running.
 If there are any processes on your network that are using port `4645`, please change all references of port `4645`. within this project to your chosen port.
