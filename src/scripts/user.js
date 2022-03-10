@@ -37,6 +37,7 @@ db.version(1).stores({
 });
 
 
+
 // Authorize with Bungie.net
 var BungieOAuth = async (authCode) => {
 
@@ -347,6 +348,7 @@ var LoadCharacter = async (classType) => {
         CharacterInventories,
         definitions = {},
         definitionsMobile = {},
+        definitionsCategories = {},
         membershipType = sessionStorage.getItem('membershipType');
 
     // Get chosen character and save index  
@@ -362,17 +364,20 @@ var LoadCharacter = async (classType) => {
     // Get manifest for world content and return it
     await db.jsonWorldContentPaths.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
     .then(massiveObj => {
-        // log(massiveObj)
         definitions = massiveObj[0].data;
     });
 
-    // Get manivest for mobile content and return it
-    await db.jsonWorldComponentContentPaths.toArray()
+    // Get manifest for category content and return it
+    await db.jsonWorldContentPaths.where({keyName: 'DestinyItemCategoryDefinition'}).toArray()
     .then(massiveObj => {
-        // log(massiveObj);
-        definitionsMobile = massiveObj;
-        // log(definitionsMobile)
+        definitionsCategories = massiveObj[0].data;
     });
+
+    // Get manivest for mobile content and return it
+    // await db.jsonWorldComponentContentPaths.toArray()
+    // .then(massiveObj => {
+    //     definitionsMobile = massiveObj;
+    // });
 
     // OAuth header guarantees a response
     var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
@@ -381,12 +386,50 @@ var LoadCharacter = async (classType) => {
     // Iterate over CharacterInventories[characterId].items
     var charInventory = CharacterInventories[characterId].items,
         amountOfItems = 0,
-        amountOfBounties = 0;
+        amountOfBounties = 0,
+        charBounties = [];
 
+    // Declare sorting keys
+    var vendorKeys = [
+        'weekly',
+        'daily',
+        'repeatable'
+    ];
+
+    // Loop over all bounties and save to array
+    charInventory.forEach(item => definitions[item.itemHash].itemType === 26 ? charBounties.push(definitions[item.itemHash]) : null);
+    log(charBounties)
+    // Function that compares object properties by index from keyNames
+    var sortBounties = ( a, b ) => {
+
+        var stackLabelA = a.inventory.stackUniqueLabel,
+            stackLabelB = b.inventory.stackUniqueLabel,
+            stackTypeA,
+            stackTypeB;
+        
+            // Remove numbers & get key names from stackUniqueLabel even if it contains _
+        stackLabelA.split('.').forEach(v => {
+            let keyFromStack = v.replace(/[0-9]/g, '');
+            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => vendorKeys.includes(x) ? stackTypeA = x : null) : vendorKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
+        });
+        stackLabelB.split('.').forEach(v => {
+            let keyFromStack = v.replace(/[0-9]/g, '');
+            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => vendorKeys.includes(x) ? stackTypeB = x : null) : vendorKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
+        });
+
+        if (vendorKeys.indexOf(stackTypeA) < vendorKeys.indexOf(stackTypeB)){
+            return -1;
+        };
+    
+        if (vendorKeys.indexOf(stackTypeA) > vendorKeys.indexOf(stackTypeB)){
+            return 1;
+        };
+        return 0;
+    };
+    charBounties.sort(sortBounties);
 
     // Loop over each item and check to see if item is bounty, true = push to arr, false = just ignore execution.
-    charInventory.forEach(item => { definitions[item.itemHash].itemType === 26 ? (MakeBountyElement(definitions[item.itemHash]), amountOfBounties++, log(definitions[item.itemHash])) : null; });
-
+    charBounties.forEach(item => (MakeBountyElement(item), amountOfBounties++));
     document.getElementById('subTitleTwo').innerHTML = `${amountOfBounties} Bounty(s) Found`;
 
     // Stop loading sequence
@@ -463,7 +506,7 @@ var MakeBountyElement = (item) => {
 
     // Create bottom element
     bottom.className = `entryData`;
-    bottom.id = `${item.hash}`;
+    bottom.id = `${item.itemHash}`;
     document.querySelector('#charDisplay').appendChild(bottom);
     bottom.src = `https://www.bungie.net${item.displayProperties.icon}`;
 
