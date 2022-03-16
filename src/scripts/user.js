@@ -109,6 +109,15 @@ var GetDestinyManifest = async () => {
         await ParseManifest(manifestFromResponse, 'jsonWorldComponentContentPaths');
     };
 
+    // Check if required entries exist
+    // Object.keys(jsonWorldContentPaths).forEach(item => item in requiredDBEntries ? null : GetDestinyManifest());
+    // for (item in jsonWorldContentPaths) {
+    //     if (!item in requiredDBEntries) {
+    //         log('lkjahdsgjhsdgfjhgdfgjhsdgfjsdhgf')
+    //         await GetDestinyManifest();
+    //     };
+    // };
+
     log(`-> Manifest Up To Date! [Elapsed: ${new Date() - sTime}ms]`);
 };
 
@@ -435,14 +444,14 @@ var LoadCharacter = async (classType) => {
             curBo = [];
 
         // uniqueLabel is unique name for bounty vendor category
-        allBounties 
+        // allBounties 
     };
 
     // Sort bounties via stackUniqueLabel
-    // charBounties.sort(sortBounties);
+    charBounties.sort(sortBounties);
 
     // Loop over each item and check to see if item is bounty, true = push to arr, false = just ignore execution.
-    // charBounties.forEach(item => (MakeBountyElement(item), amountOfBounties++));
+    charBounties.forEach(item => (MakeBountyElement(item), amountOfBounties++));
 
 
 
