@@ -38,7 +38,6 @@ db.version(1).stores({
 
 
 
-<<<<<<< HEAD
 
 // Validate and/or update manifest
 var GetDestinyManifest = async () => {
@@ -82,7 +81,11 @@ var GetDestinyManifest = async () => {
     var manifestVersion = localStorage.getItem('destinyManifestVersion'),
         jsonWorldContentPaths = await db.table('jsonWorldContentPaths').toArray(),
         jsonWorldComponentContentPaths = await db.table('jsonWorldComponentContentPaths').toArray(),
-        sTime = new Date();
+        sTime = new Date(),
+        requiredDbEntries = [
+            'DestinyInventoryItemDefinition'
+        ];
+    
 
     // Check for manifest version
     var manifestFromResponse = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
@@ -107,21 +110,10 @@ var GetDestinyManifest = async () => {
         await ParseManifest(manifestFromResponse, 'jsonWorldComponentContentPaths');
     };
 
-    // Check if required entries exist
-    // Object.keys(jsonWorldContentPaths).forEach(item => item in requiredDBEntries ? null : GetDestinyManifest());
-    // for (item in jsonWorldContentPaths) {
-    //     if (!item in requiredDBEntries) {
-    //         log('lkjahdsgjhsdgfjhgdfgjhsdgfjsdhgf')
-    //         await GetDestinyManifest();
-    //     };
-    // };
-
     log(`-> Manifest Up To Date! [Elapsed: ${new Date() - sTime}ms]`);
 };
 
 
-=======
->>>>>>> parent of e46e2c4 (work on sorting algos)
 // Authorize with Bungie.net
 var BungieOAuth = async (authCode) => {
 
@@ -290,77 +282,6 @@ var OAuthFlow = async () => {
 };
 
 
-// Validate and/or update manifest
-var GetDestinyManifest = async () => {
-
-    var ParseManifest = async (resManifest, tableName) => {
-
-        // Check localStorage items before
-        await CheckComponents();
-
-        // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
-        delete axios.defaults.headers.common['X-API-Key'];
-
-        // Get jsonWorldContentPaths from definitions
-        var definitionObjects;
-        Object.keys(resManifest.data.Response).forEach(item => item === tableName ? definitionObjects = resManifest.data.Response[item][browserLanguageType] : null);
-
-        // If tableName is the mobile version, we have to do a seperate install process because the structure is different
-        if (tableName === 'jsonWorldComponentContentPaths') {  
-            
-            // Fetch definitions
-            var root = manifestFromResponse.data.Response.jsonWorldComponentContentPaths.en;
-            var destinyVendorDefinitionResponse = await axios.get(`https://www.bungie.net${root.DestinyVendorDefinition}`);
-
-            // Put response into indexedDB
-            db[tableName].bulkPut([ { keyName: 'DestinyVendorDefinition', data: destinyVendorDefinitionResponse.data } ])
-        }
-        else if (tableName !== 'jsonWorldComponentContentPaths') {
-
-            // Fetch definitions & put response into indexedDB
-            var definitionsFromResponse = await axios.get(`https://www.bungie.net${definitionObjects}`);
-            for (var property in definitionsFromResponse.data) {
-                db[tableName].bulkPut([ { keyName: property, data: definitionsFromResponse.data[property] } ]);
-            };
-        };
-
-        // Save manifest version
-        localStorage.setItem('destinyManifestVersion', resManifest.data.Response.version);
-    };
-
-    // Get components from db and localStorage
-    var manifestVersion = localStorage.getItem('destinyManifestVersion'),
-        jsonWorldContentPaths = await db.table('jsonWorldContentPaths').toArray(),
-        jsonWorldComponentContentPaths = await db.table('jsonWorldComponentContentPaths').toArray(),
-        sTime = new Date();
-
-    // Check for manifest version
-    var manifestFromResponse = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-    if (manifestFromResponse.data.Response.version !== manifestVersion) {
-
-        // Parse manifest response
-        log('-> Manifest Not Up To Date, Updating Manifest..');
-        await ParseManifest(manifestFromResponse, 'jsonWorldContentPaths');
-    };
-
-    if (jsonWorldContentPaths.length === 0) {
-
-        // Parse manifest response
-        log('-> Manifest Not Correct, Updating Manifest..');
-        await ParseManifest(manifestFromResponse, 'jsonWorldContentPaths');
-    };
-
-    if (jsonWorldComponentContentPaths.length === 0) {
-
-        // Parse manifest response
-        log('-> Manifest Not Correct, Updating Manifest..');
-        await ParseManifest(manifestFromResponse, 'jsonWorldComponentContentPaths');
-    };
-
-    log(`-> Manifest Up To Date! [Elapsed: ${new Date() - sTime}ms]`);
-};
-
-
 // Fetch basic bungie user details
 var FetchBungieUserDetails = async () => {
 
@@ -482,7 +403,8 @@ var LoadCharacter = async (classType) => {
 
     // Loop over all bounties and save to array
     charInventory.forEach(item => definitions[item.itemHash].itemType === 26 ? charBounties.push(definitions[item.itemHash]) : null);
-    log(charBounties)
+    // log(charBounties)
+
     // Function that compares object properties by index from keyNames
     var sortBounties = ( a, b ) => {
 
@@ -505,66 +427,17 @@ var LoadCharacter = async (classType) => {
             return -1;
         };
     
-<<<<<<< HEAD
-    // Get all vendors
-    // var vendorSalesArr = {};
-    // var resVen = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/Character/${characterId}/Vendors/?components=400&filter=1`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
-    // var venRoot = resVen.data.Response.vendors.data;
-
-    // for (vendor in venRoot) {
-    //     // log(definitionsMobile[venRoot[vendor].vendorHash])
-    //     var itemList = definitionsMobile[venRoot[vendor].vendorHash].itemList,
-    //         curBo = [];
-        
-    //     for (item of itemList) {
-    //         for (bounty of charBounties) {
-    //             if (item.itemHash === bounty.hash) {
-    //                 curBo.push(bounty);
-    //             };
-    //         };
-    //     };
-        
-    //     if (curBo.length !== 0) {
-    //         vendorSalesArr[vendor] = curBo;
-    //     };
-    // };
-
-    // log(vendorSalesArr);
-    // for (sales in vendorSalesArr) {
-    //     vendorSalesArr[sales].sort(sortByLabel);
-    // };
-    // log(vendorSalesArr);
-
-    var allBounties = {};
-    for (item of charBounties) {
-        var split = item.inventory.stackUniqueLabel.split('.');
-        var uniqueLabel = `${split[0]}.${split[1]}`,
-            curBo = [];
-
-        // uniqueLabel is unique name for bounty vendor category
-        // allBounties 
-    };
-
-    // Sort bounties via stackUniqueLabel
-=======
         if (vendorKeys.indexOf(stackTypeA) > vendorKeys.indexOf(stackTypeB)){
             return 1;
         };
         return 0;
     };
->>>>>>> parent of e46e2c4 (work on sorting algos)
     charBounties.sort(sortBounties);
 
     // Loop over each item and check to see if item is bounty, true = push to arr, false = just ignore execution.
     charBounties.forEach(item => (MakeBountyElement(item), amountOfBounties++));
-<<<<<<< HEAD
 
-
-
-    // document.getElementById('subTitleTwo').innerHTML = `${amountOfBounties} Bounty(s) Found`;
-=======
     document.getElementById('subTitleTwo').innerHTML = `${amountOfBounties} Bounty(s) Found`;
->>>>>>> parent of e46e2c4 (work on sorting algos)
 
     // Stop loading sequence
     StopLoad();
