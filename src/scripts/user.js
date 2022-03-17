@@ -40,9 +40,53 @@ db.version(1).stores({
 
 
 // Validate and/or update manifest
+var GetDestinyManifest_New = async () => {
+
+    const requiredDbEntries = [
+        'DestinyInvetoryItemDefinition'
+    ];
+
+    var storedManifestVersion = localStorage.getItem('destinyManifestVersion'),
+        jsonWorldContent    = await db.table('jsonWorldContentPaths').toArray(),
+        jsonWorldComponents = await db.table('jsonWorldComponentContentPaths').toArray(),
+        manifestKeys = [];
+
+
+    
+    // Fetch base manifest 
+    var manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
+    manifest = manifest.data.Response;
+
+
+    // Fetch content from manifest url
+    delete axios.defaults.headers.common['X-API-Key'];
+    var worldContent = await axios.get(`https://www.bungie.net${manifest.jsonWorldContentPaths[browserLanguageType]}`),
+        worldContentKeys = worldContent.data;
+
+
+    // Formalize array of object keys
+    for (key in worldContentKeys) {
+        if (requiredDbEntries.includes(key)) {
+            manifestKeys.push(key);
+            // Fetch manifest content
+        };
+    };
+
+    // Fetch new manifest if version is not the same
+    // if (storedManifestVersion !== manifest.version) {
+    //     // Fetch manifest content
+    // };
+};
+
+
+// Validate and/or update manifest
 var GetDestinyManifest = async () => {
 
     var ParseManifest = async (resManifest, tableName) => {
+
+        // @ Params
+        // resManifest
+        // tableName
 
         // Check localStorage items before
         await CheckComponents();
@@ -181,10 +225,8 @@ var CheckComponents = async () => {
         };
 
 
-    // Remove items in localStorage => Remove invalid items and redirect back if required items are missing
-    var keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'],
-        compKeys = ['authorization_code', 'membership_id', 'token_type'],
-        acrsKeys = ['expires_in', 'inception', 'value'];
+    // Remove items in localStorage => Remove invalid items and redirect back if required items are missing && Check if localStorage items have been edited
+    var keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'];
 
     Object.keys(rsToken).forEach(item => {
         !keyNames.includes(item) ? (delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken))) : null;
@@ -195,6 +237,7 @@ var CheckComponents = async () => {
     Object.keys(comps).forEach(item => {
         !keyNames.includes(item) ? (delete comps[item], localStorage.setItem('components', JSON.stringify(comps))) : null;
     });
+
 
 
     // Check if either tokens have expired
@@ -403,7 +446,7 @@ var LoadCharacter = async (classType) => {
 
     // Loop over all bounties and save to array
     charInventory.forEach(item => definitions[item.itemHash].itemType === 26 ? charBounties.push(definitions[item.itemHash]) : null);
-    // log(charBounties)
+    log(charBounties);
 
     // Function that compares object properties by index from keyNames
     var sortBounties = ( a, b ) => {
