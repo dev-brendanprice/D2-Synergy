@@ -15,25 +15,31 @@ var GenerateState = (len) => {
     return result;
 };
 
-// Check tokens for expiration
+// Check localStorage to determine if user has signed in already
 var CheckSession = () => {
 
     var acToken = JSON.parse(localStorage.getItem('accessToken')),
-    rsToken = JSON.parse(localStorage.getItem('refreshToken')),
-    comps = JSON.parse(localStorage.getItem('components'))
+        rsToken = JSON.parse(localStorage.getItem('refreshToken')),
+        comps = JSON.parse(localStorage.getItem('components')),
+        urlParam = new URLSearchParams(window.location.search);
 
-    // Redirect user to user.html if they had already logged in
+
+    // Indicates if localStorage is missing an item(s)
+    urlParam.get('rsToken') || urlParam.get('acToken') || urlParam.get('comps') ? localStorage.clear() : null;
+
+    // Redirect user through if localStorage has items
     if (acToken && rsToken && comps) {
-        window.location.href = 'user.html';
         log('-> Session Exists, Redirecting..');
+        window.location.href = 'user.html';
     };
 };
 
 
 
+// Main
 window.addEventListener('DOMContentLoaded', () => {
 
-    // Check tokens for expiration
+    // Check for session
     CheckSession();
 
     document.getElementById('btnAuthorize').addEventListener('click', () => {

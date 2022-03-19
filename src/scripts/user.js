@@ -225,8 +225,12 @@ var CheckComponents = async () => {
         };
 
 
-    // Remove items in localStorage => Remove invalid items and redirect back if required items are missing && Check if localStorage items have been edited
-    var keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'];
+    // Remove invalid localStorage items & Redirect if items are missing
+    var keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'],
+        tokenKeys = ['inception', 'expires_in', 'value'],
+        cKeys = ['membership_id', 'token_type', 'authorization_code'],
+        redirUrl = 'http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html';
+
 
     Object.keys(rsToken).forEach(item => {
         !keyNames.includes(item) ? (delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken))) : null;
@@ -236,6 +240,14 @@ var CheckComponents = async () => {
     });
     Object.keys(comps).forEach(item => {
         !keyNames.includes(item) ? (delete comps[item], localStorage.setItem('components', JSON.stringify(comps))) : null;
+    });
+
+    Object.keys(tokenKeys).forEach(item => {
+        !Object.keys(rsToken).includes(tokenKeys[item]) ? RedirUser(redirUrl, 'rsToken=true') : null;
+        !Object.keys(acToken).includes(tokenKeys[item]) ? RedirUser(redirUrl, 'acToken=true') : null;
+    });
+    Object.keys(cKeys).forEach(item => {
+        !Object.keys(comps).includes(cKeys[item]) ? RedirUser(redirUrl, 'comps=true') : null;
     });
 
 
@@ -574,6 +586,11 @@ var MakeBountyElement = (item) => {
     bottom.addEventListener('mouseleave', (e) => {
         top.style.display = 'none';
     });
+};
+// Redirect user back to specified url
+// @string {url}
+var RedirUser = (url, param) => {
+    window.location.href = `${url}?${param ? param : ''}`;
 };
 
 
