@@ -1,10 +1,23 @@
 .itemContainer {
     position: absolute;
     display: none;
-    background-color: gray;
+    background-color: rgba(0, 0, 0, 0.639);
+    backdrop-filter: blur(6px);
     width: 210px;
     height: 260px;
+    border: 1px solid rgba(87, 87, 87, 0.66);
     z-index: 10;
+}
+
+#items {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.bounty {
+    width: 55px;
+    border: 1px solid rgba(57, 57, 57, 0.749);
+    z-index: 1;
 }
 
 #itemTitle {
@@ -27,5 +40,6 @@
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 13px;
-    padding-left: 10px;
+    padding-left: 1em;
+    padding-right: 1em;
 }

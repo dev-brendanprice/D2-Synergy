@@ -39,15 +39,7 @@
     width: 50vw;
     position: absolute;
     display: none;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
     text-align: center;
-}
-
-.bounty {
-    width: 55px;
-    z-index: 1;
 }
 
 #entryDataOverlay {

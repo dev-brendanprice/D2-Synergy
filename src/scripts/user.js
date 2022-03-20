@@ -573,7 +573,7 @@ var MakeBountyElement = (param) => {
     // Create bottom element
     item.className = `bounty`;
     item.id = `${param.hash}`;
-    document.querySelector('#charDisplay').appendChild(item);
+    document.querySelector('#items').appendChild(item);
     item.src = `https://www.bungie.net${param.displayProperties.icon}`;
     
     // Create overlay element
