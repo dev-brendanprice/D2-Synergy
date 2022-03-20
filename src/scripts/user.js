@@ -458,7 +458,7 @@ var LoadCharacter = async (classType) => {
 
     // Loop over all bounties and save to array
     charInventory.forEach(item => definitions[item.itemHash].itemType === 26 ? charBounties.push(definitions[item.itemHash]) : null);
-    log(charBounties);
+    // log(charBounties);
 
     // Function that compares object properties by index from keyNames
     var sortBounties = ( a, b ) => {
@@ -491,8 +491,7 @@ var LoadCharacter = async (classType) => {
 
     // Loop over each item and check to see if item is bounty, true = push to arr, false = just ignore execution.
     charBounties.forEach(item => (MakeBountyElement(item), amountOfBounties++));
-
-    document.getElementById('subTitleTwo').innerHTML = `${amountOfBounties} Bounty(s) Found`;
+    document.getElementById('subTitle').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
 
     // Stop loading sequence
     StopLoad();
@@ -560,31 +559,52 @@ var StopLoad = () => {
     document.getElementById('slider').style.display = 'none';
 };
 // Make element for entry data when hash is found in definitions
-// @obj {item}
-var MakeBountyElement = (item) => {
+// @obj {param}
+var MakeBountyElement = (param) => {
 
-    const bottom = document.createElement('img'),
-        top = document.createElement('div');
+    const item = document.createElement('img'),
+          itemOverlay = document.createElement('div'),
+          itemTitle = document.createElement('div'),
+          itemType = document.createElement('div'),
+          itemDesc = document.createElement('div'),
+          hr = document.createElement('hr');
 
+    
     // Create bottom element
-    bottom.className = `entryData`;
-    bottom.id = `${item.itemHash}`;
-    document.querySelector('#charDisplay').appendChild(bottom);
-    bottom.src = `https://www.bungie.net${item.displayProperties.icon}`;
+    item.className = `bounty`;
+    item.id = `${param.hash}`;
+    document.querySelector('#charDisplay').appendChild(item);
+    item.src = `https://www.bungie.net${param.displayProperties.icon}`;
+    
+    // Create overlay element
+    itemOverlay.className = `itemContainer`;
+    itemOverlay.id = `item_${param.hash}`;
+    document.querySelector('#overlays').appendChild(itemOverlay);
 
-    // Create element that overlays on mouseOver event
-    top.className = `entryDataOverlay`;
-    document.querySelector('#overlays').appendChild(top);
-    top.innerHTML = item.displayProperties.name;
+    // Prop content of item
+    itemTitle.id = 'itemTitle';
+    itemType.id = 'itemType';
+    itemDesc.id = 'itemDesc';
+    itemTitle.innerHTML = param.displayProperties.name;
+    itemType.innerHTML = param.itemTypeDisplayName;
+    itemDesc.innerHTML = param.displayProperties.description;
 
-    // Watch for mouse movement and mouse leave
-    bottom.addEventListener('mousemove', (e) => {
-        top.style.display = 'block';
-        top.style.marginLeft = `${e.pageX}px`;
-        top.style.marginTop = `${e.pageY}px`;
+    // Assign content to parent
+    document.querySelector(`#item_${param.hash}`).appendChild(itemTitle);
+    document.querySelector(`#item_${param.hash}`).appendChild(itemType);
+    document.querySelector(`#item_${param.hash}`).appendChild(hr);
+    document.querySelector(`#item_${param.hash}`).appendChild(itemDesc);
+    
+
+    // Watch for mouse events
+    item.addEventListener('mousemove', (e) => {
+        itemOverlay.style.display = 'block';
+        itemOverlay.style.marginLeft = `${e.pageX}px`;
+        itemOverlay.style.marginTop = `${e.pageY}px`;
     });
-    bottom.addEventListener('mouseleave', (e) => {
-        top.style.display = 'none';
+
+    item.addEventListener('mouseleave', (e) => {
+        itemOverlay.style.display = 'none';
     });
 };
 // Redirect user back to specified url
