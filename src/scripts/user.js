@@ -341,7 +341,7 @@ var OAuthFlow = async () => {
 var FetchBungieUserDetails = async () => {
     
     var components = JSON.parse(localStorage.getItem('components')),
-        axiosConfig = { 
+        AuthConfig = { 
             headers: { 
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, 
                 "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" 
@@ -358,12 +358,12 @@ var FetchBungieUserDetails = async () => {
     if (!membershipType || !destinyMemberships || !destinyUserProfile) {
 
         // Fetch bungie memberships
-        var bungieMemberships = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`, axiosConfig);
+        var bungieMemberships = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`, AuthConfig);
         destinyMemberships = bungieMemberships.data.Response;
         membershipType = destinyMemberships.destinyMemberships[0].membershipType;
 
         // Fetch user profile
-        var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=200`, axiosConfig);
+        var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=200`, AuthConfig);
         destinyUserProfile = userProfile.data.Response;
 
         // Cache the response
