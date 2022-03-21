@@ -382,6 +382,7 @@ var FetchBungieUserDetails = async () => {
             var char = characterData[item];
             document.getElementById(`charImg${char.classType}`).src = `https://www.bungie.net${char.emblemPath}`;
             document.getElementById(`classType${char.classType}`).innerHTML = `${parseChar(char.classType)}`;
+            document.getElementById(`charBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
         };
     };
 };
@@ -521,7 +522,6 @@ var parseChar = (classType) => {
 // Log user out on request
 // @ {}
 var Logout = () => {
-    log('clicked')
     localStorage.clear();
     sessionStorage.clear();
     window.location.href = 'http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html';

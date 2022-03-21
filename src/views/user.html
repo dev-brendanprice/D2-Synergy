@@ -25,14 +25,19 @@
 
     <div class="mainContainer">
         <div id="charSelect">
-            <div id="charContainer0" onclick="LoadCharacter(0)"> <!-- 0,1,2 top to bottom -->
-                <img id="charImg0" src=""><span id="classType0"></span>
+            <div class="charContainer" id="charContainer0" onclick="LoadCharacter(0)">
+                <img class="charBg" id="charBg0"></img>
+                <img class="charImg" id="charImg0" src=""><span class="classType" id="classType0"></span>
             </div>
-            <div id="charContainer1" onclick="LoadCharacter(1)">
-                <img id="charImg1" src=""><span id="classType1"></span>
+            <div class="charContainer" id="charContainer1" onclick="LoadCharacter(1)">
+                <img class="charBg" id="charBg1"></img>
+                <img class="charImg" id="charImg1" src=""><span class="classType" id="classType1"></span>
             </div>
-            <div id="charContainer2" onclick="LoadCharacter(2)">
-                <img id="charImg2" src=""><span id="classType2"></span>
+            <div class="charContainer" id="charContainer2" onclick="LoadCharacter(2)">
+                <img class="charBg" id="charBg2"></img>
+                <div class="charContent">
+                    <img class="charImg" id="charImg2" src=""><span class="classType" id="classType2"></span>
+                </div>
             </div>
         </div>
         <div id="charDisplay">
