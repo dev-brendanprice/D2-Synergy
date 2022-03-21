@@ -339,49 +339,51 @@ var OAuthFlow = async () => {
 
 // Fetch basic bungie user details
 var FetchBungieUserDetails = async () => {
-
-    var components = JSON.parse(localStorage.getItem('components'));
+    
+    var components = JSON.parse(localStorage.getItem('components')),
+        axiosConfig = { 
+            headers: { 
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, 
+                "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" 
+            }
+        };
+        
 
     // Variables to check/store
     membershipType = sessionStorage.getItem('membershipType'),
     destinyMemberships = JSON.parse(sessionStorage.getItem('destinyMemberships')),
     destinyUserProfile = JSON.parse(sessionStorage.getItem('destinyUserProfile'));
 
-
-    // If user has not loaded the page before, within current session
+    // If user has no cache
     if (!membershipType || !destinyMemberships || !destinyUserProfile) {
 
-        // Fetch character information from API
-        var resGetMembershipsById = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
-        destinyMemberships = resGetMembershipsById.data.Response;
+        // Fetch bungie memberships
+        var bungieMemberships = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`, axiosConfig);
+        destinyMemberships = bungieMemberships.data.Response;
         membershipType = destinyMemberships.destinyMemberships[0].membershipType;
-        var resProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=200`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
-        destinyUserProfile = resProfile.data.Response;
+
+        // Fetch user profile
+        var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=200`, axiosConfig);
+        destinyUserProfile = userProfile.data.Response;
+
+        // Cache the response
         sessionStorage.setItem('membershipType', membershipType);
         sessionStorage.setItem('destinyMemberships', JSON.stringify(destinyMemberships));
         sessionStorage.setItem('destinyUserProfile', JSON.stringify(destinyUserProfile));
     };
-    
-    // If user has loaded the page before, within current session
+
+    // Load from cache
     if (membershipType || destinyMemberships || destinyUserProfile) {
 
-        // Index response to display characters' info
-        for (var item in destinyUserProfile.characters.data) {
-            var char = destinyUserProfile.characters.data[item];
-            if (char.classType == 0) {
-                document.getElementById('charImg0').src = `https://www.bungie.net${char.emblemPath}`;
-                document.getElementById('classType0').innerHTML = 'Titan';
-            } else if (char.classType == 1) {
-                document.getElementById('charImg1').src = `https://www.bungie.net${char.emblemPath}`;
-                document.getElementById('classType1').innerHTML = 'Hunter';
-            } else if (char.classType == 2) {
-                document.getElementById('charImg2').src = `https://www.bungie.net${char.emblemPath}`;
-                document.getElementById('classType2').innerHTML = 'Warlock';
-            };
+        // Loop over characters
+        var characterData = destinyUserProfile.characters.data;
+        for (var item in characterData) {
+
+            var char = characterData[item];
+            document.getElementById(`charImg${char.classType}`).src = `https://www.bungie.net${char.emblemPath}`;
+            document.getElementById(`classType${char.classType}`).innerHTML = `${parseChar(char.classType)}`;
         };
     };
-
-    log('-> Bungie User Fetched!');
 };
 
 
