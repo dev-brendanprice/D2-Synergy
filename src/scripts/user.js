@@ -380,9 +380,11 @@ var FetchBungieUserDetails = async () => {
         for (var item in characterData) {
 
             var char = characterData[item];
+            document.getElementsByClassName('charImg')[char.classType].style.border = '1px solid white';
+            document.getElementById(`charBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
             document.getElementById(`charImg${char.classType}`).src = `https://www.bungie.net${char.emblemPath}`;
             document.getElementById(`classType${char.classType}`).innerHTML = `${parseChar(char.classType)}`;
-            document.getElementById(`charBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
+            document.getElementById(`charLight${char.classType}`).innerHTML = `${char.light}`;
         };
     };
 };
