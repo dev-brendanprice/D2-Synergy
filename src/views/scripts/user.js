@@ -435,52 +435,137 @@ var LoadCharacter = async (classType) => {
         charBounties = [];
 
     // Declare sorting keys
-    var vendorKeys = [
+    var itemTypeKeys = [
         'weekly',
         'daily',
         'repeatable'
+    ],
+    vendorKeys = [
+        'clan',
+        'cosmodrome',
+        // 'crucible',
+        'dawning',
+        'dreaming_city',
+        'edz',
+        'eternity',
+        'europa',
+        'fotl', // Festive of the Lost
+        'gambit',
+        'gunsmith',
+        'iron_banner',
+        'luna',
+        'myriad', // Nessus
+        'other',
+        'solstice',
+        'spring',
+        'strikes',
+        'throneworld',
+        'transmog',
+        'trials',
+        'war_table'
     ];
 
-    // Loop over all bounties and save to array
-    charInventory.forEach(item => definitions[item.itemHash].itemType === 26 ? charBounties.push(definitions[item.itemHash]) : null);
-    // log(charBounties);
+    // Make array with categories
+    itemArr = {};
+    vendorKeys.forEach(key => {
+        itemArr[key] = [];
+    });
 
-    // Function that compares object properties by index from keyNames
-    var sortBounties = ( a, b ) => {
+    // Put matching items into sub arrays
+    // vendorKeys.forEach(v => {
+    //     charInventory.forEach(i => {
+    //         let item = definitions[i.itemHash];
+    //         if (item.itemType === 26) {
+    //             item.inventory.stackUniqueLabel.includes(v) ? itemArr[v].push(item) : null;
+    //         };
+    //     });
+    // });
+
+    // Object.keys(charInventory).forEach(i => {
+    //     var item = definitions[charInventory[i].itemHash];
+    //     if (item.itemType === 26) {
+    //         vendorKeys.forEach(v => {
+    //             // log(item.inventory.stackUniqueLabel.includes(v));
+    //             // item.inventory.stackUniqueLabel.includes(v) ? itemArr[v].push(item) : log(item.inventory.stackUniqueLabel);
+    //         });
+    //     };
+    // });
+
+    charInventory.forEach(v => {
+        var item = definitions[v.itemHash];
+        if (item.itemType === 26) {
+            charBounties.push(item);
+        };
+    });
+    
+
+    charBounties.forEach(v => {
+
+        indexFound = false;
+        vendorKeys.forEach(i => {
+            if (v.inventory.stackUniqueLabel.includes(i)) {
+                itemArr[i].push(v);
+                indexFound = true;
+            } // doesnt work
+            // log(c, vendorKeys.length)
+        });
+    });
+    log(itemArr);
+    
+
+    // Sort items via item type
+    var sortBountiesByType = ( a, b ) => {
 
         var stackLabelA = a.inventory.stackUniqueLabel,
             stackLabelB = b.inventory.stackUniqueLabel,
             stackTypeA,
             stackTypeB;
         
-            // Remove numbers & get key names from stackUniqueLabel even if it contains _
+        // Remove numbers & get key names from stackUniqueLabel even if it contains _
         stackLabelA.split('.').forEach(v => {
             let keyFromStack = v.replace(/[0-9]/g, '');
-            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => vendorKeys.includes(x) ? stackTypeA = x : null) : vendorKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
+            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeA = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
         });
         stackLabelB.split('.').forEach(v => {
             let keyFromStack = v.replace(/[0-9]/g, '');
-            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => vendorKeys.includes(x) ? stackTypeB = x : null) : vendorKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
+            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeB = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
         });
 
-        if (vendorKeys.indexOf(stackTypeA) < vendorKeys.indexOf(stackTypeB)){
+        // Sort items by returning index
+        if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)){
             return -1;
         };
-    
-        if (vendorKeys.indexOf(stackTypeA) > vendorKeys.indexOf(stackTypeB)){
+        if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)){
             return 1;
         };
         return 0;
     };
-    charBounties.sort(sortBounties);
 
-    // Loop over each item and check to see if item is bounty, true = push to arr, false = just ignore execution.
-    charBounties.forEach(item => (MakeBountyElement(item), amountOfBounties++));
-    document.getElementById('subTitle').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
+    // Sort bounties via sub arrays and into types
+    // Object.keys(itemArr).forEach(v => {
 
-    // Stop loading sequence
-    StopLoad();
-    log(`-> Indexed ${parseChar(classType)}!`);
+    //     let item = itemArr[v];
+
+    //     // Sort each sub array
+    //     if (item.length !== 0) {
+    //         item.sort(sortBountiesByType);
+    //         // log(item, v);
+    //         // item.forEach(i => {
+    //         //     // log(i.inventory.stackUniqueLabel)
+    //         //     // Render each item to DOM
+    //         //     // MakeBountyElement(item);
+    //         //     // amountOfBounties++;
+    //         // });
+    //     };
+    // });
+
+    // Loop over each bounty and render to DOM
+    // itemArr.forEach(item => (MakeBountyElement(item), amountOfBounties++));
+    // document.getElementById('subTitle').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
+
+    // // Stop loading sequence
+    // StopLoad();
+    // log(`-> Indexed ${parseChar(classType)}!`);
 };
 
 
@@ -614,6 +699,9 @@ var RedirUser = (url, param) => {
     await GetDestinyManifest();
     await FetchBungieUserDetails();
 
+    // -- dev --
+    LoadCharacter(0);
+
     // Processes done
     StopLoad();
     log(`-> OAuth Flow Done! [Elapsed: ${(new Date() - startTime)}ms]`);
@@ -621,3 +709,7 @@ var RedirUser = (url, param) => {
 .catch(error => {
     console.error(error);
 });
+
+
+
+// new Set($InventoryItem.map(v => v.itemType === 26 ? (v.inventory.stackUniqueLabel.includes('clan') || v.inventory.stackUniqueLabel.includes('clans') ? v.inventory.stackUniqueLabel : null) : null));
