@@ -3,7 +3,6 @@
     border-radius: 5px;
     border: 1px #56606d solid;
     width: 50vw;
-    height: 90vh;
     margin: auto;
     margin-top: 20px;
 }
@@ -65,6 +64,7 @@
 
 .charContainer {
     position: relative;
+    cursor: pointer;
     margin-top: 20px;
     width: 30%;
 }

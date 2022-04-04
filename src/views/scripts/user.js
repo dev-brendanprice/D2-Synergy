@@ -42,10 +42,6 @@ db.version(1).stores({
 // Validate and/or update manifest
 var GetDestinyManifest_New = async () => {
 
-    const requiredDbEntries = [
-        'DestinyInvetoryItemDefinition'
-    ];
-
     var storedManifestVersion = localStorage.getItem('destinyManifestVersion'),
         jsonWorldContent    = await db.table('jsonWorldContentPaths').toArray(),
         jsonWorldComponents = await db.table('jsonWorldComponentContentPaths').toArray(),
@@ -57,25 +53,15 @@ var GetDestinyManifest_New = async () => {
     var manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
     manifest = manifest.data.Response;
 
-
     // Fetch content from manifest url
     delete axios.defaults.headers.common['X-API-Key'];
     var worldContent = await axios.get(`https://www.bungie.net${manifest.jsonWorldContentPaths[browserLanguageType]}`),
-        worldContentKeys = worldContent.data;
+        worldContent = worldContent.data;
 
+    var worldComponents = await axios.get(`https://www.bungie.net${manifest.jsonWorldComponentContentPaths[browserLanguageType]}`),
+        worldComponents = worldComponents.data;
 
-    // Formalize array of object keys
-    for (key in worldContentKeys) {
-        if (requiredDbEntries.includes(key)) {
-            manifestKeys.push(key);
-            // Fetch manifest content
-        };
-    };
-
-    // Fetch new manifest if version is not the same
-    // if (storedManifestVersion !== manifest.version) {
-    //     // Fetch manifest content
-    // };
+    // Pull manually what you need instead of dynamically doing it 
 };
 
 
@@ -402,9 +388,9 @@ var LoadCharacter = async (classType) => {
     // Elements
     document.getElementById('charSelect').style.display = 'none';
     document.getElementById('charDisplay').style.display = 'inline-block';
-    var thing = document.getElementsByClassName('mainContainer');
-    thing[0].style.background = 'none';
-    thing[0].style.border = 'none';
+    var thing = document.getElementsByClassName('mainContainer')[0].style;
+    thing.background = 'none';
+    thing.border = 'none';
 
 
     // Globals
@@ -567,13 +553,13 @@ var MakeBountyElement = (param) => {
           itemDesc = document.createElement('div'),
           hr = document.createElement('hr');
 
-    
+
     // Create bottom element
     item.className = `bounty`;
     item.id = `${param.hash}`;
     document.querySelector('#items').appendChild(item);
     item.src = `https://www.bungie.net${param.displayProperties.icon}`;
-    
+
     // Create overlay element
     itemOverlay.className = `itemContainer`;
     itemOverlay.id = `item_${param.hash}`;

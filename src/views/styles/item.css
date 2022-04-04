@@ -33,13 +33,13 @@
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-style: italic;
     font-size: 11px;
-    padding-left: 10px;
+    padding-left: 12px;
 }
 
 #itemDesc {
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 13px;
-    padding-left: 1em;
+    padding-left: 10px;
     padding-right: 1em;
 }
