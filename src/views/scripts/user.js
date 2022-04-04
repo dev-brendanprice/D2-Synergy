@@ -504,8 +504,7 @@ var LoadCharacter = async (classType) => {
         vendorKeys.forEach(i => {
             if (v.inventory.stackUniqueLabel.includes(i)) {
                 itemArr[i].push(v);
-            } // doesnt work
-            // log(c, vendorKeys.length)
+            }; // (partially) doesnt work
         });
     });
     log(itemArr);
