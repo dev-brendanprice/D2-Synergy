@@ -501,11 +501,9 @@ var LoadCharacter = async (classType) => {
 
     charBounties.forEach(v => {
 
-        indexFound = false;
         vendorKeys.forEach(i => {
             if (v.inventory.stackUniqueLabel.includes(i)) {
                 itemArr[i].push(v);
-                indexFound = true;
             } // doesnt work
             // log(c, vendorKeys.length)
         });
