@@ -443,7 +443,7 @@ var LoadCharacter = async (classType) => {
     vendorKeys = [
         'clan',
         'cosmodrome',
-        // 'crucible',
+        'crucible',
         'dawning',
         'dreaming_city',
         'edz',
@@ -455,42 +455,23 @@ var LoadCharacter = async (classType) => {
         'iron_banner',
         'luna',
         'myriad', // Nessus
-        'other',
         'solstice',
         'spring',
         'strikes',
         'throneworld',
         'transmog',
         'trials',
-        'war_table'
+        'war_table',
+        'other'
     ];
 
-    // Make array with categories
-    itemArr = {};
+    // Make array with groups
+    bountyArr = {};
     vendorKeys.forEach(key => {
-        itemArr[key] = [];
+        bountyArr[key] = [];
     });
 
-    // Put matching items into sub arrays
-    // vendorKeys.forEach(v => {
-    //     charInventory.forEach(i => {
-    //         let item = definitions[i.itemHash];
-    //         if (item.itemType === 26) {
-    //             item.inventory.stackUniqueLabel.includes(v) ? itemArr[v].push(item) : null;
-    //         };
-    //     });
-    // });
-
-    // Object.keys(charInventory).forEach(i => {
-    //     var item = definitions[charInventory[i].itemHash];
-    //     if (item.itemType === 26) {
-    //         vendorKeys.forEach(v => {
-    //             // log(item.inventory.stackUniqueLabel.includes(v));
-    //             // item.inventory.stackUniqueLabel.includes(v) ? itemArr[v].push(item) : log(item.inventory.stackUniqueLabel);
-    //         });
-    //     };
-    // });
-
+    // Loop over inventory items and emit bounties
     charInventory.forEach(v => {
         var item = definitions[v.itemHash];
         if (item.itemType === 26) {
@@ -498,16 +479,22 @@ var LoadCharacter = async (classType) => {
         };
     });
     
-
+    // Loop over bounties and sort into groups
     charBounties.forEach(v => {
-
-        vendorKeys.forEach(i => {
-            if (v.inventory.stackUniqueLabel.includes(i)) {
-                itemArr[i].push(v);
-            }; // (partially) doesnt work
-        });
+        for (let i=1; i<vendorKeys.length; i++) {
+            // log(vendorKeys.length, i, v.inventory.stackUniqueLabel, vendorKeys[i]);
+            if (vendorKeys.length-1 === i) {
+                bountyArr['other'].push(v);
+                break;
+            }
+            else if (vendorKeys.length !== i) {
+                if (v.inventory.stackUniqueLabel.includes(vendorKeys[i])) {
+                    bountyArr[vendorKeys[i]].push(v);
+                    break;
+                };
+            };
+        };
     });
-    log(itemArr);
     
 
     // Sort items via item type
@@ -538,31 +525,27 @@ var LoadCharacter = async (classType) => {
         return 0;
     };
 
-    // Sort bounties via sub arrays and into types
-    // Object.keys(itemArr).forEach(v => {
+    // Loop through bounties and sort groups' bounties
+    Object.keys(bountyArr).forEach(v => {
 
-    //     let item = itemArr[v];
+        let group = bountyArr[v];
 
-    //     // Sort each sub array
-    //     if (item.length !== 0) {
-    //         item.sort(sortBountiesByType);
-    //         // log(item, v);
-    //         // item.forEach(i => {
-    //         //     // log(i.inventory.stackUniqueLabel)
-    //         //     // Render each item to DOM
-    //         //     // MakeBountyElement(item);
-    //         //     // amountOfBounties++;
-    //         // });
-    //     };
-    // });
+        if (group.length !== 0) {
+            group.sort(sortBountiesByType);
+            group.forEach(item => {
+                MakeBountyElement(item);
+                amountOfBounties++;
+            });
+        };
+    });
 
     // Loop over each bounty and render to DOM
-    // itemArr.forEach(item => (MakeBountyElement(item), amountOfBounties++));
-    // document.getElementById('subTitle').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
+    // bountyArr.forEach(item => (MakeBountyElement(item), amountOfBounties++));
+    document.getElementById('subTitle').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
 
-    // // Stop loading sequence
-    // StopLoad();
-    // log(`-> Indexed ${parseChar(classType)}!`);
+    // Stop loading sequence
+    StopLoad();
+    log(`-> Indexed ${parseChar(classType)}!`);
 };
 
 
@@ -672,7 +655,7 @@ var MakeBountyElement = (param) => {
     item.addEventListener('mouseleave', (e) => {
         itemOverlay.style.display = 'none';
     });
-};
+};  
 // Redirect user back to specified url
 // @string {url}
 var RedirUser = (url, param) => {
