@@ -1,5 +1,7 @@
 body {
     background-color: #22272e;
+    padding: 0;
+    margin: 0;
 }
 
 
@@ -7,12 +9,21 @@ body {
 #navBarContainer {
     position: fixed;
     top: 0;
-    height: 30px;
-    width: 100%;
-    background-color: #131415;
+    height: 40px;
+    width: 100vw;
+    background-color: #202020;
 }
-#navBarTitle {
+#navBarIcon {
+    display: inline-block;
+    width: 50px;
+    border: green 1px solid;
+}
+#navBarLogout {
+    display: inline-block;
     color: white;
+    width: 30px;
+    margin-left: 90%;
+    border: green 1px solid;
 }
 
 

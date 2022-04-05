@@ -34,7 +34,7 @@
     width: 50vw;
     position: absolute;
     display: none;
-    text-align: center;
+    text-align: left;
 }
 
 #entryDataOverlay {
@@ -56,6 +56,27 @@
 
 /* user select */
 
+#charDisplayTitle {
+    margin-top: 20px;
+}
+
+#charDisplayTitle_Character {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    margin-left: 26px;
+    font-size: 20px;
+}
+
+#charDisplayTitle_Category {
+    display: inline-block;
+    color: white;
+    font-style: italic;
+    font-weight: 0;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 18px;
+}
 
 #charSelect {
     margin: 0 auto;
@@ -105,82 +126,9 @@
 
 .charLight {
     margin-left: 55px;
-    /* margin-top: -35px; */
     font-size: 13px;
     color: rgb(255, 255, 0);
     font-weight: bold;
     letter-spacing: 1px;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-}
-
-
-/* loading bar */
-
-#loadBarContainer {
-    /* position: -webkit-sticky; */
-    position: fixed;
-}
-
-#slider{
-    position: absolute;
-    margin-top: -21px;
-    margin-left: -10px;
-    width: 103vw;
-    height: 3px;
-    overflow-x: hidden;
-}
-
-.line{
-    position: absolute;
-    opacity: 0.4;
-    background: #4a8df8;
-    width: 103vw;
-    height: 5px;
-    overflow-x: hidden;
-}
-
-.subline{
-    position: absolute;
-    background: #4a8df8;
-    height: 5px; 
-    overflow-x: hidden;
-}
-.inc{
-    animation: increase 2s infinite;
-}
-.dec{
-    animation: decrease 2s 0.5s infinite;
-}
-
-@keyframes increase {
-    from { left: -5%; width: 5%; }
-    to { left: 130%; width: 100%; }
-}
-@keyframes decrease {
-    from { left: -80%; width: 80%; }
-    to { left: 110%; width: 10%; }
-}
-
-
-/* Custom Scrollbar */
-
-/* width */
-::-webkit-scrollbar {
-    width: 7px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: none;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: rgb(116, 116, 116);
-    border-radius: 12px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
 }

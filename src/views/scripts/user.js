@@ -195,7 +195,7 @@ var BungieOAuth = async (authCode) => {
 
 
 // Check tokens for expiration
-var CheckComponents = async () => {
+var CheckComponents = async (bool) => {
     
     var acToken = JSON.parse(localStorage.getItem('accessToken')),
         rsToken = JSON.parse(localStorage.getItem('refreshToken')),
@@ -270,7 +270,7 @@ var CheckComponents = async () => {
             });
         isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
     };
-    log('-> Tokens Validated!');
+    bool ? log('-> Tokens Validated!') : null;
 };
 
 
@@ -345,12 +345,12 @@ var FetchBungieUserDetails = async () => {
 
         // Fetch bungie memberships
         var bungieMemberships = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`, AuthConfig);
-        destinyMemberships = bungieMemberships.data.Response;
-        membershipType = destinyMemberships.destinyMemberships[0].membershipType;
+            destinyMemberships = bungieMemberships.data.Response;
+            membershipType = destinyMemberships.destinyMemberships[0].membershipType;
 
         // Fetch user profile
         var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=200`, AuthConfig);
-        destinyUserProfile = userProfile.data.Response;
+            destinyUserProfile = userProfile.data.Response;
 
         // Cache the response
         sessionStorage.setItem('membershipType', membershipType);
@@ -383,31 +383,33 @@ var LoadCharacter = async (classType) => {
     StartLoad();
 
     // Validate tokens and other components
-    await CheckComponents();
+    await CheckComponents(false);
 
-    // Elements
-    document.getElementById('charSelect').style.display = 'none';
-    document.getElementById('charDisplay').style.display = 'inline-block';
-    var thing = document.getElementsByClassName('mainContainer')[0].style;
-    thing.background = 'none';
-    thing.border = 'none';
-
-
+    
     // Globals
-    var className,
+    var className = parseChar(classType),
         characterId,
         CharacterInventories,
         definitions = {},
-        definitionsMobile = {},
-        definitionsCategories = {},
         membershipType = sessionStorage.getItem('membershipType');
+
+
+    // Edit DOM content
+    document.getElementById('charSelect').style.display = 'none';
+    document.getElementById('charDisplay').style.display = 'inline-block';
+    var mainContainer = document.getElementsByClassName('mainContainer')[0].style;
+        mainContainer.background = 'none';
+        mainContainer.border = 'none';
+        // debugger;
+    document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
+
 
     // Get chosen character and save index  
     for (var item in destinyUserProfile.characters.data) {
 
         var char = destinyUserProfile.characters.data[item];
         if (char.classType === classType) {
-            className = parseChar(classType);
+            // className = parseChar(classType);
             characterId = char.characterId;
         };
     };
@@ -418,19 +420,12 @@ var LoadCharacter = async (classType) => {
         definitions = massiveObj[0].data;
     });
 
-    // Get manifest for category content and return it
-    await db.jsonWorldContentPaths.where({keyName: 'DestinyItemCategoryDefinition'}).toArray()
-    .then(massiveObj => {
-        definitionsCategories = massiveObj[0].data;
-    });
-
     // OAuth header guarantees a response
     var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
 
     // Iterate over CharacterInventories[characterId].items
     var charInventory = CharacterInventories[characterId].items,
-        amountOfItems = 0,
         amountOfBounties = 0,
         charBounties = [];
 
@@ -440,6 +435,16 @@ var LoadCharacter = async (classType) => {
         'daily',
         'repeatable'
     ],
+    baseYields = {
+        'weekly': 12_000,
+        'daily': 6_000,
+        'repeatable': 4_000
+    },
+    petraYields = {
+        'weekly': 6_000,
+        'daily': 1_000,
+        'repeatable': 0
+    },
     vendorKeys = [
         'clan',
         'cosmodrome',
@@ -472,29 +477,10 @@ var LoadCharacter = async (classType) => {
     });
 
     // Loop over inventory items and emit bounties
-    charInventory.forEach(v => {
-        var item = definitions[v.itemHash];
-        if (item.itemType === 26) {
-            charBounties.push(item);
-        };
-    });
+    charBounties = EmitBounties(charInventory, {definitions});
     
     // Loop over bounties and sort into groups
-    charBounties.forEach(v => {
-        for (let i=1; i<vendorKeys.length; i++) {
-            // log(vendorKeys.length, i, v.inventory.stackUniqueLabel, vendorKeys[i]);
-            if (vendorKeys.length-1 === i) {
-                bountyArr['other'].push(v);
-                break;
-            }
-            else if (vendorKeys.length !== i) {
-                if (v.inventory.stackUniqueLabel.includes(vendorKeys[i])) {
-                    bountyArr[vendorKeys[i]].push(v);
-                    break;
-                };
-            };
-        };
-    });
+    bountyArr = SortByGroup(charBounties, {bountyArr, vendorKeys, itemTypeKeys});
     
 
     // Sort items via item type
@@ -540,12 +526,52 @@ var LoadCharacter = async (classType) => {
     });
 
     // Loop over each bounty and render to DOM
-    // bountyArr.forEach(item => (MakeBountyElement(item), amountOfBounties++));
-    document.getElementById('subTitle').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
+    // document.getElementById('amountOfBounties').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
 
     // Stop loading sequence
     StopLoad();
     log(`-> Indexed ${parseChar(classType)}!`);
+};
+
+
+// Sort items into bounties
+var EmitBounties = (charInventory, arr) => {
+
+    charBounties = [];
+    charInventory.forEach(v => {
+        var item = arr.definitions[v.itemHash];
+        if (item.itemType === 26) {
+            charBounties.push(item);
+        };
+    });
+    return charBounties;
+};
+
+
+// Sort bounties via groups then type
+var SortByGroup = (charBounties, arr) => {
+
+    charBounties.forEach(v => {
+        for (let i=1; i < arr.vendorKeys.length; i++) {
+            if (arr.vendorKeys.length-1 === i) {
+                arr.bountyArr['other'].push(v);
+                break;
+            }
+            else if (arr.vendorKeys.length !== i) {
+                if (v.inventory.stackUniqueLabel.includes(arr.vendorKeys[i])) {
+                    arr.bountyArr[arr.vendorKeys[i]].push(v);
+                    break;
+                };
+            };
+        };
+    });
+    return arr.bountyArr;
+};
+
+
+// Calculate total XP gain from all (active) bounties
+var CalcXpYield = (charBounties, arr) => {
+
 };
 
 
