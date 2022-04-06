@@ -395,7 +395,7 @@ var LoadCharacter = async (classType) => {
 
 
     // Edit DOM content
-    var mainContainer = document.getElementsByClassName('mainContainer')[0].style;
+    var mainContainer = document.getElementById('mainContainer').style;
         mainContainer.background = 'none';
         mainContainer.border = 'none';
     document.getElementById('charSelect').style.display = 'none';
@@ -732,12 +732,15 @@ var MakeBountyElement = (param) => {
 
     // Watch for mouse events
     item.addEventListener('mousemove', (e) => {
-        itemOverlay.style.display = 'block';
-        itemOverlay.style.marginLeft = `${e.pageX}px`;
-        itemOverlay.style.marginTop = `${e.pageY}px`;
+        // var el = itemOverlay.style;
+        itemOverlay.style.display = 'inline-block';
+        itemOverlay.style.left = `${e.pageX}px`;
+        itemOverlay.style.top = `${e.pageY}px`;
+        log('on');
     });
 
     item.addEventListener('mouseleave', (e) => {
+        log('OFF');
         itemOverlay.style.display = 'none';
     });
 };  

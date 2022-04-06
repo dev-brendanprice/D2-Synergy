@@ -1,10 +1,15 @@
-.mainContainer {
+#mainContainer {
+    /* position: absolute; */
+    /* position: relative; */
+    /* margin-top: 70px; 50px base as required */
     background-color: #3e454e;
-    border-radius: 5px;
+    border-radius: 4px;
     border: 1px #56606d solid;
-    width: 50vw;
-    margin: auto;
-    margin-top: 20px;
+    width: 70vw;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #subTitleContainer {
@@ -28,11 +33,6 @@
 }
 
 #charDisplay {
-    background-color: #3e454e;
-    border-radius: 5px;
-    border: 1px #56606d solid;
-    width: 50vw;
-    position: absolute;
     display: none;
     text-align: left;
 }

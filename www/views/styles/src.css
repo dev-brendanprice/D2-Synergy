@@ -1,62 +1,50 @@
 body {
     background-color: #22272e;
-    padding: 0;
-    margin: 0;
 }
 
 
 /* Navbar */
 #navBarContainer {
     position: fixed;
-    height: 45px;
-    width: 100vw;
-    background-color: #202020;
+    top: 0;
+    height: 30px;
+    width: 100%;
+    background-color: #131415;
 }
-#navBarIcon {
-    width: 45px;
+#navBarTitle {
+    color: white;
 }
-#navBarLogout {
-    width: 25px;
-    height: auto;
-}
-#navBarIconContainer {
-    display: inline-block;
-    margin-left: 10px;
-}
-#navBarLogoutContainer {
-    float: right;
-    margin-top: 10px;
-    margin-right: 10px;
-}
+
 
 
 
 /* Loadbar */
 #loadBarContainer {
     position: fixed;
-    margin-top: 43px;
 }
 
-/* moving line */
 #slider{
+    position: absolute;
+    margin-top: -21px;
+    margin-left: -10px;
+    width: 103vw;
     height: 3px;
     overflow-x: hidden;
 }
 
-/* background line */
-.line{ 
+.line{
+    position: absolute;
     opacity: 0.4;
     background: #4a8df8;
-    width: 100vw;
-    height: 3px;
+    width: 103vw;
+    height: 5px;
     overflow-x: hidden;
 }
 
 .subline{
     position: absolute;
     background: #4a8df8;
-    height: 3px;
-    margin-top: -3px;
+    height: 5px; 
     overflow-x: hidden;
 }
 .inc{
@@ -81,13 +69,16 @@ body {
 ::-webkit-scrollbar { /* Width */
     width: 7px;
 }
+
 ::-webkit-scrollbar-track { /* Track */
     background: none;
 }
+
 ::-webkit-scrollbar-thumb { /* Handle */
     background: rgb(116, 116, 116); 
     border-radius: 12px;
 }
+
 ::-webkit-scrollbar-thumb:hover { /* Handle on hover */
     background: #555;
 }
