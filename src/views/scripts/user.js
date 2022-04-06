@@ -469,6 +469,34 @@ var LoadCharacter = async (classType) => {
         'repeatable': 0
     };
 
+    // Sorts by index of item in itemTypeKeys
+    var sortBountiesByType = (a, b) => {
+
+        var stackLabelA = a.inventory.stackUniqueLabel,
+            stackLabelB = b.inventory.stackUniqueLabel,
+            stackTypeA,
+            stackTypeB;
+        
+        // Remove numbers & get key names from stackUniqueLabel even if it contains _
+        stackLabelA.split('.').forEach(v => {
+            let keyFromStack = v.replace(/[0-9]/g, '');
+            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeA = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
+        });
+        stackLabelB.split('.').forEach(v => {
+            let keyFromStack = v.replace(/[0-9]/g, '');
+            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeB = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
+        });
+    
+        // Sort items by returning index
+        if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)){
+            return -1;
+        };
+        if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)){
+            return 1;
+        };
+        return 0;
+    };
+
     // Make array with specified groups
     bountyArr = {};
     vendorKeys.forEach(key => {
@@ -495,6 +523,8 @@ var LoadCharacter = async (classType) => {
 
     // Change DOM content
     // document.getElementById('amountOfBounties').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
+    document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
+    document.getElementById('totalXP').innerHTML = `Total XP: ${totalXpYield}`;
 
     // Stop loading sequence
     StopLoad();
@@ -573,7 +603,7 @@ var SortByType = (bountyArr, utils) => {
 
 
 // Calculate total XP gain from (active) bounties
-var CalcXpYield = async (bountyArr, utils) => {
+var CalcXpYield = (bountyArr, utils) => {
 
     var totalXP = 0;
     Object.keys(bountyArr).forEach(v => {
@@ -716,34 +746,7 @@ var MakeBountyElement = (param) => {
 var RedirUser = (url, param) => {
     window.location.href = `${url}?${param ? param : ''}`;
 };
-// Sorts by index of item in itemTypeKeys
-// -- Inline Call @obj {bounty}
-var sortBountiesByType = (a, b) => {
 
-    var stackLabelA = a.inventory.stackUniqueLabel,
-        stackLabelB = b.inventory.stackUniqueLabel,
-        stackTypeA,
-        stackTypeB;
-    
-    // Remove numbers & get key names from stackUniqueLabel even if it contains _
-    stackLabelA.split('.').forEach(v => {
-        let keyFromStack = v.replace(/[0-9]/g, '');
-        keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeA = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
-    });
-    stackLabelB.split('.').forEach(v => {
-        let keyFromStack = v.replace(/[0-9]/g, '');
-        keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeB = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
-    });
-
-    // Sort items by returning index
-    if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)){
-        return -1;
-    };
-    if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)){
-        return 1;
-    };
-    return 0;
-};
 
 
 
@@ -772,7 +775,3 @@ var sortBountiesByType = (a, b) => {
 .catch(error => {
     console.error(error);
 });
-
-
-
-// new Set($InventoryItem.map(v => v.itemType === 26 ? (v.inventory.stackUniqueLabel.includes('clan') || v.inventory.stackUniqueLabel.includes('clans') ? v.inventory.stackUniqueLabel : null) : null));

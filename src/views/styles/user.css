@@ -78,6 +78,18 @@
     font-size: 18px;
 }
 
+#totalBounties {
+    margin-left: 26px;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
+#totalXP {
+    margin-left: 26px;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
 #charSelect {
     margin: 0 auto;
     width: 50%;
