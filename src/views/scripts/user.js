@@ -395,12 +395,11 @@ var LoadCharacter = async (classType) => {
 
 
     // Edit DOM content
-    document.getElementById('charSelect').style.display = 'none';
-    document.getElementById('charDisplay').style.display = 'inline-block';
     var mainContainer = document.getElementsByClassName('mainContainer')[0].style;
         mainContainer.background = 'none';
         mainContainer.border = 'none';
-        // debugger;
+    document.getElementById('charSelect').style.display = 'none';
+    document.getElementById('charDisplay').style.display = 'inline-block';
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
 
 
@@ -435,16 +434,6 @@ var LoadCharacter = async (classType) => {
         'daily',
         'repeatable'
     ],
-    baseYields = {
-        'weekly': 12_000,
-        'daily': 6_000,
-        'repeatable': 4_000
-    },
-    petraYields = {
-        'weekly': 6_000,
-        'daily': 1_000,
-        'repeatable': 0
-    },
     vendorKeys = [
         'clan',
         'cosmodrome',
@@ -468,64 +457,43 @@ var LoadCharacter = async (classType) => {
         'trials',
         'war_table',
         'other'
-    ];
+    ],
+    baseYields = {
+        'weekly': 12_000,
+        'daily': 6_000,
+        'repeatable': 4_000
+    },
+    petraYields = {
+        'weekly': 6_000,
+        'daily': 1_000,
+        'repeatable': 0
+    };
 
-    // Make array with groups
+    // Make array with specified groups
     bountyArr = {};
     vendorKeys.forEach(key => {
         bountyArr[key] = [];
     });
 
+
     // Loop over inventory items and emit bounties
-    charBounties = EmitBounties(charInventory, {definitions});
+    parsed = ParseBounties(charInventory, {definitions});
+    charBounties = parsed[0]
+    amountOfBounties = parsed[1];
     
     // Loop over bounties and sort into groups
     bountyArr = SortByGroup(charBounties, {bountyArr, vendorKeys, itemTypeKeys});
-    
-
-    // Sort items via item type
-    var sortBountiesByType = ( a, b ) => {
-
-        var stackLabelA = a.inventory.stackUniqueLabel,
-            stackLabelB = b.inventory.stackUniqueLabel,
-            stackTypeA,
-            stackTypeB;
-        
-        // Remove numbers & get key names from stackUniqueLabel even if it contains _
-        stackLabelA.split('.').forEach(v => {
-            let keyFromStack = v.replace(/[0-9]/g, '');
-            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeA = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
-        });
-        stackLabelB.split('.').forEach(v => {
-            let keyFromStack = v.replace(/[0-9]/g, '');
-            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeB = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
-        });
-
-        // Sort items by returning index
-        if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)){
-            return -1;
-        };
-        if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)){
-            return 1;
-        };
-        return 0;
-    };
 
     // Loop through bounties and sort groups' bounties
-    Object.keys(bountyArr).forEach(v => {
+    bountyArr = SortByType(bountyArr, {sortBountiesByType});
 
-        let group = bountyArr[v];
+    // Render items to DOM
+    PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
 
-        if (group.length !== 0) {
-            group.sort(sortBountiesByType);
-            group.forEach(item => {
-                MakeBountyElement(item);
-                amountOfBounties++;
-            });
-        };
-    });
+    // Calculate XP yield from (active) bounties
+    var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
-    // Loop over each bounty and render to DOM
+    // Change DOM content
     // document.getElementById('amountOfBounties').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
 
     // Stop loading sequence
@@ -535,43 +503,104 @@ var LoadCharacter = async (classType) => {
 
 
 // Sort items into bounties
-var EmitBounties = (charInventory, arr) => {
+var ParseBounties = (charInventory, utils) => {
 
-    charBounties = [];
+    var charBounties = [],
+        amountOfBounties = 0;
+
     charInventory.forEach(v => {
-        var item = arr.definitions[v.itemHash];
+        var item = utils.definitions[v.itemHash];
         if (item.itemType === 26) {
             charBounties.push(item);
+            amountOfBounties++;
         };
     });
-    return charBounties;
+    return [charBounties, amountOfBounties];
 };
 
 
-// Sort bounties via groups then type
-var SortByGroup = (charBounties, arr) => {
+// Push bounties to DOM
+var PushToDOM = (bountyArr, utils) => {
+
+    Object.keys(bountyArr).forEach(v => {
+
+        let group = bountyArr[v];
+
+        if (group.length !== 0) {
+            group.forEach(item => {
+                utils.MakeBountyElement(item);
+                utils.amountOfBounties++;
+            });
+        };
+    });
+};
+
+
+// Sort bounties via vendor group
+var SortByGroup = (charBounties, utils) => {
 
     charBounties.forEach(v => {
-        for (let i=1; i < arr.vendorKeys.length; i++) {
-            if (arr.vendorKeys.length-1 === i) {
-                arr.bountyArr['other'].push(v);
+        for (let i=1; i < utils.vendorKeys.length; i++) {
+            if (utils.vendorKeys.length-1 === i) {
+                utils.bountyArr['other'].push(v);
                 break;
             }
-            else if (arr.vendorKeys.length !== i) {
-                if (v.inventory.stackUniqueLabel.includes(arr.vendorKeys[i])) {
-                    arr.bountyArr[arr.vendorKeys[i]].push(v);
+            else if (utils.vendorKeys.length !== i) {
+                if (v.inventory.stackUniqueLabel.includes(utils.vendorKeys[i])) {
+                    utils.bountyArr[utils.vendorKeys[i]].push(v);
                     break;
                 };
             };
         };
     });
-    return arr.bountyArr;
+    return utils.bountyArr;
 };
 
 
-// Calculate total XP gain from all (active) bounties
-var CalcXpYield = (charBounties, arr) => {
+// Sort bounties via bounty type
+var SortByType = (bountyArr, utils) => {
 
+    Object.keys(bountyArr).forEach(v => {
+
+        let group = bountyArr[v];
+
+        if (group.length !== 0) {
+            group.sort(utils.sortBountiesByType);
+        };
+    });
+    return bountyArr;
+};
+
+
+// Calculate total XP gain from (active) bounties
+var CalcXpYield = async (bountyArr, utils) => {
+
+    var totalXP = 0;
+    Object.keys(bountyArr).forEach(v => {
+
+        let group = bountyArr[v];
+        
+        if (group.length !== 0) {
+            group.forEach(z => {
+
+                for (let i=0; i<utils.itemTypeKeys.length; i++) {
+
+                    let label = z.inventory.stackUniqueLabel;
+                    if (label.includes(utils.itemTypeKeys[i])) {
+
+                        if (label.includes('dreaming_city')) {
+                            totalXP += utils.petraYields[utils.itemTypeKeys[i]];
+                        }
+                        else {
+                            totalXP += utils.baseYields[utils.itemTypeKeys[i]];
+                        };
+                        break;
+                    };
+                };
+            });
+        };
+    });
+    return totalXP;
 };
 
 
@@ -687,10 +716,38 @@ var MakeBountyElement = (param) => {
 var RedirUser = (url, param) => {
     window.location.href = `${url}?${param ? param : ''}`;
 };
+// Sorts by index of item in itemTypeKeys
+// -- Inline Call @obj {bounty}
+var sortBountiesByType = (a, b) => {
+
+    var stackLabelA = a.inventory.stackUniqueLabel,
+        stackLabelB = b.inventory.stackUniqueLabel,
+        stackTypeA,
+        stackTypeB;
+    
+    // Remove numbers & get key names from stackUniqueLabel even if it contains _
+    stackLabelA.split('.').forEach(v => {
+        let keyFromStack = v.replace(/[0-9]/g, '');
+        keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeA = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
+    });
+    stackLabelB.split('.').forEach(v => {
+        let keyFromStack = v.replace(/[0-9]/g, '');
+        keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeB = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
+    });
+
+    // Sort items by returning index
+    if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)){
+        return -1;
+    };
+    if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)){
+        return 1;
+    };
+    return 0;
+};
 
 
 
-// Main
+// -- MAIN
 (async () => {
     
     // OAuth Flow
@@ -709,7 +766,7 @@ var RedirUser = (url, param) => {
     LoadCharacter(0);
 
     // Processes done
-    StopLoad();
+    // StopLoad();
     log(`-> OAuth Flow Done! [Elapsed: ${(new Date() - startTime)}ms]`);
 })()
 .catch(error => {

@@ -8,24 +8,29 @@ body {
 /* Navbar */
 #navBarContainer {
     position: fixed;
+    display: none;
     top: 0;
-    height: 40px;
+    height: 45px;
     width: 100vw;
     background-color: #202020;
 }
 #navBarIcon {
-    display: inline-block;
-    width: 50px;
-    border: green 1px solid;
+    width: 45px;
 }
 #navBarLogout {
-    display: inline-block;
-    color: white;
-    width: 30px;
-    margin-left: 90%;
-    border: green 1px solid;
+    width: 25px;
+    height: auto;
 }
-
+#navBarIconContainer {
+    display: inline-block;
+    margin-left: 10px;
+}
+#navBarLogoutContainer {
+    position: relative;
+    width: fit-content;
+    margin-left: 97%;
+    margin-top: -39px;
+}
 
 
 

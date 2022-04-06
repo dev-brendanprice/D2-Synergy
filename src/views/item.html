@@ -7,7 +7,7 @@
 
     <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script> -->
-    <!-- <script src="scripts/user.js"></script> -->
+    <script src="scripts/user2.js"></script>
 
     <link rel="shortcut icon" href="#">
 
@@ -16,7 +16,25 @@
 
 <body>
     <div id="navBarContainer">
-        <img id="navBarIcon" src="../icons/KEKW.png">
-        <img id="navBarLogout" src="../icons/logout.PNG">
+        <div id="navBarIconContainer">
+            <img id="navBarIcon" src="../icons/ghost.webp">
+        </div>
+        <div id="navBarLogoutContainer">
+            <svg id="navBarLogout" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <g transform="matrix(7.142857142857143,0,0,7.142857142857143,0,0)"><g>
+                    <path d="M9.5,10.5v2a1,1,0,0,1-1,1h-7a1,1,0,0,1-1-1V1.5a1,1,0,0,1,1-1h7a1,1,0,0,1,1,1v2" style="fill: none;stroke: #e44749;stroke-linecap: round;stroke-linejoin: round"></path>
+                    <line x1="6.5" y1="7" x2="13.5" y2="7" style="fill: none;stroke: #e44749;stroke-linecap: round;stroke-linejoin: round"></line>
+                    <polyline points="11.5 5 13.5 7 11.5 9" style="fill: none;stroke: #e44749;stroke-linecap: round;stroke-linejoin: round"></polyline>
+                </g></g>
+            </svg>
+        </div>
+    </div>
+
+    <div id="loadBarContainer">
+        <div id="slider">
+            <div class="line"></div>
+            <div class="subline inc"></div>
+            <div class="subline dec"></div>
+        </div>
     </div>
 </body>
