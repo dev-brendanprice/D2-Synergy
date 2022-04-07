@@ -1,3 +1,9 @@
+/**
+ * #.# Seperate item style
+ *
+ * Every reference of an item in the DOM, will use this style script to apply style
+ */
+
 .itemContainer {
     position: relative;
     display: none;

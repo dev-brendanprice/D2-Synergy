@@ -4,7 +4,7 @@ console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on T
 // Verify state before anything else
 var uP = new URLSearchParams(window.location.search),
     state = uP.get('state'),
-    url = `http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html`;
+    url = `http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html`;
 if (state != window.localStorage.getItem('stateCode')) {
     window.location.href = url;
 } else {
@@ -315,7 +315,7 @@ var OAuthFlow = async () => {
 
         // Otherwise, redirect the user back to the 'Authorize' page
         else {
-            window.location.href = `http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html`;
+            window.location.href = `http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html`;
         };
     } catch (error) {
         console.error(error); // display error page, with error and options for user
@@ -395,10 +395,6 @@ var LoadCharacter = async (classType) => {
 
 
     // Edit DOM content
-    var mainContainer = document.getElementById('mainContainer').style;
-        mainContainer.background = 'none';
-        mainContainer.border = 'none';
-
     document.getElementById('charSelect').style.display = 'none';
     document.getElementById('charDisplay').style.display = 'inline-block';
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
@@ -733,15 +729,13 @@ var MakeBountyElement = (param) => {
 
     // Watch for mouse events
     item.addEventListener('mousemove', (e) => {
-        // var el = itemOverlay.style;
-        itemOverlay.style.display = 'inline-block';
-        itemOverlay.style.left = `${e.pageX}px`;
-        itemOverlay.style.top = `${e.pageY}px`;
-        log('on');
+        let el = itemOverlay.style;
+        el.display = 'inline-block';
+        el.left = `${e.pageX}px`;
+        el.top = `${e.pageY}px`;
     });
 
     item.addEventListener('mouseleave', (e) => {
-        log('OFF');
         itemOverlay.style.display = 'none';
     });
 };  

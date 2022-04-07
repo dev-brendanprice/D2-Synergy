@@ -1,22 +1,50 @@
+/**
+ * #.# user.html Style
+ *
+ * Style for user.html, does not contain media queries
+ */
+
 #mainContainer {
-    /* position: absolute; */
     /* position: relative; */
-    /* margin-top: 70px; 50px base as required */
+
+    /* 50px base as required */
+    /* margin-top: 70px;
     background-color: #3e454e;
     border-radius: 4px;
     border: 1px #56606d solid;
     width: 70vw;
+    margin: auto;
+
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;  */
+}
+
+#charDisplay {
+    position: absolute;
+    display: none;
+
+    margin-top: 170px; /* 50px base as required */
+    background-color: #3e454e;
+    border-radius: 4px;
+    border: 1px #56606d solid;
+    width: 70vw;
+    margin: auto;
+
     left: 0;
     right: 0;
     margin-left: auto;
     margin-right: auto;
+}
 
-    /* background-color: #3e454e;
-    border-radius: 5px;
+#charSelect {
+    margin-top: 170px; /* 50px base as required */
+    background-color: #3e454e;
+    border-radius: 4px;
     border: 1px #56606d solid;
-    width: 50vw;
+    width: 70vw;
     margin: auto;
-    margin-top: 20px; */
 }
 
 #subTitleContainer {
@@ -37,19 +65,6 @@
     font-weight: 600;
     font-size: 28px;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-}
-
-#charDisplay {
-    display: none;
-    text-align: left;
-
-    background-color: #3e454e;
-    border-radius: 5px;
-    border: 1px #56606d solid;
-    width: 50vw;
-    position: absolute;
-    display: none;
-    text-align: left;
 }
 
 #entryDataOverlay {
@@ -103,11 +118,6 @@
     margin-left: 26px;
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-}
-
-#charSelect {
-    margin: 0 auto;
-    width: 50%;
 }
 
 .charContainer {

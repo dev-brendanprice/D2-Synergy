@@ -1,17 +1,22 @@
+/**
+ * #.# 2
+ *
+ *
+ */
+
+html,
 body {
     background-color: #22272e;
-    /* padding: 0;
-    margin: 0; */
 }
 
 
 /* Navbar */
 #navBarContainer {
     position: fixed;
-    display: none;
     top: 0;
     height: 45px;
     width: 100vw;
+    margin-left: -8px;
     background-color: #202020;
 }
 #navBarIcon {
@@ -26,9 +31,8 @@ body {
     margin-left: 10px;
 }
 #navBarLogoutContainer {
-    position: relative;
-    width: fit-content;
-    margin-left: 97%;
+    position: absolute;
+    right: 1%;
     margin-top: -39px;
 }
 
@@ -37,6 +41,8 @@ body {
 /* Loadbar */
 #loadBarContainer {
     position: fixed;
+    display: inline-block;
+    margin-top: 56px;
 }
 
 #slider{
