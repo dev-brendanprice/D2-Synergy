@@ -398,6 +398,7 @@ var LoadCharacter = async (classType) => {
     var mainContainer = document.getElementById('mainContainer').style;
         mainContainer.background = 'none';
         mainContainer.border = 'none';
+
     document.getElementById('charSelect').style.display = 'none';
     document.getElementById('charDisplay').style.display = 'inline-block';
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;

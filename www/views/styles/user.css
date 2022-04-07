@@ -10,6 +10,13 @@
     right: 0;
     margin-left: auto;
     margin-right: auto;
+
+    /* background-color: #3e454e;
+    border-radius: 5px;
+    border: 1px #56606d solid;
+    width: 50vw;
+    margin: auto;
+    margin-top: 20px; */
 }
 
 #subTitleContainer {
@@ -33,6 +40,14 @@
 }
 
 #charDisplay {
+    display: none;
+    text-align: left;
+
+    background-color: #3e454e;
+    border-radius: 5px;
+    border: 1px #56606d solid;
+    width: 50vw;
+    position: absolute;
     display: none;
     text-align: left;
 }

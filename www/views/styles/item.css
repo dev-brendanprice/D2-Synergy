@@ -1,6 +1,6 @@
 .itemContainer {
-    /* position: absolute; */
-    /* display: none; */
+    position: relative;
+    display: none;
     background-color: rgba(0, 0, 0, 0.639);
     backdrop-filter: blur(6px);
     width: 210px;
@@ -12,7 +12,6 @@
 #items {
     margin-top: 20px;
     margin-left: 28px;
-    /* text-align: left; */
 }
 
 .bounty {
