@@ -5,25 +5,8 @@
  */
 
 #mainContainer {
-    /* position: relative; */
-
-    /* 50px base as required */
-    /* margin-top: 70px;
-    background-color: #3e454e;
-    border-radius: 4px;
-    border: 1px #56606d solid;
-    width: 70vw;
-    margin: auto;
-    left: 0; 
-    right: 0; 
-    margin-left: auto; 
-    margin-right: auto;  */
-}
-
-#charDisplay {
-    display: none;
     position: absolute;
-    margin-top: 60px; /* 60px base as required */
+    margin-top: 60px;
     margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -34,13 +17,9 @@
     border-radius: 3px;
 }
 
-#charSelect {
-    display: inline-block;
-    margin: 60px auto; /* 60px base as required */
-    width: 90vw;
-    border: 1px #56606d solid;
-    background-color: #3e454e;
-    border-radius: 3px;
+#characterDisplay {
+    float: left;
+    width: 75%;
 }
 
 #subTitleContainer {
@@ -83,7 +62,7 @@
 /* user select */
 
 #charDisplayTitle {
-    margin-top: 20px;
+    margin-top: 13px;
 }
 
 #charDisplayTitle_Character {
@@ -96,7 +75,7 @@
 }
 
 #charDisplayTitle_Category {
-    display: inline-block;
+    display: none;
     color: white;
     font-style: italic;
     font-weight: 0;
@@ -116,52 +95,44 @@
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
 
-.charContainer {
-    position: relative;
+#categories {
+    margin-top: 3px;
+}
+
+#categories > div {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    color: rgb(205, 203, 203);
+    letter-spacing: 1px;
     cursor: pointer;
-    margin-top: 20px;
-    width: 30%;
+    user-select: none;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
 
-.bgContent {
-    position: absolute;
+/* char selects */
+
+#sideSelectionBar {
+    float: left;
+    margin-top: 15px;
+    margin-left: 15px;
+    width: auto;
 }
 
-.charBg {
-    position: relative;
-    height: 45px;
-    opacity: 0.6;
-    -webkit-filter: blur(1px);
-    -moz-filter: blur(1px);
-    -o-filter: blur(1px);
-    -ms-filter: blur(1px);
-    filter: blur(1px);
+#charContainer {
+    cursor: pointer;
 }
 
-.charContent {
-    position: relative;
-}
-
-.charImg {
-    height: 43px;
+.classBg {
+    width: 220px;
 }
 
 .classType {
-    margin-left: 55px;
-    margin-top: -40px;
+    position: absolute;
+    margin-left: 43px;
+    margin-top: 5px;
     color: white;
-    font-size: 15px;
-    text-transform: uppercase;
-    font-weight: bold;
+    font-weight: 0;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    letter-spacing: 1px;
-}
-
-.charLight {
-    margin-left: 55px;
-    font-size: 13px;
-    color: rgb(255, 255, 0);
-    font-weight: bold;
-    letter-spacing: 1px;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 18px;
+    letter-spacing: 1.3px;
 }

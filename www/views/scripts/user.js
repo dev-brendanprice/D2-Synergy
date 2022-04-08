@@ -19,7 +19,8 @@ var log = console.log.bind(console),
     sessionStorage = window.sessionStorage,
     destinyMemberships = {},
     destinyUserProfile = {},
-    membershipType;
+    membershipType,
+    characters;
 
 // Default axios header
 axios.defaults.headers.common = {
@@ -362,15 +363,13 @@ var FetchBungieUserDetails = async () => {
     if (membershipType || destinyMemberships || destinyUserProfile) {
 
         // Loop over characters
-        var characterData = destinyUserProfile.characters.data;
-        for (var item in characterData) {
+        characters = destinyUserProfile.characters.data;
+        for (var item in characters) {
 
-            var char = characterData[item];
-            document.getElementsByClassName('charImg')[char.classType].style.border = '1px solid white';
-            document.getElementById(`charBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
-            document.getElementById(`charImg${char.classType}`).src = `https://www.bungie.net${char.emblemPath}`;
+            var char = characters[item];
+            document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
             document.getElementById(`classType${char.classType}`).innerHTML = `${parseChar(char.classType)}`;
-            document.getElementById(`charLight${char.classType}`).innerHTML = `${char.light}`;
+            // document.getElementById(`charLight${char.classType}`).innerHTML = `${char.light}`;
         };
     };
 };
@@ -381,6 +380,10 @@ var LoadCharacter = async (classType) => {
 
     // Start load sequence
     StartLoad();
+
+    // Clear current items in display
+    document.getElementById('items').innerHTML = '';
+    document.getElementById('overlays').innerHTML = '';
 
     // Validate tokens and other components
     await CheckComponents(false);
@@ -394,18 +397,11 @@ var LoadCharacter = async (classType) => {
         membershipType = sessionStorage.getItem('membershipType');
 
 
-    // Edit DOM content
-    document.getElementById('charSelect').style.display = 'none';
-    document.getElementById('charDisplay').style.display = 'inline-block';
-    document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
-
-
     // Get chosen character and save index  
     for (var item in destinyUserProfile.characters.data) {
 
         var char = destinyUserProfile.characters.data[item];
         if (char.classType === classType) {
-            // className = parseChar(classType);
             characterId = char.characterId;
         };
     };
@@ -519,7 +515,8 @@ var LoadCharacter = async (classType) => {
     var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
     // Change DOM content
-    // document.getElementById('amountOfBounties').innerHTML = `${amountOfBounties === 1 ? `${amountOfBounties} Bounty Found` : `${amountOfBounties} Bounties Found`}`;
+    document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
+    document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
     document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
     document.getElementById('totalXP').innerHTML = `Total XP: ${totalXpYield}`;
 
@@ -659,7 +656,7 @@ var parseChar = (classType) => {
 var Logout = () => {
     localStorage.clear();
     sessionStorage.clear();
-    window.location.href = 'http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html';
+    window.location.href = 'http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html';
 };
 // Returns size of data that currently resides in localStorage
 // @window.obj {localStorage}
@@ -747,7 +744,6 @@ var RedirUser = (url, param) => {
 
 
 
-
 // -- MAIN
 (async () => {
     
@@ -763,10 +759,8 @@ var RedirUser = (url, param) => {
     await GetDestinyManifest();
     await FetchBungieUserDetails();
 
-    // -- dev --
-    // LoadCharacter(0);
-
-    log(window.location.href.split('/'));
+    // Load first character on profile
+    LoadCharacter(characters[Object.keys(characters)[0]].classType);
 
     // Processes done
     log(`-> OAuth Flow Done! [Elapsed: ${(new Date() - startTime)}ms]`);

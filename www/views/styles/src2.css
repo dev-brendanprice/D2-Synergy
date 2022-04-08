@@ -34,6 +34,7 @@ body {
     position: absolute;
     right: 1%;
     margin-top: -39px;
+    cursor: pointer;
 }
 
 
@@ -103,4 +104,8 @@ body {
 
 ::-webkit-scrollbar-thumb:hover { /* Handle on hover */
     background: #555;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }

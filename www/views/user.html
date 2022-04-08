@@ -19,7 +19,7 @@
         <div id="navBarIconContainer">
             <img id="navBarIcon" src="../icons/ghost.webp">
         </div>
-        <div id="navBarLogoutContainer">
+        <div id="navBarLogoutContainer" onclick="Logout()">
             <svg id="navBarLogout" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <g transform="matrix(7.142857142857143,0,0,7.142857142857143,0,0)"><g>
                     <path d="M9.5,10.5v2a1,1,0,0,1-1,1h-7a1,1,0,0,1-1-1V1.5a1,1,0,0,1,1-1h7a1,1,0,0,1,1,1v2" style="fill: none;stroke: #e44749;stroke-linecap: round;stroke-linejoin: round"></path>
@@ -39,44 +39,37 @@
     </div>
 
     <div id="mainContainer">
-        <div id="charSelect">
 
-            <div class="charContainer" onclick="LoadCharacter(0)">
-                <div class="bgContent">
-                    <img class="charBg" id="charBg0"></img>
-                </div>
-                <div class="charContent">
-                    <img class="charImg" id="charImg0">
-                    <div class="classType" id="classType0"></div>
-                    <div class="charLight" id="charLight0"></div>
-                </div>
+        <div id="sideSelectionBar">
+
+            <div id="charContainer" onclick="LoadCharacter(0);">
+                <div class="classType" id="classType0"></div>
+                <img class="classBg" id="classBg0">
             </div>
-    
-            <div class="charContainer" onclick="LoadCharacter(1)">
-                <div class="bgContent">
-                    <img class="charBg" id="charBg1"></img>
-                </div>
-                <div class="charContent">
-                    <img class="charImg" id="charImg1">
-                    <div class="classType" id="classType1"></div>
-                    <div class="charLight" id="charLight1"></div>
-                </div>
+
+            <div id="charContainer" onclick="LoadCharacter(1);">
+                <div class="classType" id="classType1"></div>
+                <img class="classBg" id="classBg1">
             </div>
-    
-            <div class="charContainer" onclick="LoadCharacter(2)">
-                <div class="bgContent">
-                    <img class="charBg" id="charBg2"></img>
-                </div>
-                <div class="charContent">
-                    <img class="charImg" id="charImg2">
-                    <div class="classType" id="classType2"></div>
-                    <div class="charLight" id="charLight2"></div>
-                </div>
+
+            <div id="charContainer" onclick="LoadCharacter(2);">
+                <div class="classType" id="classType2"></div>
+                <img class="classBg" id="classBg2">
             </div>
-    
+
+            <div id="categories">
+                <div id="cgBounties">Bounties</div>
+                <div id="cgQuests">Quests</div>
+                <div id="cgSeasonalChallenges">Seasonal Challenges</div>
+                <div id="cgXpModifiers">View XP Modifiers</div>
+                <div id="cgCurrencies">Currencies</div>
+                <div id="cgLevelsProgression">Levels/Progression</div>
+            </div>
+
         </div>
     
-        <div id="charDisplay">
+        <div id="characterDisplay">
+
             <div id="charDisplayTitle">
                 <div id="charDisplayTitle_Character"></div>
                 <div id="charDisplayTitle_Category">Bounties</div>
@@ -85,9 +78,10 @@
             <br>
             <div id="totalBounties"></div>
             <div id="totalXP"></div>
+
         </div>
+
     </div>
     
     <div id="overlays"></div>
-    <!-- <button onclick="Logout()">Logout</button> -->
 </body>
