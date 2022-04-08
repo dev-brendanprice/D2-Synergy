@@ -21,6 +21,8 @@
 }
 
 .bounty {
+    margin-left: 2px;
+    margin-right: 2px;
     width: 55px;
     border: 1px solid rgba(200, 200, 200, 0.749);
     z-index: 1;

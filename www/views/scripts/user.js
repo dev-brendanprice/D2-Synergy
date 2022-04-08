@@ -510,7 +510,7 @@ var LoadCharacter = async (classType) => {
 
     // Render items to DOM
     PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
-
+    log(bountyArr)
     // Calculate XP yield from (active) bounties
     var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 

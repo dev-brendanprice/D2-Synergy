@@ -19,7 +19,8 @@
 
 #characterDisplay {
     float: left;
-    width: 75%;
+    width: 65%;
+    margin-left: 30px;
 }
 
 #subTitleContainer {

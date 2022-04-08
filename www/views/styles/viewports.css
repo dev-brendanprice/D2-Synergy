@@ -1,0 +1,13 @@
+@media screen and (max-width: 1090px) {
+    #characterDisplay {
+        width: 55%;
+    }
+}
+
+
+/* New layout at this point */
+@media screen and (max-width: 800) {
+    #characterDisplay {
+        width: 55%;
+    }
+}
