@@ -764,10 +764,11 @@ var RedirUser = (url, param) => {
     await FetchBungieUserDetails();
 
     // -- dev --
-    LoadCharacter(0);
+    // LoadCharacter(0);
+
+    log(window.location.href.split('/'));
 
     // Processes done
-    // StopLoad();
     log(`-> OAuth Flow Done! [Elapsed: ${(new Date() - startTime)}ms]`);
 })()
 .catch(error => {
