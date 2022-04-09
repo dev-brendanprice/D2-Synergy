@@ -8,7 +8,7 @@
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
-    <script src="scripts/user.js"></script>
+    <script type="module" src="scripts/user.js"></script>
 
     <link rel="shortcut icon" href="#">
 
@@ -43,19 +43,21 @@
 
         <div id="sideSelectionBar">
 
-            <div id="charContainer" onclick="LoadCharacter(0);">
-                <div class="classType" id="classType0"></div>
-                <img class="classBg" id="classBg0">
-            </div>
-
-            <div id="charContainer" onclick="LoadCharacter(1);">
-                <div class="classType" id="classType1"></div>
-                <img class="classBg" id="classBg1">
-            </div>
-
-            <div id="charContainer" onclick="LoadCharacter(2);">
-                <div class="classType" id="classType2"></div>
-                <img class="classBg" id="classBg2">
+            <div id="charactersContainer">
+                <div id="charContainer0">
+                    <div class="classType" id="classType0"></div>
+                    <img class="classBg" id="classBg0">
+                </div>
+    
+                <div id="charContainer1">
+                    <div class="classType" id="classType1"></div>
+                    <img class="classBg" id="classBg1">
+                </div>
+    
+                <div id="charContainer2">
+                    <div class="classType" id="classType2"></div>
+                    <img class="classBg" id="classBg2">
+                </div>
             </div>
 
             <div id="categories">
@@ -69,7 +71,7 @@
 
         </div>
     
-        <div id="characterDisplay">
+        <div id="contentDisplay">
 
             <div id="charDisplayTitle">
                 <div id="charDisplayTitle_Character"></div>

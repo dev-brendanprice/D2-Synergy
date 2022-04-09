@@ -1,15 +1,26 @@
 console.log('%cD2 SYNERGY _V0.3', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
+// Import modules
+import { ValidateManifest, ReturnEntry } from './utils/ValidateManifest.js';
+import { VerifyState } from './utils/VerifyState.js';
+import { 
+    parseChar,
+    Logout,
+    StartLoad,
+    StopLoad,
+    MakeBountyElement,
+    RedirUser } from './utils/Helpers.js';
+import {
+    itemTypeKeys,
+    vendorKeys,
+    baseYields,
+    petraYields } from "./utils/Helpers.js";
+
+
+
 // Verify state before anything else
-var uP = new URLSearchParams(window.location.search),
-    state = uP.get('state'),
-    url = `http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html`;
-if (state != window.localStorage.getItem('stateCode')) {
-    window.location.href = url;
-} else {
-    window.localStorage.removeItem('stateCode');
-};
+VerifyState();
 
 // Explicit globals
 var log = console.log.bind(console),
@@ -20,129 +31,16 @@ var log = console.log.bind(console),
     destinyMemberships = {},
     destinyUserProfile = {},
     membershipType,
-    characters;
+    characters,
+    urlParams = new URLSearchParams(window.location.search); // Declare URLSearchParams
 
-// Default axios header
+// Set default axios header
 axios.defaults.headers.common = {
     "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
 };
 
-// Create IndexedDB database and URLSearchParams instance
-var urlParams = new URLSearchParams(window.location.search);
-var db = new Dexie('ManifestDefinitions');
-
-// Configure the key for the database
-db.version(1).stores({
-    jsonWorldContentPaths: 'keyName',
-    jsonWorldComponentContentPaths: 'keyName'
-});
 
 
-
-
-// Validate and/or update manifest
-var GetDestinyManifest_New = async () => {
-
-    var storedManifestVersion = localStorage.getItem('destinyManifestVersion'),
-        jsonWorldContent    = await db.table('jsonWorldContentPaths').toArray(),
-        jsonWorldComponents = await db.table('jsonWorldComponentContentPaths').toArray(),
-        manifestKeys = [];
-
-
-    
-    // Fetch base manifest 
-    var manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-    manifest = manifest.data.Response;
-
-    // Fetch content from manifest url
-    delete axios.defaults.headers.common['X-API-Key'];
-    var worldContent = await axios.get(`https://www.bungie.net${manifest.jsonWorldContentPaths[browserLanguageType]}`),
-        worldContent = worldContent.data;
-
-    var worldComponents = await axios.get(`https://www.bungie.net${manifest.jsonWorldComponentContentPaths[browserLanguageType]}`),
-        worldComponents = worldComponents.data;
-
-    // Pull manually what you need instead of dynamically doing it 
-};
-
-
-// Validate and/or update manifest
-var GetDestinyManifest = async () => {
-
-    var ParseManifest = async (resManifest, tableName) => {
-
-        // @ Params
-        // resManifest
-        // tableName
-
-        // Check localStorage items before
-        await CheckComponents();
-
-        // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
-        delete axios.defaults.headers.common['X-API-Key'];
-
-        // Get jsonWorldContentPaths from definitions
-        var definitionObjects;
-        Object.keys(resManifest.data.Response).forEach(item => item === tableName ? definitionObjects = resManifest.data.Response[item][browserLanguageType] : null);
-
-        // If tableName is the mobile version, we have to do a seperate install process because the structure is different
-        if (tableName === 'jsonWorldComponentContentPaths') {  
-            
-            // Fetch definitions
-            var root = manifestFromResponse.data.Response.jsonWorldComponentContentPaths.en;
-            var destinyVendorDefinitionResponse = await axios.get(`https://www.bungie.net${root.DestinyVendorDefinition}`);
-
-            // Put response into indexedDB
-            db[tableName].bulkPut([ { keyName: 'DestinyVendorDefinition', data: destinyVendorDefinitionResponse.data } ])
-        }
-        else if (tableName !== 'jsonWorldComponentContentPaths') {
-
-            // Fetch definitions & put response into indexedDB
-            var definitionsFromResponse = await axios.get(`https://www.bungie.net${definitionObjects}`);
-            for (var property in definitionsFromResponse.data) {
-                db[tableName].bulkPut([ { keyName: property, data: definitionsFromResponse.data[property] } ]);
-            };
-        };
-
-        // Save manifest version
-        localStorage.setItem('destinyManifestVersion', resManifest.data.Response.version);
-    };
-
-    // Get components from db and localStorage
-    var manifestVersion = localStorage.getItem('destinyManifestVersion'),
-        jsonWorldContentPaths = await db.table('jsonWorldContentPaths').toArray(),
-        jsonWorldComponentContentPaths = await db.table('jsonWorldComponentContentPaths').toArray(),
-        sTime = new Date(),
-        requiredDbEntries = [
-            'DestinyInventoryItemDefinition'
-        ];
-    
-
-    // Check for manifest version
-    var manifestFromResponse = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-    if (manifestFromResponse.data.Response.version !== manifestVersion) {
-
-        // Parse manifest response
-        log('-> Manifest Not Up To Date, Updating Manifest..');
-        await ParseManifest(manifestFromResponse, 'jsonWorldContentPaths');
-    };
-
-    if (jsonWorldContentPaths.length === 0) {
-
-        // Parse manifest response
-        log('-> Manifest Not Correct, Updating Manifest..');
-        await ParseManifest(manifestFromResponse, 'jsonWorldContentPaths');
-    };
-
-    if (jsonWorldComponentContentPaths.length === 0) {
-
-        // Parse manifest response
-        log('-> Manifest Not Correct, Updating Manifest..');
-        await ParseManifest(manifestFromResponse, 'jsonWorldComponentContentPaths');
-    };
-
-    log(`-> Manifest Up To Date! [Elapsed: ${new Date() - sTime}ms]`);
-};
 
 
 // Authorize with Bungie.net
@@ -216,7 +114,7 @@ var CheckComponents = async (bool) => {
     var keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'],
         tokenKeys = ['inception', 'expires_in', 'value'],
         cKeys = ['membership_id', 'token_type', 'authorization_code'],
-        redirUrl = 'http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html';
+        redirUrl = 'http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html';
 
 
     Object.keys(rsToken).forEach(item => {
@@ -240,8 +138,8 @@ var CheckComponents = async (bool) => {
 
 
     // Check if either tokens have expired
-    isAcTokenExpired = (acToken.inception + acToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
-    isRsTokenExpired = (rsToken.inception + rsToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
+    var isAcTokenExpired = (acToken.inception + acToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1,
+        isRsTokenExpired = (rsToken.inception + rsToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
     if (isAcTokenExpired || isRsTokenExpired) {
 
         // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
@@ -275,12 +173,6 @@ var CheckComponents = async (bool) => {
 };
 
 
-// Remove URL query params
-var CleanURL = () => {
-    window.history.pushState({}, document.title, window.location.pathname);
-};
-
-
 // Main OAuth flow mechanism
 var OAuthFlow = async () => {
 
@@ -300,7 +192,7 @@ var OAuthFlow = async () => {
         }
         // User has no credentials, fired before other conditions
         else if (!authCode && (!comps || !acToken || !rsToken)) {
-            window.location.href = `http://86.2.10.33:4645/D2Synergy-v0.3/src/views/app.html`;
+            window.location.href = `http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html`;
         }
 
         // If user has authorized beforehand, but came back through empty param URL
@@ -407,10 +299,7 @@ var LoadCharacter = async (classType) => {
     };
 
     // Get manifest for world content and return it
-    await db.jsonWorldContentPaths.where({keyName: 'DestinyInventoryItemDefinition'}).toArray()
-    .then(massiveObj => {
-        definitions = massiveObj[0].data;
-    });
+    definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // OAuth header guarantees a response
     var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
@@ -421,46 +310,6 @@ var LoadCharacter = async (classType) => {
         amountOfBounties = 0,
         charBounties = [];
 
-    // Declare sorting keys
-    var itemTypeKeys = [
-        'weekly',
-        'daily',
-        'repeatable'
-    ],
-    vendorKeys = [
-        'clan',
-        'cosmodrome',
-        'crucible',
-        'dawning',
-        'dreaming_city',
-        'edz',
-        'eternity',
-        'europa',
-        'fotl', // Festive of the Lost
-        'gambit',
-        'gunsmith',
-        'iron_banner',
-        'luna',
-        'myriad', // Nessus
-        'solstice',
-        'spring',
-        'strikes',
-        'throneworld',
-        'transmog',
-        'trials',
-        'war_table',
-        'other'
-    ],
-    baseYields = {
-        'weekly': 12_000,
-        'daily': 6_000,
-        'repeatable': 4_000
-    },
-    petraYields = {
-        'weekly': 6_000,
-        'daily': 1_000,
-        'repeatable': 0
-    };
 
     // Sorts by index of item in itemTypeKeys
     var sortBountiesByType = (a, b) => {
@@ -491,16 +340,16 @@ var LoadCharacter = async (classType) => {
     };
 
     // Make array with specified groups
-    bountyArr = {};
+    var bountyArr = {};
     vendorKeys.forEach(key => {
         bountyArr[key] = [];
     });
 
 
     // Loop over inventory items and emit bounties
-    parsed = ParseBounties(charInventory, {definitions});
-    charBounties = parsed[0]
-    amountOfBounties = parsed[1];
+    var parsedBounties = ParseBounties(charInventory, {definitions});
+        charBounties = parsedBounties[0]
+        amountOfBounties = parsedBounties[1];
     
     // Loop over bounties and sort into groups
     bountyArr = SortByGroup(charBounties, {bountyArr, vendorKeys, itemTypeKeys});
@@ -510,7 +359,7 @@ var LoadCharacter = async (classType) => {
 
     // Render items to DOM
     PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
-    log(bountyArr)
+
     // Calculate XP yield from (active) bounties
     var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
@@ -629,117 +478,11 @@ var CalcXpYield = (bountyArr, utils) => {
 
 
 
-
-// -- MODULES
-
-// Returns corresponding class name using classType
-// @int {classType}
-var parseChar = (classType) => {
-    var r;
-    switch (classType) {
-        case 0:
-            r='Titan';
-            break;
-        case 1:
-            r='Hunter';
-            break;
-        case 2:
-            r='Warlock';
-            break;
-        default:
-            console.error('could not parse character, parseChar() @function');
-    };
-    return r;
-};
-// Log user out on request
-// @ {}
-var Logout = () => {
-    localStorage.clear();
-    sessionStorage.clear();
-    window.location.href = 'http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html';
-};
-// Returns size of data that currently resides in localStorage
-// @window.obj {localStorage}
-var GetLsSize = async (localStorage) => {
-    var values = [],
-        keys = Object.keys(localStorage),
-        i = keys.length;
-
-    while (i--) { values.push(localStorage.getItem(keys[i])); };
-
-    log('[Usage Bytes]: ', encodeURI(JSON.stringify(values)).split(/%..|./).length - 1);
-};
-// Returns Definitions from the DestinyInventoryItemDefinition entry
-// @int {hash} @str {defType}
-var ReturnDefinition = async (hash, defType) => {
-    // Preload information in the future
-    var response = await db.entries.where({keyName: defType}).toArray();
-    return response[0].data[hash];
-};
-// Start loading sequence
-// @ {}
-var StartLoad = () => {
-    document.getElementById('slider').style.display = 'block';
-};
-// Stop loading sequence
-// @ {}
-var StopLoad = () => {
-    document.getElementById('slider').style.display = 'none';
-};
-// Make element for entry data when hash is found in definitions
-// @obj {param}
-var MakeBountyElement = (param) => {
-
-    const item = document.createElement('img'),
-          itemOverlay = document.createElement('div'),
-          itemTitle = document.createElement('div'),
-          itemType = document.createElement('div'),
-          itemDesc = document.createElement('div'),
-          hr = document.createElement('hr');
-
-
-    // Create bottom element
-    item.className = `bounty`;
-    item.id = `${param.hash}`;
-    document.querySelector('#items').appendChild(item);
-    item.src = `https://www.bungie.net${param.displayProperties.icon}`;
-
-    // Create overlay element
-    itemOverlay.className = `itemContainer`;
-    itemOverlay.id = `item_${param.hash}`;
-    document.querySelector('#overlays').appendChild(itemOverlay);
-
-    // Prop content of item
-    itemTitle.id = 'itemTitle';
-    itemType.id = 'itemType';
-    itemDesc.id = 'itemDesc';
-    itemTitle.innerHTML = param.displayProperties.name;
-    itemType.innerHTML = param.itemTypeDisplayName;
-    itemDesc.innerHTML = param.displayProperties.description;
-
-    // Assign content to parent
-    document.querySelector(`#item_${param.hash}`).appendChild(itemTitle);
-    document.querySelector(`#item_${param.hash}`).appendChild(itemType);
-    document.querySelector(`#item_${param.hash}`).appendChild(hr);
-    document.querySelector(`#item_${param.hash}`).appendChild(itemDesc);
-    
-
-    // Watch for mouse events
-    item.addEventListener('mousemove', (e) => {
-        let el = itemOverlay.style;
-        el.display = 'inline-block';
-        el.left = `${e.pageX}px`;
-        el.top = `${e.pageY}px`;
+// Event listeners for character buttons
+for (let a=0; a<=2; a++) {
+    document.getElementById(`charContainer${a}`).addEventListener('click', () => {
+        LoadCharacter(a);
     });
-
-    item.addEventListener('mouseleave', (e) => {
-        itemOverlay.style.display = 'none';
-    });
-};  
-// Redirect user back to specified url
-// @string {url}
-var RedirUser = (url, param) => {
-    window.location.href = `${url}?${param ? param : ''}`;
 };
 
 
@@ -756,14 +499,14 @@ var RedirUser = (url, param) => {
     };
 
     // Main
-    await GetDestinyManifest();
+    await ValidateManifest();
     await FetchBungieUserDetails();
 
     // Load first character on profile
     LoadCharacter(characters[Object.keys(characters)[0]].classType);
 
     // Processes done
-    log(`-> OAuth Flow Done! [Elapsed: ${(new Date() - startTime)}ms]`);
+    log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
 })()
 .catch(error => {
     console.error(error);
