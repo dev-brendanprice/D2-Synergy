@@ -1,11 +1,10 @@
 /**
- * #.# 2
+ * #.# Global style
  *
- *
+ * Global style for all HTML pages
  */
 
-html,
-body {
+html, body {
     background-color: #22272e;
 }
 
@@ -13,10 +12,10 @@ body {
 /* Navbar */
 #navBarContainer {
     position: fixed;
+    margin-left: -8px;
     top: 0;
     height: 45px;
     width: 100vw;
-    margin-left: -8px;
     background-color: #202020;
 }
 #navBarIcon {
@@ -32,20 +31,18 @@ body {
 }
 #navBarLogoutContainer {
     position: absolute;
-    right: 1%;
     margin-top: -39px;
+    right: 1%;
     cursor: pointer;
 }
 
 
-
 /* Loadbar */
 #loadBarContainer {
-    position: fixed;
     display: inline-block;
+    position: fixed;
     margin-top: 56px;
 }
-
 #slider{
     position: absolute;
     margin-top: -21px;
@@ -54,20 +51,18 @@ body {
     height: 3px;
     overflow-x: hidden;
 }
-
 .line{
     position: absolute;
-    opacity: 0.4;
-    background: #4a8df8;
     width: 103vw;
     height: 5px;
+    background: #4a8df8;
+    opacity: 0.4;
     overflow-x: hidden;
 }
-
 .subline{
     position: absolute;
+    height: 5px;
     background: #4a8df8;
-    height: 5px; 
     overflow-x: hidden;
 }
 .inc{
@@ -76,7 +71,6 @@ body {
 .dec{
     animation: decrease 2s 0.5s infinite;
 }
-
 @keyframes increase {
     from { left: -5%; width: 5%; }
     to { left: 130%; width: 100%; }
@@ -87,25 +81,20 @@ body {
 }
 
 
-
 /* Scrollbar */
 ::-webkit-scrollbar { /* Width */
     width: 7px;
 }
-
 ::-webkit-scrollbar-track { /* Track */
     background: none;
 }
-
 ::-webkit-scrollbar-thumb { /* Handle */
     background: rgb(116, 116, 116); 
     border-radius: 12px;
 }
-
 ::-webkit-scrollbar-thumb:hover { /* Handle on hover */
     background: #555;
 }
-
-::-webkit-scrollbar {
+::-webkit-scrollbar { /* Temporary? */
     display: none;
 }

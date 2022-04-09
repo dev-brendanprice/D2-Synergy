@@ -7,10 +7,10 @@
 .itemContainer {
     position: relative;
     display: none;
-    background-color: rgba(0, 0, 0, 0.639);
-    backdrop-filter: blur(6px);
     width: 210px;
     height: 260px;
+    background-color: rgba(0, 0, 0, 0.639);
+    backdrop-filter: blur(6px);
     border: 1px solid rgba(87, 87, 87, 0.66);
     z-index: 10;
 }
@@ -29,25 +29,25 @@
 }
 
 #itemTitle {
+    padding-top: 13px;
+    padding-left: 10px;
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-weight: bold;
-    padding-top: 13px;
-    padding-left: 10px;
 }
 
 #itemType {
+    padding-left: 12px;
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-style: italic;
     font-size: 11px;
-    padding-left: 12px;
 }
 
 #itemDesc {
+    padding-left: 10px;
+    padding-right: 1em;
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 13px;
-    padding-left: 10px;
-    padding-right: 1em;
 }
