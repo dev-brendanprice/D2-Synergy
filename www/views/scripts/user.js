@@ -10,7 +10,8 @@ import {
     StartLoad,
     StopLoad,
     MakeBountyElement,
-    RedirUser } from './utils/Helpers.js';
+    RedirUser,
+    InsertSeperators } from './utils/Helpers.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -24,7 +25,6 @@ VerifyState();
 
 // Explicit globals
 var log = console.log.bind(console),
-    browserLanguageType = window.navigator.language.split('-')[0], // Language from browser preference
     startTime = new Date(),
     localStorage = window.localStorage,
     sessionStorage = window.sessionStorage,
@@ -367,7 +367,7 @@ var LoadCharacter = async (classType) => {
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
     document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
     document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
-    document.getElementById('totalXP').innerHTML = `Total XP: ${totalXpYield}`;
+    document.getElementById('totalXP').innerHTML = `Total XP: ${InsertSeperators(totalXpYield)}`;
 
     // Stop loading sequence
     StopLoad();
@@ -477,8 +477,7 @@ var CalcXpYield = (bountyArr, utils) => {
 };
 
 
-
-// Event listeners for character buttons
+// Add listeners for buttons
 for (let a=0; a<=2; a++) {
     document.getElementById(`charContainer${a}`).addEventListener('click', () => {
         LoadCharacter(a);
@@ -505,7 +504,7 @@ for (let a=0; a<=2; a++) {
     // Load first character on profile
     LoadCharacter(characters[Object.keys(characters)[0]].classType);
 
-    // Processes done
+    // OAuth flow (above methods) have completed
     log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
 })()
 .catch(error => {

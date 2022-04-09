@@ -1,3 +1,4 @@
+const log = console.log.bind(console);
 
 // Redirect user back to specified url
 // @string {url}, @string {param}
@@ -99,6 +100,12 @@ const Logout = () => {
 };
 
 
+// Seperate numbers using commas
+const InsertSeperators = (numb) => {
+    return `${numb}`.split()[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+
 
 export {
   parseChar,
@@ -107,4 +114,5 @@ export {
   StopLoad,
   MakeBountyElement,
   RedirUser,
+  InsertSeperators
 };

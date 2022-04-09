@@ -23,7 +23,7 @@ var vendorKeys = [
     'luna',
     'myriad', // Nessus
     'solstice',
-    'spring', // guardian games?
+    'spring', // Revelry event
     'strikes',
     'throneworld',
     'transmog',
