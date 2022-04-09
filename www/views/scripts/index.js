@@ -49,6 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
 console.log(window);
 console.log(window.location);
 console.log(window.location.href);
