@@ -24,7 +24,7 @@ Axios - https://axios-http.com/docs/api_intro
 - If these steps do not work for you, please ensure that when (doing step 1) you configure ports on your firewall, that you open it for UDP and TCP on both inbound and outbound rules.
 
 - XAMPP does not have to be running for Apache to be running.
-If there are any processes on your network that are using port `4645`, please change all references of port `4645`. within this project to your chosen port.
+If there are any processes on your network that are using port `4645` (or you want to use your own port number), please change all references of port `4645` within this project to your chosen port.
 
 - The Bungie.net API will only redirect back to domains that possess a `https` protocol, this is circumvented whilst testing on localhost by removing the `s` from `https` after a redirect has occured. 
 For example: user is directed to Bungie.net from the domain `http://localhost/` and is then redirected back to `https://localhost/` because Bungie.net does not support `http` protocols. So we just remove the `s` and shazam!
