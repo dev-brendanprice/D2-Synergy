@@ -32,7 +32,8 @@ var log = console.log.bind(console),
     destinyUserProfile = {},
     membershipType,
     characters,
-    urlParams = new URLSearchParams(window.location.search); // Declare URLSearchParams
+    urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
+    homeUrl = `http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html`;
 
 // Set default axios header
 axios.defaults.headers.common = {
@@ -112,9 +113,8 @@ var CheckComponents = async (bool) => {
 
     // Remove invalid localStorage items & Redirect if items are missing
     var keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'],
-        tokenKeys = ['inception', 'expires_in', 'value'],
         cKeys = ['membership_id', 'token_type', 'authorization_code'],
-        redirUrl = 'http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html';
+        tokenKeys = ['inception', 'expires_in', 'value'];
 
 
     Object.keys(rsToken).forEach(item => {
@@ -128,11 +128,11 @@ var CheckComponents = async (bool) => {
     });
 
     Object.keys(tokenKeys).forEach(item => {
-        !Object.keys(rsToken).includes(tokenKeys[item]) ? RedirUser(redirUrl, 'rsToken=true') : null;
-        !Object.keys(acToken).includes(tokenKeys[item]) ? RedirUser(redirUrl, 'acToken=true') : null;
+        !Object.keys(rsToken).includes(tokenKeys[item]) ? RedirUser(homeUrl, 'rsToken=true') : null;
+        !Object.keys(acToken).includes(tokenKeys[item]) ? RedirUser(homeUrl, 'acToken=true') : null;
     });
     Object.keys(cKeys).forEach(item => {
-        !Object.keys(comps).includes(cKeys[item]) ? RedirUser(redirUrl, 'comps=true') : null;
+        !Object.keys(comps).includes(cKeys[item]) ? RedirUser(homeUrl, 'comps=true') : null;
     });
 
 
@@ -192,7 +192,7 @@ var OAuthFlow = async () => {
         }
         // User has no credentials, fired before other conditions
         else if (!authCode && (!comps || !acToken || !rsToken)) {
-            window.location.href = `http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html`;
+            window.location.href = homeUrl;
         }
 
         // If user has authorized beforehand, but came back through empty param URL
@@ -208,7 +208,7 @@ var OAuthFlow = async () => {
 
         // Otherwise, redirect the user back to the 'Authorize' page
         else {
-            window.location.href = `http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html`;
+            window.location.href = homeUrl;
         };
     } catch (error) {
         console.error(error); // display error page, with error and options for user
