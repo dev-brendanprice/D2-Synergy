@@ -11,7 +11,7 @@ Axios - https://axios-http.com/docs/api_intro
 ### Re-Production Steps
 
 1. Download XAMPP and configure your firewall(s) to have an open port at `4645`
-2. Open XAMPP > click Config next to Apache > Apache (httpd.conf) > Change the port on `Line 60` to `4645` > Change the ServerName on `Line 228` to `localhost`
+2. Open XAMPP > click Config next to Apache > Apache (httpd.conf) > Change the `LISTEN` port to `4645` > Change the `ServerName` to `localhost`
 3. Don't start Apache whilst doing the next few steps
 4. Click explorer in XAMPP > `htdocs` > Remove all the items inside this directory
 5. Clone this repo to `htdocs`
