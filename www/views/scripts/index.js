@@ -48,3 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code&state=${stateCode}`;
     });
 });
+
+console.log(window);
+console.log(window.location);
+console.log(window.location.href);

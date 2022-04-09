@@ -510,7 +510,3 @@ for (let a=0; a<=2; a++) {
 .catch(error => {
     console.error(error);
 });
-
-console.log(window);
-console.log(window.location);
-console.log(window.location.href);
