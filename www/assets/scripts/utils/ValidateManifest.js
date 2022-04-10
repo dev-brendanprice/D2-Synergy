@@ -33,8 +33,7 @@ const ValidateTables = async () => {
 
             // Request/Set new table
             var suffix = await ReturnComponentSuffix(table),
-                newTable = await axios.get(`https://www.bungie.net/common/destiny2_content/json/en/DestinyInventoryItemDefinition-cb4bec6f-e2b6-4f44-8593-cfd0255b89f2.json`);
-                log(newTable)
+                newTable = await axios.get(`https://www.bungie.net${suffix}`);
 
             set(table, newTable.data);
         };
