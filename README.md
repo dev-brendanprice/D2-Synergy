@@ -8,7 +8,7 @@ D2 Synergy is an application that allows players to view, change, and make decis
 
 ### Contributing
 
-Contributing has not be formalized nor does it have standards as of yet.
+Contributing standards are pending.
 
 ### Documentation Quick-Links
 
