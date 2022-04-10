@@ -367,7 +367,7 @@ var LoadCharacter = async (classType) => {
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
     document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
 
-    if (amountOfBounties < 0) {
+    if (amountOfBounties === 0) {
         document.getElementById('noItemsTooltip').innerHTML = 'No Bounties exist on this character';
     }
     else if (amountOfBounties > 0) {
