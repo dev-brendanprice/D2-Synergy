@@ -275,8 +275,7 @@ var LoadCharacter = async (classType) => {
     // Clear current items in display & Reset counters
     document.getElementById('items').innerHTML = '';
     document.getElementById('overlays').innerHTML = '';
-    document.getElementById('totalBounties').innerHTML = `Bounties: ${0}`;
-    document.getElementById('totalXP').innerHTML = `Total XP: ${0}`;
+    document.getElementById('itemStats').style.display = 'none';
 
     // Validate tokens and other components
     await CheckComponents(false);
@@ -367,6 +366,7 @@ var LoadCharacter = async (classType) => {
     // Change DOM content
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
     document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
+    document.getElementById('itemStats').style.display = 'inline-block';
 
     // Toggle empty items tooltip
     if (amountOfBounties === 0) {
