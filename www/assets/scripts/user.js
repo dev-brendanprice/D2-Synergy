@@ -275,7 +275,7 @@ var LoadCharacter = async (classType) => {
     // Clear current items in display & Reset counters
     document.getElementById('items').innerHTML = '';
     document.getElementById('overlays').innerHTML = '';
-    document.getElementById('itemStats').style.display = 'none';
+    document.getElementById('inventoryStatistics').style.display = 'none';
     document.getElementById('noItemsTooltip').style.display = 'none';
 
     // Validate tokens and other components
