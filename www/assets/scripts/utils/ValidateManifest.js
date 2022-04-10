@@ -34,6 +34,7 @@ const ValidateTables = async () => {
             // Request/Set new table
             var suffix = await ReturnComponentSuffix(table),
                 newTable = await axios.get(`https://www.bungie.net${suffix}`);
+                log(suffix)
 
             set(table, newTable.data);
         };
