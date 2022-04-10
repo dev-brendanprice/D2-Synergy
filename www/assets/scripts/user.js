@@ -265,7 +265,7 @@ var FetchBungieUserDetails = async () => {
 
         // Change DOM content
         document.getElementById('charactersContainer').style.display = 'inline-block';
-        document.getElementById('categories').style.display = 'inline-block';
+        document.getElementById('categories').style.display = 'block';
     };
 };
 
