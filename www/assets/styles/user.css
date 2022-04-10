@@ -84,6 +84,15 @@
     font-size: 18px;
 }
 
+#noItemsTooltip {
+    margin-left: 28px;
+    padding-top: 10px;
+    color: rgb(118, 118, 118);
+    font-size: 18px;
+    font-style: italic;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
 #totalBounties {
     margin-left: 26px;
     color: white;

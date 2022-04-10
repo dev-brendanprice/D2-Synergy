@@ -366,8 +366,15 @@ var LoadCharacter = async (classType) => {
     // Change DOM content
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
     document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
-    document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
-    document.getElementById('totalXP').innerHTML = `Total XP: ${InsertSeperators(totalXpYield)}`;
+
+    if (amountOfBounties === 0) {
+        document.getElementById('noItemsTooltip').innerHTML = 'No Bounties exist on this character';
+    }
+    else if (amountOfBounties > 0) {
+        document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
+        document.getElementById('totalXP').innerHTML = `Total XP: ${InsertSeperators(totalXpYield)}`;
+    };
+
 
     // Stop loading sequence
     StopLoad();
