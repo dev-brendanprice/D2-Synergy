@@ -136,6 +136,10 @@
     float: left;
 }
 
+#charactersContainer {
+    display: none;
+}
+
 #charactersContainer > div {
     cursor: pointer;
     user-select: none;

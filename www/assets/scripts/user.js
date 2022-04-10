@@ -254,9 +254,6 @@ var FetchBungieUserDetails = async () => {
     // Load from cache
     if (membershipType || destinyMemberships || destinyUserProfile) {
 
-        // Change DOM content
-        document.getElementById('categories').style.display = 'inline-block';
-
         // Loop over characters
         characters = destinyUserProfile.characters.data;
         for (var item in characters) {
@@ -265,6 +262,10 @@ var FetchBungieUserDetails = async () => {
             document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
             document.getElementById(`classType${char.classType}`).innerHTML = `${parseChar(char.classType)}`;
         };
+
+        // Change DOM content
+        document.getElementById('charactersContainer').style.display = 'inline-block';
+        document.getElementById('categories').style.display = 'inline-block';
     };
 };
 
