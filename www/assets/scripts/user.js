@@ -276,6 +276,7 @@ var LoadCharacter = async (classType) => {
     document.getElementById('items').innerHTML = '';
     document.getElementById('overlays').innerHTML = '';
     document.getElementById('itemStats').style.display = 'none';
+    document.getElementById('noItemsTooltip').style.display = 'none';
 
     // Validate tokens and other components
     await CheckComponents(false);
