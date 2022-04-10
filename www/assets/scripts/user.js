@@ -272,9 +272,11 @@ var LoadCharacter = async (classType) => {
     // Start load sequence
     StartLoad();
 
-    // Clear current items in display
+    // Clear current items in display & Reset counters
     document.getElementById('items').innerHTML = '';
     document.getElementById('overlays').innerHTML = '';
+    document.getElementById('totalBounties').innerHTML = `Bounties: ${0}`;
+    document.getElementById('totalXP').innerHTML = `Total XP: ${0}`;
 
     // Validate tokens and other components
     await CheckComponents(false);
