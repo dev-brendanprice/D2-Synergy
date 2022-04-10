@@ -1,6 +1,6 @@
 # D2 Synergy
 
-[![Version](https://img.shields.io/badge/Version-dev-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)
+[![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)
 [![API](https://img.shields.io/badge/API-Bungie.net-green)](https://bungie-net.github.io/multi/index.html)
 [![License](https://img.shields.io/badge/License-MIT-blue)]()
 
