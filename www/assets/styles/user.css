@@ -85,10 +85,11 @@
 }
 
 #noItemsTooltip {
+    display: none;
     margin-left: 28px;
-    padding-top: 10px;
+    padding-top: 25px;
     color: rgb(118, 118, 118);
-    font-size: 18px;
+    font-size: 15px;
     font-style: italic;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }

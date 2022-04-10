@@ -367,10 +367,15 @@ var LoadCharacter = async (classType) => {
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
     document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
 
+    // Toggle empty items tooltip
     if (amountOfBounties === 0) {
+        document.getElementById('noItemsTooltip').style.display = 'inline-block';
         document.getElementById('noItemsTooltip').innerHTML = 'No Bounties exist on this character';
+        document.getElementById('totalBounties').innerHTML = `Bounties: ${0}`;
+        document.getElementById('totalXP').innerHTML = `Total XP: ${0}`;
     }
     else if (amountOfBounties > 0) {
+        document.getElementById('noItemsTooltip').style.display = 'none';
         document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
         document.getElementById('totalXP').innerHTML = `Total XP: ${InsertSeperators(totalXpYield)}`;
     };
