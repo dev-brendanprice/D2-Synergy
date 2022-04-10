@@ -64,6 +64,7 @@
 
 #charDisplayTitle {
     margin-top: 13px;
+    user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
