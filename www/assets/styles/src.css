@@ -81,12 +81,7 @@ html, body {
 }
 
 
-/* Animations */
-.fade-in {
-    animation-name: FadeIn;
-    animation-duration: 3s;
-    transition-timing-function: linear;
-}
+/* Onload Animation */
 @keyframes FadeIn {
     0% {
         opacity: 0;
