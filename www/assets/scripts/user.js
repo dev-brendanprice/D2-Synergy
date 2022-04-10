@@ -277,7 +277,6 @@ var LoadCharacter = async (classType) => {
     StartLoad();
 
     // Clear current items in display & Reset counters
-    document.getElementById('contentDisplay').style.display = 'none';
     document.getElementById('items').innerHTML = '';
     document.getElementById('overlays').innerHTML = '';
     document.getElementById('itemStats').style.display = 'none';
@@ -386,8 +385,6 @@ var LoadCharacter = async (classType) => {
         document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
         document.getElementById('totalXP').innerHTML = `Total XP: ${InsertSeperators(totalXpYield)}`;
     };
-
-    // document.getElementById('contentDisplay').style.display = 'inline-block';
 
 
     // Stop loading sequence
