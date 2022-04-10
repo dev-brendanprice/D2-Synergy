@@ -4,7 +4,7 @@
  * Style for the landing page of the website
  */
 
-#mainContainer {
+/* #mainContainer {
     margin: auto;
     margin-top: 20px;
     width: 50vw;
@@ -15,6 +15,22 @@
     background-color: #3e454e;
     border-radius: 5px;
     border: 1px #56606d solid;
+} */
+
+#mainContainer {
+    position: absolute;
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    width: 55vw;
+    border: 1px #56606d solid;
+    background-color: #3e454e;
+    border-radius: 3px;
+    text-align: center;
+	align-items: center;
+	justify-content: center;
 }
 
 #heading {
