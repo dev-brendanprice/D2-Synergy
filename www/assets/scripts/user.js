@@ -33,7 +33,7 @@ var log = console.log.bind(console),
     membershipType,
     characters,
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
-    homeUrl = `http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html`;
+    homeUrl = `https://synergy.brendanprice.xyz`;
 
 // Set default axios header
 axios.defaults.headers.common = {
