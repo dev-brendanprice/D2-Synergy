@@ -242,6 +242,7 @@ var FetchBungieUserDetails = async () => {
             membershipType = destinyMemberships.destinyMemberships[0].membershipType;
 
         // Fetch user profile
+        log(destinyMemberships);
         var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=200`, AuthConfig);
             destinyUserProfile = userProfile.data.Response;
 
@@ -495,6 +496,8 @@ for (let a=0; a<=2; a++) {
         LoadCharacter(a);
     });
 };
+
+// document.getElementById('')
 
 
 
