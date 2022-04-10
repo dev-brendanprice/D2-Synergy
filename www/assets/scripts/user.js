@@ -254,6 +254,9 @@ var FetchBungieUserDetails = async () => {
     // Load from cache
     if (membershipType || destinyMemberships || destinyUserProfile) {
 
+        // Change DOM content
+        document.getElementById('categories').style.display = 'inline-block';
+
         // Loop over characters
         characters = destinyUserProfile.characters.data;
         for (var item in characters) {
