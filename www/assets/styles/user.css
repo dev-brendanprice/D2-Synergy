@@ -84,6 +84,12 @@
     font-size: 18px;
 }
 
+#noItemsTooltip {
+    color: rgb(75, 75, 75);
+    font-size: 18px;
+    font-style: italic;
+}
+
 #totalBounties {
     margin-left: 26px;
     color: white;
