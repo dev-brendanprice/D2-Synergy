@@ -114,9 +114,6 @@
 
 #categories {
     margin-top: 3px;
-    animation-name: FadeIn;
-    animation-duration: 1s;
-    transition-timing-function: linear;
 }
 
 #categories > div {
@@ -129,12 +126,6 @@
     user-select: none;
 }
 
-#inventoryStatistics {
-    animation-name: FadeIn;
-    animation-duration: 1s;
-    transition-timing-function: linear;
-}
-
 /* char selects */
 
 #sideSelectionBar {
@@ -142,9 +133,6 @@
     margin-left: 15px;
     width: auto;
     float: left;
-    animation-name: FadeIn;
-    animation-duration: 1s;
-    transition-timing-function: linear;
 }
 
 #charactersContainer > div {

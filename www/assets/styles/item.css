@@ -26,9 +26,6 @@
 #items {
     margin-top: 20px;
     margin-left: 28px;
-    animation-name: FadeIn;
-    animation-duration: 1s;
-    transition-timing-function: linear;
 }
 
 .bounty {
