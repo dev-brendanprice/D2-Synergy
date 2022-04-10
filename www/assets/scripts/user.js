@@ -242,8 +242,7 @@ var FetchBungieUserDetails = async () => {
             membershipType = destinyMemberships.destinyMemberships[0].membershipType;
 
         // Fetch user profile
-        log(destinyMemberships);
-        var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=200`, AuthConfig);
+        var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.destinyMemberships[0].membershipId}/?components=200`, AuthConfig);
             destinyUserProfile = userProfile.data.Response;
 
         // Cache the response
@@ -262,7 +261,6 @@ var FetchBungieUserDetails = async () => {
             var char = characters[item];
             document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
             document.getElementById(`classType${char.classType}`).innerHTML = `${parseChar(char.classType)}`;
-            // document.getElementById(`charLight${char.classType}`).innerHTML = `${char.light}`;
         };
     };
 };
@@ -497,8 +495,10 @@ for (let a=0; a<=2; a++) {
     });
 };
 
-// document.getElementById('')
-
+// Logout button listener
+document.getElementById('navBarLogoutContainer', () => {
+    Logout();
+});
 
 
 // -- MAIN
