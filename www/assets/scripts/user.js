@@ -387,7 +387,7 @@ var LoadCharacter = async (classType) => {
         document.getElementById('totalXP').innerHTML = `Total XP: ${InsertSeperators(totalXpYield)}`;
     };
 
-    document.getElementById('contentDisplay').style.display = 'inline-block';
+    // document.getElementById('contentDisplay').style.display = 'inline-block';
 
 
     // Stop loading sequence
