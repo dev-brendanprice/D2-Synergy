@@ -15,6 +15,14 @@
     z-index: 10;
 }
 
+#items > div {
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
 #items {
     margin-top: 20px;
     margin-left: 28px;
