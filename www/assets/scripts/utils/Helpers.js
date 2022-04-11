@@ -89,6 +89,10 @@ const MakeBountyElement = (param) => {
     var rt = param.objectiveDefinitions;
     itemPrgCounter.id = 'itemPrgCounter';
     itemPrgDesc.id = 'itemPrgDesc';
+    // itemPrgDesc.style.fontSize = '13px'; // Reset ?
+    if (rt.progressDescription > 26) {
+        itemPrgDesc.style.fontSize = '11px';
+    };
     itemPrgDesc.innerHTML = rt.progressDescription;
     itemPrgCounter.innerHTML = `${rt.completionValue === 100 ? `%${(rt.unlockValueHash / 100) * 100}` : `${rt.unlockValueHash}/${rt.completionValue}`}`;
 
