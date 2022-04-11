@@ -46,5 +46,9 @@ var petraYields = {
     'repeatable': 0
 };
 
+var bountyConfigs = {
+    
+};
 
-export { itemTypeKeys, vendorKeys, baseYields, petraYields };
+
+export { itemTypeKeys, vendorKeys, baseYields, petraYields, bountyConfigs };
