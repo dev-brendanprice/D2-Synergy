@@ -13,13 +13,14 @@ var definitions = await axios.get('https://www.bungie.net/common/destiny2_conten
     inventoryItemDefinitions = definitions.data.Response;
 
 
-Object.keys(inventoryItemDefinitions).forEach(entry => {
-    var rt = inventoryItemDefinitions[entry];
-    if (rt.itemType===26) {
-        bountyConfigs[rt.itemHash] = struct;
-    };
-});
+// Object.keys(inventoryItemDefinitions).forEach(entry => {
+//     var rt = inventoryItemDefinitions[entry];
+//     if (rt.itemType===26) {
+//         bountyConfigs[rt.itemHash] = struct;
+//     };
+// });
 
 // cout
+log(definitions);
 log(inventoryItemDefinitions);
 log(bountyConfigs);
