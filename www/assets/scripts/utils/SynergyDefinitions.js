@@ -113,10 +113,10 @@ const ItemCategory = [
 ];
 
 // Hashes for weapon ammuniation type
-const AmmoType = [
+const ItemType = [
     'Special Ammo',
     'Primary Ammo',
-    'Heavy Ammo', // 2
+    'Heavy Ammo', // 3
 ];
 
 // Strings for kill type
@@ -138,7 +138,7 @@ export {
   ActivityModeHash,
   DestinationHash,
   DamageTypeHash,
-  AmmoType,
+  ItemType,
   ItemCategory,
   KillType,
 };
