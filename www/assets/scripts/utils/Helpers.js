@@ -44,6 +44,13 @@ const ParseChar = (classType) => {
 };
 
 
+// Limit length of string
+// @string {string}, @int {limit}
+const LimitString = (string, limit) => {
+    return string.split(string.substr(limit))[0];
+};
+
+
 // Make element for entry data when hash is found in definitions
 // @obj {param}
 const MakeBountyElement = (param) => {
@@ -79,18 +86,10 @@ const MakeBountyElement = (param) => {
     itemDesc.innerHTML = param.displayProperties.description;
 
     // Render progress content of item
+    var rt = param.objectiveDefinitions;
     itemPrgCounter.id = 'itemPrgCounter';
     itemPrgDesc.id = 'itemPrgDesc';
-
-    var rt = param.objectiveDefinitions;
-    itemPrgDesc.innerHTML = rt.progressDescription;
-
-    // if (rt.completionValue === 100) {
-    //     itemPrgCounter.innerHTML = `%${(rt.unlockValueHash / 100) * 100}`;
-    // }
-    // else if (rt.valueStyle !== 100) {
-    //     itemPrgCounter.innerHTML = `${rt.unlockValueHash}/${rt.completionValue}`;
-    // };
+    itemPrgDesc.innerHTML = `${LimitString(rt.progressDescription)}..`;
     itemPrgCounter.innerHTML = `${rt.completionValue === 100 ? `%${(rt.unlockValueHash / 100) * 100}` : `${rt.unlockValueHash}/${rt.completionValue}`}`;
 
     // Assign content to parent
