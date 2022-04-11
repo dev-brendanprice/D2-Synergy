@@ -19,5 +19,5 @@ for (var entry in definitions) {
     };
 };
 
-// log(bountyConfigs);
+log(bountyConfigs);
 log(new Date() - sTime);
