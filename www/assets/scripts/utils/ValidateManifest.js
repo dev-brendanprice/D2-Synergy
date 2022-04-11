@@ -1,7 +1,8 @@
 import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
 
 const requiredTables = [
-    'DestinyInventoryItemDefinition'
+    'DestinyInventoryItemDefinition',
+    'DestinyObjectiveDefinition'
 ];
 
 var log = console.log.bind(console),
@@ -34,6 +35,7 @@ const ValidateTables = async () => {
             // Request/Set new table
             var suffix = await ReturnComponentSuffix(table),
                 newTable = await axios.get(`https://www.bungie.net${suffix}`);
+                log(newTable);
 
             set(table, newTable.data);
         };

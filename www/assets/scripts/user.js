@@ -81,10 +81,7 @@ var BungieOAuth = async (authCode) => {
             log('-> Authorized with Bungie.net!');
         })
         .catch(err => {
-            if (err.response.data['error_description'] == 'AuthorizationCodeInvalid') {
-                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
-            }
-            else if (err.response.data['error_description'] == 'AuthorizationCodeStale') {
+            if (err.response.data['error_description'] == 'AuthorizationCodeInvalid' || err.response.data['error_description'] == 'AuthorizationCodeStale') {
                 window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code`;
             }
             else {

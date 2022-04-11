@@ -31,12 +31,13 @@ const ParseChar = (classType) => {
 // Make element for entry data when hash is found in definitions
 // @obj {param}
 const MakeBountyElement = (param) => {
-
+    
     const item = document.createElement('img'),
           itemOverlay = document.createElement('div'),
           itemTitle = document.createElement('div'),
           itemType = document.createElement('div'),
           itemDesc = document.createElement('div'),
+        //   itemPrg = document.createElement('div'),
           hr = document.createElement('hr');
 
 
