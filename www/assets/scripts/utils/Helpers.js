@@ -83,8 +83,9 @@ const MakeBountyElement = (param) => {
     itemPrgDesc.id = 'itemPrgDesc';
 
     var rt = param.objectiveDefinitions;
+    log(rt);
     itemPrgDesc.innerHTML = rt.progressDescription;
-    
+
     if (rt.uiStyle === 1) {
         itemPrgCounter.innerHTML = `${rt.unlockValueHash}/${rt.completionValue}`;
     }
