@@ -360,7 +360,7 @@ var LoadCharacter = async (classType) => {
     // Assign objectives to each item
     objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
     Object.keys(objectiveDefinitions).forEach(v => {
-        log(objectiveDefinitions[v].uiStyle);
+        log(objectiveDefinitions[v].uiStyle === 3);
     });
     // Object.keys(charBounties).forEach(v => {
     //     var objective = objectiveDefinitions[charBounties[v].objectives.objectiveHashes[0]];
