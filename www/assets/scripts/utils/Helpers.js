@@ -80,12 +80,14 @@ const MakeBountyElement = (param) => {
 
     // Progress content of item
     itemPrgContainer.id = `itemPrg_${param.hash}`;
+    itemPrgCounter.id = 'itemPrgCounter';
+    itemPrgDesc.id = 'itemPrgDesc';
 
     var rt = param.objectiveDefinitions;
     itemPrgDesc.innerHTML = rt.progressDescription;
-    itemPrgCounter.innerHTML = `${rt.uiStyle === 1 ? `${rt.unlockValueHash}/${rt.unlockValueHash}` : (rt.uiStyle === 3 ? `%${rt.unlockValueHash}` : `${rt.unlockValueHash}/${rt.unlockValueHash}`)}`;
+    itemPrgCounter.innerHTML = `${rt.uiStyle === 1 ? `${rt.unlockValueHash}/${rt.completionValue}` : (rt.uiStyle === 3 ? `%${rt.unlockValueHash}` : `${rt.unlockValueHash}/${rt.completionValue}`)}`;
 
-    log(document.getElementById(`itemPrg_${param.hash}`))
+    log(document.getElementById(`itemPrg_${param.hash}`));
     // document.getElementById(`itemPrg_${param.hash}`).appendChild(itemPrgCounter);
     // document.getElementById(`itemPrg_${param.hash}`).appendChild(itemPrgDesc);
 
