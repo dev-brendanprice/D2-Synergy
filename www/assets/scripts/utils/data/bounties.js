@@ -5889,11 +5889,11 @@ const bounties = {
     },
     "3671936696": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [1,2],
         "DamageType": [],
         "ItemCategory": [],
         "ItemType": [],
-        "KillType": []
+        "KillType": [2]
     },
     "3675498641": {
         "Destination": [],
