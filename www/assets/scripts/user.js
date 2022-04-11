@@ -282,6 +282,9 @@ var LoadCharacter = async (classType) => {
     document.getElementById('itemStats').style.display = 'none';
     document.getElementById('noItemsTooltip').style.display = 'none';
 
+    document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
+    document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
+
     // Validate tokens and other components
     await CheckComponents(false);
 
@@ -369,8 +372,6 @@ var LoadCharacter = async (classType) => {
     var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
     // Change DOM content
-    document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
-    document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
     document.getElementById('itemStats').style.display = 'inline-block';
 
     // Toggle empty items tooltip
