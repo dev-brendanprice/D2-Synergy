@@ -13,13 +13,18 @@ var definitions = await axios.get('https://www.bungie.net/common/destiny2_conten
     inventoryItemDefinitions = definitions.data;
 
 
-Object.keys(inventoryItemDefinitions).forEach(entry => {
-    if (entry.itemType===26) {
-        bountyConfigs[entry.itemHash] = struct;
-    };
-});
+const build = async () => {
+    Object.keys(inventoryItemDefinitions).forEach(entry => {
+        if (entry.itemType===26) {
+            bountyConfigs[entry.itemHash] = struct;
+        };
+    });
+};
 
-// cout
-// log(definitions.data);
-// log(inventoryItemDefinitions);
-log(bountyConfigs);
+(async() => {
+
+    // cout
+    // log(definitions.data);
+    // log(inventoryItemDefinitions);
+    log(bountyConfigs);
+});
