@@ -409,9 +409,9 @@ const bounties = {
     },
     "304697572": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [1,2],
         "DamageType": [],
-        "ItemCategory": [],
+        "ItemCategory": [4],
         "ItemType": [],
         "KillType": []
     },
@@ -1371,8 +1371,8 @@ const bounties = {
         "Destination": [],
         "ActivityMode": [1,2],
         "DamageType": [],
-        "ItemCategory": [],
-        "ItemType": [5],
+        "ItemCategory": [5],
+        "ItemType": [],
         "KillType": []
     },
     "768824550": {
@@ -2427,8 +2427,8 @@ const bounties = {
         "Destination": [],
         "ActivityMode": [1,2],
         "DamageType": [],
-        "ItemCategory": [],
-        "ItemType": [8],
+        "ItemCategory": [8],
+        "ItemType": [],
         "KillType": []
     },
     "1362091940": {
@@ -2593,9 +2593,9 @@ const bounties = {
     },
     "1467889597": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [1,2],
         "DamageType": [],
-        "ItemCategory": [],
+        "ItemCategory": [6],
         "ItemType": [],
         "KillType": []
     },
@@ -3369,9 +3369,9 @@ const bounties = {
     },
     "1964834614": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [1,2],
         "DamageType": [],
-        "ItemCategory": [],
+        "ItemCategory": [10],
         "ItemType": [],
         "KillType": []
     },
@@ -3555,8 +3555,8 @@ const bounties = {
         "Destination": [],
         "ActivityMode": [1,2],
         "DamageType": [],
-        "ItemCategory": [],
-        "ItemType": [16],
+        "ItemCategory": [16],
+        "ItemType": [],
         "KillType": []
     },
     "2267981985": {
@@ -4683,8 +4683,8 @@ const bounties = {
         "Destination": [],
         "ActivityMode": [1,2],
         "DamageType": [],
-        "ItemCategory": [],
-        "ItemType": [7],
+        "ItemCategory": [7],
+        "ItemType": [],
         "KillType": []
     },
     "3014159912": {
