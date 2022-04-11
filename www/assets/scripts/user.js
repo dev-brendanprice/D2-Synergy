@@ -3,8 +3,8 @@ console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on T
 
 // Import modules
 import { ValidateManifest, ReturnEntry } from './utils/ValidateManifest.js';
-import { VerifyState } from './utils/VerifyState.js';
 import {
+    VerifyState,
     ParseChar,
     Logout,
     StartLoad,
@@ -282,6 +282,7 @@ var LoadCharacter = async (classType) => {
         characterId,
         CharacterInventories,
         definitions = {},
+        objectiveDefinitions = {},
         membershipType = sessionStorage.getItem('membershipType');
 
     // Clear current items in display & etc
@@ -290,7 +291,7 @@ var LoadCharacter = async (classType) => {
     document.getElementById('itemStats').style.display = 'none';
     document.getElementById('noItemsTooltip').style.display = 'none';
 
-    document.getElementById('charDisplayTitle_Character').innerHTML = `${ParseChar(classType)} //`;
+    document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
     document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
 
 
@@ -355,6 +356,12 @@ var LoadCharacter = async (classType) => {
     var parsedBounties = ParseBounties(charInventory, {definitions});
         charBounties = parsedBounties[0]
         amountOfBounties = parsedBounties[1];
+
+    // Assign objectives to each item
+    objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
+    bountyArr.forEach(v => {
+        log(v);
+    });
     
     // Loop over bounties and sort into groups
     bountyArr = SortByGroup(charBounties, {bountyArr, vendorKeys, itemTypeKeys});
