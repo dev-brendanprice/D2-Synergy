@@ -276,15 +276,6 @@ var LoadCharacter = async (classType) => {
     // Start load sequence
     StartLoad();
 
-    // Clear current items in display & Reset counters
-    document.getElementById('items').innerHTML = '';
-    document.getElementById('overlays').innerHTML = '';
-    document.getElementById('itemStats').style.display = 'none';
-    document.getElementById('noItemsTooltip').style.display = 'none';
-
-    document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
-    document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
-
     // Validate tokens and other components
     await CheckComponents(false);
 
@@ -295,6 +286,15 @@ var LoadCharacter = async (classType) => {
         CharacterInventories,
         definitions = {},
         membershipType = sessionStorage.getItem('membershipType');
+
+    // Clear current items in display & etc
+    document.getElementById('items').innerHTML = '';
+    document.getElementById('overlays').innerHTML = '';
+    document.getElementById('itemStats').style.display = 'none';
+    document.getElementById('noItemsTooltip').style.display = 'none';
+
+    document.getElementById('charDisplayTitle_Character').innerHTML = `${ParseChar(classType)} //`;
+    document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
 
 
     // Get chosen character and save index  
