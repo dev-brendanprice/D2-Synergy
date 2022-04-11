@@ -91,7 +91,14 @@ const DamageHash = {
     Stasis: 151347233,
 };
 
-// Hashes for weapon type
+// Hashes for weapon ammuniation type
+const ItemType = [
+    'Special Ammo',
+    'Primary Ammo',
+    'Heavy Ammo',
+];
+
+// Strings for weapon type
 const ItemCategory = [
     'Auto Rifle',
     'Scout Rifle',
@@ -107,10 +114,12 @@ const ItemCategory = [
     'Glaive',
     'Submachine Gun',
     'Machine Gun',
-    'Trace Rifle'
+    'Trace Rifle',
+    'Sidearms',
+    'Bow',
 ];
 
-// Hashes for kill type
+// Strings for kill type
 const KillType = [
     'Melee',
     'Super',
@@ -121,4 +130,15 @@ const KillType = [
 ];
 
 
-export { itemTypeKeys, vendorKeys, baseYields, petraYields, ActivityModeHash, DestinationHash, DamageHash, ItemCategory, KillType };
+export {
+  itemTypeKeys,
+  vendorKeys,
+  baseYields,
+  petraYields,
+  ActivityModeHash,
+  DestinationHash,
+  DamageHash,
+  ItemType,
+  ItemCategory,
+  KillType,
+};

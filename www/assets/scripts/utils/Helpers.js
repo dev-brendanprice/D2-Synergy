@@ -44,13 +44,6 @@ const ParseChar = (classType) => {
 };
 
 
-// Limit length of string
-// @string {string}, @int {limit}
-const LimitString = (string, limit) => {
-    return string.split(string.substr(limit))[0];
-};
-
-
 // Make element for entry data when hash is found in definitions
 // @obj {param}
 const MakeBountyElement = (param) => {
