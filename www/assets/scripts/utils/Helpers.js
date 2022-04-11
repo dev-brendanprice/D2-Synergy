@@ -53,7 +53,9 @@ const MakeBountyElement = (param) => {
           itemTitle = document.createElement('div'),
           itemType = document.createElement('div'),
           itemDesc = document.createElement('div'),
-        //   itemPrg = document.createElement('div'),
+          itemPrgContainer = document.createElement('div'),
+          itemPrgCounter = document.createElement('div'),
+          itemPrgDesc = document.createElement('div'),
           hr = document.createElement('hr');
 
 
@@ -76,11 +78,22 @@ const MakeBountyElement = (param) => {
     itemType.innerHTML = param.itemTypeDisplayName;
     itemDesc.innerHTML = param.displayProperties.description;
 
+    // Progress content of item
+    itemPrgContainer.id = 'itemPrgContainer';
+
+    var rt = param.objectiveDefinitions;
+    itemPrgDesc.innerHTML = rt.progressDescription;
+    itemPrgCounter.innerHTML = `${rt.uiStyle === 1 ? `${rt.unlockValueHash}/${rt.unlockValueHash}` : (rt.uiStyle === 3 ? `%${rt.unlockValueHash}` : `${rt.unlockValueHash}/${rt.unlockValueHash}`)}`;
+
+    document.querySelector(itemPrgContainer).appendChild(itemPrgCounter);
+    document.querySelector(itemPrgContainer).appendChild(itemPrgDesc);
+
     // Assign content to parent
     document.querySelector(`#item_${param.hash}`).appendChild(itemTitle);
     document.querySelector(`#item_${param.hash}`).appendChild(itemType);
     document.querySelector(`#item_${param.hash}`).appendChild(hr);
     document.querySelector(`#item_${param.hash}`).appendChild(itemDesc);
+    document.querySelector(`#item_${param.hash}`).appendChild(itemPrgContainer);
     
 
     // Watch for mouse events
