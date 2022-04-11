@@ -22,7 +22,9 @@ const build = async () => {
 };
 
 (async() => {
-
+    
+    await build();
+    
     // cout
     // log(definitions.data);
     // log(inventoryItemDefinitions);
