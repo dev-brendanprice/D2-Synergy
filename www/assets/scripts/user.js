@@ -11,8 +11,7 @@ import {
     StopLoad,
     MakeBountyElement,
     RedirUser,
-    InsertSeperators,
-    VerifyState } from './utils/Helpers.js';
+    InsertSeperators } from './utils/Helpers.js';
 import {
     itemTypeKeys,
     vendorKeys,
