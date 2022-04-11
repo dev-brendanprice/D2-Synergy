@@ -84,7 +84,17 @@ const MakeBountyElement = (param) => {
 
     var rt = param.objectiveDefinitions;
     itemPrgDesc.innerHTML = rt.progressDescription;
-    itemPrgCounter.innerHTML = `${rt.uiStyle === 1 ? `${rt.unlockValueHash}/${rt.completionValue}` : (rt.uiStyle === 3 ? `%${rt.unlockValueHash}` : `${rt.unlockValueHash}/${rt.completionValue}`)}`;
+    
+    if (rt.uiStyle === 1) {
+        itemPrgCounter.innerHTML = `${rt.unlockValueHash}/${rt.completionValue}`;
+    }
+    else if (rt.uiStyle === 3) {
+        itemPrgCounter.innerHTML = `%${rt.unlockValueHash}`;
+    }
+    else {
+        itemPrgCounter.innerHTML = 'else';
+    };
+    // itemPrgCounter.innerHTML = `${rt.uiStyle === 1 ? `${rt.unlockValueHash}/${rt.completionValue}` : (rt.uiStyle === 3 ? `%${rt.unlockValueHash}` : `${rt.unlockValueHash}/${rt.completionValue}`)}`;
 
     // Assign content to parent
     document.querySelector(`#item_${param.hash}`).appendChild(itemTitle);
