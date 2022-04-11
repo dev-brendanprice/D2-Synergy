@@ -30,7 +30,7 @@ var CheckSession = () => {
     // Redirect user through if localStorage has items
     if (acToken && rsToken && comps) {
         log('-> Session Exists, Redirecting..');
-        window.location.href = 'user.html';
+        window.location.href = 'user';
     };
 };
 
