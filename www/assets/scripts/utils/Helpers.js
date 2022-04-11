@@ -44,7 +44,7 @@ const MakeBountyElement = (param) => {
     item.className = `bounty`;
     item.id = `${param.hash}`;
     document.querySelector('#items').appendChild(item);
-    item.src = `https://www.bungie.net/common/destiny2_content/icons/bdd71d635c10c9f60b4a63f56a461160.png`;
+    item.src = `https://www.bungie.net${param.displayProperties.icon}`;
 
     // Create overlay element
     itemOverlay.className = `itemContainer`;
