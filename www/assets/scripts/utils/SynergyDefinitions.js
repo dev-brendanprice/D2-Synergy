@@ -54,7 +54,7 @@ const DestinationHash = {
     DreamingCity: 1416096592,
     Moon: 677774031,
     Europa: 1729879943,
-    Cosmodrome: 3990611421,
+    Cosmodrome: 3990611421, // 6
 };
 
 // Hashes for activity modes
@@ -79,7 +79,7 @@ const ActivityModeHash = {
     trials: 1673724806,
     explore: 3497767639,
     daresOfEternity: 2294590554,
-    raid: 2043403989,
+    raid: 2043403989, // 20
 };
 
 // Hashes for damage type
@@ -88,7 +88,7 @@ const DamageTypeHash = {
     Arc: 2303181850,
     Kinetic: 3373582085,
     Void: 3454344768,
-    Stasis: 151347233,
+    Stasis: 151347233, // 4
 };
 
 // Strings for weapon type
@@ -109,14 +109,14 @@ const ItemCategory = [
     'Machine Gun',
     'Trace Rifle',
     'Sidearms',
-    'Bow',
+    'Bow', // 16
 ];
 
 // Hashes for weapon ammuniation type
 const ItemType = [
     'Special Ammo',
     'Primary Ammo',
-    'Heavy Ammo',
+    'Heavy Ammo', // 3
 ];
 
 // Strings for kill type
@@ -126,7 +126,7 @@ const KillType = [
     'Grenade',
     'Finisher',
     'Precision',
-    'ClassAbilities',
+    'ClassAbilities', // 5
 ];
 
 
