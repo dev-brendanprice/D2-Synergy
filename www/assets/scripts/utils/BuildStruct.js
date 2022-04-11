@@ -2,11 +2,11 @@ import { bountyConfigs } from './SynergyDefinitions.js';
 
 var log = console.log.bind(),
     struct = {
-        DestinationHash: [],
-        ActivityModeHash: [],
-        DamageTypeHash: [],
-        ItemCategoryHash: [],
-        KillTypeHash: []
+        Destination: [],
+        ActivityMode: [],
+        DamageType: [],
+        ItemCategory: [],
+        KillType: []
     },
     confs = bountyConfigs;
 
