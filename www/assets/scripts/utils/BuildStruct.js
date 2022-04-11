@@ -19,7 +19,7 @@ Object.keys(inventoryItemDefinitions).forEach(entry => {
     };
 });
 
-var definitionsForVendors = await axios.get('https://bungie.net/common/destiny2_content/json/en/DestinyVendorDefinition-cb4bec6f-e2b6-4f44-8593-cfd0255b89f2.json'),
+var definitionsForVendors = await axios.get('https://www.bungie.net/common/destiny2_content/json/en/DestinyVendorDefinition-cb4bec6f-e2b6-4f44-8593-cfd0255b89f2.json'),
     vendorDefinitions = definitionsForVendors.data;
 
 log(definitionsForVendors);
