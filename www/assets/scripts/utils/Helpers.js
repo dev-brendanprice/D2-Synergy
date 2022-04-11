@@ -88,6 +88,7 @@ const MakeBountyElement = (param) => {
 
     if (rt.completionValue === 100) {
         itemPrgCounter.innerHTML = `%${100 / Math.round(rt.unlockValueHash)}`;
+        log(`%${100 / Math.round(rt.unlockValueHash)}`);
     }
     else if (rt.valueStyle !== 100) {
         itemPrgCounter.innerHTML = `${rt.unlockValueHash}/${rt.completionValue}`;
