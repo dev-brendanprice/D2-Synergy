@@ -2,6 +2,24 @@ import { HomeURL } from '../../../appKeys.js';
 
 const log = console.log.bind(console);
 
+
+// Check if state query parameter exists in URL
+const VerifyState = async () => {
+
+    var urlParams = new URLSearchParams(window.location.search),
+        state = urlParams.get('state');
+
+    if (state != window.localStorage.getItem('stateCode')) {
+        window.localStorage.clear();
+        window.sessionStorage.clear();
+        window.location.href = `${HomeURL}`;
+    }
+    else {
+        window.localStorage.removeItem('stateCode');
+    };
+};
+
+
 // Redirect user back to specified url
 // @string {url}, @string {param}
 const RedirUser = (url, param) => {
@@ -116,5 +134,6 @@ export {
   StopLoad,
   MakeBountyElement,
   RedirUser,
-  InsertSeperators
+  InsertSeperators,
+  VerifyState
 };
