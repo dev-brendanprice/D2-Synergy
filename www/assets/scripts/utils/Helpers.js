@@ -89,7 +89,8 @@ const MakeBountyElement = (param) => {
     var rt = param.objectiveDefinitions;
     itemPrgCounter.id = 'itemPrgCounter';
     itemPrgDesc.id = 'itemPrgDesc';
-    itemPrgDesc.innerHTML = `${rt.progressDescription.length>=20 ? `${LimitString(rt.progressDescription, 22)}..` : rt.progressDescription}`;
+    log(rt.progressDescription.length, rt.progressDescription.length>20);
+    itemPrgDesc.innerHTML = `${rt.progressDescription.length>20 ? `${LimitString(rt.progressDescription, 22)}..` : rt.progressDescription}`;
     itemPrgCounter.innerHTML = `${rt.completionValue === 100 ? `%${(rt.unlockValueHash / 100) * 100}` : `${rt.unlockValueHash}/${rt.completionValue}`}`;
 
     // Assign content to parent
