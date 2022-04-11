@@ -46,6 +46,17 @@ const petraYields = {
     'repeatable': 0
 };
 
+// Hashes for destinations
+const DestinationHash = {
+    EDZ: 697502628,
+    Nessus: 3607432451,
+    TangledShore: 3821439926,
+    DreamingCity: 1416096592,
+    Moon: 677774031,
+    Europa: 1729879943,
+    Cosmodrome: 3990611421,
+};
+
 // Hashes for activity modes
 const ActivityModeHash = {
     gambit: 1848252830,
@@ -71,32 +82,14 @@ const ActivityModeHash = {
     raid: 2043403989,
 };
 
-// Hashes for destinations
-const DestinationHash = {
-    EDZ: 697502628,
-    Nessus: 3607432451,
-    TangledShore: 3821439926,
-    DreamingCity: 1416096592,
-    Moon: 677774031,
-    Europa: 1729879943,
-    Cosmodrome: 3990611421,
-};
-
 // Hashes for damage type
-const DamageHash = {
+const DamageTypeHash = {
     Solar: 1847026933,
     Arc: 2303181850,
     Kinetic: 3373582085,
     Void: 3454344768,
     Stasis: 151347233,
 };
-
-// Hashes for weapon ammuniation type
-const ItemType = [
-    'Special Ammo',
-    'Primary Ammo',
-    'Heavy Ammo',
-];
 
 // Strings for weapon type
 const ItemCategory = [
@@ -129,6 +122,13 @@ const KillType = [
     'ClassAbilities',
 ];
 
+// Hashes for weapon ammuniation type
+const ItemType = [
+    'Special Ammo',
+    'Primary Ammo',
+    'Heavy Ammo',
+];
+
 
 export {
   itemTypeKeys,
@@ -137,7 +137,7 @@ export {
   petraYields,
   ActivityModeHash,
   DestinationHash,
-  DamageHash,
+  DamageTypeHash,
   ItemType,
   ItemCategory,
   KillType,
