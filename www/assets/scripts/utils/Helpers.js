@@ -1,3 +1,5 @@
+import { HomeURL } from '../../../appKeys.js';
+
 const log = console.log.bind(console);
 
 // Redirect user back to specified url
@@ -44,7 +46,7 @@ const MakeBountyElement = (param) => {
     item.className = `bounty`;
     item.id = `${param.hash}`;
     document.querySelector('#items').appendChild(item);
-    item.src = `https://www.bungie.net/common/destiny2_content/icons/bdd71d635c10c9f60b4a63f56a461160.png`;
+    item.src = `https://www.bungie.net${param.displayProperties.icon}`;
 
     // Create overlay element
     itemOverlay.className = `itemContainer`;
@@ -96,7 +98,7 @@ const StopLoad = () => {
 const Logout = () => {
     localStorage.clear();
     sessionStorage.clear();
-    window.location.href = 'http://86.2.10.33:4645/D2Synergy-v0.3/www/views/index.html';
+    window.location.href = `${HomeURL}`;
 };
 
 

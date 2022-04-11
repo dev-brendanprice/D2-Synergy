@@ -2,6 +2,7 @@ console.log('%cD2 SYNERGY _V0.3', 'font-weight: bold;font-size: 40px;color: whit
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
 // Import modules
+import { APIKey, AuthHeader, HomeURL } from '../../../appKeys.js';
 import { ValidateManifest, ReturnEntry } from './utils/ValidateManifest.js';
 import { VerifyState } from './utils/VerifyState.js';
 import { 
@@ -33,11 +34,11 @@ var log = console.log.bind(console),
     membershipType,
     characters,
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
-    homeUrl = `https://synergy.brendanprice.xyz`;
+    homeUrl = HomeURL;
 
 // Set default axios header
 axios.defaults.headers.common = {
-    "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
+    "X-API-Key": `${APIKey}`
 };
 
 
@@ -52,7 +53,7 @@ var BungieOAuth = async (authCode) => {
         components = {},
         AuthConfig = {
             headers: {
-                Authorization: 'Basic MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA==',
+                Authorization: `Basic ${AuthHeader}`,
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         };
@@ -105,8 +106,8 @@ var CheckComponents = async (bool) => {
         components = {},
         AuthConfig = {
             headers: {
-                Authorization: `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
-                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: `Basic ${AuthHeader}`,
+                "Content-Type": "application/x-www-form-urlencoded"
             }
         };
 
@@ -222,8 +223,8 @@ var FetchBungieUserDetails = async () => {
     var components = JSON.parse(localStorage.getItem('components')),
         AuthConfig = { 
             headers: { 
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, 
-                "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" 
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,
+                "X-API-Key": `${AuthHeader}`
             }
         };
         
@@ -307,7 +308,7 @@ var LoadCharacter = async (classType) => {
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${AuthHeader}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
 
     // Iterate over CharacterInventories[characterId].items
@@ -516,7 +517,7 @@ document.getElementById('navBarLogoutContainer', () => {
 
     // Add default headers back, in case OAuthFlow needed a refresh
     axios.defaults.headers.common = {
-        "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
+        "X-API-Key": `${AuthHeader}`
     };
 
     // Main
