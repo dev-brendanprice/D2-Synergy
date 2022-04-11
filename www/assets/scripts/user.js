@@ -363,7 +363,7 @@ var LoadCharacter = async (classType) => {
     //     log(objectiveDefinitions[v].uiStyle === 3); // Check if entry is percentage based
     // });
     Object.keys(charBounties).forEach(v => {
-        v.objectiveDefinitions = objectiveDefinitions[charBounties[v].objectives.objectiveHashes[0]];
+        charBounties[v].objectiveDefinitions = objectiveDefinitions[charBounties[v].objectives.objectiveHashes[0]];
     });
     log(charBounties);
     
