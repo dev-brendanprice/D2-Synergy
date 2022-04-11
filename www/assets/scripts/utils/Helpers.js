@@ -7,9 +7,15 @@ const RedirUser = (url, param) => {
 };
 
 
+// Change URL (aesthetic)
+const EditURL = () => {
+    window.history.pushState({}, '', '/bruh');
+};
+
+
 // Returns corresponding class name using classType
 // @int {classType}
-const parseChar = (classType) => {
+const ParseChar = (classType) => {
     var r;
     switch (classType) {
         case 0:
@@ -108,11 +114,12 @@ const InsertSeperators = (num) => {
 
 
 export {
-  parseChar,
+  ParseChar,
   Logout,
   StartLoad,
   StopLoad,
   MakeBountyElement,
   RedirUser,
-  InsertSeperators
+  InsertSeperators,
+  EditURL
 };

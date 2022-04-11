@@ -4,14 +4,15 @@ console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on T
 // Import modules
 import { ValidateManifest, ReturnEntry } from './utils/ValidateManifest.js';
 import { VerifyState } from './utils/VerifyState.js';
-import { 
-    parseChar,
+import {
+    ParseChar,
     Logout,
     StartLoad,
     StopLoad,
     MakeBountyElement,
     RedirUser,
-    InsertSeperators } from './utils/Helpers.js';
+    InsertSeperators,
+    EditURL } from './utils/Helpers.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -260,7 +261,7 @@ var FetchBungieUserDetails = async () => {
 
             var char = characters[item];
             document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
-            document.getElementById(`classType${char.classType}`).innerHTML = `${parseChar(char.classType)}`;
+            document.getElementById(`classType${char.classType}`).innerHTML = `${ParseChar(char.classType)}`;
         };
 
         // Change DOM content
@@ -287,7 +288,7 @@ var LoadCharacter = async (classType) => {
 
     
     // Globals
-    var className = parseChar(classType),
+    var className = ParseChar(classType),
         characterId,
         CharacterInventories,
         definitions = {},
@@ -389,7 +390,7 @@ var LoadCharacter = async (classType) => {
 
     // Stop loading sequence
     StopLoad();
-    log(`-> Indexed ${parseChar(classType)}!`);
+    log(`-> Indexed ${ParseChar(classType)}!`);
 };
 
 
@@ -525,6 +526,9 @@ document.getElementById('navBarLogoutContainer', () => {
 
     // Load first character on profile
     LoadCharacter(characters[Object.keys(characters)[0]].classType);
+
+    // -- dev --
+    EditURL();
 
     // OAuth flow (above methods) have completed
     log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
