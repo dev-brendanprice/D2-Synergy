@@ -78,18 +78,13 @@ const MakeBountyElement = (param) => {
     itemType.innerHTML = param.itemTypeDisplayName;
     itemDesc.innerHTML = param.displayProperties.description;
 
-    // Progress content of item
-    itemPrgContainer.id = `itemPrg_${param.hash}`;
+    // Render progress content of item
     itemPrgCounter.id = 'itemPrgCounter';
     itemPrgDesc.id = 'itemPrgDesc';
 
     var rt = param.objectiveDefinitions;
     itemPrgDesc.innerHTML = rt.progressDescription;
     itemPrgCounter.innerHTML = `${rt.uiStyle === 1 ? `${rt.unlockValueHash}/${rt.completionValue}` : (rt.uiStyle === 3 ? `%${rt.unlockValueHash}` : `${rt.unlockValueHash}/${rt.completionValue}`)}`;
-
-    log(document.getElementById(`itemPrg_${param.hash}`));
-    // document.getElementById(`itemPrg_${param.hash}`).appendChild(itemPrgCounter);
-    // document.getElementById(`itemPrg_${param.hash}`).appendChild(itemPrgDesc);
 
     // Assign content to parent
     document.querySelector(`#item_${param.hash}`).appendChild(itemTitle);
@@ -98,7 +93,6 @@ const MakeBountyElement = (param) => {
     document.querySelector(`#item_${param.hash}`).appendChild(itemDesc);
     document.querySelector(`#item_${param.hash}`).appendChild(itemPrgCounter);
     document.querySelector(`#item_${param.hash}`).appendChild(itemPrgDesc);
-    // document.querySelector(`#item_${param.hash}`).appendChild(itemPrgContainer);
     
 
     // Watch for mouse events
