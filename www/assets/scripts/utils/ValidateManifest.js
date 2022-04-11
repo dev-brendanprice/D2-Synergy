@@ -4,8 +4,8 @@ const requiredTables = [
     'DestinyInventoryItemDefinition'
 ];
 
-var manifest;
-    
+var log = console.log.bind(console),
+    manifest;
 
 
 
