@@ -359,10 +359,13 @@ var LoadCharacter = async (classType) => {
 
     // Assign objectives to each item
     objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
-    Object.keys(charBounties).forEach(v => {
-        var objective = objectiveDefinitions[charBounties[v].objectives.objectiveHashes[0]];
-        log(objective.unlockValueHash, objective.completionValue);
+    Object.keys(objectiveDefinitions).forEach(v => {
+        log(v.uiStyle);
     });
+    // Object.keys(charBounties).forEach(v => {
+    //     var objective = objectiveDefinitions[charBounties[v].objectives.objectiveHashes[0]];
+    //     log(objective.unlockValueHash, objective.completionValue);
+    // });
     
     // Loop over bounties and sort into groups
     bountyArr = SortByGroup(charBounties, {bountyArr, vendorKeys, itemTypeKeys});
