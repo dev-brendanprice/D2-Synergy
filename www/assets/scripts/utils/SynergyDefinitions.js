@@ -112,6 +112,13 @@ const ItemCategory = [
     'Bow',
 ];
 
+// Hashes for weapon ammuniation type
+const ItemType = [
+    'Special Ammo',
+    'Primary Ammo',
+    'Heavy Ammo',
+];
+
 // Strings for kill type
 const KillType = [
     'Melee',
@@ -120,13 +127,6 @@ const KillType = [
     'Finisher',
     'Precision',
     'ClassAbilities',
-];
-
-// Hashes for weapon ammuniation type
-const ItemType = [
-    'Special Ammo',
-    'Primary Ammo',
-    'Heavy Ammo',
 ];
 
 
