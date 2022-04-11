@@ -89,7 +89,7 @@ const MakeBountyElement = (param) => {
     var rt = param.objectiveDefinitions;
     itemPrgCounter.id = 'itemPrgCounter';
     itemPrgDesc.id = 'itemPrgDesc';
-    itemPrgDesc.innerHTML = `${LimitString(rt.progressDescription)}..`;
+    itemPrgDesc.innerHTML = `${LimitString(rt.progressDescription, 21)}..`;
     itemPrgCounter.innerHTML = `${rt.completionValue === 100 ? `%${(rt.unlockValueHash / 100) * 100}` : `${rt.unlockValueHash}/${rt.completionValue}`}`;
 
     // Assign content to parent
