@@ -14,9 +14,8 @@ var definitions = await axios.get('https://www.bungie.net/common/destiny2_conten
 
 
 Object.keys(inventoryItemDefinitions).forEach(entry => {
-    var rt = inventoryItemDefinitions[entry];
-    if (rt.itemType===26) {
-        bountyConfigs[rt.itemHash] = struct;
+    if (entry.itemType===26) {
+        bountyConfigs[entry.itemHash] = struct;
     };
 });
 
