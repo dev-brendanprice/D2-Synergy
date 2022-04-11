@@ -11,8 +11,7 @@ import {
     StopLoad,
     MakeBountyElement,
     RedirUser,
-    InsertSeperators,
-    EditURL } from './utils/Helpers.js';
+    InsertSeperators } from './utils/Helpers.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -526,9 +525,6 @@ document.getElementById('navBarLogoutContainer', () => {
 
     // Load first character on profile
     LoadCharacter(characters[Object.keys(characters)[0]].classType);
-
-    // -- dev --
-    EditURL();
 
     // OAuth flow (above methods) have completed
     log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
