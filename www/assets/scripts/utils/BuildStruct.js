@@ -21,3 +21,5 @@ Object.keys(inventoryItemDefinitions).forEach(entry => {
         confs[rt.itemHash] = struct;
     };
 });
+
+log(confs);
