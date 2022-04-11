@@ -4,6 +4,7 @@ console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on T
 // Import modules
 import { APIKey, AuthHeader, HomeURL } from '../../appKeys.js';
 import { ValidateManifest, ReturnEntry } from './utils/ValidateManifest.js';
+import { VerifyState } from './utils/VerifyState.js';
 import { 
     parseChar,
     Logout,
