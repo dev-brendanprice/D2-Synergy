@@ -83,17 +83,15 @@ const MakeBountyElement = (param) => {
     itemPrgDesc.id = 'itemPrgDesc';
 
     var rt = param.objectiveDefinitions;
-    log(rt);
     itemPrgDesc.innerHTML = rt.progressDescription;
 
-    if (rt.completionValue === 100) {
-        itemPrgCounter.innerHTML = `%${(rt.unlockValueHash / 100) * 100}`;
-        log(`%${(rt.unlockValueHash / 100) * 100}`);
-    }
-    else if (rt.valueStyle !== 100) {
-        itemPrgCounter.innerHTML = `${rt.unlockValueHash}/${rt.completionValue}`;
-    };
-    // itemPrgCounter.innerHTML = `${rt.valueStyle === 1 ? `${rt.unlockValueHash}/${rt.completionValue}` : (rt.valueStyle === 3 ? `%${rt.unlockValueHash}` : `${rt.unlockValueHash}/${rt.completionValue}`)}`;
+    // if (rt.completionValue === 100) {
+    //     itemPrgCounter.innerHTML = `%${(rt.unlockValueHash / 100) * 100}`;
+    // }
+    // else if (rt.valueStyle !== 100) {
+    //     itemPrgCounter.innerHTML = `${rt.unlockValueHash}/${rt.completionValue}`;
+    // };
+    itemPrgCounter.innerHTML = `${rt.completionValue === 100 ? `%${(rt.unlockValueHash / 100) * 100}` : `${rt.unlockValueHash}/${rt.completionValue}`}`;
 
     // Assign content to parent
     document.querySelector(`#item_${param.hash}`).appendChild(itemTitle);
