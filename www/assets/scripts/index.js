@@ -35,12 +35,12 @@ var CheckSession = () => {
 };
 
 
+// Check for session
+CheckSession();
+
 
 // Main
 window.addEventListener('DOMContentLoaded', () => {
-
-    // Check for session
-    CheckSession();
 
     document.getElementById('btnAuthorize').addEventListener('click', () => {
         var stateCode = GenerateState(128);
