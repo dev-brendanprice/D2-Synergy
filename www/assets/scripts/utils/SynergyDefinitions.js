@@ -135,9 +135,11 @@ const KillType = [
     'ClassAbilities', // 5
 ];
 
+// Race type signifer ?? ## Priority
 // "As a fireteam" signifier ??
 // "Kill, Eliminate" signifiers ??
 // "Guardians are worth more points" OR "Kill PvE enemies" signifiers
+// Lost sectore signifiers or hashes ??
 
 
 export {
