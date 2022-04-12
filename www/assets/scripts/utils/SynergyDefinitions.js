@@ -83,7 +83,8 @@ const ActivityModeHash = {
     clash: 2303927902,
     momentum: 952904835,
     scorched: 1219083526,
-    lockdown: 3239164160, // 24
+    lockdown: 3239164160,
+    showdown: 1457072306 // 25
 };
 
 // Hashes for damage type
