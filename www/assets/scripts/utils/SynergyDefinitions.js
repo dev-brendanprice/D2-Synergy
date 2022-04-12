@@ -48,89 +48,89 @@ const petraYields = {
 
 // Hashes for destinations
 const DestinationHash = {
-    EDZ: 697502628,
-    Nessus: 3607432451,
-    TangledShore: 3821439926,
-    DreamingCity: 1416096592,
-    Moon: 677774031,
-    Europa: 1729879943,
+    EDZ: 697502628, //0
+    Nessus: 3607432451, //1
+    TangledShore: 3821439926, //2
+    DreamingCity: 1416096592, //3
+    Moon: 677774031, //4
+    Europa: 1729879943, //5
     Cosmodrome: 3990611421, // 6
 };
 
 // Hashes for activity modes
 const ActivityModeHash = {
-    gambit: 1848252830,
-    strike: 2394616003,
-    nightfall: 3789021730,
-    crucible: 1164760504,
-    mayhem: 1264443021,
-    control: 3199098480,
-    breakthrough: 4033000329,
-    countdown: 1505888634,
-    elimination: 4078439804,
-    doubles: 3821502017,
-    supremacy: 910991990,
-    rumble: 157639802,
-    survival: 2239249083,
-    ironBanner: 1826469369,
-    dungeon: 608898761,
-    nightmareHunt: 332181804,
-    story: 1686739444,
-    trials: 1673724806,
-    explore: 3497767639,
-    daresOfEternity: 2294590554,
-    raid: 2043403989,
-    clash: 2303927902,
-    momentum: 952904835,
-    scorched: 1219083526,
-    lockdown: 3239164160,
+    gambit: 1848252830, //0
+    strike: 2394616003, //1
+    nightfall: 3789021730, //2
+    crucible: 1164760504, //3
+    mayhem: 1264443021, //4
+    control: 3199098480, //5
+    breakthrough: 4033000329, //6
+    countdown: 1505888634, //7
+    elimination: 4078439804, //8
+    doubles: 3821502017, //9
+    supremacy: 910991990, //10
+    rumble: 157639802, //11
+    survival: 2239249083, //12
+    ironBanner: 1826469369, //13
+    dungeon: 608898761, //14
+    nightmareHunt: 332181804, //15
+    story: 1686739444, //16
+    trials: 1673724806, //17
+    explore: 3497767639, //18
+    daresOfEternity: 2294590554, //19
+    raid: 2043403989, // 20
+    clash: 2303927902, //21
+    momentum: 952904835, //22
+    scorched: 1219083526, //23
+    lockdown: 3239164160, //24
     showdown: 1457072306 // 25
 };
 
 // Hashes for damage type
 const DamageTypeHash = {
-    Solar: 1847026933,
-    Arc: 2303181850,
-    Kinetic: 3373582085,
-    Void: 3454344768,
+    Solar: 1847026933, //0
+    Arc: 2303181850, //1
+    Kinetic: 3373582085, //2
+    Void: 3454344768, //3
     Stasis: 151347233, // 4
 };
 
 // Strings for weapon type
 const ItemCategory = [
-    'Auto Rifle',
-    'Scout Rifle',
-    'Pulse Rifle',
-    'Hand Cannon',
-    'Shotgun',
-    'Grenade Launcher',
-    'Rocket Launcher',
-    'Sniper Rifle',
-    'Sword',
-    'Linear Fusion Rifle',
-    'Fusion Rifle',
-    'Glaive',
-    'Submachine Gun',
-    'Machine Gun',
-    'Trace Rifle',
-    'Sidearms',
+    'Auto Rifle', //0
+    'Scout Rifle', //1
+    'Pulse Rifle', //2
+    'Hand Cannon', //3
+    'Shotgun', //4
+    'Grenade Launcher', //5
+    'Rocket Launcher', //6
+    'Sniper Rifle', //7
+    'Sword', //8
+    'Linear Fusion Rifle', //9
+    'Fusion Rifle', //10
+    'Glaive', //11
+    'Submachine Gun', //12
+    'Machine Gun', //13
+    'Trace Rifle', //14
+    'Sidearms', //15
     'Bow', // 16
 ];
 
 // Hashes for weapon ammuniation type
 const AmmoType = [
-    'Special Ammo',
-    'Primary Ammo',
-    'Heavy Ammo', // 3
+    'Special Ammo', //0
+    'Primary Ammo', //1
+    'Heavy Ammo', // 2
 ];
 
 // Strings for kill type
 const KillType = [
-    'Melee',
-    'Super',
-    'Grenade',
-    'Finisher',
-    'Precision',
+    'Melee', //0
+    'Super', //1
+    'Grenade', //2
+    'Finisher', //3
+    'Precision', //4
     'ClassAbilities', // 5
 ];
 
