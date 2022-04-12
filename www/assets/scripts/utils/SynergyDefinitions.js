@@ -135,6 +135,10 @@ const KillType = [
     'ClassAbilities', // 5
 ];
 
+// "As a fireteam" signifier ??
+// "Kill, Eliminate" signifiers ??
+// "Guardians are worth more points" OR "Kill PvE enemies" signifiers
+
 
 export {
   itemTypeKeys,
