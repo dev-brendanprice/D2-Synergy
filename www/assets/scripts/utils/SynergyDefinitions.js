@@ -79,7 +79,11 @@ const ActivityModeHash = {
     trials: 1673724806,
     explore: 3497767639,
     daresOfEternity: 2294590554,
-    raid: 2043403989, // 20
+    raid: 2043403989,
+    clash: 2303927902,
+    momentum: 952904835,
+    scorched: 1219083526,
+    lockdown: 3239164160, // 24
 };
 
 // Hashes for damage type

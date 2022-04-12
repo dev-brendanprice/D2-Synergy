@@ -121,11 +121,11 @@ const bounties = {
     },
     "47910874": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [4],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [2]
     },
     "58287472": {
         "Destination": [],
@@ -137,7 +137,7 @@ const bounties = {
     },
     "62194641": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,17,19],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -153,15 +153,15 @@ const bounties = {
     },
     "125824834": {
         "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
+        "ActivityMode": [3],
+        "DamageType": [1],
         "ItemCategory": [],
         "AmmoType": [],
         "KillType": []
     },
     "127300168": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -209,11 +209,11 @@ const bounties = {
     },
     "171761468": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [2]
     },
     "179306417": {
         "Destination": [],
@@ -426,7 +426,7 @@ const bounties = {
     "316370328": {
         "Destination": [],
         "ActivityMode": [],
-        "DamageType": [],
+        "DamageType": [0],
         "ItemCategory": [],
         "AmmoType": [],
         "KillType": []
@@ -437,7 +437,7 @@ const bounties = {
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [2]
     },
     "316370330": {
         "Destination": [],
@@ -453,13 +453,13 @@ const bounties = {
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [0]
     },
     "316370334": {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
+        "ItemCategory": [16],
         "AmmoType": [],
         "KillType": []
     },
@@ -873,7 +873,7 @@ const bounties = {
     },
     "515493511": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [8],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -1209,7 +1209,7 @@ const bounties = {
     },
     "672179719": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [5],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -1537,8 +1537,8 @@ const bounties = {
     },
     "897978137": {
         "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
+        "ActivityMode": [3],
+        "DamageType": [0],
         "ItemCategory": [],
         "AmmoType": [],
         "KillType": []
@@ -1601,7 +1601,7 @@ const bounties = {
     },
     "985646251": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [21],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -1777,7 +1777,7 @@ const bounties = {
     },
     "1028832205": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [5],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -1801,10 +1801,10 @@ const bounties = {
     },
     "1052256142": {
         "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
+        "ActivityMode": [3],
+        "DamageType": [2],
         "ItemCategory": [],
-        "AmmoType": [],
+        "AmmoType": [1],
         "KillType": []
     },
     "1055369100": {
@@ -2481,11 +2481,11 @@ const bounties = {
     },
     "1405651514": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [4],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [1]
     },
     "1409078654": {
         "Destination": [],
@@ -2737,7 +2737,7 @@ const bounties = {
     },
     "1505100518": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [22],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -2745,7 +2745,7 @@ const bounties = {
     },
     "1559535719": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [5],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -2881,11 +2881,11 @@ const bounties = {
     },
     "1746516374": {
         "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
+        "ActivityMode": [3],
+        "DamageType": [3],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [5]
     },
     "1751823168": {
         "Destination": [],
@@ -2921,7 +2921,7 @@ const bounties = {
     },
     "1763752196": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -2953,7 +2953,7 @@ const bounties = {
     },
     "1791735357": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [24],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -3081,7 +3081,7 @@ const bounties = {
     },
     "1869722155": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [24],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -3393,10 +3393,10 @@ const bounties = {
     },
     "2004184492": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
-        "AmmoType": [],
+        "AmmoType": [3],
         "KillType": []
     },
     "2057293080": {
@@ -3457,7 +3457,7 @@ const bounties = {
     },
     "2116702321": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [10],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -3689,7 +3689,7 @@ const bounties = {
     },
     "2367242101": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -4665,7 +4665,7 @@ const bounties = {
     },
     "2946797520": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [22],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -4961,7 +4961,7 @@ const bounties = {
     },
     "3144456305": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -5025,7 +5025,7 @@ const bounties = {
     },
     "3186325460": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [18],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -5033,7 +5033,7 @@ const bounties = {
     },
     "3186325461": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [16],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -5041,7 +5041,7 @@ const bounties = {
     },
     "3186325462": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [18],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -5049,7 +5049,7 @@ const bounties = {
     },
     "3186325463": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [18],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -5177,7 +5177,7 @@ const bounties = {
     },
     "3249939223": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [21],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -5193,19 +5193,19 @@ const bounties = {
     },
     "3285890782": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
+        "ItemCategory": [5,6,8,9,10,13,14],
+        "AmmoType": [3],
         "KillType": []
     },
     "3286744862": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [0]
     },
     "3312152065": {
         "Destination": [],
@@ -5225,7 +5225,7 @@ const bounties = {
     },
     "3346345957": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [10],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -5241,11 +5241,11 @@ const bounties = {
     },
     "3355104110": {
         "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
+        "ActivityMode": [3],
+        "DamageType": [3],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [5]
     },
     "3357287242": {
         "Destination": [],
@@ -5257,7 +5257,7 @@ const bounties = {
     },
     "3361783295": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [11],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -5545,11 +5545,11 @@ const bounties = {
     },
     "3525239115": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [1]
     },
     "3531980021": {
         "Destination": [],
@@ -5561,8 +5561,8 @@ const bounties = {
     },
     "3535952788": {
         "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
+        "ActivityMode": [3],
+        "DamageType": [3],
         "ItemCategory": [],
         "AmmoType": [],
         "KillType": []
@@ -5681,7 +5681,7 @@ const bounties = {
     },
     "3541627175": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [22],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -5913,11 +5913,11 @@ const bounties = {
     },
     "3693294824": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [2]
     },
     "3696295486": {
         "Destination": [],
@@ -5937,11 +5937,11 @@ const bounties = {
     },
     "3713071908": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [5]
     },
     "3721656876": {
         "Destination": [],
@@ -5977,16 +5977,16 @@ const bounties = {
     },
     "3782095609": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [4],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [1]
     },
     "3793009823": {
         "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
+        "ActivityMode": [3],
+        "DamageType": [4],
         "ItemCategory": [],
         "AmmoType": [],
         "KillType": []
@@ -6153,7 +6153,7 @@ const bounties = {
     },
     "3899430886": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [7],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6257,11 +6257,11 @@ const bounties = {
     },
     "4004837762": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [4]
     },
     "4007940282": {
         "Destination": [],
@@ -6273,7 +6273,7 @@ const bounties = {
     },
     "4010546641": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [6],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6281,7 +6281,7 @@ const bounties = {
     },
     "4019596374": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [2],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6297,7 +6297,7 @@ const bounties = {
     },
     "4037933170": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6305,7 +6305,7 @@ const bounties = {
     },
     "4042851399": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [8],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6529,11 +6529,11 @@ const bounties = {
     },
     "4086613787": {
         "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
+        "ActivityMode": [3],
+        "DamageType": [3],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [5]
     },
     "4095766153": {
         "Destination": [],
@@ -6609,7 +6609,7 @@ const bounties = {
     },
     "4197398846": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [10],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6721,8 +6721,8 @@ const bounties = {
     },
     "4243637120": {
         "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
+        "ActivityMode": [23],
+        "DamageType": [0],
         "ItemCategory": [],
         "AmmoType": [],
         "KillType": []
@@ -6737,7 +6737,7 @@ const bounties = {
     },
     "4251951858": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6745,7 +6745,7 @@ const bounties = {
     },
     "4251951859": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6753,7 +6753,7 @@ const bounties = {
     },
     "4251951860": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6761,7 +6761,7 @@ const bounties = {
     },
     "4251951862": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -6769,7 +6769,7 @@ const bounties = {
     },
     "4251951863": {
         "Destination": [],
-        "ActivityMode": [],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
