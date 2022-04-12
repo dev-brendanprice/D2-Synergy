@@ -55,6 +55,7 @@ const DestinationHash = {
     Moon: 677774031, //4
     Europa: 1729879943, //5
     Cosmodrome: 3990611421, // 6
+    Throneworld: 2244580325, // 7
 };
 
 // Hashes for activity modes
