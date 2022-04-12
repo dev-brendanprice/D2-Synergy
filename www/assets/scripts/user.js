@@ -398,6 +398,11 @@ var LoadCharacter = async (classType) => {
 };
 
 
+
+
+
+// -- PLAYER STRUCTS -- //
+
 // Sort items into bounties
 var ParseBounties = (charInventory, utils) => {
 
@@ -498,6 +503,9 @@ var CalcXpYield = (bountyArr, utils) => {
     });
     return totalXP;
 };
+
+
+
 
 
 // Add listeners for buttons
