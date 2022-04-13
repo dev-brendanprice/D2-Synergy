@@ -2,7 +2,8 @@ console.log('%cD2 SYNERGY _V0.3', 'font-weight: bold;font-size: 40px;color: whit
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
 var log = console.log.bind(console),
-    localStorage = window.localStorage;
+    localStorage = window.localStorage,
+    clientId = 40024;
 
 
 // Generate state parameter
@@ -45,6 +46,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnAuthorize').addEventListener('click', () => {
         var stateCode = GenerateState(128);
         localStorage.setItem('stateCode', stateCode);
-        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=38074&response_type=code&state=${stateCode}`;
+        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
     });
 });
