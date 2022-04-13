@@ -34,11 +34,12 @@ var log = console.log.bind(console),
     characters,
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
     homeUrl = `https://synergy.brendanprice.xyz`,
-    userStruct = {};
+    userStruct = {},
+    thisIsNotMyKeyPleaseDoNotStealIt = ['e62a8257ba2747d4b8450e7ad469785d'];
 
 // Set default axios header
 axios.defaults.headers.common = {
-    "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
+    "X-API-Key": `${thisIsNotMyKeyPleaseDoNotStealIt}`
 };
 
 
@@ -221,7 +222,7 @@ var FetchBungieUserDetails = async () => {
         AuthConfig = { 
             headers: { 
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, 
-                "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" 
+                "X-API-Key": `${thisIsNotMyKeyPleaseDoNotStealIt}`
             }
         };
         
@@ -313,7 +314,7 @@ var LoadCharacter = async (classType) => {
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d" }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${thisIsNotMyKeyPleaseDoNotStealIt}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
 
     // Iterate over CharacterInventories[characterId].items
@@ -537,7 +538,7 @@ document.getElementById('navBarLogoutContainer', () => {
 
     // Add default headers back, in case OAuthFlow needed a refresh
     axios.defaults.headers.common = {
-        "X-API-Key": "e62a8257ba2747d4b8450e7ad469785d"
+        "X-API-Key": `${thisIsNotMyKeyPleaseDoNotStealIt}`
     };
 
     // Main
