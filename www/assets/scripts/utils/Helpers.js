@@ -129,6 +129,7 @@ const Logout = () => {
 
 
 // Seperate numbers using commas
+// @int {num}
 const InsertSeperators = (num) => {
     return `${num}`.split()[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };

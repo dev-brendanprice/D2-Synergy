@@ -34,7 +34,7 @@ var log = console.log.bind(console),
     characters,
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
     homeUrl = `https://synergy.brendanprice.xyz`,
-    charBounties = [];
+    userStruct = [];
 
 // Set default axios header
 axios.defaults.headers.common = {
@@ -261,6 +261,9 @@ var FetchBungieUserDetails = async () => {
             document.getElementById(`classType${char.classType}`).innerHTML = `${ParseChar(char.classType)}`;
         };
 
+        // Push user characters to HashBrowser
+        userStruct.push(characters);
+
         // Change DOM content
         document.getElementById('charactersContainer').style.display = 'inline-block';
         document.getElementById('categories').style.display = 'block';
@@ -284,7 +287,8 @@ var LoadCharacter = async (classType) => {
         CharacterInventories,
         definitions = {},
         objectiveDefinitions = {},
-        membershipType = sessionStorage.getItem('membershipType');
+        membershipType = sessionStorage.getItem('membershipType'),
+        charBounties = [];
 
     // Clear current items in display & etc
     document.getElementById('items').innerHTML = '';
@@ -294,9 +298,6 @@ var LoadCharacter = async (classType) => {
 
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
     document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
-
-    // Clear charBounties
-    charBounties = [];
 
     // Get chosen character and save index  
     for (var item in destinyUserProfile.characters.data) {
@@ -370,6 +371,9 @@ var LoadCharacter = async (classType) => {
 
     // Loop through bounties and sort groups' bounties
     bountyArr = SortByType(bountyArr, {sortBountiesByType});
+
+    // Push charBounties to HashBrowser
+    userStruct.push(charBounties);
 
     // Render items to DOM
     PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
@@ -550,4 +554,4 @@ document.getElementById('navBarLogoutContainer', () => {
 
 
 // Push charBounties to the HashBrowser
-export { charBounties };
+export { userStruct };
