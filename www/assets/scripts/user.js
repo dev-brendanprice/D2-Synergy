@@ -33,7 +33,8 @@ var log = console.log.bind(console),
     membershipType,
     characters,
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
-    homeUrl = `https://synergy.brendanprice.xyz`;
+    homeUrl = `https://synergy.brendanprice.xyz`,
+    charBounties = [];
 
 // Set default axios header
 axios.defaults.headers.common = {
@@ -294,6 +295,8 @@ var LoadCharacter = async (classType) => {
     document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
     document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
 
+    // Clear charBounties
+    charBounties = [];
 
     // Get chosen character and save index  
     for (var item in destinyUserProfile.characters.data) {
@@ -313,8 +316,7 @@ var LoadCharacter = async (classType) => {
 
     // Iterate over CharacterInventories[characterId].items
     var charInventory = CharacterInventories[characterId].items,
-        amountOfBounties = 0,
-        charBounties = [];
+        amountOfBounties = 0;
 
 
     // Sorts by index of item in itemTypeKeys
@@ -545,3 +547,7 @@ document.getElementById('navBarLogoutContainer', () => {
 .catch(error => {
     console.error(error);
 });
+
+
+// Push charBounties to the HashBrowser
+export { charBounties };

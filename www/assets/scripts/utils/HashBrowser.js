@@ -1,8 +1,8 @@
-
+import { charBounties } from '../user.js';
 
 $(document).ready(function () {
 
-    $.Item = function () {
-        return 'brendan price';
+    $.charBounties = function () {
+        return charBounties;
     };
 });
