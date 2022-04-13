@@ -62,7 +62,7 @@ const MakeBountyElement = (param) => {
     // Create bottom element
     item.className = `bounty`;
     item.id = `${param.hash}`;
-    document.querySelector('#items').appendChild(item);
+    document.querySelector('#bountyItems').appendChild(item);
     item.src = `https://www.bungie.net${param.displayProperties.icon}`;
 
     // Create overlay element
@@ -137,12 +137,12 @@ const InsertSeperators = (num) => {
 
 
 export {
-  VerifyState,
-  ParseChar,
-  Logout,
-  StartLoad,
-  StopLoad,
-  MakeBountyElement,
-  RedirUser,
-  InsertSeperators
+    VerifyState,
+    ParseChar,
+    Logout,
+    StartLoad,
+    StopLoad,
+    MakeBountyElement,
+    RedirUser,
+    InsertSeperators
 };

@@ -11,12 +11,13 @@ import {
     StopLoad,
     MakeBountyElement,
     RedirUser,
-    InsertSeperators } from './utils/Helpers.js';
+    InsertSeperators } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
     baseYields,
     petraYields } from "./utils/SynergyDefinitions.js";
+import { CountProps, propCounts, bin } from "./utils/MatchProps.js";
 
 
 
@@ -264,11 +265,11 @@ var FetchBungieUserDetails = async () => {
             var char = characters[item];
             document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
             document.getElementById(`classType${char.classType}`).innerHTML = `${ParseChar(char.classType)}`;
+            document.getElementById(`classLight${char.classType}`).innerHTML = `${char.light}`;
         };
 
         // Push user characters to HashBrowser
         userStruct['characters'] = characters;
-        log(userStruct);
 
         // Change DOM content
         document.getElementById('charactersContainer').style.display = 'inline-block';
@@ -297,13 +298,24 @@ var LoadCharacter = async (classType) => {
         charBounties = [];
 
     // Clear current items in display & etc
-    document.getElementById('items').innerHTML = '';
+    document.getElementById('contentDisplay').style.display = 'inline-block';
+    document.getElementById('bountyItems').innerHTML = '';
     document.getElementById('overlays').innerHTML = '';
     document.getElementById('itemStats').style.display = 'none';
     document.getElementById('noItemsTooltip').style.display = 'none';
 
-    document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
-    document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
+    document.getElementById('charDisplayTitle_Character').innerHTML = `${className}`;
+    document.getElementById('charDisplayTitle_Character').style.display = `inline-block`;
+
+    // Filter out other classes that are not classType
+    for (var char in characters) {
+        if (characters[char].classType !== classType) {
+            document.getElementById(`charContainer${characters[char].classType}`).classList.add('elBlur');
+        }
+        else if (characters[char].classType === classType) {
+            document.getElementById(`charContainer${characters[char].classType}`).classList.remove('elBlur');
+        };
+    };
 
     // Get chosen character and save index  
     for (var item in destinyUserProfile.characters.data) {
@@ -318,8 +330,9 @@ var LoadCharacter = async (classType) => {
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201,300`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
+    Object.keys(resCharacterInventories.data.Response.itemComponents.instances.data).forEach(v => log(v.expirationDate))
 
     // Iterate over CharacterInventories[characterId].items
     var charInventory = CharacterInventories[characterId].items,
@@ -380,7 +393,6 @@ var LoadCharacter = async (classType) => {
 
     // Push charBounties to HashBrowser
     userStruct['charBounties'] = charBounties;
-    log(userStruct);
 
     // Render items to DOM
     PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
@@ -389,18 +401,20 @@ var LoadCharacter = async (classType) => {
     var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
     // Change DOM content
+    document.getElementById('displayTitle_Bounties').style.display = 'inline-block';
     document.getElementById('itemStats').style.display = 'inline-block';
 
     // Toggle empty items tooltip
     if (amountOfBounties === 0) {
         document.getElementById('noItemsTooltip').style.display = 'inline-block';
-        document.getElementById('noItemsTooltip').innerHTML = 'No Bounties exist on this character';
-        document.getElementById('totalBounties').innerHTML = `Bounties: ${0}`;
+        document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
+        // document.getElementById('totalBounties').innerHTML = `Bounties: ${0}`;
         document.getElementById('totalXP').innerHTML = `Total XP: ${0}`;
     }
     else if (amountOfBounties > 0) {
         document.getElementById('noItemsTooltip').style.display = 'none';
-        document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
+        // document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
+        document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML} (${amountOfBounties})`
         document.getElementById('totalXP').innerHTML = `Total XP: ${InsertSeperators(totalXpYield)}`;
     };
 
@@ -408,6 +422,20 @@ var LoadCharacter = async (classType) => {
     // Stop loading sequence
     StopLoad();
     log(`-> Indexed ${ParseChar(classType)}!`);
+
+    // Load synergyDefinitions and match against bounties
+    await CountProps();
+    // await ConfigureHeuristics();
+};
+
+
+// Load heuristics and configure data
+var ConfigureHeuristics = async () => {
+
+    // Loop over props and create a filter button for each one
+    Object.keys(propCounts).forEach(v => {
+        log(v, propCounts[v]);
+    });
 };
 
 
@@ -425,6 +453,7 @@ var ParseBounties = (charInventory, utils) => {
     charInventory.forEach(v => {
         var item = utils.definitions[v.itemHash];
         if (item.itemType === 26) {
+            // log(item)
             charBounties.push(item);
             amountOfBounties++;
         };

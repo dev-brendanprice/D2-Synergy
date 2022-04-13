@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
     <script type="module" src="assets/scripts/user.js"></script>
     <script type="module" src="assets/scripts/utils/HashBrowser.js"></script>
+    <script type="module" src="assets/scripts/utils/MatchProps.js"></script>
 
     <link rel="shortcut icon" href="#">
 
@@ -23,13 +24,7 @@
             <img id="navBarIcon" src="assets/icons/ghost.webp">
         </div>
         <div id="navBarLogoutContainer">
-            <svg id="navBarLogout" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <g transform="matrix(7.142857142857143,0,0,7.142857142857143,0,0)"><g>
-                    <path d="M9.5,10.5v2a1,1,0,0,1-1,1h-7a1,1,0,0,1-1-1V1.5a1,1,0,0,1,1-1h7a1,1,0,0,1,1,1v2" style="fill: none;stroke: #e44749;stroke-linecap: round;stroke-linejoin: round"></path>
-                    <line x1="6.5" y1="7" x2="13.5" y2="7" style="fill: none;stroke: #e44749;stroke-linecap: round;stroke-linejoin: round"></line>
-                    <polyline points="11.5 5 13.5 7 11.5 9" style="fill: none;stroke: #e44749;stroke-linecap: round;stroke-linejoin: round"></polyline>
-                </g></g>
-            </svg>
+            <div id="navBarLogout">Log Out</div>
         </div>
     </div>
     
@@ -45,31 +40,39 @@
 
         <div id="sideSelectionBar">
 
-            <div class="fade-in" id="charactersContainer">
+            <div id="charactersContainer">
                 <div id="charContainer0">
                     <div class="classType" id="classType0"></div>
+                    <div class="classLight" id="classLight0"></div>
+                    <svg class="lightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                        <path fill="#a89332" d="M15.32 30.66A29.2 29.2 0 0 0 1.23 16.63c-1.6-.76-1.56-.62-.33-1.2A29.63 29.63 0 0 0 15.44 1c.63-1.32.51-1.31 1.09-.09A29.48 29.48 0 0 0 31.02 15.4c1.33.63 1.36.48-.25 1.24A29.2 29.2 0 0 0 16.7 30.66c-.36.74-.66 1.34-.69 1.34-.02 0-.33-.6-.68-1.34z"/>
+                    </svg>
                     <img class="classBg" id="classBg0">
                 </div>
     
                 <div id="charContainer1">
                     <div class="classType" id="classType1"></div>
+                    <div class="classLight" id="classLight1"></div>
+                    <svg class="lightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                        <path fill="#a89332" d="M15.32 30.66A29.2 29.2 0 0 0 1.23 16.63c-1.6-.76-1.56-.62-.33-1.2A29.63 29.63 0 0 0 15.44 1c.63-1.32.51-1.31 1.09-.09A29.48 29.48 0 0 0 31.02 15.4c1.33.63 1.36.48-.25 1.24A29.2 29.2 0 0 0 16.7 30.66c-.36.74-.66 1.34-.69 1.34-.02 0-.33-.6-.68-1.34z"/>
+                    </svg>
                     <img class="classBg" id="classBg1">
                 </div>
     
                 <div id="charContainer2">
                     <div class="classType" id="classType2"></div>
+                    <div class="classLight" id="classLight2"></div>
+                    <svg class="lightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                        <path fill="#a89332" d="M15.32 30.66A29.2 29.2 0 0 0 1.23 16.63c-1.6-.76-1.56-.62-.33-1.2A29.63 29.63 0 0 0 15.44 1c.63-1.32.51-1.31 1.09-.09A29.48 29.48 0 0 0 31.02 15.4c1.33.63 1.36.48-.25 1.24A29.2 29.2 0 0 0 16.7 30.66c-.36.74-.66 1.34-.69 1.34-.02 0-.33-.6-.68-1.34z"/>
+                    </svg>
                     <img class="classBg" id="classBg2">
                 </div>
             </div>
 
             <div id="categories">
                 <div id="cgBounties">Default Loadouts</div>
-                <div id="cgBounties">Bounties</div>
-                <!-- <div id="cgQuests">Quests</div> -->
-                <!-- <div id="cgSeasonalChallenges">Seasonal Challenges</div> -->
-                <div id="cgXpModifiers">View XP Modifiers</div>
-                <div id="cgCurrencies">Currencies</div>
-                <div id="cgLevelsProgression">Levels/Progression</div>
+                <div id="cgBounties">Pursuits</div>
+                <div id="cgLevelsProgression">Levelling</div>
             </div>
 
         </div>
@@ -77,17 +80,35 @@
         <div id="contentDisplay">
 
             <div id="charDisplayTitle">
+                <div id="charDisplayTitle_Pre">Character //</div>
                 <div id="charDisplayTitle_Character"></div>
-                <div id="charDisplayTitle_Category">Bounties</div>
             </div>
-            <div id="noItemsTooltip"></div>
-            <div id="items">
+
+            <div id="bountyDisplayContainer">
+                <div id="displayTitle_Bounties">Bounties</div>
+                <div id="noItemsTooltip"></div>
+                <div id="bountyItems">
+                </div>
+                <br>
+                <div id="itemStats">
+                    <div id="totalBounties"></div>
+                    <div id="totalXP"></div>
+                </div>
             </div>
-            <br>
-            <div id="itemStats">
-                <div id="totalBounties"></div>
-                <div id="totalXP"></div>
+
+            <!-- <div id="questDisplayContainer">
+                <div id="displayTitle_Bounties">Quests</div>
+                <div id="noItemsTooltip"></div>
+                <div id="questItems">
+                </div>
             </div>
+
+            <div id="seaonalchallDisplayContainer">
+                <div id="displayTitle_Bounties">Seasonal Challenges</div>
+                <div id="noItemsTooltip"></div>
+                <div id="seasonalchallItems">
+                </div>
+            </div> -->
 
         </div>
 

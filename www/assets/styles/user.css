@@ -11,13 +11,14 @@
     margin-right: auto;
     left: 0;
     right: 0;
-    width: 90vw;
+    /* width: 90vw;
     border: 1px #56606d solid;
     background-color: #3e454e;
-    border-radius: 3px;
+    border-radius: 3px; */
 }
 
 #contentDisplay {
+    display: none;
     margin-left: 30px;
     float: left;
     width: 65%;
@@ -71,23 +72,35 @@
     -o-user-select: none;
 }
 
-#charDisplayTitle_Character {
+#charDisplayTitle_Pre {
     display: inline-block;
     margin-left: 26px;
     color: white;
     font-weight: bold;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    font-size: 20px;
+    font-size: 16px;
     user-select: none;
 }
 
-#charDisplayTitle_Category {
+#charDisplayTitle_Character {
     display: none;
     color: white;
     font-style: italic;
     font-weight: 0;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    font-size: 18px;
+    font-size: 14px;
+}
+
+#displayTitle_Bounties {
+    display: none;
+    margin-left: 26px;
+    padding-top: 20px;
+    padding-bottom: 0px;
+    text-transform: uppercase;
+    color: white;
+    /* letter-spacing: 1px; */
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 20px;
 }
 
 #noItemsTooltip {
@@ -162,4 +175,24 @@
     letter-spacing: 1.3px;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 18px;
+}
+
+.classLight {
+    position: absolute;
+    margin-left: 54px;
+    margin-top: 25px;
+    color: rgba(255, 234, 0, 0.755);
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 15px;
+}
+
+.lightIcon {
+    position: absolute;
+    margin-left: 45px;
+    margin-top: 28px;
+    width: 8px;
+}
+
+#questDisplayContainer {
+    margin-top: 15px;
 }

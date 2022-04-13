@@ -10,4 +10,12 @@ $(document).ready(function () {
     $.characters = () => {
         return userStruct.characters;
     };
+
+    $.bin = () => {
+        return userStruct.bin;
+    };
+
+    $.propCounts = () => {
+        return userStruct.propCounts;
+    };
 });
