@@ -35,11 +35,15 @@ var log = console.log.bind(console),
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
     homeUrl = `https://synergy.brendanprice.xyz`,
     userStruct = {},
-    thisIsNotMyKeyPleaseDoNotStealIt = ['e62a8257ba2747d4b8450e7ad469785d'];
+    axiosHeaders = {
+        ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
+        Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
+    };
+
 
 // Set default axios header
 axios.defaults.headers.common = {
-    "X-API-Key": `${thisIsNotMyKeyPleaseDoNotStealIt}`
+    "X-API-Key": `${axiosHeaders.ApiKey}`
 };
 
 
@@ -54,7 +58,7 @@ var BungieOAuth = async (authCode) => {
         components = {},
         AuthConfig = {
             headers: {
-                Authorization: 'Basic MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA==',
+                Authorization: `Basic ${axiosHeaders.Authorization}`,
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         };
@@ -104,7 +108,7 @@ var CheckComponents = async (bool) => {
         components = {},
         AuthConfig = {
             headers: {
-                Authorization: `Basic ${btoa('38074:9qBsYpKC7ieWB4pffobacY7weIcziSmmfDXc.nwe8S8')}`,
+                Authorization: `Basic ${axiosHeaders.Authorization}`,
                 "Content-Type": "application/x-www-form-urlencoded",
             }
         };
@@ -222,7 +226,7 @@ var FetchBungieUserDetails = async () => {
         AuthConfig = { 
             headers: { 
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, 
-                "X-API-Key": `${thisIsNotMyKeyPleaseDoNotStealIt}`
+                "X-API-Key": `${axiosHeaders.ApiKey}`
             }
         };
         
@@ -314,7 +318,7 @@ var LoadCharacter = async (classType) => {
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${thisIsNotMyKeyPleaseDoNotStealIt}` }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
 
     // Iterate over CharacterInventories[characterId].items
@@ -538,7 +542,7 @@ document.getElementById('navBarLogoutContainer', () => {
 
     // Add default headers back, in case OAuthFlow needed a refresh
     axios.defaults.headers.common = {
-        "X-API-Key": `${thisIsNotMyKeyPleaseDoNotStealIt}`
+        "X-API-Key": `${axiosHeaders.ApiKey}`
     };
 
     // Main
