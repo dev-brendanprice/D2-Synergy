@@ -263,6 +263,7 @@ var FetchBungieUserDetails = async () => {
 
         // Push user characters to HashBrowser
         userStruct.push(characters);
+        log(userStruct);
 
         // Change DOM content
         document.getElementById('charactersContainer').style.display = 'inline-block';
@@ -374,6 +375,7 @@ var LoadCharacter = async (classType) => {
 
     // Push charBounties to HashBrowser
     userStruct.push(charBounties);
+    log(userStruct);
 
     // Render items to DOM
     PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
