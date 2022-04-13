@@ -34,7 +34,7 @@ var log = console.log.bind(console),
     characters,
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
     homeUrl = `https://synergy.brendanprice.xyz`,
-    userStruct = [];
+    userStruct = {};
 
 // Set default axios header
 axios.defaults.headers.common = {
@@ -262,7 +262,7 @@ var FetchBungieUserDetails = async () => {
         };
 
         // Push user characters to HashBrowser
-        userStruct.push(characters);
+        userStruct['characters'] = characters;
         log(userStruct);
 
         // Change DOM content
@@ -374,7 +374,7 @@ var LoadCharacter = async (classType) => {
     bountyArr = SortByType(bountyArr, {sortBountiesByType});
 
     // Push charBounties to HashBrowser
-    userStruct.push(charBounties);
+    userStruct['charBounties'] = charBounties;
     log(userStruct);
 
     // Render items to DOM
