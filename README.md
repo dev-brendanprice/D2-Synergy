@@ -4,16 +4,13 @@
 [![API](https://img.shields.io/badge/API-Bungie.net-green)](https://bungie-net.github.io/multi/index.html)
 [![License](https://img.shields.io/badge/License-MIT-blue)]()
 
-D2 Synergy is an application that allows players to view, change, and make decisions based on, their progressional items. D2 Synergy is a powerful application that will suggest the best course of action to ensure maximum XP gain, whilst progressing.
+[Open D2 Synergy](https://synergy.brendanprice.xyz/user)
 
-### Documentation Quick-Links
-
-Bungie.net API - https://bungie-net.github.io/multi/index.html<br>
-Axios - https://axios-http.com/docs/api_intro
+D2 Synergy is a powerful application that allows players to view items, change configurations, and make decisions based on the number of relationships between their progressional items. Ensuring maximum XP gain is accquired is D2 Synergy, #1 priority.
 
 ### Contributing
 
-Contributing standards are pending.
+See `CONTRIBUTE.md` for more information.
 
 ### License
 
