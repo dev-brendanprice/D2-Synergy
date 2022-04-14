@@ -12,12 +12,15 @@ To figure out what heuristics you should be contributing:
 - Validate heuristics for a vendor(s)
 - Ask me :)
 
-Clone my BuildStruct repo to query bounties that are actively being sold by a resptive vendor
-##### [BuildStruct](https://github.com/brendanprice2003/QueryVendorBounties)
+### Resources
 
+##### [BuildStruct](https://github.com/brendanprice2003/QueryVendorBounties) -
+Clone my BuildStruct repo to query bounties that are actively being sold by a respective vendor
+
+##### [Destiny Datasets](https://data.destinysets.com/) -
 You should also utilize destinydatasets to query each bounty via the definitions to determine what the bounty entails
-##### [Destiny Datasets](https://data.destinysets.com/)
 
+### Process
 Repeat this process for each entry, over the entire list
 1. `ctrl+f` for the hash in `bounties.js`
 2. Make a `Destiny2.GetDestinyEntityDefinition`, on destinydatasets, for the same bounty hash:
@@ -27,4 +30,4 @@ Repeat this process for each entry, over the entire list
 
 Once all bounties have been done, perhaps you could quickly check over them, then make a pull request with a meaningful title :)
 
-Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.
+*Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.*
