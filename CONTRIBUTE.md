@@ -21,7 +21,10 @@ Clone my BuildStruct repo to query bounties that are actively being sold by a re
 You should also utilize destinydatasets to query each bounty via the definitions to determine what the bounty entails
 
 ### Process
-Repeat this process for each entry, over the entire list
+
+Clone this repository (preferably on a localhost environment, set for port 80).
+
+Repeat the bellow process for each entry, over the entire list, yielded from BuildStruct
 1. `ctrl+f` for the hash in `bounties.js`
 2. Make a `Destiny2.GetDestinyEntityDefinition`, on destinydatasets, for the same bounty hash:
       `entityType: DestinyInventoryItemDefinition,
