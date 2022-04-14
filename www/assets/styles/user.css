@@ -74,7 +74,7 @@
 
 #charDisplayTitle_Pre {
     display: inline-block;
-    margin-left: 26px;
+    margin-left: 28px;
     color: white;
     font-weight: bold;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
@@ -91,14 +91,16 @@
     font-size: 14px;
 }
 
+#bountyDisplayContainer {
+    margin-left: 28px;
+}
+
 #displayTitle_Bounties {
     display: none;
-    margin-left: 26px;
     padding-top: 20px;
     padding-bottom: 0px;
     text-transform: uppercase;
     color: white;
-    /* letter-spacing: 1px; */
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 20px;
 }
@@ -114,13 +116,11 @@
 }
 
 #totalBounties {
-    margin-left: 26px;
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
 
 #totalXP {
-    margin-left: 26px;
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }

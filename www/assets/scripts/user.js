@@ -330,13 +330,19 @@ var LoadCharacter = async (classType) => {
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201,300`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201,300,202`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
-    Object.keys(resCharacterInventories.data.Response.itemComponents.instances.data).forEach(v => log(v.expirationDate))
-
+    
     // Iterate over CharacterInventories[characterId].items
     var charInventory = CharacterInventories[characterId].items,
         amountOfBounties = 0;
+
+    // Expire
+    // charInventory.forEach(v => {
+    //     if (definitions[v.itemHash].itemType === 26) {
+    //         log(v.itemInstanceId);
+    //     };
+    // });
 
 
     // Sorts by index of item in itemTypeKeys
@@ -425,7 +431,7 @@ var LoadCharacter = async (classType) => {
 
     // Load synergyDefinitions and match against bounties
     await CountProps();
-    // await ConfigureHeuristics();
+    await ConfigureHeuristics();
 };
 
 
