@@ -92,3 +92,26 @@
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 13px;
 }
+
+.greyOut {
+    opacity: 50%;
+}
+
+.filter {
+    display: inline-block;
+    margin-top: 10px;
+    width: fit-content;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.639);
+    border: 1px solid rgb(41, 41, 41);
+    border-radius: 15px;
+}
+
+.propName {
+    padding: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: rgb(205, 203, 203);
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 12px;
+}

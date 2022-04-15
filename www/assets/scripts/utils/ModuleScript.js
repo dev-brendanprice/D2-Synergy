@@ -135,6 +135,12 @@ const InsertSeperators = (num) => {
 };
 
 
+// Capitalize First letter of string
+const CapitilizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+
 
 export {
     VerifyState,
@@ -144,5 +150,6 @@ export {
     StopLoad,
     MakeBountyElement,
     RedirUser,
-    InsertSeperators
+    InsertSeperators,
+    CapitilizeFirstLetter
 };

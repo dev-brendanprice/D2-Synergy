@@ -2,7 +2,8 @@ import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
 
 const requiredTables = [
     'DestinyInventoryItemDefinition',
-    'DestinyObjectiveDefinition'
+    'DestinyObjectiveDefinition',
+    'DestinySandboxPerkDefinition'
 ];
 
 var log = console.log.bind(console),

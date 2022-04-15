@@ -1,104 +1,51 @@
 import { userStruct } from '../user.js';
 import { bountyHashes } from './data/bounties.js';
 import {
-    ActivityModeHash,
-    DestinationHash,
-    DamageTypeHash,
+    ActivityMode,
+    Destination,
+    DamageType,
     AmmoType,
     ItemCategory,
     KillType } from './SynergyDefinitions.js';
 
     const log = console.log.bind(console);
 
-    var propCounts = {},
+    var propCount = {},
         bin = []; // Bounties that do not possess any indexes in the heuristics
 
 
+// Push the props onto charBounties
+const PushProps = async () => {
 
+    // Clear counters
+    propCount = {};
 
-// Tailing function for CountProps, check params and increment propCount[n]
-const IncrementProp = (list, hashes, bool, ref) => {
-    
-    if (list.length !== 0) {
+    // Loop over charBounties and append counters
+    for (let i=0; i < userStruct.charBounties.length; i++) {
 
-        // true == hashes is array
-        if (bool) {
-            for (var item of list) {
+        var hash = userStruct.charBounties[i].hash,
+            entry = bountyHashes[hash],
+            counters = {};
 
-                // Increment prop counter
-                let n = hashes[item]; // hashes[item] - name e.g. 'Rocket Launcher'
-                !propCounts[n] ? propCounts[n]=1 : propCounts[n]=propCounts[n]+1;
+        for (let prop in entry) {
 
-                // Append props to respective bounty
-                ref.charB[0]['props'] = [];
-                ref.charB[0]['props'].push(n);
-            };
-        }
+            if (entry[prop].length !== 0) {
 
-        // false == hashes is object
-        else if (!bool) {
-            for (var item of list) {
+                var propNames = [];
+                for (let foo of entry[prop]) {
+                    var arr = prop==='Destination'?Destination:(prop==='ActivityMode'?ActivityMode:(prop==='DamageType'?DamageType:(prop==='ItemCategory'?ItemCategory:(prop==='AmmoType'?AmmoType:(prop==='KillType'?KillType:null)))));
+                    propNames.push(arr[foo]);
+                };
 
-                // Increment prop counter
-                let n = Object.keys(hashes)[item]; // Object.keys(hashes)[item] - name e.g. 'Moon'
-                !propCounts[n] ? propCounts[n]=1 : propCounts[n]=propCounts[n]+1;
-
-                // Append props to respective bounty
-                ref.charB[0]['props'] = [];
-                ref.charB[0]['props'].push(n);
+                for (let bar of propNames) {
+                    propCount[bar] === undefined ? (propCount[bar] = 0, propCount[bar] += 1) : propCount[bar] += 1;
+                    counters[bar] === undefined ? (counters[bar] = 0, counters[bar] += 1) : counters[bar] += 1;
+                    userStruct.charBounties[i].props.push(bar);
+                };
             };
         };
     };
 };
 
 
-// Loop over bunties and append props + increment pop counters
-const CountProps = async () => {
-
-    propCounts = {};
-    for (var b in userStruct.charBounties) {
-
-        var bounty = userStruct.charBounties[b],
-            propNames = bountyHashes[bounty.hash];
-
-        for (var prop in propNames) {
-
-            switch (prop) {
-                case 'Destination':
-                    IncrementProp(propNames[prop], DestinationHash, false, 
-                        {bounty: bounty, charB: userStruct.charBounties}
-                    );
-                    break;
-                case 'ActivityMode':
-                    IncrementProp(propNames[prop], ActivityModeHash, false,
-                        {bounty: bounty, charB: userStruct.charBounties}
-                    );
-                    break;
-                case 'DamageType':
-                    IncrementProp(propNames[prop], DamageTypeHash, false, 
-                        {bounty: bounty, charB: userStruct.charBounties}
-                    );
-                    break;
-                case 'ItemCategory':
-                    IncrementProp(propNames[prop], ItemCategory, true, 
-                        {bounty: bounty, charB: userStruct.charBounties}
-                    );
-                    break;
-                case 'AmmoType':
-                    IncrementProp(propNames[prop], AmmoType, true, 
-                        {bounty: bounty, charB: userStruct.charBounties}
-                    );
-                    break;
-                case 'KillType':
-                    IncrementProp(propNames[prop], KillType, true, 
-                        {bounty: bounty, charB: userStruct.charBounties}
-                    );
-                    break;
-            };
-        };
-    };
-    userStruct['propCounts'] = propCounts;
-};
-
-
-export { CountProps, propCounts, bin };
+export { propCount, bin, PushProps };
