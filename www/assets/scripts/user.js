@@ -11,12 +11,14 @@ import {
     StopLoad,
     MakeBountyElement,
     RedirUser,
-    InsertSeperators } from './utils/Helpers.js';
+    InsertSeperators,
+    CapitilizeFirstLetter } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
     baseYields,
     petraYields } from "./utils/SynergyDefinitions.js";
+import { propCount, bin, PushProps } from "./utils/MatchProps.js";
 
 
 
@@ -264,15 +266,16 @@ var FetchBungieUserDetails = async () => {
             var char = characters[item];
             document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
             document.getElementById(`classType${char.classType}`).innerHTML = `${ParseChar(char.classType)}`;
+            document.getElementById(`classLight${char.classType}`).innerHTML = `${char.light}`;
         };
 
         // Push user characters to HashBrowser
         userStruct['characters'] = characters;
-        log(userStruct);
 
         // Change DOM content
         document.getElementById('charactersContainer').style.display = 'inline-block';
         document.getElementById('categories').style.display = 'block';
+        document.getElementById('statsContainer').style.display = 'block';
     };
 };
 
@@ -296,14 +299,26 @@ var LoadCharacter = async (classType) => {
         membershipType = sessionStorage.getItem('membershipType'),
         charBounties = [];
 
-    // Clear current items in display & etc
-    document.getElementById('items').innerHTML = '';
+    // Restart items and clear DOM content
+    document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML.split(':')[0]}: `;
+    document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML.split('(')[0]}`;
+    document.getElementById('contentDisplay').style.display = 'inline-block';
+    document.getElementById('filters').innerHTML = '';
+    document.getElementById('bountyItems').innerHTML = '';
     document.getElementById('overlays').innerHTML = '';
-    document.getElementById('itemStats').style.display = 'none';
     document.getElementById('noItemsTooltip').style.display = 'none';
+    document.getElementById('charDisplayTitle_Character').innerHTML = `${className}`;
+    document.getElementById('charDisplayTitle_Character').style.display = `inline-block`;
 
-    document.getElementById('charDisplayTitle_Character').innerHTML = `${className} //`;
-    document.getElementById('charDisplayTitle_Category').style.display = `inline-block`;
+    // Filter out other classes that are not classType
+    for (var char in characters) {
+        if (characters[char].classType !== classType) {
+            document.getElementById(`charContainer${characters[char].classType}`).classList.add('elBlur');
+        }
+        else if (characters[char].classType === classType) {
+            document.getElementById(`charContainer${characters[char].classType}`).classList.remove('elBlur');
+        };
+    };
 
     // Get chosen character and save index  
     for (var item in destinyUserProfile.characters.data) {
@@ -318,12 +333,30 @@ var LoadCharacter = async (classType) => {
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201,300,202`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
-
+    
     // Iterate over CharacterInventories[characterId].items
     var charInventory = CharacterInventories[characterId].items,
         amountOfBounties = 0;
+
+    // var fubar = await ReturnEntry('DestinySandboxPerkDefinition');
+    // log(fubar[718603205]);
+
+    // Sandbox perks
+    // charInventory.forEach(v => {
+    //     let rt = definitions[v.itemHash];
+    //     if (rt.hash === 534860348) {
+    //         log(rt);
+    //     };
+    // });
+
+    // Expire
+    // charInventory.forEach(v => {
+    //     if (definitions[v.itemHash].itemType === 26) {
+    //         log(v.itemInstanceId);
+    //     };
+    // });
 
 
     // Sorts by index of item in itemTypeKeys
@@ -380,7 +413,6 @@ var LoadCharacter = async (classType) => {
 
     // Push charBounties to HashBrowser
     userStruct['charBounties'] = charBounties;
-    log(userStruct);
 
     // Render items to DOM
     PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
@@ -389,28 +421,78 @@ var LoadCharacter = async (classType) => {
     var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
     // Change DOM content
-    document.getElementById('itemStats').style.display = 'inline-block';
+    document.getElementById('displayTitle_Bounties').style.display = 'block';
 
     // Toggle empty items tooltip
     if (amountOfBounties === 0) {
         document.getElementById('noItemsTooltip').style.display = 'inline-block';
-        document.getElementById('noItemsTooltip').innerHTML = 'No Bounties exist on this character';
-        document.getElementById('totalBounties').innerHTML = `Bounties: ${0}`;
-        document.getElementById('totalXP').innerHTML = `Total XP: ${0}`;
+        document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
+        document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${0}`;
     }
     else if (amountOfBounties > 0) {
         document.getElementById('noItemsTooltip').style.display = 'none';
-        document.getElementById('totalBounties').innerHTML = `Bounties: ${amountOfBounties}`;
-        document.getElementById('totalXP').innerHTML = `Total XP: ${InsertSeperators(totalXpYield)}`;
+        document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML} (${amountOfBounties})`
+        document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${InsertSeperators(totalXpYield)}`;
     };
 
 
     // Stop loading sequence
     StopLoad();
     log(`-> Indexed ${ParseChar(classType)}!`);
+
+    // Load synergyDefinitions and match against bounties
+    await PushProps();
+    await LoadHeuristics();
 };
 
 
+// Load heuristics and configure data
+var LoadHeuristics = async () => {
+
+    // Create a filter for each prop
+    for (const v in propCount) {
+
+        if (propCount[v] > 1) {
+            
+            const filterContainer = document.createElement('div'),
+                  filterContent = document.createElement('div');
+
+            // Assign id's and classes + change innerHTML
+            filterContainer.className = 'filter';
+            filterContent.className = 'propName';
+            filterContainer.id = `filter_${v}${propCount[v]}`;
+            filterContent.id = `propName_${v}${propCount[v]}`;
+            filterContent.innerHTML = `${CapitilizeFirstLetter(v)} (${propCount[v]})`;
+
+            // Append children elements to respective parent elements
+            document.querySelector('#filters').appendChild(filterContainer);
+            document.querySelector(`#filter_${v}${propCount[v]}`).appendChild(filterContent);
+
+            // Show relevant bounties as per filter
+            filterContainer.addEventListener('click', () => {
+                userStruct.charBounties.forEach(b => {
+
+                    // Loop over bounties
+                    // Find bounties that do not have the same index as the one that has been clicked on
+                    if (!b.props.includes(v)) {
+
+                        document.getElementById(`${b.hash}`).style.opacity = '50%';
+                        document.getElementById(`item_${b.hash}`).style.opacity = '50%';
+
+                        if (!userStruct['greyOutDivs']) {
+                            userStruct['greyOutDivs'] = [];
+                            userStruct['greyOutDivs'].push(b.hash);
+                        }
+                        else if (!userStruct['greyOutDivs'].includes(b.hash)) {
+                            userStruct['greyOutDivs'].push(b.hash);
+                        };
+                        log(userStruct['greyOutDivs']);
+                    };
+                });
+            });
+        };
+    };
+};
 
 
 
@@ -425,6 +507,7 @@ var ParseBounties = (charInventory, utils) => {
     charInventory.forEach(v => {
         var item = utils.definitions[v.itemHash];
         if (item.itemType === 26) {
+            item.props = [];
             charBounties.push(item);
             amountOfBounties++;
         };
@@ -531,6 +614,14 @@ for (let a=0; a<=2; a++) {
 // Logout button listener
 document.getElementById('navBarLogoutContainer', () => {
     Logout();
+});
+
+// Hover events for "Current Yield" query
+document.getElementById('statsTitleQuery').addEventListener('mousemove', () => {
+    document.getElementById('queryDiv').style.display = 'block';
+});
+document.getElementById('statsTitleQuery').addEventListener('mouseleave', () => {
+    document.getElementById('queryDiv').style.display = 'none';
 });
 
 

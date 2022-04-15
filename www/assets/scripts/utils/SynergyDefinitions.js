@@ -85,7 +85,8 @@ const ActivityModeHash = {
     momentum: 952904835, //22
     scorched: 1219083526, //23
     lockdown: 3239164160, //24
-    showdown: 1457072306 // 25
+    showdown: 1457072306, // 25
+    empireHunt: 494260690 // 26
 };
 
 // Hashes for damage type
@@ -96,6 +97,58 @@ const DamageTypeHash = {
     Void: 3454344768, //3
     Stasis: 151347233, // 4
 };
+
+// Hashes for destinations
+const Destination = [
+    'EDZ', //0
+    'Nessus', //1
+    'TangledShore', //2
+    'DreamingCity', //3
+    'Moon', //4
+    'Europa', //5
+    'Cosmodrome', // 6
+    'Throneworld', // 7
+];
+
+// Hashes for activity modes
+const ActivityMode = [
+    'gambit', //0
+    'strike', //1
+    'nightfall', //2
+    'crucible', //3
+    'mayhem', //4
+    'control', //5
+    'breakthrough', //6
+    'countdown', //7
+    'elimination', //8
+    'doubles', //9
+    'supremacy', //10
+    'rumble', //11
+    'survival', //12
+    'ironBanner', //13
+    'dungeon', //14
+    'nightmareHunt', //15
+    'story', //16
+    'trials', //17
+    'explore', //18
+    'daresOfEternity', //19
+    'raid', // 20
+    'clash', //21
+    'momentum', //22
+    'scorched', //23
+    'lockdown', //24
+    'showdown', // 25
+    'empireHunt', // 26
+];
+
+// Hashes for damage type
+const DamageType = [
+    'Solar', //0
+    'Arc', //1
+    'Kinetic', //2
+    'Void', //3
+    'Stasis', // 4
+];
 
 // Strings for weapon type
 const ItemCategory = [
@@ -147,9 +200,9 @@ export {
   vendorKeys,
   baseYields,
   petraYields,
-  ActivityModeHash,
-  DestinationHash,
-  DamageTypeHash,
+  ActivityMode,
+  Destination,
+  DamageType,
   AmmoType,
   ItemCategory,
   KillType,

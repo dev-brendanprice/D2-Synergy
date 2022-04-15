@@ -8,6 +8,14 @@ html, body {
     background-color: #22272e;
 }
 
+.elBlur {
+    -webkit-filter: blur(1.5px);
+    -moz-filter: blur(1.5px);
+    -o-filter: blur(1.5px);
+    -ms-filter: blur(1.5px);
+    filter: blur(1.5px);
+}
+
 
 /* Navbar */
 #navBarContainer {
@@ -21,19 +29,27 @@ html, body {
 #navBarIcon {
     width: 45px;
 }
-#navBarLogout {
-    width: 25px;
-    height: auto;
-}
 #navBarIconContainer {
     display: inline-block;
     margin-left: 10px;
 }
 #navBarLogoutContainer {
     position: absolute;
-    margin-top: -39px;
+    margin-top: -37px;
     right: 1%;
     cursor: pointer;
+}
+#navBarLogout {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    width: auto;
+    border: 1px solid gray;
+    border-radius: 4px;
+    color: gray;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 15px;
 }
 
 
@@ -145,4 +161,15 @@ html, body {
 }
 ::-webkit-scrollbar { /* Temporary? */
     display: none;
+}
+
+
+/* misc */
+hr.titleBreaker {
+    display: absolute;
+    margin-left: 28px;
+    opacity: 20%;
+    color: #555;
+    border: 1px solid grey;
+    border-radius: 20px;
 }
