@@ -167,7 +167,6 @@ html, body {
 /* misc */
 hr.titleBreaker {
     display: absolute;
-    margin-left: 28px;
     opacity: 20%;
     color: #555;
     border: 1px solid grey;
