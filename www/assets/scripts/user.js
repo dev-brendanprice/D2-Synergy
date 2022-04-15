@@ -35,11 +35,11 @@ var log = console.log.bind(console),
     membershipType,
     characters,
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
-    homeUrl = `https://synergy.brendanprice.xyz`,
+    homeUrl = `http://localhost/D2-Synergy/www/`,
     userStruct = {},
     axiosHeaders = {
-        ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
-        Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
+        ApiKey: '12a18fbb685a4a90bace718395c81ca8',
+        Authorization: 'NDAwMjQ6SnNnQms0UU5JUGtWMXlXY0MzZUpPZGxCRmsyVzhnU0J0UFZITVgwcTFvWQ=='
     };
 
 
@@ -301,14 +301,13 @@ var LoadCharacter = async (classType) => {
 
     // Restart items and clear DOM content
     document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML.split(':')[0]}: `;
+    document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML.split(':')[0]}:`;
     document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML.split('(')[0]}`;
     document.getElementById('contentDisplay').style.display = 'inline-block';
     document.getElementById('filters').innerHTML = '';
     document.getElementById('bountyItems').innerHTML = '';
     document.getElementById('overlays').innerHTML = '';
     document.getElementById('noItemsTooltip').style.display = 'none';
-    document.getElementById('charDisplayTitle_Character').innerHTML = `${className}`;
-    document.getElementById('charDisplayTitle_Character').style.display = `inline-block`;
 
     // Filter out other classes that are not classType
     for (var char in characters) {
@@ -428,11 +427,13 @@ var LoadCharacter = async (classType) => {
         document.getElementById('noItemsTooltip').style.display = 'inline-block';
         document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
         document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${0}`;
+        document.getElementById('totalSpLevelss').innerHTML = `${document.getElementById('totalSpLevels').innerHTML}: +${0} levels`;
     }
     else if (amountOfBounties > 0) {
         document.getElementById('noItemsTooltip').style.display = 'none';
         document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML} (${amountOfBounties})`
         document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${InsertSeperators(totalXpYield)}`;
+        document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${totalXpYield/100_000} levels`;
     };
 
 
@@ -472,8 +473,7 @@ var LoadHeuristics = async () => {
             filterContainer.addEventListener('click', () => {
                 userStruct.charBounties.forEach(b => {
 
-                    // Loop over bounties
-                    // Find bounties that do not have the same index as the one that has been clicked on
+                    // Find bounties that do match the filter index
                     if (!b.props.includes(v)) {
 
                         document.getElementById(`${b.hash}`).style.opacity = '50%';
@@ -486,7 +486,6 @@ var LoadHeuristics = async () => {
                         else if (!userStruct['greyOutDivs'].includes(b.hash)) {
                             userStruct['greyOutDivs'].push(b.hash);
                         };
-                        log(userStruct['greyOutDivs']);
                     };
                 });
             });
@@ -622,6 +621,17 @@ document.getElementById('statsTitleQuery').addEventListener('mousemove', () => {
 });
 document.getElementById('statsTitleQuery').addEventListener('mouseleave', () => {
     document.getElementById('queryDiv').style.display = 'none';
+});
+
+// Remove filters button
+document.getElementById('removeFiltersID').addEventListener('click', () => {
+    userStruct.charBounties.forEach(bounty => { // Loop over charBounties and reverse filtered items
+        userStruct.greyOutDivs.forEach(greyHash => {
+            document.getElementById(`${bounty.hash}`).style.opacity = 'unset';
+            document.getElementById(`item_${bounty.hash}`).style.opacity = 'unset';
+        });
+    });
+    userStruct.greyOutDivs = []; // Clear array
 });
 
 

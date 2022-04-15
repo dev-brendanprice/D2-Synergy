@@ -1209,7 +1209,7 @@ const bountyHashes = {
     },
     "672179719": {
         "Destination": [],
-        "ActivityMode": [5],
+        "ActivityMode": [3,5],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -1777,7 +1777,7 @@ const bountyHashes = {
     },
     "1028832205": {
         "Destination": [],
-        "ActivityMode": [5],
+        "ActivityMode": [3,5],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -2745,7 +2745,7 @@ const bountyHashes = {
     },
     "1559535719": {
         "Destination": [],
-        "ActivityMode": [5],
+        "ActivityMode": [3,5],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],

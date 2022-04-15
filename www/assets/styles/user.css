@@ -93,12 +93,12 @@
 }
 
 #bountyDisplayContainer {
+    margin-top: 13px;
     margin-left: 28px;
 }
 
 #displayTitle_Bounties {
     display: none;
-    padding-top: 20px;
     padding-bottom: 0px;
     text-transform: uppercase;
     color: white;

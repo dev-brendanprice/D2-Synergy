@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
     <script type="module" src="assets/scripts/user.js"></script>
-    <script type="module" src="assets/scripts/utils/HashBrowser.js"></script>
+    <script type="module" src="assets/scripts/utils/StructBrowser.js"></script>
     <script type="module" src="assets/scripts/utils/MatchProps.js"></script>
 
     <link rel="shortcut icon" href="#">
@@ -95,16 +95,14 @@
     
         <div id="contentDisplay">
 
-            <div id="charDisplayTitle">
-                <div id="charDisplayTitle_Pre">Character //</div>
-                <div id="charDisplayTitle_Character"></div>
-            </div>
-            <hr class="titleBreaker">
-
             <div id="bountyDisplayContainer">
                 <div id="displayTitle_Bounties">Bounties</div>
+                <hr class="titleBreaker">
                 <div id="noItemsTooltip"></div>
                 <div id="filters"></div>
+                <div class="filter" id="removeFiltersID" style="margin-top: 0px;">
+                    <div class="propName">Clear Filters</div>
+                </div>
                 <div id="bountyItems"></div>
                 <br>
                 <div id="itemStats">
