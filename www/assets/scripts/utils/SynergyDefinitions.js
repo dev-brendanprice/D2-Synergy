@@ -102,8 +102,8 @@ const DamageTypeHash = {
 const Destination = [
     'EDZ', //0
     'Nessus', //1
-    'TangledShore', //2
-    'DreamingCity', //3
+    'Tangled Shore', //2
+    'Dreaming City', //3
     'Moon', //4
     'Europa', //5
     'Cosmodrome', // 6
@@ -127,18 +127,18 @@ const ActivityMode = [
     'survival', //12
     'ironBanner', //13
     'dungeon', //14
-    'nightmareHunt', //15
+    'Nightmare Hunts', //15
     'story', //16
     'trials', //17
     'explore', //18
-    'daresOfEternity', //19
+    'DofE', //19
     'raid', // 20
     'clash', //21
     'momentum', //22
     'scorched', //23
     'lockdown', //24
     'showdown', // 25
-    'empireHunt', // 26
+    'Empire Hunts', // 26
 ];
 
 // Hashes for damage type
@@ -185,7 +185,10 @@ const KillType = [
     'Grenade', //2
     'Finisher', //3
     'Precision', //4
-    'ClassAbilities', // 5
+    'Class Abilities', // 5
+    'Close Range', // 6
+    'Rapid Kills', // 7
+    'No Reload', // 8
 ];
 
 // Race type signifer ?? ## Priority
