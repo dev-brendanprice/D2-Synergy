@@ -12,7 +12,12 @@ import {
     MakeBountyElement,
     RedirUser,
     InsertSeperators,
-    CapitilizeFirstLetter } from './utils/ModuleScript.js';
+    CapitilizeFirstLetter,
+    ParseBounties,
+    PushToDOM,
+    SortByGroup,
+    SortByType,
+    CalcXpYield } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -398,10 +403,14 @@ var LoadCharacter = async (classType) => {
         charBounties = parsedBounties[0]
         amountOfBounties = parsedBounties[1];
 
-    // Assign objectives definitions to each item
+    // Assign objective(s) definitions to each item
     objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
     Object.keys(charBounties).forEach(v => {
-        charBounties[v].objectiveDefinitions = objectiveDefinitions[charBounties[v].objectives.objectiveHashes[0]];
+        let objHashes = charBounties[v].objectives.objectiveHashes;
+        charBounties[v].objectiveDefinitions = [];
+        for (var objHash of objHashes) {
+            charBounties[v].objectiveDefinitions.push(objectiveDefinitions[objHash]);
+        };
     });
     
     // Loop over bounties and sort into groups
@@ -495,112 +504,6 @@ var LoadHeuristics = async () => {
 
 
 
-// -- PLAYER STRUCTS -- //
-
-// Sort items into bounties
-var ParseBounties = (charInventory, utils) => {
-
-    var charBounties = [],
-        amountOfBounties = 0;
-
-    charInventory.forEach(v => {
-        var item = utils.definitions[v.itemHash];
-        if (item.itemType === 26) {
-            item.props = [];
-            charBounties.push(item);
-            amountOfBounties++;
-        };
-    });
-    return [charBounties, amountOfBounties];
-};
-
-
-// Push bounties to DOM
-var PushToDOM = (bountyArr, utils) => {
-
-    Object.keys(bountyArr).forEach(v => {
-
-        let group = bountyArr[v];
-
-        if (group.length !== 0) {
-            group.forEach(item => {
-                utils.MakeBountyElement(item);
-                utils.amountOfBounties++;
-            });
-        };
-    });
-};
-
-
-// Sort bounties via vendor group
-var SortByGroup = (charBounties, utils) => {
-
-    charBounties.forEach(v => {
-        for (let i=1; i < utils.vendorKeys.length; i++) {
-            if (utils.vendorKeys.length-1 === i) {
-                utils.bountyArr['other'].push(v);
-                break;
-            }
-            else if (utils.vendorKeys.length !== i) {
-                if (v.inventory.stackUniqueLabel.includes(utils.vendorKeys[i])) {
-                    utils.bountyArr[utils.vendorKeys[i]].push(v);
-                    break;
-                };
-            };
-        };
-    });
-    return utils.bountyArr;
-};
-
-
-// Sort bounties via bounty type
-var SortByType = (bountyArr, utils) => {
-
-    Object.keys(bountyArr).forEach(v => {
-
-        let group = bountyArr[v];
-
-        if (group.length !== 0) {
-            group.sort(utils.sortBountiesByType);
-        };
-    });
-    return bountyArr;
-};
-
-
-// Calculate total XP gain from (active) bounties
-var CalcXpYield = (bountyArr, utils) => {
-
-    var totalXP = 0;
-    Object.keys(bountyArr).forEach(v => {
-
-        let group = bountyArr[v];
-        
-        if (group.length !== 0) {
-            group.forEach(z => {
-
-                for (let i=0; i<utils.itemTypeKeys.length; i++) {
-
-                    let label = z.inventory.stackUniqueLabel;
-                    if (label.includes(utils.itemTypeKeys[i])) {
-
-                        if (label.includes('dreaming_city')) {
-                            totalXP += utils.petraYields[utils.itemTypeKeys[i]];
-                        }
-                        else {
-                            totalXP += utils.baseYields[utils.itemTypeKeys[i]];
-                        };
-                        break;
-                    };
-                };
-            });
-        };
-    });
-    return totalXP;
-};
-
-
-
 
 
 // Add listeners for buttons
@@ -643,7 +546,7 @@ document.getElementById('removeFiltersID').addEventListener('click', () => {
 
     // Add default headers back, in case OAuthFlow needed a refresh
     axios.defaults.headers.common = {
-        "X-API-Key": `${axiosHeaders.ApiKey}`
+        "X-API-Key": `${axiosHeaders.ApiKey}`,
     };
 
     // Main
