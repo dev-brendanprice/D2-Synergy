@@ -48,15 +48,14 @@ const ParseChar = (classType) => {
 // @obj {param}
 const MakeBountyElement = (param) => {
     
-    const item = document.createElement('img'),
-          itemOverlay = document.createElement('div'),
-          itemTitle = document.createElement('div'),
-          itemType = document.createElement('div'),
-          itemDesc = document.createElement('div'),
-          itemPrgContainer = document.createElement('div'),
-          itemPrgCounter = document.createElement('div'),
-          itemPrgDesc = document.createElement('div'),
-          hr = document.createElement('hr');
+    const itemPrgContainer = document.createElement('div'),
+        itemOverlay = document.createElement('div'),
+        itemTitle = document.createElement('div'),
+        itemType = document.createElement('div'),
+        itemDesc = document.createElement('div'),
+        hr = document.createElement('hr'),
+        item = document.createElement('img');
+
 
 
     // Create bottom element
@@ -78,22 +77,44 @@ const MakeBountyElement = (param) => {
     itemType.innerHTML = param.itemTypeDisplayName;
     itemDesc.innerHTML = param.displayProperties.description;
 
-    // Render progress content of item
-    var rt = param.objectiveDefinitions;
-    itemPrgCounter.id = 'itemPrgCounter';
-    itemPrgDesc.id = 'itemPrgDesc';
-    itemPrgDesc.innerHTML = rt.progressDescription;
-    itemPrgCounter.innerHTML = `${rt.completionValue === 100 ? `%${(rt.unlockValueHash / 100) * 100}` : `${rt.unlockValueHash}/${rt.completionValue}`}`;
+    // Create item progress and push to DOM
+    let rootIndex = param.objectiveDefinitions;
+    for (let indexCount=0; indexCount < rootIndex.length; indexCount++) {
+
+        let itemPrgCounter = document.createElement('div'),
+            itemPrgDesc = document.createElement('div');
+
+        itemPrgCounter.className = 'itemPrgCounter';
+        itemPrgDesc.className = 'itemPrgDesc';
+        itemPrgCounter.id = `prgCounter_${rootIndex[indexCount].hash}`;
+        itemPrgDesc.id = `prgDesc_${rootIndex[indexCount].hash}`;
+        itemPrgDesc.innerHTML = rootIndex[indexCount].progressDescription;
+        itemPrgCounter.innerHTML = `${rootIndex[indexCount].completionValue === 100 ? `${(rootIndex[indexCount].unlockValueHash / 100) * 100}%` : `${rootIndex[indexCount].unlockValueHash}/${rootIndex[indexCount].completionValue}`}`;
+
+        document.querySelector(`#item_${param.hash}`).appendChild(itemPrgCounter);
+        document.querySelector(`#item_${param.hash}`).appendChild(itemPrgDesc);
+
+        // Calculate the nth term for seperating objectives
+        let paddingStepAmount = 40 / (rootIndex.length) === Infinity ? (0) : (40 / (rootIndex.length));
+        itemPrgCounter.style.paddingBottom = '21px';
+        itemPrgDesc.style.paddingBottom = '20px';
+        
+        for (let padC=1; padC < rootIndex.length; padC++) { // Seperate objectives
+
+            var offset = paddingStepAmount*indexCount;
+            if (offset!==0) {
+                itemPrgCounter.style.paddingBottom = `${parseInt(itemPrgCounter.style.paddingBottom.split('px')[0]) + Math.trunc(offset)}px`;
+                itemPrgDesc.style.paddingBottom = `${parseInt(itemPrgDesc.style.paddingBottom.split('px')[0]) + Math.trunc(offset)}px`;
+            };
+        };
+    };
 
     // Assign content to parent
     document.querySelector(`#item_${param.hash}`).appendChild(itemTitle);
     document.querySelector(`#item_${param.hash}`).appendChild(itemType);
     document.querySelector(`#item_${param.hash}`).appendChild(hr);
     document.querySelector(`#item_${param.hash}`).appendChild(itemDesc);
-    document.querySelector(`#item_${param.hash}`).appendChild(itemPrgCounter);
-    document.querySelector(`#item_${param.hash}`).appendChild(itemPrgDesc);
     
-
     // Watch for mouse events
     item.addEventListener('mousemove', (e) => {
         let el = itemOverlay.style;
@@ -141,6 +162,109 @@ const CapitilizeFirstLetter = (string) => {
 };
 
 
+// Sort items into bounties
+var ParseBounties = (charInventory, utils) => {
+
+    var charBounties = [],
+        amountOfBounties = 0;
+
+    charInventory.forEach(v => {
+        let item = utils.definitions[v.itemHash];
+        if (item.itemType === 26) {
+            item.props = [];
+            charBounties.push(item);
+            amountOfBounties++;
+        };
+    });
+    return [charBounties, amountOfBounties];
+};
+
+
+// Push bounties to DOM
+var PushToDOM = (bountyArr, utils) => {
+
+    Object.keys(bountyArr).forEach(v => {
+
+        let group = bountyArr[v];
+
+        if (group.length !== 0) {
+            group.forEach(item => {
+                utils.MakeBountyElement(item);
+                utils.amountOfBounties++;
+            });
+        };
+    });
+};
+
+
+// Sort bounties via vendor group
+var SortByGroup = (charBounties, utils) => {
+
+    charBounties.forEach(v => {
+        for (let i=1; i < utils.vendorKeys.length; i++) {
+            if (utils.vendorKeys.length-1 === i) {
+                utils.bountyArr['other'].push(v);
+                break;
+            }
+            else if (utils.vendorKeys.length !== i) {
+                if (v.inventory.stackUniqueLabel.includes(utils.vendorKeys[i])) {
+                    utils.bountyArr[utils.vendorKeys[i]].push(v);
+                    break;
+                };
+            };
+        };
+    });
+    return utils.bountyArr;
+};
+
+
+// Sort bounties via bounty type
+var SortByType = (bountyArr, utils) => {
+
+    Object.keys(bountyArr).forEach(v => {
+
+        let group = bountyArr[v];
+
+        if (group.length !== 0) {
+            group.sort(utils.sortBountiesByType);
+        };
+    });
+    return bountyArr;
+};
+
+
+// Calculate total XP gain from (active) bounties
+var CalcXpYield = (bountyArr, utils) => {
+
+    var totalXP = 0;
+    Object.keys(bountyArr).forEach(v => {
+
+        let group = bountyArr[v];
+        
+        if (group.length !== 0) {
+            group.forEach(z => {
+
+                for (let i=0; i<utils.itemTypeKeys.length; i++) {
+
+                    let label = z.inventory.stackUniqueLabel;
+                    if (label.includes(utils.itemTypeKeys[i])) {
+
+                        if (label.includes('dreaming_city')) {
+                            totalXP += utils.petraYields[utils.itemTypeKeys[i]];
+                        }
+                        else {
+                            totalXP += utils.baseYields[utils.itemTypeKeys[i]];
+                        };
+                        break;
+                    };
+                };
+            });
+        };
+    });
+    return totalXP;
+};
+
+
 
 export {
     VerifyState,
@@ -151,5 +275,10 @@ export {
     MakeBountyElement,
     RedirUser,
     InsertSeperators,
-    CapitilizeFirstLetter
+    CapitilizeFirstLetter,
+    ParseBounties,
+    PushToDOM,
+    SortByGroup,
+    SortByType,
+    CalcXpYield
 };
