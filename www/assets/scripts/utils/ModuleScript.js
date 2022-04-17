@@ -100,7 +100,6 @@ const MakeBountyElement = (param) => {
         itemPrgDesc.style.paddingBottom = '20px';
         
         for (let padC=1; padC < rootIndex.length; padC++) { // Seperate objectives
-
             var offset = paddingStepAmount*indexCount;
             if (offset!==0) {
                 itemPrgCounter.style.paddingBottom = `${parseInt(itemPrgCounter.style.paddingBottom.split('px')[0]) + Math.trunc(offset)}px`;
