@@ -1,3 +1,5 @@
+import { userStruct } from '../user.js';
+
 const log = console.log.bind(console);
 
 // Check if state query parameter exists in URL
@@ -9,7 +11,7 @@ const VerifyState = async () => {
     if (state != window.localStorage.getItem('stateCode')) {
         window.localStorage.clear();
         window.sessionStorage.clear();
-        window.location.href = `https://synergy.brendanprice.xyz`;
+        window.location.href = userStruct.homeUrl;
     }
     else {
         window.localStorage.removeItem('stateCode');

@@ -49,6 +49,7 @@ var log = console.log.bind(console),
 
 
 // Set default axios header
+userStruct.homeUrl = homeUrl;
 axios.defaults.headers.common = {
     "X-API-Key": `${axiosHeaders.ApiKey}`
 };
