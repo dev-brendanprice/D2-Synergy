@@ -18,6 +18,8 @@ import {
     SortByGroup,
     SortByType,
     CalcXpYield } from './utils/ModuleScript.js';
+    CalcXpYield,
+    calculateSeasonPassInfo } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -301,8 +303,11 @@ var LoadCharacter = async (classType) => {
     var className = ParseChar(classType),
         characterId,
         CharacterInventories,
+        CurrentSeasonHash,
+        CharacterProgressions,
         definitions = {},
         objectiveDefinitions = {},
+        seasonInfo = {},
         membershipType = sessionStorage.getItem('membershipType'),
         charBounties = [];
 
@@ -340,8 +345,12 @@ var LoadCharacter = async (classType) => {
 
     // OAuth header guarantees a response
     var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201,300,202`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,201,202,300`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
     
+    CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
+    CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
+
     // Iterate over CharacterInventories[characterId].items
     var charInventory = CharacterInventories[characterId].items,
         amountOfBounties = 0;
@@ -363,6 +372,12 @@ var LoadCharacter = async (classType) => {
     //         log(v.itemInstanceId);
     //     };
     // });
+
+
+    // Get season pass info
+    var seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
+    seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
+    await calculateSeasonPassInfo(seasonInfo);
 
 
     // Sorts by index of item in itemTypeKeys

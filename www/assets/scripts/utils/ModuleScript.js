@@ -266,6 +266,34 @@ var CalcXpYield = (bountyArr, utils) => {
 };
 
 
+// Calculate season pass information
+var calculateSeasonPassInfo = async (seasonInfo) => {
+    log(seasonInfo);
+    const level = seasonInfo.level;
+    if (seasonInfo.level < 100) {
+
+        // Assume BE is every n3,n7 levels
+        if (`${level}`.split('')[1] <= 2) {
+            log(level);
+        }
+        else if (`${level}`.split('')[1] <= 6) {
+            log(level);
+        };
+    }
+    else if (level >= 100) {
+
+        // Assume BE is every n0,n5 levels
+        let lvl = `${level}`.split('');
+        if (lvl[lvl.length-1] >= 9) {
+            log(level);
+        }
+        else if (lvl[lvl.length-1] >= 4) {
+            log(level);
+        };
+    };
+};
+
+
 
 export {
     VerifyState,
@@ -281,5 +309,6 @@ export {
     PushToDOM,
     SortByGroup,
     SortByType,
-    CalcXpYield
+    CalcXpYield,
+    calculateSeasonPassInfo
 };
