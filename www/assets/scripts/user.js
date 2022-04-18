@@ -41,10 +41,10 @@ var log = console.log.bind(console),
     characters,
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
     userStruct = {},
-    homeUrl = `http://localhost/D2-Synergy/www/index`,
+    homeUrl = `https://synergy.brendanprice.xyz`,
     axiosHeaders = {
-        ApiKey: '12a18fbb685a4a90bace718395c81ca8',
-        Authorization: 'NDAwMjQ6SnNnQms0UU5JUGtWMXlXY0MzZUpPZGxCRmsyVzhnU0J0UFZITVgwcTFvWQ=='
+        ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
+        Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
     };
 
 
