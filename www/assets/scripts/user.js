@@ -17,7 +17,6 @@ import {
     PushToDOM,
     SortByGroup,
     SortByType,
-    CalcXpYield } from './utils/ModuleScript.js';
     CalcXpYield,
     calculateSeasonPassInfo } from './utils/ModuleScript.js';
 import {
@@ -344,10 +343,8 @@ var LoadCharacter = async (classType) => {
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201,300,202`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
     var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,201,202,300`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
-    
     CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
     CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
 
