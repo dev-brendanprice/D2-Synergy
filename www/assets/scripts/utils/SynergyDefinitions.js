@@ -102,8 +102,8 @@ const DamageTypeHash = {
 const Destination = [
     'EDZ', //0
     'Nessus', //1
-    'Tangled Shore', //2
-    'Dreaming City', //3
+    'TangledShore', //2
+    'DreamingCity', //3
     'Moon', //4
     'Europa', //5
     'Cosmodrome', // 6
@@ -127,7 +127,7 @@ const ActivityMode = [
     'survival', //12
     'ironBanner', //13
     'dungeon', //14
-    'Nightmare Hunts', //15
+    'NightmareHunt', //15
     'story', //16
     'trials', //17
     'explore', //18
@@ -138,7 +138,7 @@ const ActivityMode = [
     'scorched', //23
     'lockdown', //24
     'showdown', // 25
-    'Empire Hunts', // 26
+    'EmpireHunt', // 26
 ];
 
 // Hashes for damage type
@@ -152,30 +152,30 @@ const DamageType = [
 
 // Strings for weapon type
 const ItemCategory = [
-    'Auto Rifle', //0
-    'Scout Rifle', //1
-    'Pulse Rifle', //2
-    'Hand Cannon', //3
+    'AutoRifle', //0
+    'ScoutRifle', //1
+    'PulseRifle', //2
+    'HandCannon', //3
     'Shotgun', //4
-    'Grenade Launcher', //5
-    'Rocket Launcher', //6
-    'Sniper Rifle', //7
+    'GrenadeLauncher', //5
+    'RocketLauncher', //6
+    'SniperRifle', //7
     'Sword', //8
-    'Linear Fusion Rifle', //9
-    'Fusion Rifle', //10
+    'LinearFusionRifle', //9
+    'FusionRifle', //10
     'Glaive', //11
-    'Submachine Gun', //12
-    'Machine Gun', //13
-    'Trace Rifle', //14
-    'Sidearms', //15
+    'SubmachineGun', //12
+    'MachineGun', //13
+    'TraceRifle', //14
+    'Sidearm', //15
     'Bow', // 16
 ];
 
 // Hashes for weapon ammuniation type
 const AmmoType = [
-    'Special Ammo', //0
-    'Primary Ammo', //1
-    'Heavy Ammo', // 2
+    'SpecialAmmo', //0
+    'PrimaryAmmo', //1
+    'HeavyAmmo', // 2
 ];
 
 // Strings for kill type
@@ -185,10 +185,10 @@ const KillType = [
     'Grenade', //2
     'Finisher', //3
     'Precision', //4
-    'Class Abilities', // 5
-    'Close Range', // 6
-    'Rapid Kills', // 7
-    'No Reload', // 8
+    'ClassAbility', // 5
+    'CloseRange', // 6
+    'RapidKills', // 7
+    'NoReload', // 8
 ];
 
 // Race type signifer ?? ## Priority

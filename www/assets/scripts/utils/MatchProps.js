@@ -23,9 +23,9 @@ const PushProps = async () => {
     // Loop over charBounties and append counters
     for (let i=0; i < userStruct.charBounties.length; i++) {
 
-        var hash = userStruct.charBounties[i].hash,
-            entry = bountyHashes[hash],
-            counters = {};
+        const hash = userStruct.charBounties[i].hash,
+              entry = bountyHashes[hash];
+        var counters = {};
 
         for (let prop in entry) {
 

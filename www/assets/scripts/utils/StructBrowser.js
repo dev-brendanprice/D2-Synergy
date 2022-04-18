@@ -7,7 +7,7 @@ $(document).ready(function () {
         if (char) {
             var arr = [];
             userStruct.charBounties.forEach(v => {
-                v.charId === char ? arr.push(v) : null;
+                v.charId === char ? arr.push(v) : 'Character not found';
             });
             return arr;
         }
@@ -30,5 +30,9 @@ $(document).ready(function () {
 
     $.greyOutDivs = () => {
         return userStruct.greyOutDivs;
+    };
+
+    $.seasonHash = () => {
+        return userStruct.seasonHash;
     };
 });

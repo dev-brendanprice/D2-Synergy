@@ -40,11 +40,11 @@ var log = console.log.bind(console),
     membershipType,
     characters,
     urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
-    homeUrl = `https://synergy.brendanprice.xyz`,
     userStruct = {},
+    homeUrl = `http://localhost/D2-Synergy/www/index`,
     axiosHeaders = {
-        ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
-        Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
+        ApiKey: '12a18fbb685a4a90bace718395c81ca8',
+        Authorization: 'NDAwMjQ6SnNnQms0UU5JUGtWMXlXY0MzZUpPZGxCRmsyVzhnU0J0UFZITVgwcTFvWQ=='
     };
 
 
@@ -235,7 +235,8 @@ var FetchBungieUserDetails = async () => {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, 
                 "X-API-Key": `${axiosHeaders.ApiKey}`
             }
-        };
+        },
+        seasonHash;
         
 
     // Variables to check/store
@@ -262,20 +263,20 @@ var FetchBungieUserDetails = async () => {
     };
 
     // Load from cache
-    if (membershipType || destinyMemberships || destinyUserProfile) {
+    if (membershipType && destinyMemberships && destinyUserProfile) {
 
         // Loop over characters
         characters = destinyUserProfile.characters.data;
-        for (var item in characters) {
-
+        for (let item in characters) {
             var char = characters[item];
             document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
             document.getElementById(`classType${char.classType}`).innerHTML = `${ParseChar(char.classType)}`;
             document.getElementById(`classLight${char.classType}`).innerHTML = `${char.light}`;
         };
 
-        // Push user characters to HashBrowser
+        // Push relevant items to the browser
         userStruct['characters'] = characters;
+        userStruct['seasonHash'] = seasonHash;
 
         // Change DOM content
         document.getElementById('charactersContainer').style.display = 'inline-block';
@@ -419,11 +420,11 @@ var LoadCharacter = async (classType) => {
     // Loop through bounties and sort groups' bounties
     bountyArr = SortByType(bountyArr, {sortBountiesByType});
 
-    // Push charBounties to HashBrowser
-    userStruct['charBounties'] = charBounties;
-
     // Render items to DOM
     PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
+
+    // Push charBounties to HashBrowser
+    userStruct['charBounties'] = charBounties;
 
     // Calculate XP yield from (active) bounties
     var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
@@ -460,11 +461,11 @@ var LoadCharacter = async (classType) => {
 var LoadHeuristics = async () => {
 
     // Create a filter for each prop
-    for (const v in propCount) {
+    for (let v in propCount) {
 
         if (propCount[v] > 1) {
             
-            const filterContainer = document.createElement('div'),
+            let filterContainer = document.createElement('div'),
                   filterContent = document.createElement('div');
 
             // Assign id's and classes + change innerHTML
@@ -478,11 +479,11 @@ var LoadHeuristics = async () => {
             document.querySelector('#filters').appendChild(filterContainer);
             document.querySelector(`#filter_${v}${propCount[v]}`).appendChild(filterContent);
 
-            // Show relevant bounties as per filter
+            // Show bounties as per filter
             filterContainer.addEventListener('click', () => {
                 userStruct.charBounties.forEach(b => {
 
-                    // Find bounties that do match the filter index
+                    // Find bounties that match the filter index
                     if (!b.props.includes(v)) {
 
                         document.getElementById(`${b.hash}`).style.opacity = '50%';
