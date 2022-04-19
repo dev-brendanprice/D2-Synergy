@@ -323,6 +323,7 @@ var LoadCharacter = async (classType) => {
     document.getElementById('bountyItems').innerHTML = '';
     document.getElementById('overlays').innerHTML = '';
     document.getElementById('noItemsTooltip').style.display = 'none';
+    document.getElementById('totalBrightEngrams').innerHTML = `${document.getElementById('totalBrightEngrams').innerHTML.split(':')[0]}: `;
 
     // Filter out other classes that are not classType
     for (var char in characters) {
@@ -452,7 +453,7 @@ var LoadCharacter = async (classType) => {
     // Change DOM content
     document.getElementById('displayTitle_Bounties').style.display = 'block';
 
-    var brightEngramTracker = document.getElementById('totalBrightEngrams');
+    let brightEngramTracker = document.getElementById('totalBrightEngrams');
     brightEngramTracker.innerHTML = `${brightEngramTracker.innerHTML}${InsertSeperators(xpRequiredForNextBrightEngram)} Xp`;
 
     // Toggle empty items tooltip
