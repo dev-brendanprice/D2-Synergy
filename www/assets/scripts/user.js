@@ -18,7 +18,7 @@ import {
     SortByGroup,
     SortByType,
     CalcXpYield,
-    calculateSeasonPassInfo } from './utils/ModuleScript.js';
+    CalculateXpForBrightEngram } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -257,6 +257,7 @@ var FetchBungieUserDetails = async () => {
         // Fetch user profile
         var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.destinyMemberships[0].membershipId}/?components=200`, AuthConfig);
             destinyUserProfile = userProfile.data.Response;
+            log(destinyUserProfile);
 
         // Cache the response
         sessionStorage.setItem('membershipType', membershipType);
@@ -371,12 +372,6 @@ var LoadCharacter = async (classType) => {
     // });
 
 
-    // Get season pass info
-    var seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
-    seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
-    await calculateSeasonPassInfo(seasonInfo);
-
-
     // Sorts by index of item in itemTypeKeys
     var sortBountiesByType = (a, b) => {
 
@@ -441,6 +436,11 @@ var LoadCharacter = async (classType) => {
 
     // Calculate XP yield from (active) bounties
     var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
+
+    // Get season pass info
+    var seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
+        seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
+    await CalculateXpForBrightEngram(seasonInfo, totalXpYield);
 
     // Change DOM content
     document.getElementById('displayTitle_Bounties').style.display = 'block';
