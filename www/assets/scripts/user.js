@@ -17,7 +17,8 @@ import {
     PushToDOM,
     SortByGroup,
     SortByType,
-    CalcXpYield } from './utils/ModuleScript.js';
+    CalcXpYield,
+    CalculateXpForBrightEngram } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -256,6 +257,7 @@ var FetchBungieUserDetails = async () => {
         // Fetch user profile
         var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.destinyMemberships[0].membershipId}/?components=200`, AuthConfig);
             destinyUserProfile = userProfile.data.Response;
+            log(destinyUserProfile);
 
         // Cache the response
         sessionStorage.setItem('membershipType', membershipType);
@@ -301,8 +303,11 @@ var LoadCharacter = async (classType) => {
     var className = ParseChar(classType),
         characterId,
         CharacterInventories,
+        CurrentSeasonHash,
+        CharacterProgressions,
         definitions = {},
         objectiveDefinitions = {},
+        seasonInfo = {},
         membershipType = sessionStorage.getItem('membershipType'),
         charBounties = [];
 
@@ -339,9 +344,11 @@ var LoadCharacter = async (classType) => {
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=201,300,202`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
+    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,201,202,300`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
     CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
-    
+    CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
+    CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
+
     // Iterate over CharacterInventories[characterId].items
     var charInventory = CharacterInventories[characterId].items,
         amountOfBounties = 0;
@@ -429,6 +436,11 @@ var LoadCharacter = async (classType) => {
 
     // Calculate XP yield from (active) bounties
     var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
+
+    // Get season pass info
+    var seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
+        seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
+    await CalculateXpForBrightEngram(seasonInfo, totalXpYield);
 
     // Change DOM content
     document.getElementById('displayTitle_Bounties').style.display = 'block';

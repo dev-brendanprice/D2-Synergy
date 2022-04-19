@@ -266,6 +266,61 @@ var CalcXpYield = (bountyArr, utils) => {
 };
 
 
+// Calculate season pass information
+var CalculateXpForBrightEngram = async (seasonInfo, xpYield) => {
+
+    // const level = seasonInfo.level;
+    const level = 128370;
+    if (level < 100) {
+
+        // Assume a BE is every n3,n7 levels
+        let lastNum = parseInt(`${level}`.split('')[1]);
+        if (lastNum >= 3 && lastNum < 7) { // progress to level 7
+
+            let diff = 7 - lastNum,
+                fullLvls = diff-1, // fullLvls is levels that contain 100k xp
+                remainderXp = 0;
+
+            remainderXp = (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
+            log('XP until next BE: ', remainderXp);
+        }
+        else if (lastNum >= 7 || lastNum < 3) { // progress to level 3
+                
+            if (lastNum <= 9) {
+                if (lastNum >= 0 && lastNum < 3) {
+                    
+                    let diff = 3 - lastNum,
+                        fullLvls = diff-1,
+                        remainderXp = 0;
+                    
+                    remainderXp = (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
+                    log('XP until next BE: ', remainderXp);
+                }
+                else {
+
+                    let diff = 10 - lastNum,
+                        fullLvls = diff + 3,
+                        remainderXp = 0;
+                
+                    remainderXp = (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
+                    log('XP until next BE: ', remainderXp);
+                };
+            };
+        };
+    }
+    else if (level >= 100) {
+
+        // Assume BE is every n0,n5 levels
+        // Way to get season pass levels exclusively?
+        // -- Once a user is over SP level 100, .progressToNextLevel, does not show.
+        let lastNums = parseInt(`${level}`.split('')[`${level}`.length-2] + `${level}`.split('')[`${level}`.length-1]),
+            lastNum = parseInt(`${level}`.split('')[`${level}`.length-1]);
+        log(lastNum % 5 !== 0); // not divisible by 5
+        log(lastNums % 10 !== 0); // not divisible by 10
+    };
+};
+
+
 
 export {
     VerifyState,
@@ -281,5 +336,6 @@ export {
     PushToDOM,
     SortByGroup,
     SortByType,
-    CalcXpYield
+    CalcXpYield,
+    CalculateXpForBrightEngram
 };
