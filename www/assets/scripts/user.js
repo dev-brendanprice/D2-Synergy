@@ -18,7 +18,8 @@ import {
     SortByGroup,
     SortByType,
     CalcXpYield,
-    CalculateXpForBrightEngram } from './utils/ModuleScript.js';
+    CalculateXpForBrightEngram,
+    CalculatePercentage } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -305,9 +306,11 @@ var LoadCharacter = async (classType) => {
         CharacterInventories,
         CurrentSeasonHash,
         CharacterProgressions,
+        prestigeSeasonInfo,
         definitions = {},
         objectiveDefinitions = {},
         seasonInfo = {},
+        seasonPassInfo = {},
         membershipType = sessionStorage.getItem('membershipType'),
         charBounties = [];
 
@@ -435,15 +438,22 @@ var LoadCharacter = async (classType) => {
     userStruct['charBounties'] = charBounties;
 
     // Calculate XP yield from (active) bounties
-    var totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
+    const totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
     // Get season pass info
-    var seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
-        seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
-    await CalculateXpForBrightEngram(seasonInfo, totalXpYield);
+    const seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
+          seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
+    const seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition');
+          seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
+          prestigeSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
+
+    const xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield);
 
     // Change DOM content
     document.getElementById('displayTitle_Bounties').style.display = 'block';
+
+    var brightEngramTracker = document.getElementById('totalBrightEngrams');
+    brightEngramTracker.innerHTML = `${brightEngramTracker.innerHTML}${InsertSeperators(xpRequiredForNextBrightEngram)} Xp`;
 
     // Toggle empty items tooltip
     if (amountOfBounties === 0) {
