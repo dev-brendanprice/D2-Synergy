@@ -1,3 +1,5 @@
+import { userStruct } from '../user.js';
+
 const log = console.log.bind(console);
 
 // Check if state query parameter exists in URL
@@ -9,7 +11,7 @@ const VerifyState = async () => {
     if (state != window.localStorage.getItem('stateCode')) {
         window.localStorage.clear();
         window.sessionStorage.clear();
-        window.location.href = `https://synergy.brendanprice.xyz`;
+        window.location.href = userStruct.homeUrl;
     }
     else {
         window.localStorage.removeItem('stateCode');
@@ -264,6 +266,71 @@ var CalcXpYield = (bountyArr, utils) => {
 };
 
 
+// Calculate season pass information
+var CalculateXpForBrightEngram = async (seasonInfo, prestigeSeasonInfo, currentYield) => {
+
+    const level = seasonInfo.level,
+    // const level = 128374,
+          prestigeLevel = prestigeSeasonInfo.level;
+    if (level < 100) {
+
+        // Assume a BE is every n3,n7 levels
+        let lastNum = parseInt(`${level}`.split('')[1]);
+        if (lastNum >= 3 && lastNum < 7) { // progress to level 7
+
+            let diff = 7 - lastNum,
+                fullLvls = diff-1, // fullLvls is levels that contain 100k xp
+                remainderXp = 0;
+
+            remainderXp = (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
+            log('XP until next BE: ', remainderXp);
+        }
+        else if (lastNum >= 7 || lastNum < 3) { // progress to level 3
+                
+            if (lastNum <= 9) {
+                if (lastNum >= 0 && lastNum < 3) {
+                    
+                    let diff = 3 - lastNum,
+                        fullLvls = diff-1;
+                    
+                    return (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
+                }
+                else {
+
+                    let diff = 10 - lastNum,
+                        fullLvls = diff + 3;
+                
+                    return (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
+                };
+            };
+        };
+    }
+    else if (level >= 100) {
+
+        // Assume BE is every n0,n5 levels
+        let lastNum = parseInt(`${level}`.split('')[`${level}`.length-1]);
+        if (lastNum >= 5 && lastNum < 9) { // Progress for 10nth rank
+            
+            let fullLvls = 9 - lastNum;
+
+            return (100_000 * fullLvls) + (100_000 - prestigeSeasonInfo.progressToNextLevel);
+        }
+        else if (lastNum >= 7 || lastNum < 3) { // Progress for 5nth rank
+
+            let fullLvls = 4 - lastNum;
+
+            return (100_000 * fullLvls) + (100_000 - prestigeSeasonInfo.progressToNextLevel);
+        };
+    };
+};
+
+
+// Calculate percentage based on first parameter
+var CalculatePercentage = async (a, b) => {
+    return Math.trunc((100 * a) / b);
+};
+
+
 
 export {
     VerifyState,
@@ -279,5 +346,7 @@ export {
     PushToDOM,
     SortByGroup,
     SortByType,
-    CalcXpYield
+    CalcXpYield,
+    CalculateXpForBrightEngram,
+    CalculatePercentage
 };
