@@ -32,7 +32,7 @@ import { propCount, bin, PushProps } from "./utils/MatchProps.js";
 // Verify state before anything else
 VerifyState();
 
-// Explicit globals
+// Globals
 var log = console.log.bind(console),
     startTime = new Date(),
     localStorage = window.localStorage,
@@ -41,13 +41,18 @@ var log = console.log.bind(console),
     destinyUserProfile = {},
     membershipType,
     characters,
-    urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
     userStruct = {},
     homeUrl = `https://synergy.brendanprice.xyz`,
     axiosHeaders = {
         ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
         Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
     };
+
+
+// DOM content globals
+var urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
+    currView = document.getElementById('pursuitsContainer'); // Default view
+
 
 
 // Set default axios header
@@ -539,7 +544,7 @@ for (let a=0; a<=2; a++) {
 };
 
 // Logout button listener
-document.getElementById('navBarLogoutContainer', () => {
+document.getElementById('navBarLogoutContainer').addEventListener('click', () => {
     Logout();
 });
 
@@ -560,6 +565,34 @@ document.getElementById('removeFiltersID').addEventListener('click', () => {
         });
     });
     userStruct.greyOutDivs = []; // Clear array
+});
+
+// Events for character menu buttons
+document.getElementById('cgDefaultLoadouts').addEventListener('click', () => {
+    currView.style.display = 'none';
+    document.getElementById('loadoutsContainer').style.display = 'block';
+    currView = document.getElementById('loadoutsContainer');
+});
+document.getElementById('cgPursuits').addEventListener('click', () => {
+    currView.style.display = 'none';
+    document.getElementById('pursuitsContainer').style.display = 'block';
+    currView = document.getElementById('pursuitsContainer');
+});
+document.getElementById('cgLevelsProgression').addEventListener('click', () => {
+    currView.style.display = 'none';
+    document.getElementById('progressionContainer').style.display = 'block';
+    currView = document.getElementById('progressionContainer');
+});
+
+// Toggle item filters button(s)
+document.getElementById('btnHideFilters').addEventListener('click', () => {
+    let filtersDisplay = document.getElementById('filterContentContainer').style.display;
+    if (filtersDisplay === 'none') {
+        document.getElementById('filterContentContainer').style.display = 'block';
+    }
+    else {
+        document.getElementById('filterContentContainer').style.display = 'none';
+    };
 });
 
 
