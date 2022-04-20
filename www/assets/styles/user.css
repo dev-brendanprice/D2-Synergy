@@ -11,10 +11,16 @@
     margin-right: auto;
     left: 0;
     right: 0;
-    /* width: 90vw;
-    border: 1px #56606d solid;
-    background-color: #3e454e;
-    border-radius: 3px; */
+}
+
+h2 {
+    padding-bottom: 0px;
+    text-transform: uppercase;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
 #contentDisplay {
@@ -93,12 +99,49 @@
 }
 
 #bountyDisplayContainer {
+    /* margin-top: 13px;
+    margin-left: 28px; */
+}
+
+#loadoutsContainer {
+    display: none;
     margin-top: 13px;
     margin-left: 28px;
 }
 
+#pursuitsContainer {
+    margin-top: 13px;
+    margin-left: 28px;
+}
+
+#progressionContainer {
+    display: none;
+    margin-top: 13px;
+    margin-left: 28px;
+}
+
+#displayTitle_Loadouts {
+    padding-bottom: 0px;
+    text-transform: uppercase;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
 #displayTitle_Bounties {
     display: none;
+    padding-bottom: 0px;
+    text-transform: uppercase;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+#displayTitle_Levelling {
     padding-bottom: 0px;
     text-transform: uppercase;
     color: white;
@@ -226,6 +269,10 @@
     border-radius: 3px;
 }
 
+#filterContentContainer {
+    display: none;
+}
+
 #statsListContainer {
     margin-top: 5px;
 }
@@ -245,5 +292,12 @@
     border: 1px rgb(205, 203, 203) solid;
     border-radius: 6px;
     cursor: pointer;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
+#levellingStatsDisplay > div {
+    padding-top: 7px;
+    padding-bottom: 3px;
+    color: rgb(205, 203, 203);
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }

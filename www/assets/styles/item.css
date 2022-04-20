@@ -97,12 +97,24 @@
 
 .filter {
     display: inline-block;
-    /* margin-top: 10px; */
     width: fit-content;
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.639);
     border: 1px solid rgb(41, 41, 41);
     border-radius: 15px;
+}
+
+#btnHideFilters {
+    margin-top: 10px;
+    margin-left: 2px;
+    padding: 3px;
+    width: fit-content;
+    color: rgb(205, 203, 203);
+    border: 1px rgb(205, 203, 203) solid;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 10px;
 }
 
 .propName {
