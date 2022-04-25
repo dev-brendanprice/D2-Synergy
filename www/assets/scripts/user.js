@@ -19,7 +19,8 @@ import {
     SortByType,
     CalcXpYield,
     CalculateXpForBrightEngram,
-    CalculatePercentage } from './utils/ModuleScript.js';
+    CalculatePercentage,
+    ReturnSeasonPassLevel } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -316,6 +317,7 @@ var LoadCharacter = async (classType) => {
         objectiveDefinitions = {},
         seasonInfo = {},
         seasonPassInfo = {},
+        seasonPassLevel = 0, // Default integer
         membershipType = sessionStorage.getItem('membershipType'),
         charBounties = [];
 
@@ -453,10 +455,12 @@ var LoadCharacter = async (classType) => {
           seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
           prestigeSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
 
-    const xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield);
+    const xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield, seasonPassInfo);
+    seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
 
     // Change DOM content
     document.getElementById('displayTitle_Bounties').style.display = 'block';
+    document.getElementById('currentSpLevel').innerHTML = `Season Pass Level: ${seasonPassLevel}`;
 
     let brightEngramTracker = document.getElementById('totalBrightEngrams');
     brightEngramTracker.innerHTML = `${brightEngramTracker.innerHTML}${InsertSeperators(xpRequiredForNextBrightEngram)} Xp`;
