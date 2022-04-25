@@ -470,7 +470,7 @@ var LoadCharacter = async (classType) => {
         document.getElementById('noItemsTooltip').style.display = 'inline-block';
         document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
         document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${0}`;
-        document.getElementById('totalSpLevelss').innerHTML = `${document.getElementById('totalSpLevels').innerHTML}: +${0} levels`;
+        document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML}: +${0} levels`;
     }
     else if (amountOfBounties > 0) {
         document.getElementById('noItemsTooltip').style.display = 'none';
