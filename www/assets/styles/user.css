@@ -295,6 +295,13 @@ h2 {
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
 
+#levellingContentDisplay > div {
+    padding-top: 7px;
+    padding-bottom: 3px;
+    color: rgb(205, 203, 203);
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
 #levellingStatsDisplay > div {
     padding-top: 7px;
     padding-bottom: 3px;
