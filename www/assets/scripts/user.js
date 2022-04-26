@@ -200,7 +200,7 @@ var OAuthFlow = async () => {
         comps = JSON.parse(localStorage.getItem('components')),
         authCode = urlParams.get('code'); // ONLY place where authCode is to be fetched from
 
-        // Clean URL and remove localStorage 'stateCode' item
+        // Clean URL
         window.history.pushState({}, document.title, window.location.pathname);
 
     // Wrap in try.except for error catching
