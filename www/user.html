@@ -70,8 +70,8 @@
             </div>
 
             <div id="categories">
-                <div id="cgBounties">Default Loadouts</div>
-                <div id="cgBounties">Pursuits</div>
+                <div id="cgDefaultLoadouts">Default Loadouts</div>
+                <div id="cgPursuits">Pursuits</div>
                 <div id="cgLevelsProgression">Levelling</div>
             </div>
 
@@ -84,8 +84,7 @@
                 <div id="statsListContainer">
                     <div id="totalXP">XP: </div>
                     <div id="totalSpLevels">SP Levels: </div>
-                    <div id="totalArtiLevels">Artifact Levels: </div>
-                    <div id="totalBrightEngrams">Next Bright Engram: </div>
+                    <!-- <div id="totalArtiLevels">Artifact Levels: </div> -->
                 </div>
                 <div id="btnSynergyView">View Synergy</div>
             </div>
@@ -94,34 +93,58 @@
     
         <div id="contentDisplay">
 
-            <div id="bountyDisplayContainer">
-                <div id="displayTitle_Bounties">Bounties</div>
+            <div id="loadoutsContainer">
+                <div id="displayTitle_Loadouts">Default Loadouts</div>
                 <hr class="titleBreaker">
-                <div id="noItemsTooltip"></div>
-                <div id="filters"></div>
-                <div class="filter" id="removeFiltersID">
-                    <div class="propName" style="color: white;">Clear Filters</div>
-                </div>
-                <div id="bountyItems"></div>
-                <br>
-                <div id="itemStats">
-                    <div id="totalBounties"></div>
-                </div>
             </div>
 
-            <!-- <div id="questDisplayContainer">
-                <div id="displayTitle_Bounties">Quests</div>
-                <div id="noItemsTooltip"></div>
-                <div id="questItems">
+            <div id="pursuitsContainer">
+                <div id="bountyDisplayContainer">
+                    <div id="displayTitle_Bounties">Bounties</div>
+                    <hr class="titleBreaker">
+                    <div id="noItemsTooltip"></div>
+                    <div id="filterContentContainer">
+                        <div id="filters"></div>
+                        <div class="filter" id="removeFiltersID">
+                            <div class="propName" style="color: orangered;">Clear Filters</div>
+                        </div>
+                    </div>
+                    <div id="btnHideFilters">Toggle Filters</div>
+                    <div id="bountyItems"></div>
+                    <br>
+                    <div id="itemStats">
+                        <div id="totalBounties"></div>
+                    </div>
                 </div>
+
+                <!-- <div id="questDisplayContainer">
+                    <div id="displayTitle_Bounties">Quests</div>
+                    <div id="noItemsTooltip"></div>
+                    <div id="questItems">
+                    </div>
+                </div>
+
+                <div id="seaonalchallDisplayContainer">
+                    <div id="displayTitle_Bounties">Seasonal Challenges</div>
+                    <div id="noItemsTooltip"></div>
+                    <div id="seasonalchallItems">
+                    </div>
+                </div> -->
             </div>
 
-            <div id="seaonalchallDisplayContainer">
-                <div id="displayTitle_Bounties">Seasonal Challenges</div>
-                <div id="noItemsTooltip"></div>
-                <div id="seasonalchallItems">
+            <div id="progressionContainer">
+                <div id="displayTitle_Levelling">Levelling Statistics</div>
+                <hr class="titleBreaker">
+                <div id="levellingStatsDisplay">
+                    <div id="totalBrightEngrams">Next Bright Engram: </div>
                 </div>
-            </div> -->
+                <hr class="titleBreaker">
+                <div id="levellingContentDisplay">
+                    <div id="currentSpLevel"></div>
+                    <!-- <div id="artifactBonus"></div> -->
+                    <div id="totalXpCollectedThisSeason"></div>
+                </div>
+            </div>
 
         </div>
 

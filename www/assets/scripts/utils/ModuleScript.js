@@ -267,7 +267,7 @@ var CalcXpYield = (bountyArr, utils) => {
 
 
 // Calculate season pass information
-var CalculateXpForBrightEngram = async (seasonInfo, prestigeSeasonInfo, currentYield) => {
+var CalculateXpForBrightEngram = async (seasonInfo, prestigeSeasonInfo, currentYield, seasonPassInfo) => {
 
     const level = seasonInfo.level,
     // const level = 128374,
@@ -305,7 +305,7 @@ var CalculateXpForBrightEngram = async (seasonInfo, prestigeSeasonInfo, currentY
             };
         };
     }
-    else if (level >= 100) {
+    else if (level === 100) {
 
         // Assume BE is every n0,n5 levels
         let lastNum = parseInt(`${level}`.split('')[`${level}`.length-1]);
@@ -331,6 +331,19 @@ var CalculatePercentage = async (a, b) => {
 };
 
 
+// Return season pass level, even when prestige level
+var ReturnSeasonPassLevel = async (seasonInfo, prestigeSeasonInfo) => {
+    
+    var levelToReturn = 0;
+    levelToReturn += seasonInfo.level;
+
+    if (prestigeSeasonInfo.level !== 0) {
+        levelToReturn += prestigeSeasonInfo.level;
+    };
+    return levelToReturn;
+};
+
+
 
 export {
     VerifyState,
@@ -348,5 +361,6 @@ export {
     SortByType,
     CalcXpYield,
     CalculateXpForBrightEngram,
-    CalculatePercentage
+    CalculatePercentage,
+    ReturnSeasonPassLevel
 };

@@ -19,7 +19,8 @@ import {
     SortByType,
     CalcXpYield,
     CalculateXpForBrightEngram,
-    CalculatePercentage } from './utils/ModuleScript.js';
+    CalculatePercentage,
+    ReturnSeasonPassLevel } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -32,7 +33,7 @@ import { propCount, bin, PushProps } from "./utils/MatchProps.js";
 // Verify state before anything else
 VerifyState();
 
-// Explicit globals
+// Globals
 var log = console.log.bind(console),
     startTime = new Date(),
     localStorage = window.localStorage,
@@ -41,13 +42,18 @@ var log = console.log.bind(console),
     destinyUserProfile = {},
     membershipType,
     characters,
-    urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
     userStruct = {},
     homeUrl = `https://synergy.brendanprice.xyz`,
     axiosHeaders = {
         ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
         Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
     };
+
+
+// DOM content globals
+var urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
+    currView = document.getElementById('pursuitsContainer'); // Default view
+
 
 
 // Set default axios header
@@ -194,7 +200,7 @@ var OAuthFlow = async () => {
         comps = JSON.parse(localStorage.getItem('components')),
         authCode = urlParams.get('code'); // ONLY place where authCode is to be fetched from
 
-        // Clean URL and remove localStorage 'stateCode' item
+        // Clean URL
         window.history.pushState({}, document.title, window.location.pathname);
 
     // Wrap in try.except for error catching
@@ -311,6 +317,7 @@ var LoadCharacter = async (classType) => {
         objectiveDefinitions = {},
         seasonInfo = {},
         seasonPassInfo = {},
+        seasonPassLevel = 0, // Default integer
         membershipType = sessionStorage.getItem('membershipType'),
         charBounties = [];
 
@@ -448,10 +455,12 @@ var LoadCharacter = async (classType) => {
           seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
           prestigeSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
 
-    const xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield);
+    const xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield, seasonPassInfo);
+    seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
 
     // Change DOM content
     document.getElementById('displayTitle_Bounties').style.display = 'block';
+    document.getElementById('currentSpLevel').innerHTML = `Season Pass Level: ${seasonPassLevel}`;
 
     let brightEngramTracker = document.getElementById('totalBrightEngrams');
     brightEngramTracker.innerHTML = `${brightEngramTracker.innerHTML}${InsertSeperators(xpRequiredForNextBrightEngram)} Xp`;
@@ -461,7 +470,7 @@ var LoadCharacter = async (classType) => {
         document.getElementById('noItemsTooltip').style.display = 'inline-block';
         document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
         document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${0}`;
-        document.getElementById('totalSpLevelss').innerHTML = `${document.getElementById('totalSpLevels').innerHTML}: +${0} levels`;
+        document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML}: +${0} levels`;
     }
     else if (amountOfBounties > 0) {
         document.getElementById('noItemsTooltip').style.display = 'none';
@@ -539,7 +548,7 @@ for (let a=0; a<=2; a++) {
 };
 
 // Logout button listener
-document.getElementById('navBarLogoutContainer', () => {
+document.getElementById('navBarLogoutContainer').addEventListener('click', () => {
     Logout();
 });
 
@@ -560,6 +569,34 @@ document.getElementById('removeFiltersID').addEventListener('click', () => {
         });
     });
     userStruct.greyOutDivs = []; // Clear array
+});
+
+// Events for character menu buttons
+document.getElementById('cgDefaultLoadouts').addEventListener('click', () => {
+    currView.style.display = 'none';
+    document.getElementById('loadoutsContainer').style.display = 'block';
+    currView = document.getElementById('loadoutsContainer');
+});
+document.getElementById('cgPursuits').addEventListener('click', () => {
+    currView.style.display = 'none';
+    document.getElementById('pursuitsContainer').style.display = 'block';
+    currView = document.getElementById('pursuitsContainer');
+});
+document.getElementById('cgLevelsProgression').addEventListener('click', () => {
+    currView.style.display = 'none';
+    document.getElementById('progressionContainer').style.display = 'block';
+    currView = document.getElementById('progressionContainer');
+});
+
+// Toggle item filters button(s)
+document.getElementById('btnHideFilters').addEventListener('click', () => {
+    let filtersDisplay = document.getElementById('filterContentContainer').style.display;
+    if (filtersDisplay === 'none') {
+        document.getElementById('filterContentContainer').style.display = 'block';
+    }
+    else {
+        document.getElementById('filterContentContainer').style.display = 'none';
+    };
 });
 
 
