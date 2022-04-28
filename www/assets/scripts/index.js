@@ -3,7 +3,7 @@ console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on T
 
 var log = console.log.bind(console),
     localStorage = window.localStorage,
-    clientId = 40024;
+    clientId = 38074;
 
 
 // Generate state parameter
