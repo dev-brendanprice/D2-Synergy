@@ -1,10 +1,40 @@
 # D2 Synergy - Contributing
 
-Contributing helps the project progress a huge amount. Follow this .md to find out how you can contribute properly.
+Contributing helps the project progress a huge amount. Carry on below to find about how you can contribute using this projects' standards.<br>
+If a commit does not follow standards, I won't reject the commit, It just means I have to spend extra time re-factoring the commit..
 
 # Standards
 
 *Please excuse me if some syntax does not follow the below standards. Full re-factor takes a while ok :)*
+
+`variable` names are camelCase.<br>
+`function`/`method` names are PascalCase.<br>
+`Async method operand` names are PascalCase
+
+Some variations of `variables` may include arrays and objects; they *should* inherit the same standard. An exception to this standard is if the right hand is a method that returns a promise, In which case you should use PascalCase.
+
+All progress that is commited must have some sort of comment present, unless it is on a branch that could be seen as a "burner" or "rubbish heap".
+This does not mean that you should comment every line. A comment for each code block should be enough.
+
+#### HTML, CSS
+
+I had orignially just decided to use `id` as the default identifier for an element. A `class` may only being seen used in the case of an element need to have more than one identifier or a temporary identifer other than `id`.
+
+The layout of CSS props follow a standard via:
+
+```
+.el {
+    display;
+    position;
+    top,bottom;
+    margin;
+    padding;
+    element size;
+    alignment;
+    typography;
+    misc;
+}
+```
 
 # Heuristics
 
@@ -19,7 +49,7 @@ To figure out what heuristics you should be contributing:
 ### Resources
 
 ##### [BuildStruct](https://github.com/brendanprice2003/QueryVendorBounties) -
-Clone my BuildStruct repo to query bounties that are actively being sold by a respective vendor
+Clone my (and use the Readme.md) BuildStruct repo to query bounties that are actively being sold by a specified vendor via vendorHash
 
 ##### [Destiny Datasets](https://data.destinysets.com/) -
 You should also utilize destinydatasets to query each bounty via the definitions to determine what the bounty entails
@@ -30,7 +60,7 @@ Clone this repository (preferably on a localhost environment, set for port 80).
 
 Repeat the bellow process for each entry, over the entire list, yielded from BuildStruct
 1. `ctrl+f` for the hash in `bounties.js`
-2. Make a `Destiny2.GetDestinyEntityDefinition`, on destinydatasets, for the same bounty hash:
+2. Make a `Destiny2.GetDestinyEntityDefinition`, on destinydatasets, for the same bounty hash:<br>
       `entityType: DestinyInventoryItemDefinition,
        hashIdentifier: hash`
 3. Enter corresponding indexes for the props in `bounties.js` using `SynergyDefinitions.js`
