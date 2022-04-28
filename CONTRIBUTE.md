@@ -2,7 +2,11 @@
 
 Contributing helps the project progress a huge amount. Follow this .md to find out how you can contribute properly.
 
-### Heuristics
+# Standards
+
+*Please excuse me if some syntax does not follow the below standards. Full re-factor takes a while ok :)*
+
+# Heuristics
 
 `scripts/utils/data/bounties.js` contains a hash map of all the bounties that have ever existed on the API.
 `scripts/utils/SynergyDefinitions.js` contains `key:value` pairs, that signify the indexes in each prop from a given bounty in `scripts/utils/data/bounties.js`
