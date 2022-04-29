@@ -51,8 +51,12 @@ const ValidateManifest = async () => {
     // Try to use previous response - if it exists
     if (!manifest) {
 
+        // Change load content
+        document.getElementById('loadingText').innerHTML = 'Downloading New Manifest';
+
+        // Fetch manifest
         var localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
-        manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`); // Global var
+        manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
 
         // Check manifest version
         if (localStorageManifestVersion !== manifest.data.Response.version) {

@@ -98,11 +98,6 @@ h2 {
     letter-spacing: 1px;
 }
 
-#bountyDisplayContainer {
-    /* margin-top: 13px;
-    margin-left: 28px; */
-}
-
 #loadoutsContainer {
     display: none;
     margin-top: 13px;
@@ -110,6 +105,7 @@ h2 {
 }
 
 #pursuitsContainer {
+    display: none;
     margin-top: 13px;
     margin-left: 28px;
 }
@@ -281,6 +277,12 @@ h2 {
     background-color: rgb(49, 49, 49);
     border: 1px solid rgb(88, 88, 88);
     border-radius: 3px;
+}
+
+#loadingContentContainer {
+    display: none;
+    margin-top: 60px;
+    text-align: center;
 }
 
 #filterContentContainer {

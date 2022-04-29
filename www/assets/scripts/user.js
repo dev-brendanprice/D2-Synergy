@@ -55,8 +55,7 @@ var log = console.log.bind(console),
 // DOM content globals
 var urlParams = new URLSearchParams(window.location.search), // Declare URLSearchParams
     currView = document.getElementById('pursuitsContainer'); // Default view
-
-
+    document.getElementById('loadingContentContainer').style.display = 'block'; // Show loading content
 
 // Set default axios header
 userStruct.homeUrl = homeUrl;
@@ -166,6 +165,9 @@ var CheckComponents = async (bool) => {
         // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
         delete axios.defaults.headers.common['X-API-Key'];
 
+        // Change load content
+        document.getElementById('loadingText').innerHTML = 'Refreshing Tokens';
+
         // If either tokens have expired
         isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
         await axios.post('https://www.bungie.net/Platform/App/OAuth/token/', `grant_type=refresh_token&refresh_token=${rsToken.value}`, AuthConfig)
@@ -250,6 +252,9 @@ var FetchBungieUserDetails = async () => {
         };
         
 
+    // Change load content
+    document.getElementById('loadingText').innerHTML = 'Fetching User Details';
+
     // Variables to check/store
     membershipType = sessionStorage.getItem('membershipType'),
     destinyMemberships = JSON.parse(sessionStorage.getItem('destinyMemberships')),
@@ -309,8 +314,9 @@ var LoadCharacter = async (classType) => {
 
     if (!characterLoadToggled) {
 
-        // Start load sequence
+        // Configure load sequence
         StartLoad();
+        document.getElementById('loadingText').innerHTML = 'Indexing Character';
 
         // Validate tokens and other components
         await CheckComponents(false);
@@ -344,6 +350,8 @@ var LoadCharacter = async (classType) => {
         document.getElementById('overlays').innerHTML = '';
         document.getElementById('noItemsTooltip').style.display = 'none';
         document.getElementById('totalBrightEngrams').innerHTML = `${document.getElementById('totalBrightEngrams').innerHTML.split(':')[0]}: `;
+        document.getElementById('pursuitsContainer').style.display = 'none';
+        document.getElementById('loadingContentContainer').style.display = 'block';
 
         // Filter out other classes that are not classType
         for (var char in characters) {
@@ -358,7 +366,6 @@ var LoadCharacter = async (classType) => {
         // Get chosen character and save index  
         for (var item in destinyUserProfile.characters.data) {
             var char = destinyUserProfile.characters.data[item];
-            log(classType);
             if (char.classType === classType) {
                 characterId = char.characterId;
             };
@@ -492,7 +499,6 @@ var LoadCharacter = async (classType) => {
             document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${totalXpYield/100_000} levels`;
         };
 
-
         // Stop loading sequence
         StopLoad();
         log(`-> Indexed ${ParseChar(classType)}!`);
@@ -500,9 +506,11 @@ var LoadCharacter = async (classType) => {
         // Load synergyDefinitions and match against bounties
         await PushProps();
         await CreateFilters('charBounties', bountyPropCount);
-
-        // Toggle character load
         characterLoadToggled = false;
+
+        // Toggle elements
+        document.getElementById('pursuitsContainer').style.display = 'block';
+        document.getElementById('loadingContentContainer').style.display = 'none';
     };
 };
 
@@ -655,7 +663,7 @@ document.getElementById('btnHideFilters').addEventListener('click', () => {
 
     // Load first character on profile
     var lastChar = CacheReturnItem('lastChar');
-    if (lastChar) {
+    if (lastChar) { 
         LoadCharacter(lastChar);
     }
     else if (!lastChar) {
