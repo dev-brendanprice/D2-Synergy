@@ -50,6 +50,17 @@ html, body {
     color: gray;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 15px;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    transition: 0.25s;
+}
+#navBarLogout:hover {
+    color: white;
+    border-color: white;
+    transition: 0.25s;
 }
 
 

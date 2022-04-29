@@ -195,7 +195,7 @@ const KillType = [
 // "As a fireteam" signifier ??
 // "Kill, Eliminate" signifiers ??
 // "Guardians are worth more points" OR "Kill PvE enemies" signifiers
-// Lost sectore signifiers or hashes ??
+// Lost sector signifiers or hashes ?? - maybe not
 
 
 export {

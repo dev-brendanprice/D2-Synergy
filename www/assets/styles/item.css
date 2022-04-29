@@ -87,8 +87,8 @@
     width: 80%;
     text-align: left;
     color: rgba(200, 200, 200, 0.749);
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    font-size: 13px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif, monospace;
+    font-size: 11px;
 }
 
 .greyOut {
@@ -115,13 +115,24 @@
     cursor: pointer;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 10px;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    transition: 0.25s;
+}
+#btnHideFilters:hover {
+    color: white;
+    border-color: white;
+    transition: 0.25s;
 }
 
 .propName {
     padding: 6px;
     padding-top: 3px;
     padding-bottom: 3px;
-    color: rgb(205, 203, 203);
+    color: rgb(138, 138, 138);
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 12px;
 }
