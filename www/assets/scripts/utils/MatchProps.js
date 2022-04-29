@@ -10,7 +10,7 @@ import {
 
     const log = console.log.bind(console);
 
-    var propCount = {},
+    var bountyPropCount = {},
         bin = []; // Bounties that do not possess any indexes in the heuristics
 
 
@@ -18,7 +18,7 @@ import {
 const PushProps = async () => {
 
     // Clear counters
-    propCount = {};
+    bountyPropCount = {};
 
     // Loop over charBounties and append counters
     for (let i=0; i < userStruct.charBounties.length; i++) {
@@ -38,7 +38,7 @@ const PushProps = async () => {
                 };
 
                 for (let bar of propNames) {
-                    propCount[bar] === undefined ? (propCount[bar] = 0, propCount[bar] += 1) : propCount[bar] += 1;
+                    bountyPropCount[bar] === undefined ? (bountyPropCount[bar] = 0, bountyPropCount[bar] += 1) : bountyPropCount[bar] += 1;
                     counters[bar] === undefined ? (counters[bar] = 0, counters[bar] += 1) : counters[bar] += 1;
                     userStruct.charBounties[i].props.push(bar);
                 };
@@ -48,4 +48,4 @@ const PushProps = async () => {
 };
 
 
-export { propCount, bin, PushProps };
+export { bountyPropCount, bin, PushProps };

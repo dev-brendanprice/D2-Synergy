@@ -3,6 +3,10 @@ import { userStruct } from '../user.js';
 // Expose necessary variables to console
 $(document).ready(function () {
 
+    $.ust = () => {
+        return userStruct;
+    };
+
     $.charBounties = (char) => {
         if (char) {
             var arr = [];

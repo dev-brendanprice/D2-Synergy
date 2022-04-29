@@ -1,6 +1,7 @@
 import { userStruct } from '../user.js';
 
-const log = console.log.bind(console);
+const log = console.log.bind(console),
+      localStorage = window.localStorage;
 
 // Check if state query parameter exists in URL
 const VerifyState = async () => {
@@ -40,7 +41,7 @@ const ParseChar = (classType) => {
             r='Warlock';
             break;
         default:
-            console.error('could not parse character, parseChar() @function');
+            console.error('Could not parse character, parseChar() @function');
     };
     return r;
 };
@@ -59,7 +60,6 @@ const MakeBountyElement = (param) => {
         item = document.createElement('img');
 
 
-
     // Create bottom element
     item.className = `bounty`;
     item.id = `${param.hash}`;
@@ -70,6 +70,7 @@ const MakeBountyElement = (param) => {
     itemOverlay.className = `itemContainer`;
     itemOverlay.id = `item_${param.hash}`;
     document.querySelector('#overlays').appendChild(itemOverlay);
+
 
     // Prop content of item
     itemTitle.id = 'itemTitle';
@@ -85,6 +86,16 @@ const MakeBountyElement = (param) => {
 
         let itemPrgCounter = document.createElement('div'),
             itemPrgDesc = document.createElement('div');
+
+        // Check if progess string exceeds char limit
+        if (rootIndex[indexCount].progressDescription.length >= 24) {
+
+            var rt = rootIndex[indexCount].progressDescription.slice(0, 24);
+            if (rt.charAt(rt.length - 1) === ' ') {
+                rt = rt.slice(0, rt.length - 1); // Remove deadspaces at the end of strings
+            };
+            rootIndex[indexCount].progressDescription = rt + '..';
+        };
 
         itemPrgCounter.className = 'itemPrgCounter';
         itemPrgDesc.className = 'itemPrgDesc';
@@ -102,8 +113,9 @@ const MakeBountyElement = (param) => {
         itemPrgDesc.style.paddingBottom = '20px';
         
         for (let padC=1; padC < rootIndex.length; padC++) { // Seperate objectives
+
             var offset = paddingStepAmount*indexCount;
-            if (offset!==0) {
+            if (offset !== 0) {
                 itemPrgCounter.style.paddingBottom = `${parseInt(itemPrgCounter.style.paddingBottom.split('px')[0]) + Math.trunc(offset)}px`;
                 itemPrgDesc.style.paddingBottom = `${parseInt(itemPrgDesc.style.paddingBottom.split('px')[0]) + Math.trunc(offset)}px`;
             };
@@ -344,6 +356,23 @@ var ReturnSeasonPassLevel = async (seasonInfo, prestigeSeasonInfo) => {
 };
 
 
+// Wrappers for userCache
+var CacheAuditItem = async (key, value) => {
+    var userCache = JSON.parse(localStorage.getItem('userCache'));
+    userCache[key] = value;
+    localStorage.setItem('userCache', JSON.stringify(userCache));
+};
+var CacheRemoveItem = async (key, value) => {
+    var userCache = JSON.parse(localStorage.getItem('userCache'));
+    delete userCache[key];
+    localStorage.setItem('userCache', JSON.stringify(userCache));
+};
+var CacheReturnItem = (key, value) => {
+    var userCache = JSON.parse(localStorage.getItem('userCache'));
+    return userCache[key];
+};
+
+
 
 export {
     VerifyState,
@@ -362,5 +391,8 @@ export {
     CalcXpYield,
     CalculateXpForBrightEngram,
     CalculatePercentage,
-    ReturnSeasonPassLevel
+    ReturnSeasonPassLevel,
+    CacheAuditItem,
+    CacheRemoveItem,
+    CacheReturnItem
 };

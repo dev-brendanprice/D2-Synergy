@@ -19,14 +19,16 @@ import {
     SortByType,
     CalcXpYield,
     CalculateXpForBrightEngram,
-    CalculatePercentage,
-    ReturnSeasonPassLevel } from './utils/ModuleScript.js';
+    ReturnSeasonPassLevel,
+    CacheAuditItem,
+    CacheRemoveItem,
+    CacheReturnItem } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
     baseYields,
     petraYields } from "./utils/SynergyDefinitions.js";
-import { propCount, bin, PushProps } from "./utils/MatchProps.js";
+import { bountyPropCount, bin, PushProps } from "./utils/MatchProps.js";
 
 
 
@@ -238,14 +240,14 @@ var OAuthFlow = async () => {
 // Fetch basic bungie user details
 var FetchBungieUserDetails = async () => {
     
-    var components = JSON.parse(localStorage.getItem('components')),
+    var seasonHash,
+        components = JSON.parse(localStorage.getItem('components')),
         AuthConfig = { 
-            headers: { 
+            headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, 
                 "X-API-Key": `${axiosHeaders.ApiKey}`
             }
-        },
-        seasonHash;
+        };
         
 
     // Variables to check/store
@@ -264,7 +266,6 @@ var FetchBungieUserDetails = async () => {
         // Fetch user profile
         var userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.destinyMemberships[0].membershipId}/?components=200`, AuthConfig);
             destinyUserProfile = userProfile.data.Response;
-            log(destinyUserProfile);
 
         // Cache the response
         sessionStorage.setItem('membershipType', membershipType);
@@ -293,205 +294,224 @@ var FetchBungieUserDetails = async () => {
         document.getElementById('categories').style.display = 'block';
         document.getElementById('statsContainer').style.display = 'block';
     };
+
+    // Load/Configure userCache
+    if (!localStorage.getItem('userCache')) {
+        var newUserCache = {};
+        localStorage.setItem('userCache', JSON.stringify(newUserCache));
+    };
 };
 
 
 // Load character from specific index
+var characterLoadToggled = false;
 var LoadCharacter = async (classType) => {
 
-    // Start load sequence
-    StartLoad();
+    if (!characterLoadToggled) {
 
-    // Validate tokens and other components
-    await CheckComponents(false);
+        // Start load sequence
+        StartLoad();
 
-    
-    // Globals
-    var className = ParseChar(classType),
-        characterId,
-        CharacterInventories,
-        CurrentSeasonHash,
-        CharacterProgressions,
-        prestigeSeasonInfo,
-        definitions = {},
-        objectiveDefinitions = {},
-        seasonInfo = {},
-        seasonPassInfo = {},
-        seasonPassLevel = 0, // Default integer
-        membershipType = sessionStorage.getItem('membershipType'),
-        charBounties = [];
-
-    // Restart items and clear DOM content
-    document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML.split(':')[0]}: `;
-    document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML.split(':')[0]}:`;
-    document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML.split('(')[0]}`;
-    document.getElementById('contentDisplay').style.display = 'inline-block';
-    document.getElementById('filters').innerHTML = '';
-    document.getElementById('bountyItems').innerHTML = '';
-    document.getElementById('overlays').innerHTML = '';
-    document.getElementById('noItemsTooltip').style.display = 'none';
-    document.getElementById('totalBrightEngrams').innerHTML = `${document.getElementById('totalBrightEngrams').innerHTML.split(':')[0]}: `;
-
-    // Filter out other classes that are not classType
-    for (var char in characters) {
-        if (characters[char].classType !== classType) {
-            document.getElementById(`charContainer${characters[char].classType}`).classList.add('elBlur');
-        }
-        else if (characters[char].classType === classType) {
-            document.getElementById(`charContainer${characters[char].classType}`).classList.remove('elBlur');
-        };
-    };
-
-    // Get chosen character and save index  
-    for (var item in destinyUserProfile.characters.data) {
-
-        var char = destinyUserProfile.characters.data[item];
-        if (char.classType === classType) {
-            characterId = char.characterId;
-        };
-    };
-
-    // Get manifest for world content and return it
-    definitions = await ReturnEntry('DestinyInventoryItemDefinition');
-
-    // OAuth header guarantees a response
-    var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,201,202,300`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
-    CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
-    CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
-    CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
-
-    // Iterate over CharacterInventories[characterId].items
-    var charInventory = CharacterInventories[characterId].items,
-        amountOfBounties = 0;
-
-    // var fubar = await ReturnEntry('DestinySandboxPerkDefinition');
-    // log(fubar[718603205]);
-
-    // Sandbox perks
-    // charInventory.forEach(v => {
-    //     let rt = definitions[v.itemHash];
-    //     if (rt.hash === 534860348) {
-    //         log(rt);
-    //     };
-    // });
-
-    // Expire
-    // charInventory.forEach(v => {
-    //     if (definitions[v.itemHash].itemType === 26) {
-    //         log(v.itemInstanceId);
-    //     };
-    // });
-
-
-    // Sorts by index of item in itemTypeKeys
-    var sortBountiesByType = (a, b) => {
-
-        var stackLabelA = a.inventory.stackUniqueLabel,
-            stackLabelB = b.inventory.stackUniqueLabel,
-            stackTypeA,
-            stackTypeB;
+        // Validate tokens and other components
+        await CheckComponents(false);
         
-        // Remove numbers & get key names from stackUniqueLabel even if it contains _
-        stackLabelA.split('.').forEach(v => {
-            let keyFromStack = v.replace(/[0-9]/g, '');
-            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeA = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
-        });
-        stackLabelB.split('.').forEach(v => {
-            let keyFromStack = v.replace(/[0-9]/g, '');
-            keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeB = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
-        });
-    
-        // Sort items by returning index
-        if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)){
-            return -1;
-        };
-        if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)){
-            return 1;
-        };
-        return 0;
-    };
-
-    // Make array with specified groups
-    var bountyArr = {};
-    vendorKeys.forEach(key => {
-        bountyArr[key] = [];
-    });
+        // Globals
+        var characterId,
+            CharacterInventories,
+            CurrentSeasonHash,
+            CharacterProgressions,
+            prestigeSeasonInfo,
+            definitions = {},
+            objectiveDefinitions = {},
+            seasonInfo = {},
+            seasonPassInfo = {},
+            seasonPassLevel = 0, // Default integer
+            membershipType = sessionStorage.getItem('membershipType'),
+            charBounties = [];
 
 
-    // Loop over inventory items and emit bounties
-    var parsedBounties = ParseBounties(charInventory, {definitions});
-        charBounties = parsedBounties[0]
-        amountOfBounties = parsedBounties[1];
-
-    // Assign objective(s) definitions to each item
-    objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
-    Object.keys(charBounties).forEach(v => {
-        let objHashes = charBounties[v].objectives.objectiveHashes;
-        charBounties[v].objectiveDefinitions = [];
-        for (var objHash of objHashes) {
-            charBounties[v].objectiveDefinitions.push(objectiveDefinitions[objHash]);
-        };
-    });
-    
-    // Loop over bounties and sort into groups
-    bountyArr = SortByGroup(charBounties, {bountyArr, vendorKeys, itemTypeKeys});
-
-    // Loop through bounties and sort groups' bounties
-    bountyArr = SortByType(bountyArr, {sortBountiesByType});
-
-    // Render items to DOM
-    PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
-
-    // Push charBounties to HashBrowser
-    userStruct['charBounties'] = charBounties;
-
-    // Calculate XP yield from (active) bounties
-    const totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
-
-    // Get season pass info
-    const seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
-          seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
-    const seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition');
-          seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
-          prestigeSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
-
-    const xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield, seasonPassInfo);
-    seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
-
-    // Change DOM content
-    document.getElementById('displayTitle_Bounties').style.display = 'block';
-    document.getElementById('currentSpLevel').innerHTML = `Season Pass Level: ${seasonPassLevel}`;
-
-    let brightEngramTracker = document.getElementById('totalBrightEngrams');
-    brightEngramTracker.innerHTML = `${brightEngramTracker.innerHTML}${InsertSeperators(xpRequiredForNextBrightEngram)} Xp`;
-
-    // Toggle empty items tooltip
-    if (amountOfBounties === 0) {
-        document.getElementById('noItemsTooltip').style.display = 'inline-block';
-        document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
-        document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${0}`;
-        document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML}: +${0} levels`;
-    }
-    else if (amountOfBounties > 0) {
+        // Toggle character load
+        characterLoadToggled = true;
+        CacheAuditItem('lastChar', classType);
+            
+        // Restart items and clear DOM content
+        document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML.split(':')[0]}: `;
+        document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML.split(':')[0]}:`;
+        document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML.split('(')[0]}`;
+        document.getElementById('contentDisplay').style.display = 'inline-block';
+        document.getElementById('filters').innerHTML = '';
+        document.getElementById('bountyItems').innerHTML = '';
+        document.getElementById('overlays').innerHTML = '';
         document.getElementById('noItemsTooltip').style.display = 'none';
-        document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML} (${amountOfBounties})`
-        document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${InsertSeperators(totalXpYield)}`;
-        document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${totalXpYield/100_000} levels`;
+        document.getElementById('totalBrightEngrams').innerHTML = `${document.getElementById('totalBrightEngrams').innerHTML.split(':')[0]}: `;
+
+        // Filter out other classes that are not classType
+        for (var char in characters) {
+            if (characters[char].classType !== classType) {
+                document.getElementById(`charContainer${characters[char].classType}`).classList.add('elBlur');
+            }
+            else if (characters[char].classType === classType) {
+                document.getElementById(`charContainer${characters[char].classType}`).classList.remove('elBlur');
+            };
+        };
+
+        // Get chosen character and save index  
+        for (var item in destinyUserProfile.characters.data) {
+            var char = destinyUserProfile.characters.data[item];
+            log(classType);
+            if (char.classType === classType) {
+                characterId = char.characterId;
+            };
+        };
+
+        // Get manifest for world content and return it
+        definitions = await ReturnEntry('DestinyInventoryItemDefinition');
+
+        // OAuth header guarantees a response
+        var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,201,202,300`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
+        CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
+        CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
+        CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
+
+        // Iterate over CharacterInventories[characterId].items
+        var charInventory = CharacterInventories[characterId].items,
+            amountOfBounties = 0;
+
+        // var fubar = await ReturnEntry('DestinySandboxPerkDefinition');
+        // log(fubar[718603205]);
+
+        // Character Xp buffs
+        // charInventory.forEach(v => {
+        //     let rt = definitions[v.itemHash];
+        //     if (rt.hash === 534860348) {
+        //         log(rt);
+        //     };
+        // });
+
+        // Expired Bounties
+        // charInventory.forEach(v => {
+        //     if (definitions[v.itemHash].itemType === 26) {
+        //         log(v.itemInstanceId);
+        //     };
+        // });
+
+
+        // Sorts by index of item in itemTypeKeys
+        var sortBountiesByType = (a, b) => {
+
+            var stackLabelA = a.inventory.stackUniqueLabel,
+                stackLabelB = b.inventory.stackUniqueLabel,
+                stackTypeA,
+                stackTypeB;
+            
+            // Remove numbers & get key names from stackUniqueLabel even if it contains _
+            stackLabelA.split('.').forEach(v => {
+                let keyFromStack = v.replace(/[0-9]/g, '');
+                keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeA = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
+            });
+            stackLabelB.split('.').forEach(v => {
+                let keyFromStack = v.replace(/[0-9]/g, '');
+                keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeB = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
+            });
+        
+            // Sort items by returning index
+            if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)){
+                return -1;
+            };
+            if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)){
+                return 1;
+            };
+            return 0;
+        };
+
+        // Make array with specified groups
+        var bountyArr = {};
+        vendorKeys.forEach(key => {
+            bountyArr[key] = [];
+        });
+
+
+        // Loop over inventory items and emit bounties
+        var parsedBounties = ParseBounties(charInventory, {definitions});
+            charBounties = parsedBounties[0]
+            amountOfBounties = parsedBounties[1];
+
+        // Assign objective(s) definitions to each item
+        objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
+        Object.keys(charBounties).forEach(v => {
+            let objHashes = charBounties[v].objectives.objectiveHashes;
+            charBounties[v].objectiveDefinitions = [];
+            for (var objHash of objHashes) {
+                charBounties[v].objectiveDefinitions.push(objectiveDefinitions[objHash]);
+            };
+        });
+        
+        // Loop over bounties and sort into groups
+        bountyArr = SortByGroup(charBounties, {bountyArr, vendorKeys, itemTypeKeys});
+
+        // Loop through bounties and sort groups' bounties
+        bountyArr = SortByType(bountyArr, {sortBountiesByType});
+
+        // Render items to DOM
+        PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
+
+        // Push charBounties to HashBrowser
+        userStruct['charBounties'] = charBounties;
+
+        // Calculate XP yield from (active) bounties
+        const totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
+
+        // Get season pass info
+        const seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
+            seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
+        const seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition');
+            seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
+            prestigeSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
+
+        const xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield, seasonPassInfo);
+        seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
+
+        // Change DOM content
+        document.getElementById('displayTitle_Bounties').style.display = 'block';
+        document.getElementById('currentSpLevel').innerHTML = `Season Pass Level: ${seasonPassLevel}`;
+
+        let brightEngramTracker = document.getElementById('totalBrightEngrams');
+        brightEngramTracker.innerHTML = `${brightEngramTracker.innerHTML}${InsertSeperators(xpRequiredForNextBrightEngram)} Xp`;
+
+        // Toggle empty items tooltip
+        if (amountOfBounties === 0) {
+            document.getElementById('noItemsTooltip').style.display = 'inline-block';
+            document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
+            document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${0}`;
+            document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${0} levels`;
+        }
+        else if (amountOfBounties > 0) {
+            document.getElementById('noItemsTooltip').style.display = 'none';
+            document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML} (${amountOfBounties})`
+            document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${InsertSeperators(totalXpYield)}`;
+            document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${totalXpYield/100_000} levels`;
+        };
+
+
+        // Stop loading sequence
+        StopLoad();
+        log(`-> Indexed ${ParseChar(classType)}!`);
+
+        // Load synergyDefinitions and match against bounties
+        await PushProps();
+        await CreateFilters('charBounties', bountyPropCount);
+
+        // Toggle character load
+        characterLoadToggled = false;
     };
-
-
-    // Stop loading sequence
-    StopLoad();
-    log(`-> Indexed ${ParseChar(classType)}!`);
-
-    // Load synergyDefinitions and match against bounties
-    await PushProps();
-    await LoadHeuristics();
 };
 
 
 // Load heuristics and configure data
-var LoadHeuristics = async () => {
+var CreateFilters = async (initArrStr, propCount) => {
+
+    // Create new object for filter elements
+    userStruct['filterDivs'] = {};
 
     // Create a filter for each prop
     for (let v in propCount) {
@@ -508,19 +528,24 @@ var LoadHeuristics = async () => {
             filterContent.id = `propName_${v}${propCount[v]}`;
             filterContent.innerHTML = `${CapitilizeFirstLetter(v)} (${propCount[v]})`;
 
+            // Add filter to UserStruct
+            userStruct['filterDivs'][`propName_${v}${propCount[v]}`] = {};
+            userStruct['filterDivs'][`propName_${v}${propCount[v]}`].element = filterContent;
+
             // Append children elements to respective parent elements
             document.querySelector('#filters').appendChild(filterContainer);
             document.querySelector(`#filter_${v}${propCount[v]}`).appendChild(filterContent);
 
             // Show bounties as per filter
             filterContainer.addEventListener('click', () => {
-                userStruct.charBounties.forEach(b => {
+                userStruct[initArrStr].forEach(b => {
 
                     // Find bounties that match the filter index
                     if (!b.props.includes(v)) {
 
                         document.getElementById(`${b.hash}`).style.opacity = '50%';
                         document.getElementById(`item_${b.hash}`).style.opacity = '50%';
+                        document.getElementById(`propName_${v}${propCount[v]}`).style.color = 'rgb(224, 224, 224)';
 
                         if (!userStruct['greyOutDivs']) {
                             userStruct['greyOutDivs'] = [];
@@ -562,13 +587,22 @@ document.getElementById('statsTitleQuery').addEventListener('mouseleave', () => 
 
 // Remove filters button
 document.getElementById('removeFiltersID').addEventListener('click', () => {
-    userStruct.charBounties.forEach(bounty => { // Loop over charBounties and reverse filtered items
-        userStruct.greyOutDivs.forEach(greyHash => {
-            document.getElementById(`${bounty.hash}`).style.opacity = 'unset';
-            document.getElementById(`item_${bounty.hash}`).style.opacity = 'unset';
-        });
+
+    // Loop over charBounties and reverse filtered items
+    userStruct.charBounties.forEach(bounty => {
+        if (userStruct.greyOutDivs) {
+            userStruct.greyOutDivs.forEach(greyHash => {
+                document.getElementById(`${bounty.hash}`).style.opacity = 'unset';
+                document.getElementById(`item_${bounty.hash}`).style.opacity = 'unset';
+            });
+        };
     });
     userStruct.greyOutDivs = []; // Clear array
+
+    // Loop over bounty filters and reverse selected filers
+    Object.keys(userStruct.filterDivs).forEach(filter => {
+        userStruct.filterDivs[filter].element.style.color = 'rgb(138, 138, 138)';
+    });
 });
 
 // Events for character menu buttons
@@ -589,13 +623,17 @@ document.getElementById('cgLevelsProgression').addEventListener('click', () => {
 });
 
 // Toggle item filters button(s)
+var filterToggled = false;
 document.getElementById('btnHideFilters').addEventListener('click', () => {
-    let filtersDisplay = document.getElementById('filterContentContainer').style.display;
-    if (filtersDisplay === 'none') {
-        document.getElementById('filterContentContainer').style.display = 'block';
+
+    var rt = document.getElementById('filterContentContainer');
+    if (!filterToggled) {
+        rt.style.display = 'block';
+        filterToggled = true;
     }
-    else {
-        document.getElementById('filterContentContainer').style.display = 'none';
+    else if (filterToggled) {
+        rt.style.display = 'none';
+        filterToggled = false;
     };
 });
 
@@ -616,7 +654,13 @@ document.getElementById('btnHideFilters').addEventListener('click', () => {
     await FetchBungieUserDetails();
 
     // Load first character on profile
-    LoadCharacter(characters[Object.keys(characters)[0]].classType);
+    var lastChar = CacheReturnItem('lastChar');
+    if (lastChar) {
+        LoadCharacter(lastChar);
+    }
+    else if (!lastChar) {
+        LoadCharacter(characters[Object.keys(characters)[0]].classType);
+    };
 
     // OAuth flow (above methods) have completed
     log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
