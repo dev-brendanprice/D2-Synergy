@@ -49,28 +49,28 @@ const ParseChar = (classType) => {
 
 // Make element for entry data when hash is found in definitions
 // @obj {param}
-const MakeBountyElement = (param) => {
-    
-    const itemPrgContainer = document.createElement('div'),
+const MakeBountyElement = async (param) => {
+
+    let itemPrgContainer = document.createElement('div'),
         itemOverlay = document.createElement('div'),
+        itemExpire = document.createElement('img'),
         itemTitle = document.createElement('div'),
         itemType = document.createElement('div'),
         itemDesc = document.createElement('div'),
-        hr = document.createElement('hr'),
-        item = document.createElement('img');
+        item = document.createElement('img'),
+        hr = document.createElement('hr');
 
 
     // Create bottom element
     item.className = `bounty`;
     item.id = `${param.hash}`;
-    document.querySelector('#bountyItems').appendChild(item);
     item.src = `https://www.bungie.net${param.displayProperties.icon}`;
+    document.querySelector('#bountyItems').appendChild(item);
 
     // Create overlay element
     itemOverlay.className = `itemContainer`;
     itemOverlay.id = `item_${param.hash}`;
     document.querySelector('#overlays').appendChild(itemOverlay);
-
 
     // Prop content of item
     itemTitle.id = 'itemTitle';
@@ -82,6 +82,7 @@ const MakeBountyElement = (param) => {
 
     // Create item progress and push to DOM
     let rootIndex = param.objectiveDefinitions;
+    log(param)
     for (let indexCount=0; indexCount < rootIndex.length; indexCount++) {
 
         let itemPrgCounter = document.createElement('div'),
@@ -184,7 +185,8 @@ var ParseBounties = (charInventory, utils) => {
     charInventory.forEach(v => {
         let item = utils.definitions[v.itemHash];
         if (item.itemType === 26) {
-            item.props = [];
+            item.expired = new Date(v.expirationDate) < new Date(); // Check if bounty is expired
+            item.props = []; // Make empty array for filters
             charBounties.push(item);
             amountOfBounties++;
         };
@@ -199,7 +201,6 @@ var PushToDOM = (bountyArr, utils) => {
     Object.keys(bountyArr).forEach(v => {
 
         let group = bountyArr[v];
-
         if (group.length !== 0) {
             group.forEach(item => {
                 utils.MakeBountyElement(item);

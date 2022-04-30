@@ -375,7 +375,7 @@ var LoadCharacter = async (classType) => {
         definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
         // OAuth header guarantees a response
-        var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,201,202,300`, { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, "X-API-Key": `${axiosHeaders.ApiKey}` }});
+        var resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,201,202,205,300`, {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,"X-API-Key": `${axiosHeaders.ApiKey}`}});
         CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
         CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
         CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
@@ -383,24 +383,6 @@ var LoadCharacter = async (classType) => {
         // Iterate over CharacterInventories[characterId].items
         var charInventory = CharacterInventories[characterId].items,
             amountOfBounties = 0;
-
-        // var fubar = await ReturnEntry('DestinySandboxPerkDefinition');
-        // log(fubar[718603205]);
-
-        // Character Xp buffs
-        // charInventory.forEach(v => {
-        //     let rt = definitions[v.itemHash];
-        //     if (rt.hash === 534860348) {
-        //         log(rt);
-        //     };
-        // });
-
-        // Expired Bounties
-        // charInventory.forEach(v => {
-        //     if (definitions[v.itemHash].itemType === 26) {
-        //         log(v.itemInstanceId);
-        //     };
-        // });
 
 
         // Sorts by index of item in itemTypeKeys
