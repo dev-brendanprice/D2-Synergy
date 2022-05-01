@@ -1,5 +1,14 @@
 import { userStruct } from '../user.js';
 
+const exposedFuncs = [
+    'ust',
+    'charBounties',
+    'characters',
+    'propCounts',
+    'greyOutDivs',
+    'seasonHash'
+];
+
 // Expose necessary variables to console
 $(document).ready(function () {
 
@@ -38,5 +47,9 @@ $(document).ready(function () {
 
     $.seasonHash = () => {
         return userStruct.seasonHash;
+    };
+
+    $.list = () => {
+        return exposedFuncs.toString();
     };
 });

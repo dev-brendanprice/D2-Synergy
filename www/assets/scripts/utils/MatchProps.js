@@ -10,8 +10,7 @@ import {
 
     const log = console.log.bind(console);
 
-    var bountyPropCount = {},
-        bin = []; // Bounties that do not possess any indexes in the heuristics
+    var bountyPropCount = {};
 
 
 // Push the props onto charBounties
@@ -48,4 +47,4 @@ const PushProps = async () => {
 };
 
 
-export { bountyPropCount, bin, PushProps };
+export { bountyPropCount, PushProps };

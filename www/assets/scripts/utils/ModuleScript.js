@@ -1,4 +1,5 @@
-import { userStruct } from '../user.js';
+import { itemTypeKeys } from "./SynergyDefinitions.js";
+import { LoadCharacter, userStruct } from "../user.js";
 
 const log = console.log.bind(console),
       localStorage = window.localStorage;
@@ -51,9 +52,8 @@ const ParseChar = (classType) => {
 // @obj {param}
 const MakeBountyElement = async (param) => {
 
-    let itemPrgContainer = document.createElement('div'),
-        itemOverlay = document.createElement('div'),
-        itemExpire = document.createElement('img'),
+    let itemOverlay = document.createElement('div'),
+        itemStatus = document.createElement('img'),
         itemTitle = document.createElement('div'),
         itemType = document.createElement('div'),
         itemDesc = document.createElement('div'),
@@ -80,9 +80,13 @@ const MakeBountyElement = async (param) => {
     itemType.innerHTML = param.itemTypeDisplayName;
     itemDesc.innerHTML = param.displayProperties.description;
 
+    // Assign content to parent
+    document.querySelector(`#item_${param.hash}`).append(itemTitle, itemType, hr, itemDesc);
+
     // Create item progress and push to DOM
-    let rootIndex = param.objectiveDefinitions;
-    log(param)
+    let rootIndex = param.objectiveDefinitions,
+        completionCounter = 0;
+
     for (let indexCount=0; indexCount < rootIndex.length; indexCount++) {
 
         let itemPrgCounter = document.createElement('div'),
@@ -102,11 +106,29 @@ const MakeBountyElement = async (param) => {
         itemPrgDesc.className = 'itemPrgDesc';
         itemPrgCounter.id = `prgCounter_${rootIndex[indexCount].hash}`;
         itemPrgDesc.id = `prgDesc_${rootIndex[indexCount].hash}`;
-        itemPrgDesc.innerHTML = rootIndex[indexCount].progressDescription;
-        itemPrgCounter.innerHTML = `${rootIndex[indexCount].completionValue === 100 ? `${(rootIndex[indexCount].unlockValueHash / 100) * 100}%` : `${rootIndex[indexCount].unlockValueHash}/${rootIndex[indexCount].completionValue}`}`;
 
         document.querySelector(`#item_${param.hash}`).appendChild(itemPrgCounter);
         document.querySelector(`#item_${param.hash}`).appendChild(itemPrgDesc);
+
+        // Render item objective progress
+        itemPrgDesc.innerHTML = rootIndex[indexCount].progressDescription;
+        param.progress.forEach(h => {
+            if (h.objectiveHash === rootIndex[indexCount].hash) {
+
+                // Render objective progress
+                if (rootIndex[indexCount].completionValue === 100) {
+                    itemPrgCounter.innerHTML = `${h.progress}%`;
+                }
+                else if (rootIndex[indexCount].completionValue !== 100) {
+                    itemPrgCounter.innerHTML = `${h.progress}/${h.completionValue}`;
+                };
+
+                // Check if objective is completed
+                if (h.complete) {
+                    completionCounter++;
+                };
+            };
+        });
 
         // Calculate the nth term for seperating objectives
         let paddingStepAmount = 40 / (rootIndex.length) === Infinity ? (0) : (40 / (rootIndex.length));
@@ -123,11 +145,26 @@ const MakeBountyElement = async (param) => {
         };
     };
 
-    // Assign content to parent
-    document.querySelector(`#item_${param.hash}`).appendChild(itemTitle);
-    document.querySelector(`#item_${param.hash}`).appendChild(itemType);
-    document.querySelector(`#item_${param.hash}`).appendChild(hr);
-    document.querySelector(`#item_${param.hash}`).appendChild(itemDesc);
+    // Mark item as complete
+    if (param.progress.length === completionCounter) {
+        param.areObjectivesComplete = true;
+    }
+    else if (param.progress.length !== completionCounter) {
+        param.areObjectivesComplete = false;
+    };
+
+    // Mark item as expired
+    if (param.isExpired && !param.areObjectivesComplete) {
+        itemStatus.className = `expire`;
+        itemStatus.id = `expire_${param.hash}`;
+        itemStatus.src = './assets/icons/pursuitExpired.svg';
+    }
+    else if (param.areObjectivesComplete) {
+        itemStatus.className = `complete`;
+        itemStatus.id = `complete_${param.hash}`;
+        itemStatus.src = './assets/icons/pursuitCompleted.svg';
+    };
+    document.querySelector(`#bountyItems`).append(itemStatus);
     
     // Watch for mouse events
     item.addEventListener('mousemove', (e) => {
@@ -177,7 +214,7 @@ const CapitilizeFirstLetter = (string) => {
 
 
 // Sort items into bounties
-var ParseBounties = (charInventory, utils) => {
+var ParseBounties = (charInventory, charObjectives, utils) => {
 
     var charBounties = [],
         amountOfBounties = 0;
@@ -185,8 +222,18 @@ var ParseBounties = (charInventory, utils) => {
     charInventory.forEach(v => {
         let item = utils.definitions[v.itemHash];
         if (item.itemType === 26) {
-            item.expired = new Date(v.expirationDate) < new Date(); // Check if bounty is expired
-            item.props = []; // Make empty array for filters
+
+            // Add objectives to item
+            item.progress = [];
+            for (let prg of charObjectives[v.itemInstanceId].objectives) {
+                item.progress.push(prg);
+            };
+
+            // Add other item information
+            item.isExpired = new Date(v.expirationDate) < new Date(); 
+            item.props = [];
+
+            // Push item to arr
             charBounties.push(item);
             amountOfBounties++;
         };
@@ -244,6 +291,35 @@ var SortByType = (bountyArr, utils) => {
         };
     });
     return bountyArr;
+};
+
+
+// Sorts by index of item in itemTypeKeys
+var SortBountiesByType = (a, b) => {
+
+    var stackLabelA = a.inventory.stackUniqueLabel,
+        stackLabelB = b.inventory.stackUniqueLabel,
+        stackTypeA,
+        stackTypeB;
+    
+    // Remove numbers & get key names from stackUniqueLabel even if it contains _
+    stackLabelA.split('.').forEach(v => {
+        let keyFromStack = v.replace(/[0-9]/g, '');
+        keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeA = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
+    });
+    stackLabelB.split('.').forEach(v => {
+        let keyFromStack = v.replace(/[0-9]/g, '');
+        keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeB = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
+    });
+
+    // Sort items by returning index
+    if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)){
+        return -1;
+    };
+    if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)){
+        return 1;
+    };
+    return 0;
 };
 
 
@@ -357,7 +433,19 @@ var ReturnSeasonPassLevel = async (seasonInfo, prestigeSeasonInfo) => {
 };
 
 
-// Wrappers for userCache
+// Load first character on profile
+var LoadPrimaryCharacter = async (characters) => {
+    var lastChar = CacheReturnItem('lastChar');
+    if (lastChar) { 
+        LoadCharacter(lastChar);
+    }
+    else if (!lastChar) {
+        LoadCharacter(characters[Object.keys(characters)[0]].classType);
+    };
+};
+
+
+// Wrappers for localStorage userCache
 var CacheAuditItem = async (key, value) => {
     var userCache = JSON.parse(localStorage.getItem('userCache'));
     userCache[key] = value;
@@ -389,10 +477,12 @@ export {
     PushToDOM,
     SortByGroup,
     SortByType,
+    SortBountiesByType,
     CalcXpYield,
     CalculateXpForBrightEngram,
     CalculatePercentage,
     ReturnSeasonPassLevel,
+    LoadPrimaryCharacter,
     CacheAuditItem,
     CacheRemoveItem,
     CacheReturnItem
