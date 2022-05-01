@@ -10,7 +10,8 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="module" src="assets/scripts/user.js"></script>
     <script type="module" src="assets/scripts/utils/StructBrowser.js"></script>
-    <script type="module" src="assets/scripts/utils/MatchProps.js"></script>
+    <!-- <script type="module" src="assets/scripts/utils/MatchProps.js"></script> -->
+    <script type="module" src="assets/scripts/utils/Events.js"></script>
 
     <link rel="shortcut icon" href="#">
     <title>D2 Synergy</title>
@@ -70,13 +71,13 @@
             <div id="categories">
                 <div id="cgDefaultLoadouts">Default Loadouts</div>
                 <div id="cgPursuits">Pursuits</div>
-                <div id="cgLevelsProgression">Levelling</div>
+                <div id="cgLevelsProgression">Statistics</div>
             </div>
 
             <div id="statsContainer">
                 <div id="statsTitleContainer">
                     <div id="statsTitle">Potential Yield</div>
-                    <div id="queryDiv">Stats aren't currently calculated with character modifiers</div>
+                    <div id="queryDiv">Stats aren't calculated with XP modifiers. Ghost mods are counted.</div>
                     <img id="statsTitleQuery" src="./assets/icons/interfaceHelp.webp">
                 </div>
                 <div id="statsListContainer">
@@ -87,10 +88,9 @@
                 <div id="btnSynergyView">View Synergy</div>
             </div>
         </div>
-
         <div id="loadingContentContainer">
             <img id="loadingIcon" src="assets/icons/rocketShip.webp">
-            <div id="loadingText">Loading Your Mum</div>
+            <div id="loadingText">Loading</div>
         </div>
     
         <div id="contentDisplay">

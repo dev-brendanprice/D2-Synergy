@@ -32,7 +32,25 @@
     margin-right: 2px;
     width: 55px;
     border: 1px solid rgba(200, 200, 200, 0.749);
+    border-radius: 1px;
     z-index: 1;
+}
+
+.expire {
+    position: absolute;
+    margin-left: -59px;
+    margin-right: 2px;
+    width: 26px;
+    z-index: 2;
+}
+
+.complete {
+    position: absolute;
+    margin-top: 31px;
+    margin-left: -28px;
+    margin-right: 2px;
+    width: 26px;
+    z-index: 2;
 }
 
 #itemTitle {

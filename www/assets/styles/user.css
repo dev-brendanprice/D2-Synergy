@@ -303,9 +303,11 @@ h2 {
 #btnSynergyView {
     margin-top: 10px;
     padding: 4px;
+    padding-left: 7px;
+    padding-right: 7px;
     width: fit-content;
-    color: rgb(205, 203, 203);
-    border: 1px rgb(205, 203, 203) solid;
+    color: rgb(203, 116, 116);
+    border: 1px rgb(203, 116, 116) solid;
     border-radius: 6px;
     cursor: pointer;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;

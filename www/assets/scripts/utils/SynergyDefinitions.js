@@ -46,6 +46,55 @@ const petraYields = {
     'repeatable': 0
 };
 
+// XP Buffs
+const XpBuffs = {
+    2457096233: '10'
+};
+
+// XP Buffs by Season Rank
+const SeasonRankXpModifiers = {
+    2319209868: {modifier: '100', ranks: 7},
+    2352765282: {modifier: '100', ranks: 5}
+};
+
+// Implicit XP Buffs
+const ImpXpBuffs = {
+    534860348: 'XP Boost',
+    582107389: 'Wisdom',
+    2656018541: 'Welcoming Party',
+    2775994369: 'Bright Paragon'
+};
+
+// XP Buffs by Destination
+const DestinationXpModifiers = {
+    4146504890: '10',
+    3404518646: '10',
+    3275051284: '10',
+    2489071480: '10',
+    1990928495: '10',
+    1933479768: '10',
+    1894263102: '10',
+    1432122667: '10',
+    1064347710: '10'
+};
+
+// XP Buffs by Activity
+const ActivityXpModifiers = {
+    329782251: '10',
+    1357892657: '10',
+    3255802493: '10'
+};
+
+// XP Buffs from mods on ghost
+const GhostXpMods = {
+    3292232288: '5',
+    3292232289: '8',
+    3292232290: '2',
+    3292232291: '3',
+    3292232294: '10',
+    3292232295: '12'
+};
+
 // Hashes for destinations
 const DestinationHash = {
     EDZ: 697502628, //0
