@@ -1,8 +1,9 @@
 import { itemTypeKeys } from "./SynergyDefinitions.js";
-import { LoadCharacter, userStruct } from "../user.js";
+import { LoadCharacter, userStruct, homeUrl } from "../user.js";
 
 const log = console.log.bind(console),
-      localStorage = window.localStorage;
+      localStorage = window.localStorage,
+      sessionStorage = window.sessionStorage;
 
 // Check if state query parameter exists in URL
 const VerifyState = async () => {
@@ -194,9 +195,9 @@ const StopLoad = () => {
 
 // Log user out on request
 const Logout = () => {
-    window.localStorage.clear();
-    window.sessionStorage.clear();
-    window.location.href = `https://synergy.brendanprice.xyz`;
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = homeUrl;
 };
 
 
@@ -447,6 +448,10 @@ var LoadPrimaryCharacter = async (characters) => {
 
 // Wrappers for localStorage userCache
 var CacheAuditItem = async (key, value) => {
+
+    // Configure userCache if it does not exist#
+    if (!localStorage.getItem('userCache')) { localStorage.setItem('userCache', JSON.stringify({}))};
+    
     var userCache = JSON.parse(localStorage.getItem('userCache'));
     userCache[key] = value;
     localStorage.setItem('userCache', JSON.stringify(userCache));
