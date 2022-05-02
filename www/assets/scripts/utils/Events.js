@@ -1,9 +1,8 @@
 import { LoadCharacter, userStruct } from '../user.js';
-import { CacheReturnItem } from './ModuleScript.js';
+import { CacheReturnItem, Logout } from './ModuleScript.js';
 
-// Safe measure
-document.addEventListener('DOMContentLoad', () => {
-    
+const AddEventListeners = async () => {
+
     // Add listeners for buttons
     for (let a=0; a<=2; a++) {
         document.getElementById(`charContainer${a}`).addEventListener('click', () => {
@@ -46,19 +45,19 @@ document.addEventListener('DOMContentLoad', () => {
 
     // Events for character menu buttons
     document.getElementById('cgDefaultLoadouts').addEventListener('click', () => {
-        currView.style.display = 'none';
+        userStruct.objs.currView.style.display = 'none';
         document.getElementById('loadoutsContainer').style.display = 'block';
-        currView = document.getElementById('loadoutsContainer');
+        userStruct.objs.currView = document.getElementById('loadoutsContainer');
     });
     document.getElementById('cgPursuits').addEventListener('click', () => {
-        currView.style.display = 'none';
+        userStruct.objs.currView.style.display = 'none';
         document.getElementById('pursuitsContainer').style.display = 'block';
-        currView = document.getElementById('pursuitsContainer');
+        userStruct.objs.currView = document.getElementById('pursuitsContainer');
     });
     document.getElementById('cgLevelsProgression').addEventListener('click', () => {
-        currView.style.display = 'none';
+        userStruct.objs.currView.style.display = 'none';
         document.getElementById('progressionContainer').style.display = 'block';
-        currView = document.getElementById('progressionContainer');
+        userStruct.objs.currView = document.getElementById('progressionContainer');
     });
 
     // Toggle item filters button(s)
@@ -90,4 +89,7 @@ document.addEventListener('DOMContentLoad', () => {
             };
         };
     });
-});
+    
+};
+
+export { AddEventListeners };

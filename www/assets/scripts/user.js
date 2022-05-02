@@ -31,6 +31,7 @@ import {
     baseYields,
     petraYields } from './utils/SynergyDefinitions.js';
 import { bountyPropCount, PushProps } from './utils/MatchProps.js';
+import { AddEventListeners } from './utils/Events.js';
 
 
 
@@ -55,8 +56,7 @@ var urlParams = new URLSearchParams(window.location.search),
     axiosHeaders = {
         ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
         Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
-    },
-    currView = document.getElementById('pursuitsContainer'); // Set default content view
+    };
 
     document.getElementById('loadingContentContainer').style.display = 'block'; // Show loading content
 
@@ -73,8 +73,10 @@ userStruct.filterDivs = {};
 userStruct.homeUrl = '';
 userStruct.bools = {};
 userStruct.ints = {};
+userStruct.objs = {};
 
 // Push data
+userStruct.objs.currView = document.getElementById('pursuitsContainer');
 userStruct.bools.characterLoadToggled = false;
 userStruct.ints.refreshTime = new Date();
 userStruct.bools.filterToggled = false;
@@ -313,12 +315,6 @@ var FetchBungieUserDetails = async () => {
         document.getElementById('categories').style.display = 'block';
         document.getElementById('statsContainer').style.display = 'block';
     };
-
-    // Load/Configure userCache
-    if (!localStorage.getItem('userCache')) {
-        var newUserCache = {};
-        localStorage.setItem('userCache', JSON.stringify(newUserCache));
-    };
 };
 
 
@@ -465,7 +461,7 @@ var LoadCharacter = async (classType, isRefresh) => {
 
         // Toggle elements
         document.getElementById('loadingContentContainer').style.display = 'none';
-        currView.style.display = 'block';
+        userStruct.objs.currView.style.display = 'block';
         document.getElementById('contentDisplay').style.display = 'inline-block';
 
         // Stop loading sequence
@@ -547,11 +543,12 @@ var CreateFilters = async (initArrStr, propCount) => {
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // Load first character on profile
-    await LoadPrimaryCharacter();
+    await LoadPrimaryCharacter(userStruct.characters);
+    await AddEventListeners();
     log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
 })()
 .catch(error => {
     console.error(error);
 });
 
-export { LoadCharacter, userStruct };
+export { LoadCharacter, userStruct, homeUrl };
