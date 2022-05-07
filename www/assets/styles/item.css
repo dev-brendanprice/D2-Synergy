@@ -42,6 +42,7 @@
     margin-right: 2px;
     width: 26px;
     z-index: 2;
+    pointer-events: none;
 }
 
 .complete {
@@ -51,6 +52,7 @@
     margin-right: 2px;
     width: 26px;
     z-index: 2;
+    pointer-events: none;
 }
 
 #itemTitle {

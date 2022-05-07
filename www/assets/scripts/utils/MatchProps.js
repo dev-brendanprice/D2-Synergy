@@ -22,8 +22,8 @@ const PushProps = async () => {
     // Loop over charBounties and append counters
     for (let i=0; i < userStruct.charBounties.length; i++) {
 
-        const hash = userStruct.charBounties[i].hash,
-              entry = bountyHashes[hash];
+        let hash = userStruct.charBounties[i].hash,
+            entry = bountyHashes[hash];
         var counters = {};
 
         for (let prop in entry) {
@@ -32,13 +32,49 @@ const PushProps = async () => {
 
                 var propNames = [];
                 for (let foo of entry[prop]) {
-                    var arr = prop==='Destination'?Destination:(prop==='ActivityMode'?ActivityMode:(prop==='DamageType'?DamageType:(prop==='ItemCategory'?ItemCategory:(prop==='AmmoType'?AmmoType:(prop==='KillType'?KillType:null)))));
+
+                    var arr = {};
+                    if (prop === 'Destination') {
+                        arr=Destination;
+                    }
+                    else if (prop === 'ActivityMode') {
+                        arr=ActivityMode;
+                    }
+                    else if (prop === 'DamageType') {
+                        arr=DamageType;
+                    }
+                    else if (prop === 'ItemCategory') {
+                        arr=ItemCategory;
+                    }
+                    else if (prop === 'AmmoType') {
+                        arr=AmmoType;
+                    }
+                    else if (prop === 'KillType') {
+                        arr=KillType;
+                    };
                     propNames.push(arr[foo]);
                 };
+                log(propNames);
 
+                // Wtf does this even do?
                 for (let bar of propNames) {
-                    bountyPropCount[bar] === undefined ? (bountyPropCount[bar] = 0, bountyPropCount[bar] += 1) : bountyPropCount[bar] += 1;
-                    counters[bar] === undefined ? (counters[bar] = 0, counters[bar] += 1) : counters[bar] += 1;
+
+                    if (bountyPropCount[bar] === undefined) {
+                        bountyPropCount[bar] = 0;
+                        bountyPropCount[bar] += 1;
+                    }
+                    else if (bountyPropCount[bar] !== undefined) {
+                        bountyPropCount[bar] += 1;
+                    };
+
+                    if (counters[bar] === undefined) {
+                        counters[bar] = 0;
+                        counters[bar] += 1;
+                    }
+                    else if (counters[bar] !== undefined) {
+                        counters[bar] += 1;
+                    };
+
                     userStruct.charBounties[i].props.push(bar);
                 };
             };
