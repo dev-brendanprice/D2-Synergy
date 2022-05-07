@@ -60,17 +60,23 @@ const AddEventListeners = async () => {
         userStruct.objs.currView = document.getElementById('progressionContainer');
     });
 
+    document.getElementById('btnSynergyView').addEventListener('click', () => {
+        userStruct.objs.currView.style.display = 'none';
+        document.getElementById('synergyContainer').style.display = 'block';
+        userStruct.objs.currView = document.getElementById('synergyContainer');
+    });
+
     // Toggle item filters button(s)
     document.getElementById('btnHideFilters').addEventListener('click', () => {
 
         var filterContent = document.getElementById('filterContentContainer').style;
-        if (!filterToggled) {
+        if (!userStruct.bools.filterToggled) {
             userStruct.bools.filterToggled = true;
-            filterContent = 'block';
+            filterContent.display = 'block';
         }
-        else if (filterToggled) {
+        else if (userStruct.bools.filterToggled) {
             userStruct.bools.filterToggled = false;
-            filterContent = 'none';
+            filterContent.display  = 'none';
         };
     });
 
@@ -80,7 +86,7 @@ const AddEventListeners = async () => {
             LoadCharacter(CacheReturnItem('lastChar'), true);
             userStruct.ints.refreshTime = new Date();
         };
-    }, 30000);
+    }, CacheReturnItem('refreshInterval'));
     document.addEventListener('visibilitychange', event => {
         if (document.visibilityState === 'visible') {
             if ((new Date() - userStruct.ints.refreshTime)/1000 > CacheReturnItem('refreshInterval')) {

@@ -75,7 +75,7 @@
             <div id="statsContainer">
                 <div id="statsTitleContainer">
                     <div id="statsTitle">Potential Yield</div>
-                    <div id="queryDiv">Stats aren't calculated with XP modifiers. Ghost mods are counted.</div>
+                    <div id="queryDiv">This isn't calculated with modifiers like "Well Rested". Ghost mods are used in this calculation.</div>
                     <img id="statsTitleQuery" src="./assets/icons/interfaceHelp.webp">
                 </div>
                 <div id="statsListContainer">
@@ -93,15 +93,20 @@
     
         <div id="contentDisplay">
 
+            <div id="synergyContainer">
+                <div id="displayTitle_Synergy" class="containerTitle">Synergy</div>
+                <hr class="titleBreaker">
+            </div>
+
             <div id="loadoutsContainer">
-                <div id="displayTitle_Loadouts">Default Loadouts</div>
+                <div id="displayTitle_Loadouts" class="containerTitle">Default Loadouts</div>
                 <hr class="titleBreaker">
             </div>
 
             <div id="pursuitsContainer">
 
                 <div id="bountyDisplayContainer">
-                    <div id="displayTitle_Bounties">Bounties</div>
+                    <div id="displayTitle_Bounties" class="containerTitle">Bounties</div>
                     <hr class="titleBreaker">
                     <div id="filterContentContainer">
                         <div id="filters"></div>
@@ -125,7 +130,7 @@
                     </div>
                 </div>
 
-                <div id="seaonalchallDisplayContainer">
+                <div id="seasonalDisplayContainer">
                     <div id="displayTitle_Bounties">Seasonal Challenges</div>
                     <div id="noItemsTooltip"></div>
                     <div id="seasonalchallItems">
@@ -134,7 +139,7 @@
             </div>
 
             <div id="progressionContainer">
-                <div id="displayTitle_Levelling">Levelling Statistics</div>
+                <div id="displayTitle_Levelling" class="containerTitle">Levelling Statistics</div>
                 <hr class="titleBreaker">
                 <div id="levellingStatsDisplay">
                     <div id="totalBrightEngrams">Next Bright Engram: </div>
@@ -145,5 +150,12 @@
             </div>
         </div>
     </div>
+
     <div id="overlays"></div>
+<!-- 
+    <div id="errorContainer">
+        <div id="errorIcon"></div>
+        <div id="errorTitle"></div>
+        <div id="errorMessage"></div>
+    </div> -->
 </body>

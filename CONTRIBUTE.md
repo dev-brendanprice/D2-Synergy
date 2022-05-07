@@ -22,9 +22,9 @@ You should also utilize destinydatasets to query each bounty via the definitions
 
 ### Process
 
-Clone this repository (preferably on a localhost environment, set for port 80).
+Clone this repository.
 
-Repeat the bellow process for each entry, over the entire list, yielded from BuildStruct
+Repeat the below process for each entry, over the entire list, yielded from BuildStruct
 1. `ctrl+f` for the hash in `bounties.js`
 2. Make a `Destiny2.GetDestinyEntityDefinition`, on destinydatasets, for the same bounty hash:
       `entityType: DestinyInventoryItemDefinition,
