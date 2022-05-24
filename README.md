@@ -1,4 +1,4 @@
-# D2 Synergy - :rocket: TBA :rocket:
+# D2 Synergy - TBA
 
 [![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)
 [![API](https://img.shields.io/badge/API-Bungie.net-green)](https://bungie-net.github.io/multi/index.html)
