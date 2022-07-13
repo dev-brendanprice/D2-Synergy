@@ -549,9 +549,9 @@ var CreateFilters = async (initArrStr, propCount) => {
     log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
 
 })()
-.catch (error => {
-    document.getElementById('errorTitle').innerHTML = error.name;
-    document.getElementById('errorMessage').innerHTML = error.message;
-});
+// .catch (error => {
+//     document.getElementById('errorTitle').innerHTML = error.name;
+//     document.getElementById('errorMessage').innerHTML = error.message;
+// });
 
 export { LoadCharacter, userStruct, homeUrl };
