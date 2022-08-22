@@ -59,6 +59,7 @@ Clone this repository.
 Repeat the below process for each entry, over the entire list, yielded from BuildStruct
 1. `ctrl+f` for the hash in `bounties.js`
 2. Make a `Destiny2.GetDestinyEntityDefinition` request on destinydatasets:<br>
+
     ```
     {
       entityType: DestinyInventoryItemDefinition,
