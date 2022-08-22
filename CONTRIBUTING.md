@@ -42,7 +42,7 @@ The layout of CSS props follow a standard via:
 `scripts/utils/SynergyDefinitions.js` contains `key:value` pairs, that signify the indexes in each prop from a given bounty in `scripts/utils/data/bounties.js`
 
 To figure out what heuristics you should be contributing:
-:construction::construction::construction:
+<br>:construction::construction::construction:
 
 ### Resources
 
@@ -79,6 +79,6 @@ Each item has a hash; take this hash and put it into destinydatasets.
 You then have a nice list of all the information you could ever want to know about the bounty, which you should then use to determine what indexes this bounty will go under inside of the `bounties.js` script.
 
 Ctrl + F for the same hash in `bounties.js`. 
-:construction::construction::construction:
+<br>:construction::construction::construction:
 
 *Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.*
