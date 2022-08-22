@@ -83,7 +83,7 @@ Repeat the below process for each entry, over the entire list, yielded from Buil
 
 4. Enter corresponding indexes for the props in bounties.js using SynergyDefinitions.js
 <br><br>
-#Exemplar
+# Exemplar
 
 Here we can see the console output from my QueryVendorBounties tool that I made:
 
