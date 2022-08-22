@@ -65,8 +65,20 @@ Repeat the below process for each entry, over the entire list, yielded from Buil
       hashIdentifier: hash
     }
     ```
-3. Enter corresponding indexes for the props in `bounties.js` using `SynergyDefinitions.js`
+3. Determine what indexes the bounty will fall under (see exemplar below)
+4. Enter corresponding indexes for the props in `bounties.js` using `SynergyDefinitions.js`
 
+#### Example
 
+Here we can see the console output from my QueryVendorBounties tool that I made:
+![image](https://user-images.githubusercontent.com/56489848/185819142-d72e23fa-6d67-4d7d-b664-29be5b0bea17.png)
+
+Each item has a hash; take this hash and put it into destinydatasets.
+![image](https://user-images.githubusercontent.com/56489848/185819205-5c5c9c33-beb1-4f3e-9121-2bb9c8d9855a.png)
+
+You then have a nice list of all the information you could ever want to know about the bounty, which you should then use to determine what indexes this bounty will go under inside of the `bounties.js` script.
+
+Ctrl + F for the same hash in `bounties.js`. 
+:construction::construction::construction:
 
 *Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.*
