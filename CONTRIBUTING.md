@@ -44,7 +44,7 @@ The layout of CSS props follow a standard via:
 To figure out what heuristics you should be contributing:
 <br>:construction::construction::construction:
 
-### Resources
+## Resources
 
 ##### [BuildStruct](https://github.com/brendanprice2003/QueryVendorBounties) -
 Clone my (and use the Readme.md) BuildStruct repo to query bounties that are actively being sold by a specified vendor via vendorHash
@@ -52,7 +52,7 @@ Clone my (and use the Readme.md) BuildStruct repo to query bounties that are act
 ##### [Destiny Datasets](https://data.destinysets.com/) -
 You should also utilize destinydatasets to query each bounty via the definitions to determine the bounty properties
 
-### Reproduction
+# Reproduction
 
 Clone this repository.
 
@@ -68,7 +68,7 @@ Repeat the below process for each entry, over the entire list, yielded from Buil
 3. Determine what indexes the bounty will fall under (see exemplar below)
 4. Enter corresponding indexes for the props in `bounties.js` using `SynergyDefinitions.js`
 
-#### Example
+## Example
 
 Here we can see the console output from my QueryVendorBounties tool that I made:
 ![image](https://user-images.githubusercontent.com/56489848/185819142-d72e23fa-6d67-4d7d-b664-29be5b0bea17.png)
