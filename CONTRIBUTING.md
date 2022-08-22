@@ -44,7 +44,7 @@ The layout of CSS props follow a standard via:
 To figure out what heuristics you should be contributing:
 <br>:construction::construction::construction:
 
-## Resources
+### Resources
 
 ##### [BuildStruct](https://github.com/brendanprice2003/QueryVendorBounties) -
 Clone my (and use the Readme.md) BuildStruct repo to query bounties that are actively being sold by a specified vendor via vendorHash
