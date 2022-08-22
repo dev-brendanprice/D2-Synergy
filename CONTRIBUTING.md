@@ -63,6 +63,6 @@ Repeat the below process for each entry, over the entire list, yielded from Buil
        hashIdentifier: hash`
 3. Enter corresponding indexes for the props in `bounties.js` using `SynergyDefinitions.js`
 
-Once all bounties have been done, perhaps you could quickly check over them, then make a pull request, to a branch with your chosen name and a good commit title. :)
+
 
 *Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.*
