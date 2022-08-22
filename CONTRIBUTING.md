@@ -18,7 +18,7 @@ This does not mean that you should comment every line. A comment for each code b
 
 #### HTML, CSS
 
-I had orignially just decided to use `id` as the default identifier for an element. A `class` may only being seen used in the case of an element need to have more than one identifier or a temporary identifer other than `id`.
+I had originally just decided to use `id` as the default identifier for an element. A `class` may be used in the case of an element where there is more than one identifier or a temporary identifer other than `id`.
 
 The layout of CSS props follow a standard via:
 
@@ -42,9 +42,7 @@ The layout of CSS props follow a standard via:
 `scripts/utils/SynergyDefinitions.js` contains `key:value` pairs, that signify the indexes in each prop from a given bounty in `scripts/utils/data/bounties.js`
 
 To figure out what heuristics you should be contributing:
-- Refer to pull requests and determine missing vendors
-- Validate heuristics for a vendor(s)
-- Ask me :)
+:construction::construction::construction:
 
 ### Resources
 
@@ -52,15 +50,15 @@ To figure out what heuristics you should be contributing:
 Clone my (and use the Readme.md) BuildStruct repo to query bounties that are actively being sold by a specified vendor via vendorHash
 
 ##### [Destiny Datasets](https://data.destinysets.com/) -
-You should also utilize destinydatasets to query each bounty via the definitions to determine what the bounty entails
+You should also utilize destinydatasets to query each bounty via the definitions to determine the bounty properties
 
-### Process
+### Reproduction
 
 Clone this repository.
 
 Repeat the below process for each entry, over the entire list, yielded from BuildStruct
 1. `ctrl+f` for the hash in `bounties.js`
-2. Make a `Destiny2.GetDestinyEntityDefinition`, on destinydatasets, for the same bounty hash:<br>
+2. Make a `Destiny2.GetDestinyEntityDefinition` request on destinydatasets for the same bounty hash where thes are your parameters:<br>
       `entityType: DestinyInventoryItemDefinition,
        hashIdentifier: hash`
 3. Enter corresponding indexes for the props in `bounties.js` using `SynergyDefinitions.js`
