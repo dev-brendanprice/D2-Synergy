@@ -5,7 +5,7 @@ If a commit does not follow standards, I won't reject the commit, It just means 
 
 # Standards
 
-*Please excuse me if some syntax does not follow the below standards. Full re-factor takes a while ok :)*
+*Please excuse me if some syntax does not follow the below standards. Sometimes I miss some things out :)*
 
 `variable` names are camelCase.<br>
 `function`/`method` names are PascalCase.<br>
