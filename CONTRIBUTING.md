@@ -41,8 +41,7 @@ The layout of CSS props follow a standard via:
 `scripts/utils/data/bounties.js` contains a hash map of all the bounties that have ever existed on the API.
 `scripts/utils/SynergyDefinitions.js` contains `key:value` pairs, that signify the indexes in each prop from a given bounty in `scripts/utils/data/bounties.js`
 
-To figure out what heuristics you should be contributing:
-<br>:construction::construction::construction:
+To figure out what heuristics you should be contributing, see the [example](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#example) section of this guide.
 
 ### Resources
 
