@@ -79,7 +79,14 @@ Each item has a hash; take this hash and put it into destinydatasets.
 
 You then have a nice list of all the information you could ever want to know about the bounty, which you should then use to determine what indexes this bounty will go under inside of the `bounties.js` script.
 
-Ctrl + F for the same hash in `bounties.js`. 
-<br>:construction::construction::construction:
+Ctrl + F for the same hash in `bounties.js`.
+(https://github.com/brendanprice2003/D2-Synergy/issues/23#issuecomment-1133815453)
+
+This bounty has already been done by someone. Then entry has keys that contain and array of indexes that refer to another key value inside of [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/assets/scripts/utils/SynergyDefinitions.js).
+
+For example you can see that the `itemCategory` key value has an array of indexes that only contains `0`. If we find `itemCategory` inside [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/assets/scripts/utils/SynergyDefinitions.js), you can see it has all the possible indexes that are valid for that property. 
+https://github.com/brendanprice2003/D2-Synergy/blob/main/www/assets/scripts/utils/SynergyDefinitions.js
+
+You would then put the relevant indexes in the corresponding properties.
 
 *Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.*
