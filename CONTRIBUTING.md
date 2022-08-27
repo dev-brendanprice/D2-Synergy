@@ -88,6 +88,6 @@ For example you can see that the `itemCategory` key value has an array of indexe
 
 You would then put the relevant indexes in the corresponding properties for that bounty.
 
-:construction:
+**IMPORTANT:** if there are no valid indexes for that property please remove that property from the bounty entry. 
 
 *Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.*
