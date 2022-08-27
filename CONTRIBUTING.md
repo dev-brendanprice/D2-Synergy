@@ -85,8 +85,10 @@ Ctrl + F for the same hash in `bounties.js`.
 This bounty has already been done by someone. Then entry has keys that contain and array of indexes that refer to another key value inside of [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/assets/scripts/utils/SynergyDefinitions.js).
 
 For example you can see that the `itemCategory` key value has an array of indexes that only contains `0`. If we find `itemCategory` inside [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/assets/scripts/utils/SynergyDefinitions.js), you can see it has all the possible indexes that are valid for that property. 
-https://github.com/brendanprice2003/D2-Synergy/blob/main/www/assets/scripts/utils/SynergyDefinitions.js
+![image](https://user-images.githubusercontent.com/56489848/187028214-acf601ee-0b9a-4db3-94da-4da89cdde1ae.png)
 
-You would then put the relevant indexes in the corresponding properties.
+You would then put the relevant indexes in the corresponding properties for that bounty.
+
+:contsruction:
 
 *Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.*
