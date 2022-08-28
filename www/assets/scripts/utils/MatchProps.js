@@ -10,7 +10,15 @@ import {
 
     const log = console.log.bind(console);
 
-    var bountyPropCount = {};
+    var bountyPropCount = {},
+        propTypes = {
+            'Destination': Destination,
+            'ActivityMode': ActivityMode,
+            'DamageType': DamageType,
+            'ItemCategory': ItemCategory,
+            'AmmoType': AmmoType,
+            'KillType': KillType
+        }; // This array supersedes the need to use an if statement to check for props
 
 
 // Push the props onto charBounties
@@ -22,63 +30,48 @@ const PushProps = async () => {
     // Loop over charBounties and append counters
     for (let i=0; i < userStruct.charBounties.length; i++) {
 
-        let hash = userStruct.charBounties[i].hash,
-            entry = bountyHashes[hash];
+        let entry = bountyHashes[userStruct.charBounties[i].hash];
         var counters = {};
 
         for (let prop in entry) {
 
-            if (entry[prop].length !== 0) {
+            if (entry[prop].length !== 0) { // I am changing this so it checks absence
 
                 var propNames = [];
                 for (let foo of entry[prop]) {
 
-                    var arr = {};
-                    if (prop === 'Destination') {
-                        arr=Destination;
-                    }
-                    else if (prop === 'ActivityMode') {
-                        arr=ActivityMode;
-                    }
-                    else if (prop === 'DamageType') {
-                        arr=DamageType;
-                    }
-                    else if (prop === 'ItemCategory') {
-                        arr=ItemCategory;
-                    }
-                    else if (prop === 'AmmoType') {
-                        arr=AmmoType;
-                    }
-                    else if (prop === 'KillType') {
-                        arr=KillType;
-                    };
-                    propNames.push(arr[foo]);
+                    // Push the property to the filter array with the count
+                    propNames.push(propTypes[prop][foo]);
                 };
-                log(propNames);
+                // log(propNames);
 
-                // Wtf does this even do?
-                for (let bar of propNames) {
+                // Loop through all types in propNames
+                for (let type of propNames) {
 
-                    if (bountyPropCount[bar] === undefined) {
-                        bountyPropCount[bar] = 0;
-                        bountyPropCount[bar] += 1;
+                    // Push each type to the array that is used to visually filter
+                    if (bountyPropCount[type] === undefined) {
+                        bountyPropCount[type] = 0;
+                        bountyPropCount[type] += 1;
                     }
-                    else if (bountyPropCount[bar] !== undefined) {
-                        bountyPropCount[bar] += 1;
+                    else if (bountyPropCount[type] !== undefined) {
+                        bountyPropCount[type] += 1;
                     };
 
-                    if (counters[bar] === undefined) {
-                        counters[bar] = 0;
-                        counters[bar] += 1;
-                    }
-                    else if (counters[bar] !== undefined) {
-                        counters[bar] += 1;
-                    };
+                    // I think this is done elsewhere anyways
+                    // if (counters[type] === undefined) {
+                    //     counters[type] = 0;
+                    //     counters[type] += 1;
+                    // }
+                    // else if (counters[type] !== undefined) {
+                    //     counters[type] += 1;
+                    // };
 
-                    userStruct.charBounties[i].props.push(bar);
+                    // Add each type to the userStruct to enable global access
+                    userStruct.charBounties[i].props.push(type);
                 };
             };
         };
+        // log(counters);
     };
 };
 

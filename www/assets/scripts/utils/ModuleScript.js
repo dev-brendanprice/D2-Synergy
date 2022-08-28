@@ -369,11 +369,13 @@ var CalculateXpForBrightEngram = async (seasonInfo, prestigeSeasonInfo, currentY
         if (lastNum >= 3 && lastNum < 7) { // progress to level 7
 
             let diff = 7 - lastNum,
-                fullLvls = diff-1, // fullLvls is levels that contain 100k xp
+                fullLvls = diff-1, // a fullLvl is a level that contains only 100k xp (complete level)
                 remainderXp = 0;
 
             remainderXp = (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
-            log('XP until next BE: ', remainderXp);
+            
+            // Push the bright engram XP remainder to DOM
+            ChangeElement(document.getElementById('totalBrightEngrams'), remainderXp);
         }
         else if (lastNum >= 7 || lastNum < 3) { // progress to level 3
                 
@@ -467,6 +469,19 @@ var CacheReturnItem = (key, value) => {
 };
 
 
+// Appends content to a target DOM element, only works with elements that have ':'
+var ChangeElement = (target, content) => {
+
+    log(target.innerHTML, content);
+
+    // Seperate the primary part of the string
+    let primaryString = target.innerHTML.split(':')[0];
+
+    // Append and push primaryString with content
+    target.innerHTML = `${primaryString}: ${content}`;
+};
+
+
 
 export {
     VerifyState,
@@ -490,5 +505,6 @@ export {
     LoadPrimaryCharacter,
     CacheAuditItem,
     CacheRemoveItem,
-    CacheReturnItem
+    CacheReturnItem,
+    ChangeElement
 };

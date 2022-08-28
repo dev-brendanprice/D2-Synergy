@@ -24,7 +24,8 @@ import {
     LoadPrimaryCharacter,
     CacheAuditItem,
     CacheRemoveItem,
-    CacheReturnItem } from './utils/ModuleScript.js';
+    CacheReturnItem,
+    ChangeElement } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -75,6 +76,7 @@ userStruct.homeUrl = '';
 userStruct.bools = {};
 userStruct.ints = {};
 userStruct.objs = {};
+userStruct.stringsArr = {};
 
 // Push data
 userStruct.objs.currView = document.getElementById('pursuitsContainer');
@@ -349,9 +351,8 @@ var LoadCharacter = async (classType, isRefresh) => {
             
         // Clear DOM content
         document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML.split('(')[0]}`;
-        document.getElementById('totalBrightEngrams').innerHTML = `${document.getElementById('totalBrightEngrams').innerHTML.split(':')[0]}: `;
-        document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML.split(':')[0]}:`;
-        document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML.split(':')[0]}: `;
+        // document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML.split(':')[0]}:`;
+        // document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML.split(':')[0]}: `;
         document.getElementById('loadingContentContainer').style.display = 'block';
         document.getElementById('contentDisplay').style.display = 'none';
         document.getElementById('noItemsTooltip').style.display = 'none';
@@ -436,22 +437,22 @@ var LoadCharacter = async (classType, isRefresh) => {
             seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
 
         // Change DOM content
-        let brightEngramTracker = document.getElementById('totalBrightEngrams');
         document.getElementById('displayTitle_Bounties').style.display = 'block';
-        document.getElementById('currentSpLevel').innerHTML = `Season Pass Level: ${seasonPassLevel}`;
-        brightEngramTracker.innerHTML = `${brightEngramTracker.innerHTML}${InsertSeperators(xpRequiredForNextBrightEngram)} Xp`;
+        ChangeElement(document.getElementById('currentSpLevel'), seasonPassLevel);
 
         // Toggle empty items tooltip
         if (amountOfBounties === 0) {
-            document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${0} levels`;
-            document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${0}`;
+            ChangeElement(document.getElementById('totalSpLevels'), '+0 levels');
+            ChangeElement(document.getElementById('totalXP'), 0);
+
             document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
             document.getElementById('noItemsTooltip').style.display = 'inline-block';
         }
         else if (amountOfBounties > 0) {
+            ChangeElement(document.getElementById('totalSpLevels'), `+${totalXpYield/100_000} levels`);
+            ChangeElement(document.getElementById('totalXP'), InsertSeperators(totalXpYield));
+
             document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML} (${amountOfBounties})`;
-            document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${totalXpYield/100_000} levels`;
-            document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${InsertSeperators(totalXpYield)}`;
             document.getElementById('noItemsTooltip').style.display = 'none';
         };
 
