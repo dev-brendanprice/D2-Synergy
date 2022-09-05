@@ -149,6 +149,10 @@ const MakeBountyElement = async (param) => {
     // Mark item as complete
     if (param.progress.length === completionCounter) {
         param.areObjectivesComplete = true;
+
+        // Change style to represent state
+        document.getElementById(`item_${param.hash}`).className = 'itemContainerComplete';
+        document.getElementById(`${param.hash}`).style.border = '1px solid rgba(182,137,67, 0.749)';
     }
     else if (param.progress.length !== completionCounter) {
         param.areObjectivesComplete = false;
@@ -159,6 +163,10 @@ const MakeBountyElement = async (param) => {
         itemStatus.className = `expire`;
         itemStatus.id = `expire_${param.hash}`;
         itemStatus.src = './assets/icons/pursuitExpired.svg';
+
+        // Change style to represent state
+        document.getElementById(`item_${param.hash}`).className = 'itemContainerExpired';
+        document.getElementById(`${param.hash}`).style.border = '1px solid rgba(179,73,73, 0.749)';
     }
     else if (param.areObjectivesComplete) {
         itemStatus.className = `complete`;
@@ -431,6 +439,12 @@ var ReturnSeasonPassLevel = async (seasonInfo, prestigeSeasonInfo) => {
         levelToReturn += prestigeSeasonInfo.level;
     };
     return levelToReturn;
+};
+
+
+// Return artifact level
+var ReturnArtifactLevel = async () => {
+
 };
 
 

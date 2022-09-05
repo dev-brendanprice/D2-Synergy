@@ -334,6 +334,7 @@ var LoadCharacter = async (classType, isRefresh) => {
             CharacterProgressions,
             CharacterInventories,
             CharacterObjectives,
+            ProfileProgressions,
             seasonPassInfo = {},
             seasonPassLevel = 0,
             prestigeSeasonInfo,
@@ -379,11 +380,12 @@ var LoadCharacter = async (classType, isRefresh) => {
 
         // OAuth header guarantees a response
         if (!sessionCache.resCharacterInventories || isRefresh) {
-            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,201,202,205,300,301`, {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,"X-API-Key": `${axiosHeaders.ApiKey}`}});
+            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,104,201,202,205,300,301`, {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,"X-API-Key": `${axiosHeaders.ApiKey}`}});
                 CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
                 CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
                 CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
                 CharacterObjectives = resCharacterInventories.data.Response.itemComponents.objectives.data;
+                ProfileProgressions = resCharacterInventories.data.Response.profileProgression.data;
                 sessionCache.resCharacterInventories = resCharacterInventories;
         }
         else if (sessionCache.resCharacterInventories) {
@@ -425,6 +427,8 @@ var LoadCharacter = async (classType, isRefresh) => {
 
         // Calculate XP yield from (active) bounties
         const totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
+
+        log(destinyUserProfile);
 
         // Get season pass info
         let seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');

@@ -54,7 +54,7 @@ const PushProps = async () => {
                     };
                     propNames.push(arr[foo]);
                 };
-                log(propNames);
+                // log(propNames);
 
                 // Wtf does this even do?
                 for (let bar of propNames) {
