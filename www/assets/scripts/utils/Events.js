@@ -54,11 +54,11 @@ const AddEventListeners = async () => {
         document.getElementById('pursuitsContainer').style.display = 'block';
         userStruct.objs.currView = document.getElementById('pursuitsContainer');
     });
-    document.getElementById('cgLevelsProgression').addEventListener('click', () => {
-        userStruct.objs.currView.style.display = 'none';
-        document.getElementById('progressionContainer').style.display = 'block';
-        userStruct.objs.currView = document.getElementById('progressionContainer');
-    });
+    // document.getElementById('cgLevelsProgression').addEventListener('click', () => {
+    //     userStruct.objs.currView.style.display = 'none';
+    //     document.getElementById('progressionContainer').style.display = 'block';
+    //     userStruct.objs.currView = document.getElementById('progressionContainer');
+    // });
 
     document.getElementById('btnSynergyView').addEventListener('click', () => {
         userStruct.objs.currView.style.display = 'none';

@@ -11,6 +11,7 @@
     <script type="module" src="assets/scripts/user.js"></script>
     <script type="module" src="assets/scripts/utils/StructBrowser.js"></script>
 
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link rel="shortcut icon" href="#">
     <title>D2 Synergy</title>
 </head>
@@ -68,8 +69,7 @@
 
             <div id="categories">
                 <div id="cgDefaultLoadouts">Default Loadouts</div>
-                <div id="cgPursuits">Pursuits</div>
-                <div id="cgLevelsProgression">Statistics</div>
+                <div id="cgPursuits">Bounties</div>
             </div>
 
             <div id="statsContainer">
@@ -123,6 +123,15 @@
                     </div>
                 </div>
 
+                <div id="displayTitle_Levelling" class="containerTitle" style="margin-top: 25px;">Levelling Statistics</div>
+                <hr class="titleBreaker">
+                <div id="levellingStatsDisplay">
+                    <div id="totalBrightEngrams">Next Bright Engram: </div>
+                    <div id="currentSpLevel"></div>
+                    <div id="artifactBonus"></div>
+                    <div id="totalXpCollectedThisSeason"></div>
+                </div>
+
                 <!-- <div id="questDisplayContainer">
                     <div id="displayTitle_Bounties">Quests</div>
                     <div id="noItemsTooltip"></div>
@@ -136,17 +145,6 @@
                     <div id="seasonalchallItems">
                     </div>
                 </div> -->
-            </div>
-
-            <div id="progressionContainer">
-                <div id="displayTitle_Levelling" class="containerTitle">Levelling Statistics</div>
-                <hr class="titleBreaker">
-                <div id="levellingStatsDisplay">
-                    <div id="totalBrightEngrams">Next Bright Engram: </div>
-                    <div id="currentSpLevel"></div>
-                    <!-- <div id="artifactBonus"></div> -->
-                    <div id="totalXpCollectedThisSeason"></div>
-                </div>
             </div>
         </div>
     </div>

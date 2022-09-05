@@ -11,6 +11,41 @@
 
 
 /* New layout at this point */
-/* @media screen and (max-width: 800) {
-    
-} */
+@media screen and (max-width: 757px) {
+    .classBg {
+        width: 65%;
+    }
+
+    .classType {
+        margin-left: 65px;
+        font-size: 20px;
+    }
+
+    .classLight {
+        margin-left: 78px;
+        font-size: 18px;
+    }
+
+    .lightIcon {
+        margin-top: 29px;
+        margin-left: 67px;
+        width: 10px;
+    }
+
+    #categories > div {
+        margin-top: 5px;
+        font-size: 18px;
+    }
+
+    #pursuitsContainer {
+        margin-top: 50px;
+        margin-left: -14px;
+        width: 90vw;
+    }
+
+    #loadoutsContainer {
+        margin-top: 50px;
+        margin-left: -14px;
+        width: 90vw;
+    }
+}

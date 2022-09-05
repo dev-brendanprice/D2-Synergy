@@ -11,6 +11,7 @@
     margin-right: auto;
     left: 0;
     right: 0;
+    z-index: 0;
 }
 
 h2 {
@@ -165,10 +166,10 @@ h2 {
     color: white;
     transition: 0.25s;
 }
-#cgLevelsProgression:hover {
+/* #cgLevelsProgression:hover {
     color: white;
     transition: 0.25s;
-}
+} */
 
 #questDisplayContainer {
     margin-top: 15px;

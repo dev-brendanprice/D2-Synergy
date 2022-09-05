@@ -25,6 +25,7 @@ html, body {
     height: 45px;
     width: 100vw;
     background-color: #202020;
+    z-index: 10;
 }
 #navBarIcon {
     width: 45px;
