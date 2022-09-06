@@ -27,17 +27,30 @@ html, body {
     background-color: #202020;
     z-index: 10;
 }
-#navBarIcon {
-    width: 45px;
+
+#navBarTitleContainer {
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 15px;
+    left: 0;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
-#navBarIconContainer {
+#navBarTitle {
     display: inline-block;
-    margin-left: 10px;
+    font-size: 30px;
 }
+#navBarVersion {
+    display: inline-block;
+    font-size: 15px;
+    color: rgb(203,116,116);
+}
+
 #navBarLogoutContainer {
     position: absolute;
-    margin-top: -37px;
-    right: 1%;
+    margin-top: 12px;
+    margin-right: 12px;
+    right: 0;
     cursor: pointer;
 }
 #navBarLogout {
