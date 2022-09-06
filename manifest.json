@@ -1,0 +1,15 @@
+{
+    "name": "Test",
+    "short_name": "Test",
+    "start_url": "index.html",
+    "display": "fullscreen",
+    "background_color": "#22272e",
+    "theme_color": "#22272e",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+        "src": "./www/assets/icons/ghost.webp",
+        "type": "image/png", "sizes": "900x900"
+        }
+    ]
+}
