@@ -393,6 +393,7 @@ var LoadCharacter = async (classType, isRefresh) => {
                 CurrentSeasonHash = sessionCache.resCharacterInventories.data.Response.profile.data.currentSeasonHash;
                 CharacterProgressions = sessionCache.resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
                 CharacterObjectives = sessionCache.resCharacterInventories.data.Response.itemComponents.objectives.data;
+                ProfileProgressions = sessionCache.resCharacterInventories.data.Response.profileProgression.data;
         };
 
         // Iterate over CharacterInventories[characterId].items
@@ -428,8 +429,6 @@ var LoadCharacter = async (classType, isRefresh) => {
         // Calculate XP yield from (active) bounties
         const totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
-        log(destinyUserProfile);
-
         // Get season pass info
         let seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
             seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
@@ -439,11 +438,16 @@ var LoadCharacter = async (classType, isRefresh) => {
         let xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield, seasonPassInfo);
             seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
 
+        // Get artifact info
+        let artifact = ProfileProgressions.seasonalArtifact;
+
         // Change DOM content
         let brightEngramTracker = document.getElementById('totalBrightEngrams');
         document.getElementById('displayTitle_Bounties').style.display = 'block';
         document.getElementById('currentSpLevel').innerHTML = `Season Pass Level: ${seasonPassLevel}`;
-        brightEngramTracker.innerHTML = `${brightEngramTracker.innerHTML}${InsertSeperators(xpRequiredForNextBrightEngram)} Xp`;
+        document.getElementById('artifactBonus').innerHTML = `Artifact Bonus: +${artifact.powerBonus}`;
+        document.getElementById('artifactPrg').innerHTML = `Artifact Progress: ${InsertSeperators(artifact.pointProgression.progressToNextLevel)} / ${InsertSeperators(artifact.pointProgression.nextLevelAt)}`;
+        brightEngramTracker.innerHTML += `${InsertSeperators(xpRequiredForNextBrightEngram)} XP`;
 
         // Toggle empty items tooltip
         if (amountOfBounties === 0) {
@@ -456,6 +460,7 @@ var LoadCharacter = async (classType, isRefresh) => {
             document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML} (${amountOfBounties})`;
             document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${totalXpYield/100_000} levels`;
             document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${InsertSeperators(totalXpYield)}`;
+            // document.getElementById('totalArtiLevels').innerHTML = `${document.getElementById('totalArtiLevels').innerHTML}${InsertSeperators(artifact.pointProgression.progressToNextLevel)} / ${InsertSeperators(artifact.pointProgression.nextLevelAt)}`;
             document.getElementById('noItemsTooltip').style.display = 'none';
         };
 
