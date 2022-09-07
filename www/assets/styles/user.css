@@ -324,3 +324,88 @@ h2 {
     color: rgb(205, 203, 203);
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
+
+
+
+#statisticsLayoutContainer {
+    display: inline-flex;
+    margin-top: 50px;
+    color: white;
+    width: 100%;
+}
+
+#statisticsLayoutContainer > div {
+    border: 0.1px gray solid;
+    border-radius: 2px;
+}
+
+
+
+#seasonPassContainer {
+    display: inline-flex;
+    width: 320px;
+    height: 175px;
+}
+#seasonPassContainerBg {
+    width: 100%;
+    background-image: url('../icons/eververse.png');
+    background-size: cover;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+}
+
+#artifactContainer {
+    display: inline-flex;
+    margin-left: 25px;
+    width: 320px;
+    height: 175px;
+}
+#artifactContainerBg {
+    width: 100%;
+    background-image: url('../icons/eververse.png');
+    background-size: cover;
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+}
+
+#brightEngramContainer {
+    display: inline-flex;
+    margin-left: 25px;
+    width: 320px;
+    height: 175px;
+}
+#brightEngramContainerBg {
+    width: 100%;
+    background-image: url('../icons/eververse.png');
+    background-size: cover;
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+}
+#brightEngramContainerTitle {
+    position: absolute;
+    margin-top: 8px;
+    margin-left: 65px;
+    font-size: 25px;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols; 
+    font-weight: 600;
+}
+#brightEngram {
+    position: absolute;
+    margin-top: 3px;
+    margin-left: 125px;
+    width: 65px;
+    -webkit-filter: blur(1px);
+    -moz-filter: blur(1px);
+    -o-filter: blur(1px);
+    -ms-filter: blur(1px);
+    filter: blur(1px);
+}

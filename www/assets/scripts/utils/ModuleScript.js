@@ -259,7 +259,7 @@ var PushToDOM = (bountyArr, utils) => {
         let group = bountyArr[v];
         if (group.length !== 0) {
             group.forEach(item => {
-                utils.MakeBountyElement(item);
+                // utils.MakeBountyElement(item);
                 utils.amountOfBounties++;
             });
         };
