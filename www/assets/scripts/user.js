@@ -439,7 +439,20 @@ var LoadCharacter = async (classType, isRefresh) => {
             seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
 
         // Get artifact info
-        let artifact = ProfileProgressions.seasonalArtifact;
+        let artifact;
+
+        // Check if profile has artifact
+        if (!ProfileProgressions.seasonalArtifact) {
+
+            document.getElementById('artifactBonus').innerHTML = `Artifact Bonus: -No Artifact Present-`;
+            document.getElementById('artifactPrg').innerHTML = `Artifact Progress: -No Artifact Present-`;
+        }
+        else if (ProfileProgressions.seasonalArtifact) {
+
+           artifact = ProfileProgressions.seasonalArtifact;
+           document.getElementById('artifactBonus').innerHTML = `Artifact Bonus: +${artifact.powerBonus}`;
+           document.getElementById('artifactPrg').innerHTML = `Artifact Progress: ${InsertSeperators(artifact.pointProgression.progressToNextLevel)} / ${InsertSeperators(artifact.pointProgression.nextLevelAt)}`;
+        };
 
         // Change DOM content
         let brightEngramTracker = document.getElementById('totalBrightEngrams');
