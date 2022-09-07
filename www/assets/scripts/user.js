@@ -458,8 +458,6 @@ var LoadCharacter = async (classType, isRefresh) => {
         let brightEngramTracker = document.getElementById('totalBrightEngrams');
         document.getElementById('displayTitle_Bounties').style.display = 'block';
         document.getElementById('currentSpLevel').innerHTML = `Season Pass Level: ${seasonPassLevel}`;
-        document.getElementById('artifactBonus').innerHTML = `Artifact Bonus: +${artifact.powerBonus}`;
-        document.getElementById('artifactPrg').innerHTML = `Artifact Progress: ${InsertSeperators(artifact.pointProgression.progressToNextLevel)} / ${InsertSeperators(artifact.pointProgression.nextLevelAt)}`;
         brightEngramTracker.innerHTML += `${InsertSeperators(xpRequiredForNextBrightEngram)} XP`;
 
         // Toggle empty items tooltip
