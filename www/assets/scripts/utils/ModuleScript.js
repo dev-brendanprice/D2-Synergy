@@ -71,6 +71,7 @@ const MakeBountyElement = async (param) => {
     // Create overlay element
     itemOverlay.className = `itemContainer`;
     itemOverlay.id = `item_${param.hash}`;
+    itemOverlay.style.display = 'none';
     document.querySelector('#overlays').appendChild(itemOverlay);
 
     // Prop content of item
@@ -151,7 +152,7 @@ const MakeBountyElement = async (param) => {
         param.areObjectivesComplete = true;
 
         // Change style to represent state
-        document.getElementById(`item_${param.hash}`).className = 'itemContainerComplete';
+        document.getElementById(`item_${param.hash}`).className = 'itemContainerComplete'; // ?
         document.getElementById(`${param.hash}`).style.border = '1px solid rgba(182,137,67, 0.749)';
     }
     else if (param.progress.length !== completionCounter) {
