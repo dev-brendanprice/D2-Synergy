@@ -14,7 +14,7 @@ const VerifyState = async () => {
     if (state != window.localStorage.getItem('stateCode')) {
         window.localStorage.clear();
         window.sessionStorage.clear();
-        window.location.href = 'https://synergy.brendanprice.xyz/';
+        window.location.href = 'http://localhost:5500/www/';
     }
     else {
         window.localStorage.removeItem('stateCode');
