@@ -69,6 +69,8 @@ Note: *The dev environment is configured to only work on localhost, so the addre
 1. Clone this repository
 
 2. Make a new Bungie.net API application at: https://www.bungie.net/en/Application
+    - The redirect URL must have the `https` protocol present. This means that you have to manually change `https` to `http` after the initial authorization redirect has taken place. This is only applicable in development environments due to the nature of localhost in its default configuration.
+    - The origin URL must have the `http` version of your base URL.
 
 3. Take the client ID and client secret and encrypt it using base-64, using the following string format. <br>
 `Base-64 "<client-id>:<client-secret>"`
@@ -78,7 +80,7 @@ Note: *This will be your `Authorization` token.*
 4. Replace the following entries with your Bungie.net API application information.
 
 
-[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/assets/scripts/user.js#L56) - Replace with `'http://localhost:5500/www/'`
+[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/assets/scripts/user.js#L56) - Replace with your base URL
 
 [`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/assets/scripts/user.js#L61) - client ID
 
