@@ -11,7 +11,7 @@ If a commit request does not follow these standards (to an extent), 9 times out 
     - General Information
     - [Resources](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#resources)
 3. [Reproduction](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#reproduction)
-    - [Exemplar](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#example)
+    - [Adding Bounty Entries](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#example)
 <br><br>
 # Standards
 
@@ -64,26 +64,33 @@ You should also utilize destinydatasets to query each bounty via the definitions
 <br><br>
 # Reproduction
 
-Clone this repository.
+Note: *The dev environment is configured to only work on localhost, so the address 127.0.0.1 and alike, won't work.*
 
-Repeat the below process for each entry, over the entire list, yielded from BuildStruct
+1. Clone this repository
 
-1. `ctrl+f` for the hash in `bounties.js`
+2. Make a new Bungie.net API application at: https://www.bungie.net/en/Application
 
-2. Make a Destiny2.GetDestinyEntityDefinition request on destinydatasets:
+3. Take the client ID and client secret and encrypt it using base-64, using the following string format. <br>
+`Base-64 "<client-id>:<client-secret>"`
+<br>
+Note: *This will be your `Authorization` token.*
 
-```
-{
-    entityType: DestinyInventoryItemDefinition,
-    hashIdentifier: hash
-}
-```
+4. Replace the following entries with your Bungie.net API application information.
 
-3. Determine what indexes the bounty will fall under (see exemplar below)
 
-4. Enter corresponding indexes for the props in bounties.js using SynergyDefinitions.js
+[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/assets/scripts/user.js#L56) - Replace with `'http://localhost:5500/www/'`
+
+[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/assets/scripts/user.js#L61) - client ID
+
+[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/assets/scripts/user.js#L57) - API Key and your Authorization token from step 3.
+
+[`index.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/assets/scripts/index.js#L6) - client ID
+
+Note: *These fields have been tested to the bare minimum so they may require some additional elbow grease to get right. :)*
+
+
 <br><br>
-# Exemplar
+# Adding Bounty Entries
 
 Here we can see the console output from my QueryVendorBounties tool that I made:
 
@@ -95,7 +102,15 @@ Each item has a hash; take this hash and put it into destinydatasets.
 
 You then have a nice list of all the information you could ever want to know about the bounty, which you should then use to determine what indexes this bounty will go under inside of the bounties.js script.
 
-Ctrl + F for the same hash in bounties.js.<br>
-🚧🚧🚧
+Ctrl + F for the same hash in [`bounties.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/assets/scripts/utils/data/bounties.js).
+
+This bounty has already been done by someone. Then entry has keys that contain and array of indexes that refer to another key value inside of [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/assets/scripts/utils/SynergyDefinitions.js).
+
+For example you can see that the `itemCategory` key value has an array of indexes that only contains `0`. If we find `itemCategory` inside [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/assets/scripts/utils/SynergyDefinitions.js), you can see it has all the possible indexes that are valid for that property. 
+![image](https://user-images.githubusercontent.com/56489848/187028214-acf601ee-0b9a-4db3-94da-4da89cdde1ae.png)
+
+You would then put the relevant indexes in the corresponding properties for that bounty.
+
+**IMPORTANT:** if there are no valid indexes for that property please remove that property from the bounty entry. 
 
 *Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.*
