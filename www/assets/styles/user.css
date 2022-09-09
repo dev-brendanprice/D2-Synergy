@@ -4,6 +4,10 @@
  * Style for user.html, does not contain media queries
  */
 
+:root {
+    --blurFilterAmount: 3px;
+}
+
 #mainContainer {
     position: absolute;
     margin-top: 60px;
@@ -325,87 +329,215 @@ h2 {
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
 
-
-
-#statisticsLayoutContainer {
-    display: inline-flex;
-    margin-top: 50px;
+#statsTableLayoutContainer {
+    margin-top: 40px;
+}
+#statsTableLayoutContainer > div {
+    width: 350px;
+    height: 150px;
+    padding: 2px;
+    border: #555 1px solid;
+    border-radius: 5px;
     color: white;
-    width: 100%;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
 
-#statisticsLayoutContainer > div {
-    border: 0.1px gray solid;
-    border-radius: 2px;
+.containerTitle {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-
-
-#seasonPassContainer {
-    display: inline-flex;
-    width: 320px;
-    height: 175px;
+.containerMetricNumber {
+    display: inline-block;
+    color: rgb(141, 219, 255);
 }
-#seasonPassContainerBg {
-    width: 100%;
-    background-image: url('../icons/eververse.png');
+
+/* Seasonal artifact statistic container */
+#artifactStats {
+    display: inline-block;
+    text-align: center;
+}
+#artifactStatsBg {
+    background-image: url('../icons/artifactBG.jpg');
     background-size: cover;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-}
-
-#artifactContainer {
-    display: inline-flex;
-    margin-left: 25px;
-    width: 320px;
-    height: 175px;
-}
-#artifactContainerBg {
     width: 100%;
-    background-image: url('../icons/eververse.png');
-    background-size: cover;
-    -webkit-filter: blur(2px);
-    -moz-filter: blur(2px);
-    -o-filter: blur(2px);
-    -ms-filter: blur(2px);
-    filter: blur(2px);
-}
+    height: 100%;
+    z-index: -1;
 
-#brightEngramContainer {
-    display: inline-flex;
-    margin-left: 25px;
-    width: 320px;
-    height: 175px;
+    filter: brightness(50%) blur(var(--blurFilterAmount));
 }
-#brightEngramContainerBg {
-    width: 100%;
-    background-image: url('../icons/eververse.png');
-    background-size: cover;
-    -webkit-filter: blur(3px);
-    -moz-filter: blur(3px);
-    -o-filter: blur(3px);
-    -ms-filter: blur(3px);
-    filter: blur(3px);
-}
-#brightEngramContainerTitle {
+#artifactStatsContentContainer {
     position: absolute;
-    margin-top: 8px;
-    margin-left: 65px;
-    font-size: 25px;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols; 
+    text-align: left;
+    margin-top: -140px;
+    margin-left: 15px;
+}
+#artifactStatsFirstContainer {
+    margin-top: 10px;
+    font-size: 22px;
+}
+#artifactStatsSecondContainer {
+    margin-top: 15px;
+    font-size: 22px;
+}
+#artifactStatsSuffix {
+    display: inline-block;
+    font-size: 18px;
+}
+.artifactStatsSuffixBottom {
+    font-size: 18px;
+    margin-top: -4px;
+}
+#artifactStatsThirdMetricContainer {
+    position: absolute;
+    margin-top: -120px;
+    margin-left: 230px;
+    text-align: center;
+}
+#artifactStatsMetricSeasonPassLevel {
+    font-size: 35px;
     font-weight: 600;
 }
-#brightEngram {
+#artifactStatsMetricRankTitle {
+    font-weight: 600;
+}
+#artifactStatsMetricFireteamBonus {
+    margin-top: 10px;
+}
+#artifactStatsMetricFireteamBonusSuffix { 
+    margin-top: -18px;
+}
+#artifactStatsArtifactImage {
     position: absolute;
-    margin-top: 3px;
-    margin-left: 125px;
-    width: 65px;
-    -webkit-filter: blur(1px);
-    -moz-filter: blur(1px);
-    -o-filter: blur(1px);
-    -ms-filter: blur(1px);
-    filter: blur(1px);
+    margin-top: -10px;
+    margin-left: -55px;
+    width: 100px;
+}
+#artifactStatsArtifactBonus {
+    margin-top: 70px;
+    margin-left: 60px;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgb(141, 219, 255);
+}
+
+
+/* Season pass statistic container */
+#seasonPass {
+    display: inline-block;
+    margin-left: 20px;
+    text-align: center;
+}
+#seasonPassBg {
+    background-image: url('../icons/seasonalBG.jpg');
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
+    filter: brightness(50%) blur(var(--blurFilterAmount));
+}
+#seasonPassContentContainer {
+    position: absolute;
+    text-align: left;
+    margin-top: -140px;
+    margin-left: 15px;
+}
+#seasonPassFirstContainer {
+    margin-top: 13px;
+    font-size: 22px;
+}
+#seasonPassSecondContainer {
+    margin-top: 30px;
+    font-size: 22px;
+}
+#seasonPassSuffix {
+    display: inline-block;
+    font-size: 18px;
+}
+#seasonPassSuffixBottom {
+    position: absolute;
+    font-size: 18px;
+    margin-top: -3px;
+}
+#seasonPassThirdMetricContainer {
+    position: absolute;
+    margin-top: -120px;
+    margin-left: 230px;
+    text-align: center;
+}
+#seasonPassRankLevel {
+    font-size: 35px;
+    font-weight: 600;
+}
+#seasonPassRankTitle {
+    font-weight: 600;
+}
+#seasonPassFireteamBonus {
+    margin-top: 10px;
+}
+#seasonPassFireteamBonusSuffix { 
+    margin-top: -18px;
+}
+
+
+/* Bright engram statistic container */
+#brightEngram {
+    display: inline-block;
+    margin-left: 20px;
+    text-align: center;
+}
+#brightEngramBg {
+    background-image: url('../icons/eververse.png');
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
+    filter: brightness(50%) blur(var(--blurFilterAmount));
+}
+#brightEngramContentContainer {
+    position: absolute;
+    text-align: left;
+    margin-top: -140px;
+    margin-left: 15px;
+}
+#brightEngramFirstContainer {
+    margin-top: 15px;
+    font-size: 22px;
+}
+#brightEngramSuffix {
+    display: inline-block;
+    font-size: 18px;
+}
+#brightEngramSecondContainer {
+    margin-top: 40px;
+    font-size: 22px;
+}
+#brightEngramEngramImageLeft {
+    position: absolute;
+    margin-top: -140px;
+    margin-left: 35px;
+    width: 45px;
+    z-index: 1;
+}
+#brightEngramEngramImageMiddle {
+    position: absolute;
+    margin-top: -140px;
+    margin-left: 50px;
+    width: 100px;
+    z-index: 2;
+}
+#brightEngramEngramImageRight {
+    position: absolute;
+    margin-top: -140px;
+    margin-left: 120px;
+    width: 45px;
+    z-index: 1;
+}
+#brightEngramSuffixBottom {
+    position: absolute;
+    font-size: 18px;
+    margin-top: -3px;
 }
