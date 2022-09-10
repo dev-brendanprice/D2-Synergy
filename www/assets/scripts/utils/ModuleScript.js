@@ -371,7 +371,7 @@ var CalculateXpForBrightEngram = async (seasonInfo, prestigeSeasonInfo, currentY
             let diff = 7 - lastNum,
                 fullLvls = diff-1; // a fullLvl is a level that contains only 100k xp (complete level)
 
-                return (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
+            return (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
         }
         else if (lastNum >= 7 || lastNum < 3) { // progress to level 3
                 
