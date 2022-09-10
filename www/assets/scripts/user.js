@@ -336,6 +336,7 @@ var LoadCharacter = async (classType, isRefresh) => {
             CharacterProgressions,
             CharacterInventories,
             CharacterObjectives,
+            ProfileProgressions,
             seasonPassInfo = {},
             seasonPassLevel = 0,
             prestigeSeasonInfo,
@@ -380,11 +381,12 @@ var LoadCharacter = async (classType, isRefresh) => {
 
         // OAuth header guarantees a response
         if (!sessionCache.resCharacterInventories || isRefresh) {
-            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,201,202,205,300,301`, {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,"X-API-Key": `${axiosHeaders.ApiKey}`}});
+            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,104,201,202,205,300,301`, {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,"X-API-Key": `${axiosHeaders.ApiKey}`}});
                 CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
                 CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
                 CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
                 CharacterObjectives = resCharacterInventories.data.Response.itemComponents.objectives.data;
+                ProfileProgressions = resCharacterInventories.data.Response.profileProgression.data;
                 sessionCache.resCharacterInventories = resCharacterInventories;
         }
         else if (sessionCache.resCharacterInventories) {
@@ -392,6 +394,7 @@ var LoadCharacter = async (classType, isRefresh) => {
                 CurrentSeasonHash = sessionCache.resCharacterInventories.data.Response.profile.data.currentSeasonHash;
                 CharacterProgressions = sessionCache.resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
                 CharacterObjectives = sessionCache.resCharacterInventories.data.Response.itemComponents.objectives.data;
+                ProfileProgressions = sessionCache.resCharacterInventories.data.Response.profileProgression.data;
         };
 
         // Iterate over CharacterInventories[characterId].items
@@ -436,9 +439,26 @@ var LoadCharacter = async (classType, isRefresh) => {
         let xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield, seasonPassInfo);
             seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
 
+        // Get artifact info
+        let artifact;
+
+        // Check if profile has artifact
+        if (!ProfileProgressions.seasonalArtifact) {
+
+            document.getElementById('artifactBonus').innerHTML = `Artifact Bonus: -No Artifact Present-`;
+            document.getElementById('artifactPrg').innerHTML = `Artifact Progress: -No Artifact Present-`;
+        }
+        else if (ProfileProgressions.seasonalArtifact) {
+
+           artifact = ProfileProgressions.seasonalArtifact;
+           document.getElementById('artifactBonus').innerHTML = `Artifact Bonus: +${artifact.powerBonus}`;
+           document.getElementById('artifactPrg').innerHTML = `Artifact Progress: ${InsertSeperators(artifact.pointProgression.progressToNextLevel)} / ${InsertSeperators(artifact.pointProgression.nextLevelAt)}`;
+        };
+
         // Change DOM content
         document.getElementById('displayTitle_Bounties').style.display = 'block';
-        ChangeElement(document.getElementById('currentSpLevel'), seasonPassLevel);
+        document.getElementById('currentSpLevel').innerHTML = `Season Pass Level: ${seasonPassLevel}`;
+        brightEngramTracker.innerHTML += `${InsertSeperators(xpRequiredForNextBrightEngram)} XP`;
 
         // Toggle empty items tooltip
         if (amountOfBounties === 0) {
@@ -453,6 +473,9 @@ var LoadCharacter = async (classType, isRefresh) => {
             ChangeElement(document.getElementById('totalXP'), InsertSeperators(totalXpYield));
 
             document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML} (${amountOfBounties})`;
+            document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${totalXpYield/100_000} levels`;
+            document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${InsertSeperators(totalXpYield)}`;
+            // document.getElementById('totalArtiLevels').innerHTML = `${document.getElementById('totalArtiLevels').innerHTML}${InsertSeperators(artifact.pointProgression.progressToNextLevel)} / ${InsertSeperators(artifact.pointProgression.nextLevelAt)}`;
             document.getElementById('noItemsTooltip').style.display = 'none';
         };
 
