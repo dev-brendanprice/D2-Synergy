@@ -14,7 +14,7 @@ const VerifyState = async () => {
     if (state != window.localStorage.getItem('stateCode')) {
         window.localStorage.clear();
         window.sessionStorage.clear();
-        window.location.href = userStruct.homeUrl;
+        window.location.href = 'https://synergy.brendanprice.xyz/';
     }
     else {
         window.localStorage.removeItem('stateCode');
@@ -260,7 +260,7 @@ var PushToDOM = (bountyArr, utils) => {
         let group = bountyArr[v];
         if (group.length !== 0) {
             group.forEach(item => {
-                utils.MakeBountyElement(item);
+                // utils.MakeBountyElement(item);
                 utils.amountOfBounties++;
             });
         };
