@@ -56,6 +56,7 @@ const ValidateManifest = async () => {
 
         // Fetch manifest
         var localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
+        
         manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
 
         // Check manifest version

@@ -14,7 +14,7 @@ const VerifyState = async () => {
     if (state != window.localStorage.getItem('stateCode')) {
         window.localStorage.clear();
         window.sessionStorage.clear();
-        window.location.href = userStruct.homeUrl;
+        window.location.href = 'https://synergy.brendanprice.xyz/';
     }
     else {
         window.localStorage.removeItem('stateCode');
@@ -71,6 +71,7 @@ const MakeBountyElement = async (param) => {
     // Create overlay element
     itemOverlay.className = `itemContainer`;
     itemOverlay.id = `item_${param.hash}`;
+    itemOverlay.style.display = 'none';
     document.querySelector('#overlays').appendChild(itemOverlay);
 
     // Prop content of item
@@ -149,6 +150,10 @@ const MakeBountyElement = async (param) => {
     // Mark item as complete
     if (param.progress.length === completionCounter) {
         param.areObjectivesComplete = true;
+
+        // Change style to represent state
+        document.getElementById(`item_${param.hash}`).className = 'itemContainerComplete'; // ?
+        document.getElementById(`${param.hash}`).style.border = '1px solid rgba(182,137,67, 0.749)';
     }
     else if (param.progress.length !== completionCounter) {
         param.areObjectivesComplete = false;
@@ -159,6 +164,10 @@ const MakeBountyElement = async (param) => {
         itemStatus.className = `expire`;
         itemStatus.id = `expire_${param.hash}`;
         itemStatus.src = './assets/icons/pursuitExpired.svg';
+
+        // Change style to represent state
+        document.getElementById(`item_${param.hash}`).className = 'itemContainerExpired';
+        document.getElementById(`${param.hash}`).style.border = '1px solid rgba(179,73,73, 0.749)';
     }
     else if (param.areObjectivesComplete) {
         itemStatus.className = `complete`;
@@ -251,7 +260,7 @@ var PushToDOM = (bountyArr, utils) => {
         let group = bountyArr[v];
         if (group.length !== 0) {
             group.forEach(item => {
-                utils.MakeBountyElement(item);
+                // utils.MakeBountyElement(item);
                 utils.amountOfBounties++;
             });
         };
@@ -429,6 +438,12 @@ var ReturnSeasonPassLevel = async (seasonInfo, prestigeSeasonInfo) => {
         levelToReturn += prestigeSeasonInfo.level;
     };
     return levelToReturn;
+};
+
+
+// Return artifact level
+var ReturnArtifactLevel = async () => {
+
 };
 
 
