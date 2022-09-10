@@ -95,10 +95,12 @@ Note: *These fields have been tested to the bare minimum so they may require som
 # Adding Bounty Entries
 
 Here we can see the console output from my QueryVendorBounties tool that I made:
-![image](https://user-images.githubusercontent.com/56489848/185819142-d72e23fa-6d67-4d7d-b664-29be5b0bea17.png)
+
+![image](https://user-images.githubusercontent.com/56489848/186026026-0953508e-5e2d-49d1-baf3-e61a0a9da7dd.png)
 
 Each item has a hash; take this hash and put it into destinydatasets.
-![image](https://user-images.githubusercontent.com/56489848/185819205-5c5c9c33-beb1-4f3e-9121-2bb9c8d9855a.png)
+
+![image](https://user-images.githubusercontent.com/56489848/186026001-faa410f5-e61b-45fb-b0ef-0915ca25ea26.png)
 
 You then have a nice list of all the information you could ever want to know about the bounty, which you should then use to determine what indexes this bounty will go under inside of the bounties.js script.
 
