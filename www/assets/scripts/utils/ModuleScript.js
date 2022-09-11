@@ -14,7 +14,7 @@ const VerifyState = async () => {
     if (state != window.localStorage.getItem('stateCode')) {
         window.localStorage.clear();
         window.sessionStorage.clear();
-        window.location.href = 'https://synergy.brendanprice.xyz/';
+        window.location.href = 'http://localhost:5500/www/';
     }
     else {
         window.localStorage.removeItem('stateCode');
@@ -166,7 +166,7 @@ const MakeBountyElement = async (param) => {
         itemStatus.src = './assets/icons/pursuitExpired.svg';
 
         // Change style to represent state
-        document.getElementById(`item_${param.hash}`).className = 'itemContainerExpired';
+        // document.getElementById(`item_${param.hash}`).className = 'itemContainerExpired';
         document.getElementById(`${param.hash}`).style.border = '1px solid rgba(179,73,73, 0.749)';
     }
     else if (param.areObjectivesComplete) {
@@ -206,14 +206,15 @@ const StopLoad = () => {
 const Logout = () => {
     localStorage.clear();
     sessionStorage.clear();
+    indexedDB.deleteDatabase('keyval-store');
     window.location.href = homeUrl;
 };
 
 
-// Seperate numbers using commas
+// Insert commas into numbers where applicable
 // @int {num}
 const InsertSeperators = (num) => {
-    return `${num}`.split()[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return new Intl.NumberFormat().format(num);
 };
 
 
@@ -260,7 +261,7 @@ var PushToDOM = (bountyArr, utils) => {
         let group = bountyArr[v];
         if (group.length !== 0) {
             group.forEach(item => {
-                // utils.MakeBountyElement(item);
+                utils.MakeBountyElement(item);
                 utils.amountOfBounties++;
             });
         };
@@ -365,59 +366,37 @@ var CalcXpYield = (bountyArr, utils) => {
 };
 
 
-// Calculate season pass information
-var CalculateXpForBrightEngram = async (seasonInfo, prestigeSeasonInfo, currentYield, seasonPassInfo) => {
+// New function for getting XP required for next bright engram
+var CalculateXpForNextBrightEngram = async (seasonInfo, prestigeInfo, rewardsTrack) => {
 
-    const level = seasonInfo.level,
-    // const level = 128374,
-          prestigeLevel = prestigeSeasonInfo.level;
-    if (level < 100) {
+    // Get total season rank
+    let seasonRank = seasonInfo.level + prestigeInfo.level;
 
-        // Assume a BE is every n3,n7 levels
-        let lastNum = parseInt(`${level}`.split('')[1]);
-        if (lastNum >= 3 && lastNum < 7) { // progress to level 7
+    // Check if the season pass is higher than level 100 (prestige level)
+    if (seasonRank >= 100) { // Prestige
 
-            let diff = 7 - lastNum,
-                fullLvls = diff-1; // a fullLvl is a level that contains only 100k xp (complete level)
-
-            return (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
-        }
-        else if (lastNum >= 7 || lastNum < 3) { // progress to level 3
-                
-            if (lastNum <= 9) {
-                if (lastNum >= 0 && lastNum < 3) {
-                    
-                    let diff = 3 - lastNum,
-                        fullLvls = diff-1;
-                    
-                    return (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
-                }
-                else {
-
-                    let diff = 10 - lastNum,
-                        fullLvls = diff + 3;
-                
-                    return (fullLvls * 100_000) + (100_000 - seasonInfo.progressToNextLevel);
-                };
-            };
-        };
+        // Calculate Xp needed for next bright engram based on the current prestige level
+        // Here, we are assuming that you get a bright engram every other five levels
+        let nextEngramRank = Math.ceil((seasonRank+1)/5)*5;
+        return ((nextEngramRank - seasonRank) * 100_000) - prestigeInfo.progressToNextLevel;
     }
-    else if (level === 100) {
+    else if (seasonRank < 100) { // Not prestige (less than 100)
+        
+        // Iterate through rewards track and get every bright engram at their respective levels
+        // Here, we are assuming that you get bright engrams relative to the season pass structure, because we are not past level 100
+        let splicedRewardsTrack = Object.keys(rewardsTrack).splice(seasonRank),
+            engramRanks = [];
 
-        // Assume BE is every n0,n5 levels
-        let lastNum = parseInt(`${level}`.split('')[`${level}`.length-1]);
-        if (lastNum >= 5 && lastNum < 9) { // Progress for 10nth rank
-            
-            let fullLvls = 9 - lastNum;
+        splicedRewardsTrack.forEach(v => {
+            rewardsTrack[v].forEach(x => {
+                if (x === 1968811824) {
+                    engramRanks.push(v);
+                };
+            });
+        });
 
-            return (100_000 * fullLvls) + (100_000 - prestigeSeasonInfo.progressToNextLevel);
-        }
-        else if (lastNum >= 7 || lastNum < 3) { // Progress for 5nth rank
-
-            let fullLvls = 4 - lastNum;
-
-            return (100_000 * fullLvls) + (100_000 - prestigeSeasonInfo.progressToNextLevel);
-        };
+        let nextEngramRank = engramRanks[0];
+        return ((nextEngramRank - seasonRank) * 100_000) - seasonInfo.progressToNextLevel;
     };
 };
 
@@ -434,16 +413,11 @@ var ReturnSeasonPassLevel = async (seasonInfo, prestigeSeasonInfo) => {
     var levelToReturn = 0;
     levelToReturn += seasonInfo.level;
 
+    // If the season pass level is more than 100
     if (prestigeSeasonInfo.level !== 0) {
         levelToReturn += prestigeSeasonInfo.level;
     };
     return levelToReturn;
-};
-
-
-// Return artifact level
-var ReturnArtifactLevel = async () => {
-
 };
 
 
@@ -480,16 +454,68 @@ var CacheReturnItem = (key, value) => {
 };
 
 
-// Appends content to a target DOM element, only works with elements that have ':'
-var ChangeElement = (target, content) => {
+// Adds something to the targets' innerHTML
+// @string {target}, @string {content}
+var AddNumberToElementInner = (target, content) => {
 
-    log(target.innerHTML, content);
+    // Change target innerHTML
+    document.getElementById(`${target}`).innerHTML = content;
+};
 
-    // Seperate the primary part of the string
-    let primaryString = target.innerHTML.split(':')[0];
 
-    // Append and push primaryString with content
-    target.innerHTML = `${primaryString}: ${content}`;
+// Load heuristics and configure data
+// @array {initArrStr}, @int {propCount}
+var CreateFilters = async (initArrStr, propCount) => {
+
+    // Create new object for filter elements
+    userStruct['filterDivs'] = {};
+
+    // Create a filter for each prop
+    for (let v in propCount) {
+
+        if (propCount[v] > 1) {
+            
+            let filterContainer = document.createElement('div'),
+                  filterContent = document.createElement('div');
+
+            // Assign id's and classes + change innerHTML
+            filterContainer.className = 'filter';
+            filterContent.className = 'propName';
+            filterContainer.id = `filter_${v}${propCount[v]}`;
+            filterContent.id = `propName_${v}${propCount[v]}`;
+            filterContent.innerHTML = `${CapitilizeFirstLetter(v)} (${propCount[v]})`;
+
+            // Add filter to UserStruct
+            userStruct['filterDivs'][`propName_${v}${propCount[v]}`] = {};
+            userStruct['filterDivs'][`propName_${v}${propCount[v]}`].element = filterContent;
+
+            // Append children elements to respective parent elements
+            document.querySelector('#filters').appendChild(filterContainer);
+            document.querySelector(`#filter_${v}${propCount[v]}`).appendChild(filterContent);
+
+            // Show bounties as per filter
+            filterContainer.addEventListener('click', () => {
+                userStruct[initArrStr].forEach(b => {
+
+                    // Find bounties that match the filter index
+                    if (!b.props.includes(v)) {
+
+                        document.getElementById(`${b.hash}`).style.opacity = '50%';
+                        document.getElementById(`item_${b.hash}`).style.opacity = '50%';
+                        document.getElementById(`propName_${v}${propCount[v]}`).style.color = 'rgb(224, 224, 224)';
+
+                        if (!userStruct['greyOutDivs']) {
+                            userStruct['greyOutDivs'] = [];
+                            userStruct['greyOutDivs'].push(b.hash);
+                        }
+                        else if (!userStruct['greyOutDivs'].includes(b.hash)) {
+                            userStruct['greyOutDivs'].push(b.hash);
+                        };
+                    };
+                });
+            });
+        };
+    };
 };
 
 
@@ -510,12 +536,13 @@ export {
     SortByType,
     SortBountiesByType,
     CalcXpYield,
-    CalculateXpForBrightEngram,
+    CalculateXpForNextBrightEngram,
     CalculatePercentage,
     ReturnSeasonPassLevel,
     LoadPrimaryCharacter,
     CacheAuditItem,
     CacheRemoveItem,
     CacheReturnItem,
-    ChangeElement
+    AddNumberToElementInner,
+    CreateFilters
 };

@@ -4,25 +4,25 @@
  * Style for various viewports
  */
 @media screen and (max-width: 1759px) {
-    #three {
+    #brightEngram {
         margin-left: 0px;
     }
 }
 
 @media screen and (max-width: 1729px) {
-    #three {
+    #brightEngram {
         margin-top: 20px;
     }
 }
 
 @media screen and (max-width: 1175px) {
-    #two {
+    #seasonPass {
         margin-left: 0px;
     }
 }
 
 @media screen and (max-width: 1144px) {
-    #two {
+    #seasonPass {
         margin-top: 20px;
     }
 }
@@ -75,6 +75,10 @@
     }
 
     #satisticsLayoutContainer {
+        text-align: center;
+    }
+
+    #statsTableLayoutContainer {
         text-align: center;
     }
 }

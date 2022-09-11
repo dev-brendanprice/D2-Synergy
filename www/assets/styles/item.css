@@ -36,7 +36,8 @@
     z-index: -10;
 }
 
-#itemContainerExpired {
+/* These are broken */
+/* #itemContainerExpired {
     position: relative;
     display: none;
     width: 210px;
@@ -55,7 +56,7 @@
     left: 0;
     background: linear-gradient(rgb(179,73,73) 0%, transparent 100%);
     z-index: -10;
-}
+} */
 
 #items > div {
     user-select: none;

@@ -6,26 +6,23 @@ import { ValidateManifest, ReturnEntry } from './utils/ValidateManifest.js';
 import {
     VerifyState,
     ParseChar,
-    Logout,
     StartLoad,
     StopLoad,
     MakeBountyElement,
     RedirUser,
     InsertSeperators,
-    CapitilizeFirstLetter,
     ParseBounties,
     PushToDOM,
     SortByGroup,
     SortByType,
     SortBountiesByType,
     CalcXpYield,
-    CalculateXpForBrightEngram,
+    CalculateXpForNextBrightEngram,
     ReturnSeasonPassLevel,
     LoadPrimaryCharacter,
     CacheAuditItem,
-    CacheRemoveItem,
-    CacheReturnItem,
-    ChangeElement } from './utils/ModuleScript.js';
+    AddNumberToElementInner,
+    CreateFilters } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -266,7 +263,7 @@ var FetchBungieUserDetails = async () => {
         components = JSON.parse(localStorage.getItem('components')),
         AuthConfig = { 
             headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`, 
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,
                 "X-API-Key": `${axiosHeaders.ApiKey}`
             }
         };
@@ -351,9 +348,6 @@ var LoadCharacter = async (classType, isRefresh) => {
         CacheAuditItem('lastChar', classType);
             
         // Clear DOM content
-        document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML.split('(')[0]}`;
-        // document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML.split(':')[0]}:`;
-        // document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML.split(':')[0]}: `;
         document.getElementById('loadingContentContainer').style.display = 'block';
         document.getElementById('contentDisplay').style.display = 'none';
         document.getElementById('noItemsTooltip').style.display = 'none';
@@ -431,52 +425,76 @@ var LoadCharacter = async (classType, isRefresh) => {
         const totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
         // Get season pass info
-        let seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
+        let seasonDefinitions = await ReturnEntry('DestinySeasonDefinition'),
+            seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition'),
+            progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition');
+
             seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
-        let seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition');
             seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
             prestigeSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
-        let xpRequiredForNextBrightEngram = await CalculateXpForBrightEngram(seasonInfo, prestigeSeasonInfo, totalXpYield, seasonPassInfo);
             seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
 
-        // Get artifact info
+        let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems,
+            rewardsTrack = {};
+
+        // Iterate through rewards track and formalize into a clean(er) array structure
+        seasonPassRewardsTrack.forEach(v => {
+
+            if (!rewardsTrack[v.rewardedAtProgressionLevel]) {
+                rewardsTrack[v.rewardedAtProgressionLevel] = [];
+                rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
+            }
+            else {
+                rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
+            };
+        });
+
+        // Calculate xp for: next bright engram, fireteam boost, and xp multiplier
+        AddNumberToElementInner('brightEngramXpToNextEngram', InsertSeperators(await CalculateXpForNextBrightEngram(seasonInfo, prestigeSeasonInfo, rewardsTrack)));
+
+        // Get artifact info -- check if profile has artifact
         let artifact;
+        if (ProfileProgressions.seasonalArtifact) {
 
-        // Check if profile has artifact
-        if (!ProfileProgressions.seasonalArtifact) {
-
-            document.getElementById('artifactBonus').innerHTML = `Artifact Bonus: -No Artifact Present-`;
-            document.getElementById('artifactPrg').innerHTML = `Artifact Progress: -No Artifact Present-`;
+            // Change corresponding HTML elements to display stats
+            artifact = ProfileProgressions.seasonalArtifact;
+            AddNumberToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
+            AddNumberToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
         }
-        else if (ProfileProgressions.seasonalArtifact) {
+        else if (!ProfileProgressions.seasonalArtifact) {
 
-           artifact = ProfileProgressions.seasonalArtifact;
-           document.getElementById('artifactBonus').innerHTML = `Artifact Bonus: +${artifact.powerBonus}`;
-           document.getElementById('artifactPrg').innerHTML = `Artifact Progress: ${InsertSeperators(artifact.pointProgression.progressToNextLevel)} / ${InsertSeperators(artifact.pointProgression.nextLevelAt)}`;
+            // Change corresponding HTML elements to display stats
+            document.getElementById('artifactStatsFirstContainer').style.display = 'none';
+            document.getElementById('artifactStatsSecondContainer').style.display = 'none';
+            document.getElementById('artifactStatsThirdMetricContainer').style.display = 'none';
+            document.getElementById('artifactStatsNoArtifactIsPresent').style.display = 'block';
         };
 
-        // Change DOM content
-        document.getElementById('displayTitle_Bounties').style.display = 'block';
-        document.getElementById('currentSpLevel').innerHTML = `Season Pass Level: ${seasonPassLevel}`;
-        brightEngramTracker.innerHTML += `${InsertSeperators(xpRequiredForNextBrightEngram)} XP`;
+        // Add season pass statistics
+        AddNumberToElementInner('seasonPassRankLevel', seasonPassLevel);
+        AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonInfo.progressToNextLevel));
+        AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators((seasonInfo.levelCap - seasonInfo.level) * 100_000 + seasonInfo.progressToNextLevel));
 
-        // Toggle empty items tooltip
+        // Check if there are no bounties
         if (amountOfBounties === 0) {
-            ChangeElement(document.getElementById('totalSpLevels'), '+0 levels');
-            ChangeElement(document.getElementById('totalXP'), 0);
 
+            // Toggle no items tooltip
             document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
             document.getElementById('noItemsTooltip').style.display = 'inline-block';
+
+            // Make potential yeild stats 0 by default
+            AddNumberToElementInner('totalXpField', 0);
+            AddNumberToElementInner('totalSpLevelsField', 0);
         }
         else if (amountOfBounties > 0) {
-            ChangeElement(document.getElementById('totalSpLevels'), `+${totalXpYield/100_000} levels`);
-            ChangeElement(document.getElementById('totalXP'), InsertSeperators(totalXpYield));
 
-            document.getElementById('displayTitle_Bounties').innerHTML = `${document.getElementById('displayTitle_Bounties').innerHTML} (${amountOfBounties})`;
-            document.getElementById('totalSpLevels').innerHTML = `${document.getElementById('totalSpLevels').innerHTML} +${totalXpYield/100_000} levels`;
-            document.getElementById('totalXP').innerHTML = `${document.getElementById('totalXP').innerHTML}${InsertSeperators(totalXpYield)}`;
+            // Append number of bounties on to the end of the "Bounties" heading
+            AddNumberToElementInner('bountiesAmountField', `(${amountOfBounties})`);
+
+            // Change potential yield stats since there are bounties present
+            AddNumberToElementInner('totalXpField', InsertSeperators(totalXpYield));
+            AddNumberToElementInner('totalSpLevelsField', totalXpYield / 100_000);
             // document.getElementById('totalArtiLevels').innerHTML = `${document.getElementById('totalArtiLevels').innerHTML}${InsertSeperators(artifact.pointProgression.progressToNextLevel)} / ${InsertSeperators(artifact.pointProgression.nextLevelAt)}`;
-            document.getElementById('noItemsTooltip').style.display = 'none';
         };
 
         // Load synergyDefinitions and match against bounties
@@ -491,61 +509,6 @@ var LoadCharacter = async (classType, isRefresh) => {
 
         // Stop loading sequence
         StopLoad();
-    };
-};
-
-
-// Load heuristics and configure data
-var CreateFilters = async (initArrStr, propCount) => {
-
-    // Create new object for filter elements
-    userStruct['filterDivs'] = {};
-
-    // Create a filter for each prop
-    for (let v in propCount) {
-
-        if (propCount[v] > 1) {
-            
-            let filterContainer = document.createElement('div'),
-                  filterContent = document.createElement('div');
-
-            // Assign id's and classes + change innerHTML
-            filterContainer.className = 'filter';
-            filterContent.className = 'propName';
-            filterContainer.id = `filter_${v}${propCount[v]}`;
-            filterContent.id = `propName_${v}${propCount[v]}`;
-            filterContent.innerHTML = `${CapitilizeFirstLetter(v)} (${propCount[v]})`;
-
-            // Add filter to UserStruct
-            userStruct['filterDivs'][`propName_${v}${propCount[v]}`] = {};
-            userStruct['filterDivs'][`propName_${v}${propCount[v]}`].element = filterContent;
-
-            // Append children elements to respective parent elements
-            document.querySelector('#filters').appendChild(filterContainer);
-            document.querySelector(`#filter_${v}${propCount[v]}`).appendChild(filterContent);
-
-            // Show bounties as per filter
-            filterContainer.addEventListener('click', () => {
-                userStruct[initArrStr].forEach(b => {
-
-                    // Find bounties that match the filter index
-                    if (!b.props.includes(v)) {
-
-                        document.getElementById(`${b.hash}`).style.opacity = '50%';
-                        document.getElementById(`item_${b.hash}`).style.opacity = '50%';
-                        document.getElementById(`propName_${v}${propCount[v]}`).style.color = 'rgb(224, 224, 224)';
-
-                        if (!userStruct['greyOutDivs']) {
-                            userStruct['greyOutDivs'] = [];
-                            userStruct['greyOutDivs'].push(b.hash);
-                        }
-                        else if (!userStruct['greyOutDivs'].includes(b.hash)) {
-                            userStruct['greyOutDivs'].push(b.hash);
-                        };
-                    };
-                });
-            });
-        };
     };
 };
 

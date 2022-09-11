@@ -69,16 +69,18 @@
             </div>
 
             <div id="statsContainer">
+                
                 <div id="statsTitleContainer">
                     <div id="statsTitle">Potential Yield</div>
                     <div id="queryDiv">This isn't calculated with modifiers like "Well Rested". Ghost mods are used in this calculation.</div>
                     <img id="statsTitleQuery" src="./assets/icons/interfaceHelp.webp">
                 </div>
+
                 <div id="statsListContainer">
-                    <div id="totalXP">XP: </div>
-                    <div id="totalSpLevels">SP Levels: </div>
-                    <!-- <div id="totalArtiLevels">Artifact: </div> -->
+                    <div id="totalXp">XP: </div><div id="totalXpField"></div><br>
+                    <div id="totalSpLevels">SP Levels: </div><div id="totalSpLevelsField"></div>
                 </div>
+
                 <div id="btnSynergyView">View Synergy</div>
             </div>
         </div>
@@ -102,7 +104,7 @@
             <div id="pursuitsContainer">
 
                 <div id="bountyDisplayContainer">
-                    <div id="displayTitle_Bounties" class="containerTitle">Bounties</div>
+                    <div id="displayTitle_Bounties" class="containerTitle">Bounties</div><div id="bountiesAmountField"></div>
                     <hr class="titleBreaker">
                     <div id="filterContentContainer">
                         <div id="filters"></div>
@@ -121,12 +123,6 @@
 
                 <div id="displayTitle_Levelling" class="containerTitle" style="margin-top: 25px;">Levelling Statistics</div>
                 <hr class="titleBreaker">
-                <div id="levellingStatsDisplay">
-                    <div id="totalBrightEngrams">Next Bright Engram: </div>
-                    <div id="currentSpLevel"></div>
-                    <div id="artifactBonus"></div>
-                    <div id="artifactPrg"></div>
-                </div>
 
                 <div id="statsTableLayoutContainer">
 
@@ -139,14 +135,15 @@
                                 <div class="artifactStatsSuffixBottom">to next power bonus</div>
                             </div>
                             <div id="artifactStatsSecondContainer">
-                                <div class="containerMetricNumber" id="artifactXpToNextUnlock">756,745</div><div id="artifactStatsSuffix"> XP</div><br>
+                                <div class="containerMetricNumber" id="artifactXpToNextUnlock"></div><div id="artifactStatsSuffix"> XP</div><br>
                                 <div class="artifactStatsSuffixBottom">to next artifact unlock</div>
                             </div>
                         </div>
                         <div id="artifactStatsThirdMetricContainer">
-                            <img id="artifactStatsArtifactImage" src="./assets/icons/ghost.webp">
-                            <div id="artifactStatsArtifactBonus">+10</div>
+                            <img id="artifactStatsArtifactImage" src="https://www.bungie.net/common/destiny2_content/icons/b1fe56d925a2ffc41d23e4c2ac5bdbb3.jpg">
+                            <div id="artifactStatsArtifactBonus"></div>
                         </div>
+                        <div id="artifactStatsNoArtifactIsPresent">No Artifact is present on this profile.</div>
                     </div>
 
 
@@ -155,16 +152,21 @@
                         <div id="seasonPassContentContainer">
                             <div class="containerTitle">SEASON PASS</div>
                             <div id="seasonPassFirstContainer">
-                                <div class="containerMetricNumber" id="seasonPassXpToNextRank">43,494</div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to next rank</div>
+                                <div class="containerMetricNumber" id="seasonPassXpToNextRank"></div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to next rank</div>
                             </div>
                             <div id="seasonPassSecondContainer">
-                                <div class="containerMetricNumber" id="seasonPassXpToMaxRank">1,000,000</div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to rank 100</div>
+                                <div class="containerMetricNumber" id="seasonPassXpToMaxRank"></div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to rank 100</div>
                             </div>
                         </div>
                         <div id="seasonPassThirdMetricContainer">
-                            <div id="seasonPassRankLevel">74</div>
+                            <div id="seasonPassRankLevel"></div>
                             <div id="seasonPassRankTitle">RANK</div>
-                            <div id="seasonPassFireteamBonus">25%</div><br><div id="seasonPassFireteamBonusSuffix">fireteam bonus</div>
+                            <div id="seasonPassFireteamBonusContainer">
+                                <div id="seasonPassFireteamBonus">25%</div><br><div id="seasonPassFireteamBonusSuffix">Shared<br>Wisdom</div>
+                            </div>
+                            <div id="seasonPassXpBonusContainer">
+                                <div id="seasonPassXpBonus">30%</div><br><div id="seasonPassXpBonusSuffix">Bonus XP</div>
+                            </div>
                         </div>
                     </div>
 
@@ -174,7 +176,7 @@
                         <div id="brightEngramContentContainer">
                             <div class="containerTitle">BRIGHT ENGRAM</div>
                             <div id="brightEngramFirstContainer">
-                                <div class="containerMetricNumber" id="brightEngramXpToNextEngram">998,642</div><div id="brightEngramSuffix"> XP</div><br><div id="brightEngramSuffixBottom">to next engram</div>
+                                <div class="containerMetricNumber" id="brightEngramXpToNextEngram"></div><div id="brightEngramSuffix"> XP</div><br><div id="brightEngramSuffixBottom">to next engram</div>
                             </div>
                             <div id="brightEngramSecondContainer">
                                 <div class="containerMetricNumber" id="brightEngramXpToNextSeasonPassEngram">314,485</div><div id="brightEngramSuffix"> to next season pass engram</div>
@@ -187,20 +189,6 @@
 
 
                 </div>
-
-                <!-- <div id="questDisplayContainer">
-                    <div id="displayTitle_Bounties">Quests</div>
-                    <div id="noItemsTooltip"></div>
-                    <div id="questItems">
-                    </div>
-                </div>
-
-                <div id="seasonalDisplayContainer">
-                    <div id="displayTitle_Bounties">Seasonal Challenges</div>
-                    <div id="noItemsTooltip"></div>
-                    <div id="seasonalchallItems">
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>
