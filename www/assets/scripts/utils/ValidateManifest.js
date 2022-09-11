@@ -1,4 +1,5 @@
 import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
+import { GenerateRandomString } from './ModuleScript.js';
 
 const requiredTables = [
     'DestinyInventoryItemDefinition',
@@ -46,7 +47,7 @@ const ValidateTables = async () => {
             }
             catch (e) {
                 // CORS problems most likely -- avoid caching by sending random query param
-                newTable = await axios.get(`https://www.bungie.net${suffix}?randomqueryparam=123`);
+                newTable = await axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(12)}=123`);
                 console.error(e);
             };
 

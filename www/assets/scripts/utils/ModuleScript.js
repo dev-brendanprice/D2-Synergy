@@ -519,6 +519,18 @@ var CreateFilters = async (initArrStr, propCount) => {
 };
 
 
+// Generate a random string with defined length
+// @int {len}
+var GenerateRandomString = (len) => {
+    let result = ' ';
+    let characters ='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    for (let i = 0; i < len; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    };
+    return result;
+};
+
+
 
 export {
     VerifyState,
@@ -544,5 +556,6 @@ export {
     CacheRemoveItem,
     CacheReturnItem,
     AddNumberToElementInner,
-    CreateFilters
+    CreateFilters,
+    GenerateRandomString
 };
