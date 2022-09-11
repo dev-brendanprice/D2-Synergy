@@ -40,12 +40,14 @@ const ValidateTables = async () => {
             // Request/Set new table
             let suffix = await ReturnComponentSuffix(table),
                 newTable;
-            
+
             try {
                 newTable = await axios.get(`https://www.bungie.net${suffix}`);
             }
             catch (e) {
-                log(e); // CORS problems most likely
+                // CORS problems most likely -- avoid caching by sending random query param
+                newTable = await axios.get(`https://www.bungie.net${suffix}?randomqueryparam=123`);
+                console.error(e);
             };
 
             set(table, newTable.data);

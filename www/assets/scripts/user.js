@@ -449,8 +449,8 @@ var LoadCharacter = async (classType, isRefresh) => {
             };
         });
 
-        // Calculate xp for: next bright engram, fireteam boost, and xp multiplier
-        AddNumberToElementInner('brightEngramXpToNextEngram', InsertSeperators(await CalculateXpForNextBrightEngram(seasonInfo, prestigeSeasonInfo, rewardsTrack)));
+        // Calculate stats for: next bright engram, fireteam boost, and xp multiplier
+        AddNumberToElementInner('XpToNextEngram', InsertSeperators(await CalculateXpForNextBrightEngram(seasonInfo, prestigeSeasonInfo, rewardsTrack)));
 
         // Get artifact info -- check if profile has artifact
         let artifact;
