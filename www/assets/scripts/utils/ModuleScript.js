@@ -366,27 +366,44 @@ var CalcXpYield = (bountyArr, utils) => {
 };
 
 
-// New function for getting XP required for next bright engram
-var CalculateXpForNextBrightEngram = async (seasonInfo, prestigeInfo, rewardsTrack) => {
+// Calculate XP required for next bright engram
+var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack, itemDefinitions) => {
 
     // Get total season rank
-    let seasonRank = seasonInfo.level + prestigeInfo.level;
+    let seasonRank = seasonInfo.level + prestigeInfo.level,
+        returnArr = [];
 
     // Check if the season pass is higher than level 100 (prestige level)
     if (seasonRank >= 100) { // Prestige
 
         // Calculate Xp needed for next bright engram based on the current prestige level
         // Here, we are assuming that you get a bright engram every other five levels
-        let nextEngramRank = Math.ceil((seasonRank+1)/5)*5;
-        return ((nextEngramRank - seasonRank) * 100_000) - prestigeInfo.progressToNextLevel;
+        let nextEngramRank = Math.ceil((seasonRank+1)/5)*5,
+            brightEngramCount = 0;
+
+        // Push results to return array
+        returnArr.push(((nextEngramRank - seasonRank) * 100_000) - prestigeInfo.progressToNextLevel);
+
+        // Iterate through the entire season pass and count all bright engrams
+        Object.keys(rewardsTrack).forEach(v => {
+            rewardsTrack[v].forEach(x => {
+                if (x === 1968811824) {
+                    brightEngramCount++;
+                };
+            });
+        });
+
+        let prestigeRanksDividedNthTerm = (seasonRank - 100) / 5;
+        returnArr[1] = brightEngramCount + Math.trunc(prestigeRanksDividedNthTerm);
     }
+
     else if (seasonRank < 100) { // Not prestige (less than 100)
         
-        // Iterate through rewards track and get every bright engram at their respective levels
         // Here, we are assuming that you get bright engrams relative to the season pass structure, because we are not past level 100
         let splicedRewardsTrack = Object.keys(rewardsTrack).splice(seasonRank),
             engramRanks = [];
 
+        // Iterate through rewards track and get every bright engram at their respective levels
         splicedRewardsTrack.forEach(v => {
             rewardsTrack[v].forEach(x => {
                 if (x === 1968811824) {
@@ -395,9 +412,41 @@ var CalculateXpForNextBrightEngram = async (seasonInfo, prestigeInfo, rewardsTra
             });
         });
 
+        // Push results to return array
         let nextEngramRank = engramRanks[0];
-        return ((nextEngramRank - seasonRank) * 100_000) - seasonInfo.progressToNextLevel;
+        returnArr.push(((nextEngramRank - seasonRank) * 100_000) - seasonInfo.progressToNextLevel);
+
+        // Iterate through indexes before and upto the season rank level to get total number of bright engrams earnt
+        let RewardsTrackUptoSeasonRank = Object.keys(rewardsTrack).splice(0, seasonRank),
+            brightEngramCount = 0,
+            fireteamBonusXpPercent = 0,
+            bonusXpPercent = 0;
+
+        RewardsTrackUptoSeasonRank.forEach(v => {
+            rewardsTrack[v].forEach(x => {
+
+                let itemDisplayProperties = itemDefinitions[x].displayProperties;
+
+                if (x === 1968811824) {
+                    brightEngramCount++;
+                }
+                else if (itemDisplayProperties.name === 'Small Fireteam XP Boost') {
+                    fireteamBonusXpPercent = fireteamBonusXpPercent + 2;
+                }
+                else if (itemDisplayProperties.name === 'Small XP Boost') {
+                    bonusXpPercent = bonusXpPercent + 2;
+                };
+            });
+        });
+
+        // Push results to return array
+        returnArr[1] = brightEngramCount;
+        returnArr[2] = fireteamBonusXpPercent;
+        returnArr[3] = bonusXpPercent;
     };
+
+    // Return our array
+    return returnArr;
 };
 
 
@@ -548,7 +597,7 @@ export {
     SortByType,
     SortBountiesByType,
     CalcXpYield,
-    CalculateXpForNextBrightEngram,
+    ReturnSeasonProgressionStats,
     CalculatePercentage,
     ReturnSeasonPassLevel,
     LoadPrimaryCharacter,

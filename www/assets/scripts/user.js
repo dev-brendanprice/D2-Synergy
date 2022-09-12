@@ -17,7 +17,7 @@ import {
     SortByType,
     SortBountiesByType,
     CalcXpYield,
-    CalculateXpForNextBrightEngram,
+    ReturnSeasonProgressionStats,
     ReturnSeasonPassLevel,
     LoadPrimaryCharacter,
     CacheAuditItem,
@@ -427,7 +427,8 @@ var LoadCharacter = async (classType, isRefresh) => {
         // Get season pass info
         let seasonDefinitions = await ReturnEntry('DestinySeasonDefinition'),
             seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition'),
-            progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition');
+            progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition'),
+            itemDefinitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
             seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
             seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
@@ -442,15 +443,17 @@ var LoadCharacter = async (classType, isRefresh) => {
 
             if (!rewardsTrack[v.rewardedAtProgressionLevel]) {
                 rewardsTrack[v.rewardedAtProgressionLevel] = [];
-                rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
-            }
-            else {
-                rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
             };
+
+            rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
         });
 
         // Calculate stats for: next bright engram, fireteam boost, and xp multiplier
-        AddNumberToElementInner('XpToNextEngram', InsertSeperators(await CalculateXpForNextBrightEngram(seasonInfo, prestigeSeasonInfo, rewardsTrack)));
+        let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonInfo, prestigeSeasonInfo, rewardsTrack, itemDefinitions);
+        AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
+        AddNumberToElementInner('brightEngramXpToNextSeasonPassEngram', InsertSeperators(seasonProgressionStats[1]));
+        AddNumberToElementInner('seasonPassFireteamBonus', `${seasonProgressionStats[2]}%`);
+        AddNumberToElementInner('seasonPassXpBonus', `${seasonProgressionStats[3]}%`);
 
         // Get artifact info -- check if profile has artifact
         let artifact;
@@ -460,6 +463,7 @@ var LoadCharacter = async (classType, isRefresh) => {
             artifact = ProfileProgressions.seasonalArtifact;
             AddNumberToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
             AddNumberToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
+            AddNumberToElementInner('artifactXpToNextPowerBonus', InsertSeperators(artifact.powerBonusProgression.nextLevelAt - artifact.powerBonusProgression.progressToNextLevel));
         }
         else if (!ProfileProgressions.seasonalArtifact) {
 

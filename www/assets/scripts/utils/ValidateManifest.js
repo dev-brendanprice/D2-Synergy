@@ -35,21 +35,18 @@ const ValidateTables = async () => {
         var entry = await get(table);
         if (!entry) {
 
-            // Avoids CORS problems somehow lol
+            // Omit API key from request
             delete axios.defaults.headers.common['X-API-Key'];
 
             // Request/Set new table
-            let suffix = await ReturnComponentSuffix(table),
-                newTable;
-
-            try {
-                newTable = await axios.get(`https://www.bungie.net${suffix}`);
-            }
-            catch (e) {
-                // CORS problems most likely -- avoid caching by sending random query param
-                newTable = await axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(12)}=123`);
-                console.error(e);
-            };
+            let suffix = await ReturnComponentSuffix(table);
+                
+            let newTable = await axios.get(`https://www.bungie.net${suffix}`)
+                .catch(e => {
+                    // CORS problems most likely -- avoid caching by sending random query param
+                    newTable = axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(12)}=123`);
+                    console.error(e);
+                });
 
             set(table, newTable.data);
         };
