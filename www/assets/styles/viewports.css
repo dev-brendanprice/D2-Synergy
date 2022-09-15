@@ -81,4 +81,12 @@
     #statsTableLayoutContainer {
         text-align: center;
     }
+
+    #loadingIcon {
+        display: none;
+    }
+
+    #loadingText {
+        margin-top: -65px;
+    }
 }

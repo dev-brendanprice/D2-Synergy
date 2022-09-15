@@ -82,6 +82,9 @@ userStruct.ints.refreshTime = new Date();
 userStruct.bools.filterToggled = false;
 CacheAuditItem('refreshInterval', 5*60000);
 
+// Start load sequence
+StartLoad();
+
 
 
 // Authorize with Bungie.net
@@ -326,7 +329,6 @@ var LoadCharacter = async (classType, isRefresh) => {
         // Configure load sequence
         document.getElementById('loadingText').innerHTML = 'Indexing Character';
         await CheckComponents(false);
-        StartLoad();
         
         // Globals in this scope
         let membershipType = sessionStorage.getItem('membershipType'),
@@ -506,13 +508,13 @@ var LoadCharacter = async (classType, isRefresh) => {
         await CreateFilters('charBounties', bountyPropCount);
         userStruct.characterLoadToggled = false;
 
-        // Toggle elements
-        document.getElementById('loadingContentContainer').style.display = 'none';
-        userStruct.objs.currView.style.display = 'block';
-        document.getElementById('contentDisplay').style.display = 'inline-block';
-
         // Stop loading sequence
         StopLoad();
+
+        // Toggle elements
+        // document.getElementById('loadingContentContainer').style.display = 'none';
+        userStruct.objs.currView.style.display = 'block';
+        document.getElementById('contentDisplay').style.display = 'inline-block';
     };
 };
 

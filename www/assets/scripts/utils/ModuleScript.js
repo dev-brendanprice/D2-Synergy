@@ -192,13 +192,23 @@ const MakeBountyElement = async (param) => {
 
 // Start loading sequence
 const StartLoad = () => {
+
+    // Add loading bar
     document.getElementById('slider').style.display = 'block';
+
+    // Add load content
+    document.getElementById('loadingContentContainer').style.display = 'block';
 };
 
 
 // Stop loading sequence
 const StopLoad = () => {
+
+    // Remove loading bar
     document.getElementById('slider').style.display = 'none';
+
+    // Remove load content
+    document.getElementById('loadingContentContainer').style.display = 'none';
 };
 
 
