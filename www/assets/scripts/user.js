@@ -50,12 +50,12 @@ var urlParams = new URLSearchParams(window.location.search),
     userStruct = {},
     membershipType,
     characters,
-    homeUrl = 'http://localhost:5500/www/',
+    homeUrl = 'https://synergy.brendanprice.xyz/',
     axiosHeaders = {
-        ApiKey: 'f7857fa32f5f4675bd49d3efb9ab3491',
-        Authorization: 'NDAwMjI6WEEwYXA0MnlTR29tM1kwLVREMFRuWDFCQjNRU1lmTXdGdjRiTTcwUGd5OA=='
+        ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
+        Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
     },
-    clientId = 40022;
+    clientId = 38074;
 
     document.getElementById('loadingContentContainer').style.display = 'block'; // Show loading content
 
