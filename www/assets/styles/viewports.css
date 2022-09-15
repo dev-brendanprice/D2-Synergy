@@ -38,23 +38,24 @@
 /* New layout at this point */
 @media screen and (max-width: 757px) {
     .classBg {
-        width: 65%;
+        width: 75%;
     }
 
     .classType {
         margin-left: 65px;
-        font-size: 20px;
+        font-size: 25px;
     }
 
     .classLight {
-        margin-left: 78px;
-        font-size: 18px;
+        margin-top: 29px;
+        margin-left: 80px;
+        font-size: 20px;
     }
 
     .lightIcon {
-        margin-top: 29px;
+        margin-top: 33px;
         margin-left: 67px;
-        width: 10px;
+        width: 13px;
     }
 
     #categories > div {
