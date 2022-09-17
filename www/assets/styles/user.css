@@ -232,6 +232,32 @@ h2 {
     font-size: 18px;
 }
 
+.percentagePopup {
+    position: absolute;
+    margin-top: -25px;
+    margin-left: 150px;
+    padding: 5px;
+    width: 45px;
+    text-align: center;
+    font-variant-numeric: normal;
+    background-color: rgb(26, 26, 30);
+    border-radius: 3px;
+}
+
+.statsCheckmark {
+    display: inline-block;
+    margin-right: 5px;
+    width: 13px;
+    filter: invert(100%);
+}
+
+.netStatBuffHeading {
+    text-decoration: underline;
+    color: rgb(141, 219, 255);
+    font-style: italic;
+    cursor: pointer;
+}
+
 .classLight {
     position: absolute;
     margin-left: 54px;
@@ -251,11 +277,22 @@ h2 {
 #statsContainer {
     display: none;
     margin-top: 50px;
+    width: 75%;
 }
 
 #statsTitle {
     display: inline-block;
     padding-bottom: 7px;
+    text-align: left;
+    color: rgb(205, 203, 203);
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#baseStatsTitle {
+    display: inline-block;
+    margin-top: 16px;
     text-align: left;
     color: rgb(205, 203, 203);
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
@@ -295,11 +332,23 @@ h2 {
     display: none;
 }
 
-#statsListContainer {
+#baseStatsContainer {
     margin-top: 10px;
 }
 
-#statsListContainer > div {
+#baseStatsContainer > div {
+    display: inline-block;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: rgb(205, 203, 203);
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
+#netStatsContainer {
+    margin-top: 10px;
+}
+
+#netStatsContainer > div {
     display: inline-block;
     padding-top: 3px;
     padding-bottom: 3px;
@@ -308,7 +357,7 @@ h2 {
 }
 
 #btnSynergyView {
-    margin-top: 10px;
+    margin-top: 12px;
     padding: 4px;
     padding-left: 7px;
     padding-right: 7px;

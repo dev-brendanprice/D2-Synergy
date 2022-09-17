@@ -496,7 +496,7 @@ var LoadPrimaryCharacter = async (characters) => {
 var CacheAuditItem = async (key, value) => {
 
     // Configure userCache if it does not exist#
-    if (!localStorage.getItem('userCache')) { localStorage.setItem('userCache', JSON.stringify({}))};
+    if (!localStorage.getItem('userCache')) localStorage.setItem('userCache', JSON.stringify({}));
     
     var userCache = JSON.parse(localStorage.getItem('userCache'));
     userCache[key] = value;

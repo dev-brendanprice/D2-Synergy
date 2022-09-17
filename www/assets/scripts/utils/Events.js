@@ -5,9 +5,7 @@ const AddEventListeners = async () => {
 
     // Add listeners for buttons
     for (let a=0; a<=2; a++) {
-        document.getElementById(`charContainer${a}`).addEventListener('click', () => {
-            LoadCharacter(a);
-        });
+        document.getElementById(`charContainer${a}`).addEventListener('click', LoadCharacter(a));
     };
 
     // Logout button listener
@@ -15,12 +13,20 @@ const AddEventListeners = async () => {
         Logout();
     });
 
-    // Hover events for "Current Yield" query
+    // Hover events for "Current Yield"
     document.getElementById('statsTitleQuery').addEventListener('mousemove', () => {
         document.getElementById('queryDiv').style.display = 'block';
     });
     document.getElementById('statsTitleQuery').addEventListener('mouseleave', () => {
         document.getElementById('queryDiv').style.display = 'none';
+    });
+
+    // Hover events for "Net Breakdown"
+    document.getElementById('statSharedWisdom').addEventListener('onmouseover', () => {
+        document.getElementById('sharedWisdomValue').style.display = 'block';
+    });
+    document.getElementById('statSharedWisdom').addEventListener('onmouseleave', () => {
+        document.getElementById('sharedWisdomValue').style.display = 'none';
     });
 
     // Remove filters button
@@ -54,11 +60,6 @@ const AddEventListeners = async () => {
         document.getElementById('pursuitsContainer').style.display = 'block';
         userStruct.objs.currView = document.getElementById('pursuitsContainer');
     });
-    // document.getElementById('cgLevelsProgression').addEventListener('click', () => {
-    //     userStruct.objs.currView.style.display = 'none';
-    //     document.getElementById('progressionContainer').style.display = 'block';
-    //     userStruct.objs.currView = document.getElementById('progressionContainer');
-    // });
 
     document.getElementById('btnSynergyView').addEventListener('click', () => {
         userStruct.objs.currView.style.display = 'none';

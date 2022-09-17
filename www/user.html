@@ -71,15 +71,35 @@
 
             <div id="statsContainer">
                 
-                <div id="statsTitleContainer">
-                    <div id="statsTitle">Potential Yield</div>
+                <div id="baseStatsTitleContainer">
+                    <div id="statsTitle">Base Yield</div>
                     <div id="queryDiv">This is NOT calculated with any XP modifiers.</div>
                     <img id="statsTitleQuery" src="./assets/icons/interfaceHelp.webp">
                 </div>
 
-                <div id="statsListContainer">
+                <div id="baseStatsContainer">
                     <div id="totalXp">XP: </div><div id="totalXpField"></div><br>
                     <div id="totalSpLevels">SP Levels: </div><div id="totalSpLevelsField"></div>
+                </div>
+
+                <div id="netStatsContainer">
+                    <div id="baseStatsTitle">Net Breakdown</div>
+                </div>
+
+                <div id="netStatsContainer">
+                    <img class="statsCheckmark" src="./assets/icons/checkmark.png">
+                    <div class="netStatBuffHeading" id="statSharedWisdom">Shared Wisdom</div><div id="totalXpField"></div><br>
+                    <div class="percentagePopup" id="sharedWisdomValue">100%</div>
+
+                    <img class="statsCheckmark" src="./assets/icons/checkmark.png">
+                    <div class="netStatBuffHeading" id="statGhostMod">Ghost Mods</div><div id="totalXpField"></div><br>
+                    <div class="percentagePopup">100%</div>
+
+                    <img class="statsCheckmark" src="./assets/icons/checkmark.png">
+                    <div class="netStatBuffHeading" id="statBonusXp">Bonus XP</div><div id="totalXpField"></div><br>
+                    <div class="percentagePopup">100%</div>
+
+                    <div id="totalXp" style="margin-top: 10px;">Net: 84,000</div><div id="totalXpField"></div><br>
                 </div>
 
                 <div id="btnSynergyView">View Synergy</div>

@@ -158,21 +158,21 @@ var CheckComponents = async (bool) => {
 
 
     Object.keys(rsToken).forEach(item => {
-        !keyNames.includes(item) ? (delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken))) : null;
+        if (!keyNames.includes(item)) delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken))
     });
     Object.keys(acToken).forEach(item => {
-        !keyNames.includes(item) ? (delete acToken[item], localStorage.setItem('accessToken', JSON.stringify(acToken))) : null;
+        if (!keyNames.includes(item)) delete acToken[item], localStorage.setItem('accessToken', JSON.stringify(acToken));
     });
     Object.keys(comps).forEach(item => {
-        !keyNames.includes(item) ? (delete comps[item], localStorage.setItem('components', JSON.stringify(comps))) : null;
+        if (!keyNames.includes(item)) delete comps[item], localStorage.setItem('components', JSON.stringify(comps));
     });
 
     Object.keys(tokenKeys).forEach(item => {
-        !Object.keys(rsToken).includes(tokenKeys[item]) ? RedirUser(homeUrl, 'rsToken=true') : null;
-        !Object.keys(acToken).includes(tokenKeys[item]) ? RedirUser(homeUrl, 'acToken=true') : null;
+        if (!Object.keys(rsToken).includes(tokenKeys[item])) RedirUser(homeUrl, 'rsToken=true');
+        if (!Object.keys(acToken).includes(tokenKeys[item])) RedirUser(homeUrl, 'acToken=true');
     });
     Object.keys(cKeys).forEach(item => {
-        !Object.keys(comps).includes(cKeys[item]) ? RedirUser(homeUrl, 'comps=true') : null;
+        if (!Object.keys(comps).includes(cKeys[item])) RedirUser(homeUrl, 'comps=true');
     });
 
 
@@ -212,7 +212,8 @@ var CheckComponents = async (bool) => {
             });
         isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
     };
-    bool ? log('-> Tokens Validated!') : null;
+    if (bool) log('-> Tokens Validated!');
+    // bool ? log('-> Tokens Validated!') : null;
 };
 
 
@@ -375,9 +376,17 @@ var LoadCharacter = async (classType, isRefresh) => {
             };
         };
 
+        // Set request information
+        let axiosConfig = {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,
+                "X-API-Key": `${axiosHeaders.ApiKey}`
+            }
+        };
+
         // OAuth header guarantees a response
         if (!sessionCache.resCharacterInventories || isRefresh) {
-            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,104,201,202,205,300,301`, {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,"X-API-Key": `${axiosHeaders.ApiKey}`}});
+            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,104,201,202,205,300,301`, axiosConfig);
                 CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
                 CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
                 CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
