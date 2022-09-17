@@ -366,6 +366,8 @@ var LoadCharacter = async (classType, isRefresh) => {
             else if (characters[char].classType === classType) {
                 document.getElementById(`charContainer${characters[char].classType}`).classList.remove('elBlur');
             };
+
+            document.getElementById(`charContainer${characters[char].classType}`).style.display = 'inline';
         };
 
         // Get chosen character and save index  
@@ -386,7 +388,7 @@ var LoadCharacter = async (classType, isRefresh) => {
 
         // OAuth header guarantees a response
         if (!sessionCache.resCharacterInventories || isRefresh) {
-            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.primaryMembershipId}/?components=100,104,201,202,205,300,301`, axiosConfig);
+            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.destinyMemberships[0].membershipId}/?components=100,104,201,202,205,300,301`, axiosConfig);
                 CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
                 CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
                 CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
@@ -500,7 +502,7 @@ var LoadCharacter = async (classType, isRefresh) => {
         if (amountOfBounties === 0) {
 
             // Toggle no items tooltip
-            document.getElementById('noItemsTooltip').innerHTML = 'No Items exist on this character';
+            document.getElementById('noItemsTooltip').innerHTML = `You don't have bounties on this character. How dare you. (-(-_(-_-)_-)-)`;
             document.getElementById('noItemsTooltip').style.display = 'inline-block';
 
             // Make potential yeild stats 0 by default

@@ -209,6 +209,7 @@ h2 {
 }
 
 #charactersContainer > div {
+    display: none;
     cursor: pointer;
     user-select: none;
     -moz-user-select: none;
@@ -513,7 +514,7 @@ h2 {
     margin-top: 5px;
     width: 80px;
     border: 1px grey dashed;
-    z-index: 1;
+    z-index: -0;
 }
 #artifactStatsArtifactImage:hover {
     filter: blur(3px);
@@ -521,12 +522,12 @@ h2 {
 }
 #artifactStatsArtifactBonus {
     position: absolute;
-    margin-top: 65px;
-    margin-left: 43px;
+    margin-top: 64px;
+    margin-left: 3px;
     font-size: 20px;
     font-weight: 600;
     color: rgb(141, 219, 255);
-    z-index: 2;
+    z-index: 10;
 }
 #artifactStatsNoArtifactIsPresent {
     position: absolute;
