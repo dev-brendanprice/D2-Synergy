@@ -41,9 +41,12 @@ var urlParams = new URLSearchParams(window.location.search),
     sessionStorage = window.sessionStorage,
     localStorage = window.localStorage,
     log = console.log.bind(console),
+    progressionDefinitions = {},
+    seasonPassDefinitions = {},
     objectiveDefinitions = {},
     destinyMemberships = {},
     destinyUserProfile = {},
+    seasonDefinitions = {},
     startTime = new Date(),
     sessionCache = {},
     definitions = {},
@@ -349,8 +352,8 @@ var LoadCharacter = async (classType, isRefresh) => {
         // Toggle character load
         userStruct.characterLoadToggled = true;
         CacheAuditItem('lastChar', classType);
-            
-        // Clear DOM content
+
+        // Clear (emtpy fields that are going to change) DOM content
         document.getElementById('loadingContentContainer').style.display = 'block';
         document.getElementById('contentDisplay').style.display = 'none';
         document.getElementById('noItemsTooltip').style.display = 'none';
@@ -378,30 +381,36 @@ var LoadCharacter = async (classType, isRefresh) => {
             };
         };
 
-        // Set request information
-        let axiosConfig = {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,
-                "X-API-Key": `${axiosHeaders.ApiKey}`
-            }
-        };
-
         // OAuth header guarantees a response
         if (!sessionCache.resCharacterInventories || isRefresh) {
+
+            // Set request information
+            let axiosConfig = {
+                headers: {
+                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,
+                    "X-API-Key": `${axiosHeaders.ApiKey}`
+                }
+            };
+
             let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.destinyMemberships[0].membershipId}/?components=100,104,201,202,205,300,301`, axiosConfig);
-                CharacterInventories = resCharacterInventories.data.Response.characterInventories.data;
-                CurrentSeasonHash = resCharacterInventories.data.Response.profile.data.currentSeasonHash;
-                CharacterProgressions = resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
-                CharacterObjectives = resCharacterInventories.data.Response.itemComponents.objectives.data;
-                ProfileProgressions = resCharacterInventories.data.Response.profileProgression.data;
+            let charInvRoot = resCharacterInventories.data.Response;
+            
+                CharacterInventories = charInvRoot.characterInventories.data;
+                CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
+                CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
+                CharacterObjectives = charInvRoot.itemComponents.objectives.data;
+                ProfileProgressions = charInvRoot.profileProgression.data;
                 sessionCache.resCharacterInventories = resCharacterInventories;
         }
         else if (sessionCache.resCharacterInventories) {
-                CharacterInventories = sessionCache.resCharacterInventories.data.Response.characterInventories.data;
-                CurrentSeasonHash = sessionCache.resCharacterInventories.data.Response.profile.data.currentSeasonHash;
-                CharacterProgressions = sessionCache.resCharacterInventories.data.Response.characterProgressions.data[characterId].progressions;
-                CharacterObjectives = sessionCache.resCharacterInventories.data.Response.itemComponents.objectives.data;
-                ProfileProgressions = sessionCache.resCharacterInventories.data.Response.profileProgression.data;
+
+            let charInvRoot = sessionCache.resCharacterInventories.data.Response;
+
+                CharacterInventories = charInvRoot.characterInventories.data;
+                CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
+                CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
+                CharacterObjectives = charInvRoot.itemComponents.objectives.data;
+                ProfileProgressions = charInvRoot.profileProgression.data;
         };
 
         // Iterate over CharacterInventories[characterId].items
@@ -438,15 +447,10 @@ var LoadCharacter = async (classType, isRefresh) => {
         const totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
 
         // Get season pass info
-        let seasonDefinitions = await ReturnEntry('DestinySeasonDefinition'),
-            seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition'),
-            progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition'),
-            itemDefinitions = await ReturnEntry('DestinyInventoryItemDefinition');
-
-            seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
-            seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
-            prestigeSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
-            seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
+        seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
+        seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
+        prestigeSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
+        seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
 
         let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems,
             rewardsTrack = {};
@@ -462,7 +466,7 @@ var LoadCharacter = async (classType, isRefresh) => {
         });
 
         // Pass in stats for: next bright engram, fireteam boost, and xp multiplier
-        let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonInfo, prestigeSeasonInfo, rewardsTrack, itemDefinitions);
+        let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonInfo, prestigeSeasonInfo, rewardsTrack, definitions);
         AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
         AddNumberToElementInner('brightEngramXpToNextSeasonPassEngram', InsertSeperators(seasonProgressionStats[1]));
         AddNumberToElementInner('seasonPassFireteamBonus', `${seasonProgressionStats[2]}%`);
@@ -549,6 +553,9 @@ var LoadCharacter = async (classType, isRefresh) => {
     await FetchBungieUserDetails();
 
     // Fetch manifest
+    seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
+    seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition');
+    progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition');
     objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
