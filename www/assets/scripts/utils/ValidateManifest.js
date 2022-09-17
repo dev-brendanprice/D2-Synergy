@@ -52,7 +52,6 @@ const ValidateTables = async () => {
                     return axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(4)}=${GenerateRandomString(4)}`)
                 });
 
-            log(newTable);
             set(table, newTable.data);
         };
     };
