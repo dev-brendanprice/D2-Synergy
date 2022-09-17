@@ -22,11 +22,25 @@ const AddEventListeners = async () => {
     });
 
     // Hover events for "Net Breakdown"
-    document.getElementById('statSharedWisdom').addEventListener('onmouseover', () => {
-        document.getElementById('sharedWisdomValue').style.display = 'block';
+    document.getElementById('statSharedWisdom').addEventListener('mouseover', () => {
+        document.getElementById('sharedWisdomPopupContainer').style.display = 'inline-block';
     });
-    document.getElementById('statSharedWisdom').addEventListener('onmouseleave', () => {
-        document.getElementById('sharedWisdomValue').style.display = 'none';
+    document.getElementById('statSharedWisdom').addEventListener('mouseleave', () => {
+        document.getElementById('sharedWisdomPopupContainer').style.display = 'none';
+    });
+
+    document.getElementById('statGhostMod').addEventListener('mouseover', () => {
+        document.getElementById('ghostModPopupContainer').style.display = 'inline-block';
+    });
+    document.getElementById('statGhostMod').addEventListener('mouseleave', () => {
+        document.getElementById('ghostModPopupContainer').style.display = 'none';
+    });
+
+    document.getElementById('statBonusXp').addEventListener('mouseover', () => {
+        document.getElementById('BonusXpPopupContainer').style.display = 'inline-block';
+    });
+    document.getElementById('statBonusXp').addEventListener('mouseleave', () => {
+        document.getElementById('BonusXpPopupContainer').style.display = 'none';
     });
 
     // Remove filters button

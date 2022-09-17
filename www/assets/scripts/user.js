@@ -459,12 +459,18 @@ var LoadCharacter = async (classType, isRefresh) => {
             rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
         });
 
-        // Calculate stats for: next bright engram, fireteam boost, and xp multiplier
+        // Pass in stats for: next bright engram, fireteam boost, and xp multiplier
         let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonInfo, prestigeSeasonInfo, rewardsTrack, itemDefinitions);
         AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
         AddNumberToElementInner('brightEngramXpToNextSeasonPassEngram', InsertSeperators(seasonProgressionStats[1]));
         AddNumberToElementInner('seasonPassFireteamBonus', `${seasonProgressionStats[2]}%`);
         AddNumberToElementInner('seasonPassXpBonus', `${seasonProgressionStats[3]}%`);
+
+        // Pass in stats for the net breakdown section
+        AddNumberToElementInner('bonusXpValue', `${seasonProgressionStats[3]}%`);
+        AddNumberToElementInner('sharedWisdomValue', `${seasonProgressionStats[2]}%`);
+        AddNumberToElementInner('ghostModValue', `NaN%`);
+        AddNumberToElementInner('totalNetXpField', `NaN`); // Base xp total increase by the total percent of the above 3 stats
 
         // Get artifact info -- check if profile has artifact
         let artifact;

@@ -232,32 +232,6 @@ h2 {
     font-size: 18px;
 }
 
-.percentagePopup {
-    position: absolute;
-    margin-top: -25px;
-    margin-left: 150px;
-    padding: 5px;
-    width: 45px;
-    text-align: center;
-    font-variant-numeric: normal;
-    background-color: rgb(26, 26, 30);
-    border-radius: 3px;
-}
-
-.statsCheckmark {
-    display: inline-block;
-    margin-right: 5px;
-    width: 13px;
-    filter: invert(100%);
-}
-
-.netStatBuffHeading {
-    text-decoration: underline;
-    color: rgb(141, 219, 255);
-    font-style: italic;
-    cursor: pointer;
-}
-
 .classLight {
     position: absolute;
     margin-left: 54px;
@@ -349,11 +323,77 @@ h2 {
 }
 
 #netStatsContainer > div {
-    display: inline-block;
     padding-top: 3px;
     padding-bottom: 3px;
     color: rgb(205, 203, 203);
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
+.statsCheckmark {
+    display: inline-block;
+    margin-right: 5px;
+    width: 13px;
+    filter: invert(100%);
+}
+
+.netStatBuffHeading {
+    display: inline-block;
+    text-decoration: underline;
+    color: rgb(141, 219, 255) !important;
+    font-style: italic;
+    cursor: pointer;
+}
+
+.popupArrow {
+    position: absolute;
+    display: inline-block;
+    margin-top: -17px;
+    width: 12px;
+    filter: invert(10%);
+    transform: rotate(90deg);
+}
+
+.percentagePopup {
+    position: absolute;
+    display: inline-block;
+    margin-top: -25px;
+    margin-left: 8px;
+    padding: 5px;
+    width: 45px;
+    text-align: center;
+    font-variant-numeric: normal;
+    background-color: rgb(26, 26, 30);
+    border-radius: 3px;
+}
+
+#sharedWisdomPopupContainer {
+    position: absolute;
+    display: none;
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+#ghostModPopupContainer {
+    position: absolute;
+    display: none;
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+#BonusXpPopupContainer {
+    position: absolute;
+    display: none;
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+.netXpHeading {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+#totalNetXpField {
+    display: inline-block;
 }
 
 #btnSynergyView {
