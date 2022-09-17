@@ -367,7 +367,7 @@ var LoadCharacter = async (classType, isRefresh) => {
                 document.getElementById(`charContainer${characters[char].classType}`).classList.remove('elBlur');
             };
 
-            document.getElementById(`charContainer${characters[char].classType}`).style.display = 'inline';
+            document.getElementById(`charContainer${characters[char].classType}`).style.display = 'block';
         };
 
         // Get chosen character and save index  
@@ -517,7 +517,6 @@ var LoadCharacter = async (classType, isRefresh) => {
             // Change potential yield stats since there are bounties present
             AddNumberToElementInner('totalXpField', InsertSeperators(totalXpYield));
             AddNumberToElementInner('totalSpLevelsField', totalXpYield / 100_000);
-            // document.getElementById('totalArtiLevels').innerHTML = `${document.getElementById('totalArtiLevels').innerHTML}${InsertSeperators(artifact.pointProgression.progressToNextLevel)} / ${InsertSeperators(artifact.pointProgression.nextLevelAt)}`;
         };
 
         // Load synergyDefinitions and match against bounties
