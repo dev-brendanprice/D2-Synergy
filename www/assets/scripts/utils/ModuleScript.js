@@ -421,7 +421,7 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
         returnArr[2] = fireteamBonusXpPercent;
         returnArr[3] = bonusXpPercent;
         returnArr[4] = prestigeInfo.progressToNextLevel;
-        returnArr[5] = 'Achieved';
+        returnArr[5] = 0;
     }
 
     else if (seasonRank < 100) { // Not prestige (less than 100)
