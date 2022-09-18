@@ -483,6 +483,11 @@ var LoadCharacter = async (classType, isRefresh) => {
         AddNumberToElementInner('ghostModValue', `NaN%`);
         AddNumberToElementInner('totalNetXpField', `NaN`); // Base xp total increase by the total percent of the above 3 stats
 
+        // Add season pass statistics
+        AddNumberToElementInner('seasonPassRankLevel', seasonPassLevel);
+        AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonProgressionStats[4]));
+        AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonProgressionStats[5]));
+
         // Get artifact info -- check if profile has artifact
         let artifact;
         if (ProfileProgressions.seasonalArtifact) {
@@ -501,13 +506,6 @@ var LoadCharacter = async (classType, isRefresh) => {
             document.getElementById('artifactStatsThirdMetricContainer').style.display = 'none';
             document.getElementById('artifactStatsNoArtifactIsPresent').style.display = 'block';
         };
-
-        // Add season pass statistics
-        AddNumberToElementInner('seasonPassRankLevel', seasonPassLevel);
-        log(seasonInfo.progressToNextLevel);
-        log(seasonInfo);
-        AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonInfo.progressToNextLevel));
-        AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators((seasonInfo.levelCap - seasonInfo.level) * 100_000 + seasonInfo.progressToNextLevel));
 
         // Check if there are no bounties
         if (amountOfBounties === 0) {
