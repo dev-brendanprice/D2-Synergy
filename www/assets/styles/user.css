@@ -334,7 +334,13 @@ h2 {
     display: inline-block;
     margin-right: 5px;
     width: 13px;
-    filter: invert(100%);
+    filter: invert(82%) sepia(20%) saturate(1304%) hue-rotate(78deg) brightness(85%) contrast(90%);
+}
+
+.statsCross {
+    display: none;
+    margin-right: 5px;
+    width: 13px;
 }
 
 .netStatBuffHeading {

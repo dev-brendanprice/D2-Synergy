@@ -52,7 +52,8 @@ var progressionDefinitions = {},
     objectiveDefinitions = {},
     destinyUserProfile = {},
     seasonDefinitions = {},
-    definitions = {};
+    definitions = {},
+    socketDefinitions = {};
 
 // General response variable
 var destinyMembershipId,
@@ -347,11 +348,13 @@ var LoadCharacter = async (classType, isRefresh) => {
             ProfileProgressions,
             seasonPassInfo = {},
             seasonPassLevel = 0,
+            CharacterEquipment,
             prestigeSeasonInfo,
             CurrentSeasonHash,
             charBounties = [],
             seasonInfo = {},
-            characterId;
+            characterId,
+            ItemSockets;
 
 
         // Toggle character load
@@ -397,14 +400,16 @@ var LoadCharacter = async (classType, isRefresh) => {
                 }
             };
 
-            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,201,202,205,300,301`, axiosConfig);
+            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,201,202,205,300,301,305`, axiosConfig);
             let charInvRoot = resCharacterInventories.data.Response;
             
                 CharacterInventories = charInvRoot.characterInventories.data;
                 CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
                 CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
                 CharacterObjectives = charInvRoot.itemComponents.objectives.data;
+                CharacterEquipment = charInvRoot.characterEquipment.data[characterId].items;
                 ProfileProgressions = charInvRoot.profileProgression.data;
+                ItemSockets = charInvRoot.itemComponents.sockets.data;
                 sessionCache.resCharacterInventories = resCharacterInventories;
         }
         else if (sessionCache.resCharacterInventories) {
@@ -415,7 +420,9 @@ var LoadCharacter = async (classType, isRefresh) => {
                 CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
                 CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
                 CharacterObjectives = charInvRoot.itemComponents.objectives.data;
+                CharacterEquipment = charInvRoot.characterEquipment.data[characterId].items;
                 ProfileProgressions = charInvRoot.profileProgression.data;
+                ItemSockets = charInvRoot.itemComponents.sockets.data;
         };
 
         // Iterate over CharacterInventories[characterId].items
@@ -449,7 +456,41 @@ var LoadCharacter = async (classType, isRefresh) => {
         userStruct['charBounties'] = charBounties;
 
         // Calculate XP yield from (active) bounties
-        const totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
+        let totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
+
+        // Ghost mod bonus Xp modifier variable
+        let ghostModBonusXp = 0;
+
+        // Fetch equipped ghost mods
+        CharacterEquipment.forEach(v => {
+            if (v.bucketHash === 4023194814) { // Ghost bucket hash
+                
+                let itemPlugSet = ItemSockets[v.itemInstanceId].sockets;
+
+                Object.keys(itemPlugSet).forEach(v => {
+
+                    let plugHash = itemPlugSet[v].plugHash;
+                    if (plugHash === 1820053069) { // Flickering Ligt - 2%
+                        ghostModBonusXp = 2;
+                    }
+                    else if (plugHash === 1820053068) { // Little Light - 3%
+                        ghostModBonusXp = 3;
+                    }
+                    else if (plugHash === 1820053071) { // Hopeful Light - 5%
+                        ghostModBonusXp = 5;
+                    }
+                    else if (plugHash === 1820053070) { // Burning Light - 8%
+                        ghostModBonusXp = 8;
+                    }
+                    else if (plugHash === 1820053065) { // Guiding Light - 10%
+                        ghostModBonusXp = 10;
+                    }
+                    else if (plugHash === 1820053064) { // Blinding Light - 12%
+                        ghostModBonusXp = 12;
+                    };
+                });
+            };
+        });
 
         // Get season pass info
         seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
@@ -475,18 +516,35 @@ var LoadCharacter = async (classType, isRefresh) => {
         AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
         AddNumberToElementInner('totalBrightEngramsEarned', InsertSeperators(seasonProgressionStats[1]));
         AddNumberToElementInner('seasonPassFireteamBonus', `${seasonProgressionStats[2]}%`);
-        AddNumberToElementInner('seasonPassXpBonus', `${seasonProgressionStats[3]}%`);
+        AddNumberToElementInner('seasonPassXpBonus', `${seasonProgressionStats[3] + 12}%`); // +12 for bonus large xp modifier
 
         // Pass in stats for the net breakdown section
-        AddNumberToElementInner('bonusXpValue', `${seasonProgressionStats[3]}%`);
+        AddNumberToElementInner('bonusXpValue', `${seasonProgressionStats[3] + 12}%`);
         AddNumberToElementInner('sharedWisdomValue', `${seasonProgressionStats[2]}%`);
-        AddNumberToElementInner('ghostModValue', `NaN%`);
-        AddNumberToElementInner('totalNetXpField', `NaN`); // Base xp total increase by the total percent of the above 3 stats
+        AddNumberToElementInner('ghostModValue', `${ghostModBonusXp}%`);
+
+        // Add all the modifiers together, append 1 and times that value by the base total Xp
+        let netXpWithModifiers = totalXpYield * (((seasonProgressionStats[3] + 12 + seasonProgressionStats[2] + ghostModBonusXp) / 100) + 1)
+        AddNumberToElementInner('totalNetXpField', `${InsertSeperators(netXpWithModifiers)}`);
 
         // Add season pass statistics
         AddNumberToElementInner('seasonPassRankLevel', seasonPassLevel);
         AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonProgressionStats[4]));
         AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonProgressionStats[5]));
+
+        // Update net breakdown checkmarks to represent status
+        if (!ghostModBonusXp) {
+            document.getElementById('ghostModCheckmark').style.display = 'none';
+            document.getElementById('ghostModCross').style.display = 'inline-block';
+        };
+        if (!seasonProgressionStats[2]) {
+            document.getElementById('sharedWisdomCheckmark').style.display = 'none';
+            document.getElementById('sharedWisdomCross').style.display = 'inline-block';
+        };
+        if (!seasonProgressionStats[3]) {
+            document.getElementById('bonusXpCheckmark').style.display = 'none';
+            document.getElementById('bonusXpCross').style.display = 'inline-block';
+        };
 
         // Get artifact info -- check if profile has artifact
         let artifact;
@@ -562,6 +620,7 @@ var LoadCharacter = async (classType, isRefresh) => {
     progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition');
     objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
+    socketDefinitions = await ReturnEntry('DestinyPlugSetDefinition');
 
     // Load first character on profile
     await LoadPrimaryCharacter(userStruct.characters);

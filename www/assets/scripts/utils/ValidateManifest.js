@@ -6,7 +6,8 @@ const requiredTables = [
     'DestinyInventoryItemDefinition',
     'DestinyObjectiveDefinition',
     'DestinyProgressionDefinition',
-    'DestinySeasonPassDefinition'
+    'DestinySeasonPassDefinition',
+    'DestinyPlugSetDefinition'
 ];
 
 var log = console.log.bind(console),
@@ -21,6 +22,7 @@ const ReturnComponentSuffix = async (entry) => {
         manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
     };
     var components = manifest.data.Response.jsonWorldComponentContentPaths[window.navigator.language.split('-')[0]];
+    log(components);
 
     return components[entry];
 };
@@ -39,9 +41,8 @@ const ValidateTables = async () => {
             delete axios.defaults.headers.common['X-API-Key'];
 
             // Request/Set new table
-            let suffix = await ReturnComponentSuffix(table);
-
-            let newTable;
+            let suffix = await ReturnComponentSuffix(table),
+                newTable;
                 
             newTable = await axios.get(`https://www.bungie.net${suffix}`)
                 .then((res) => {
