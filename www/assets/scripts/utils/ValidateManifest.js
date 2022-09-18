@@ -2,10 +2,10 @@ import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
 import { GenerateRandomString } from './ModuleScript.js';
 
 const requiredTables = [
+    'DestinySeasonDefinition',
     'DestinyInventoryItemDefinition',
     'DestinyObjectiveDefinition',
     'DestinyProgressionDefinition',
-    'DestinySeasonDefinition',
     'DestinySeasonPassDefinition'
 ];
 
@@ -48,10 +48,11 @@ const ValidateTables = async () => {
                     return res;
                 })
                 .catch((bruh) => {
-                    log(bruh);
+                    log(bruh)
                     return axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(4)}=${GenerateRandomString(4)}`)
                 });
 
+            log(newTable);
             set(table, newTable.data);
         };
     };
@@ -61,7 +62,7 @@ const ValidateTables = async () => {
 
 // Check manifest version
 const ValidateManifest = async () => {
-
+    
     // Change load content
     document.getElementById('loadingText').innerHTML = 'Downloading New Manifest';
 

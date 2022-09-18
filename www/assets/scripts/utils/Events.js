@@ -5,7 +5,9 @@ const AddEventListeners = async () => {
 
     // Add listeners for buttons
     for (let a=0; a<=2; a++) {
-        document.getElementById(`charContainer${a}`).addEventListener('click', LoadCharacter(a));
+        document.getElementById(`charContainer${a}`).addEventListener('click', () => {
+            LoadCharacter(a);
+        });
     };
 
     // Logout button listener

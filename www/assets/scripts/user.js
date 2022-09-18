@@ -44,10 +44,10 @@ var urlParams = new URLSearchParams(window.location.search),
     progressionDefinitions = {},
     seasonPassDefinitions = {},
     objectiveDefinitions = {},
-    destinyMemberships = {},
     destinyUserProfile = {},
     seasonDefinitions = {},
     startTime = new Date(),
+    destinyMembershipId,
     sessionCache = {},
     definitions = {},
     userStruct = {},
@@ -266,9 +266,8 @@ var OAuthFlow = async () => {
 // Fetch basic bungie user details
 var FetchBungieUserDetails = async () => {
     
-    let seasonHash,
-        components = JSON.parse(localStorage.getItem('components')),
-        AuthConfig = { 
+    let components = JSON.parse(localStorage.getItem('components')),
+        axiosConfig = {
             headers: {
                 Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,
                 "X-API-Key": `${axiosHeaders.ApiKey}`
@@ -281,29 +280,31 @@ var FetchBungieUserDetails = async () => {
 
     // Variables to check/store
     membershipType = sessionStorage.getItem('membershipType'),
-    destinyMemberships = JSON.parse(sessionStorage.getItem('destinyMemberships')),
+    destinyMembershipId = JSON.parse(sessionStorage.getItem('destinyMembershipId')),
     destinyUserProfile = JSON.parse(sessionStorage.getItem('destinyUserProfile'));
 
     // If user has no cache
-    if (!membershipType || !destinyMemberships || !destinyUserProfile) {
+    if (!membershipType || !destinyMembershipId || !destinyUserProfile) {
 
-        // Fetch bungie memberships
-        let bungieMemberships = await axios.get(`https://www.bungie.net/Platform/User/GetMembershipsById/${components['membership_id']}/1/`, AuthConfig);
-            destinyMemberships = bungieMemberships.data.Response;
-            membershipType = destinyMemberships.destinyMemberships[0].membershipType;
+        // Get all linked profiles from users account(s) and get the primary one - even if primaryMembersipId does not exist
+        let LinkedProfiles = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${components['membership_id']}/LinkedProfiles/?getAllMemberships=true`, axiosConfig);
+
+        destinyMembershipId = LinkedProfiles.data.Response.profiles[0].membershipId;
+        membershipType = LinkedProfiles.data.Response.profiles[0].membershipType;
 
         // Fetch user profile
-        let userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.destinyMemberships[0].membershipId}/?components=200`, AuthConfig);
-            destinyUserProfile = userProfile.data.Response;
+        let userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=200`, axiosConfig);
+        
+        destinyUserProfile = userProfile.data.Response;
 
         // Cache the response
         sessionStorage.setItem('membershipType', membershipType);
-        sessionStorage.setItem('destinyMemberships', JSON.stringify(destinyMemberships));
+        sessionStorage.setItem('destinyMembershipId', JSON.stringify(destinyMembershipId));
         sessionStorage.setItem('destinyUserProfile', JSON.stringify(destinyUserProfile));
     };
 
     // Load from cache
-    if (membershipType && destinyMemberships && destinyUserProfile) {
+    if (membershipType && destinyMembershipId && destinyUserProfile) {
 
         // Loop over characters
         characters = destinyUserProfile.characters.data;
@@ -392,7 +393,7 @@ var LoadCharacter = async (classType, isRefresh) => {
                 }
             };
 
-            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMemberships.destinyMemberships[0].membershipId}/?components=100,104,201,202,205,300,301`, axiosConfig);
+            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,201,202,205,300,301`, axiosConfig);
             let charInvRoot = resCharacterInventories.data.Response;
             
                 CharacterInventories = charInvRoot.characterInventories.data;
@@ -532,7 +533,6 @@ var LoadCharacter = async (classType, isRefresh) => {
         StopLoad();
 
         // Toggle elements
-        // document.getElementById('loadingContentContainer').style.display = 'none';
         userStruct.objs.currView.style.display = 'block';
         document.getElementById('contentDisplay').style.display = 'inline-block';
     };
@@ -567,8 +567,6 @@ var LoadCharacter = async (classType, isRefresh) => {
 })()
 .catch (error => {
     console.error(error);
-    // document.getElementById('errorTitle').innerHTML = error.name;
-    // document.getElementById('errorMessage').innerHTML = error.message;
 });
 
 export { LoadCharacter, userStruct, homeUrl };

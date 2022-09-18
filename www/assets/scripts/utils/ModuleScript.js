@@ -241,7 +241,9 @@ var ParseBounties = (charInventory, charObjectives, utils) => {
         amountOfBounties = 0;
 
     charInventory.forEach(v => {
+
         let item = utils.definitions[v.itemHash];
+
         if (item.itemType === 26) {
 
             // Add objectives to item
