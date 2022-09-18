@@ -42,26 +42,30 @@ var urlParams = new URLSearchParams(window.location.search),
     sessionStorage = window.sessionStorage,
     localStorage = window.localStorage,
     log = console.log.bind(console),
-    progressionDefinitions = {},
+    startTime = new Date(),
+    sessionCache = {},
+    userStruct = {};
+
+// Defintion objects
+var progressionDefinitions = {},
     seasonPassDefinitions = {},
     objectiveDefinitions = {},
     destinyUserProfile = {},
     seasonDefinitions = {},
-    startTime = new Date(),
-    destinyMembershipId,
-    sessionCache = {},
-    definitions = {},
-    userStruct = {},
+    definitions = {};
+
+// General response variable
+var destinyMembershipId,
     membershipType,
-    characters,
-    homeUrl = 'https://synergy.brendanprice.xyz/',
+    characters;
+
+// Authorization information
+var homeUrl = 'https://synergy.brendanprice.xyz/',
     axiosHeaders = {
         ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
         Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
     },
     clientId = 38074;
-
-    document.getElementById('loadingContentContainer').style.display = 'block'; // Show loading content
 
 // Set default axios header
 userStruct.homeUrl = homeUrl;
