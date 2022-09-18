@@ -382,7 +382,7 @@ var CalcXpYield = (bountyArr, utils) => {
 var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack, itemDefinitions) => {
 
     // Get total season rank
-    let seasonRank = seasonInfo.level + prestigeInfo.level + 100,
+    let seasonRank = seasonInfo.level + prestigeInfo.level,
         returnArr = [];
 
     // Check if the season pass is higher than level 100 (prestige level)
@@ -420,6 +420,8 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
         returnArr[1] = brightEngramCount + Math.trunc(prestigeRanksDividedNthTerm);
         returnArr[2] = fireteamBonusXpPercent;
         returnArr[3] = bonusXpPercent;
+        returnArr[4] = prestigeInfo.progressToNextLevel;
+        returnArr[5] = 'Achieved';
     }
 
     else if (seasonRank < 100) { // Not prestige (less than 100)
@@ -468,6 +470,8 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
         returnArr[1] = brightEngramCount;
         returnArr[2] = fireteamBonusXpPercent;
         returnArr[3] = bonusXpPercent;
+        returnArr[4] = seasonInfo.progressToNextLevel;
+        returnArr[5] = (seasonInfo.levelCap - seasonInfo.level) * 100_000 + seasonInfo.progressToNextLevel;
     };
 
     // Return our array
