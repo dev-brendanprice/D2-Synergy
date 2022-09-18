@@ -460,7 +460,7 @@ h2 {
     text-align: center;
 }
 #artifactStatsBg {
-    background-image: url('../icons/artifactBG.jpg');
+    background-image: url('../images/artifact_background.jpg');
     background-size: cover;
     width: 100%;
     height: 100%;
@@ -547,7 +547,7 @@ h2 {
     text-align: center;
 }
 #seasonPassBg {
-    background-image: url('../icons/seasonalBG.jpg');
+    background-image: url('../images/seasonal_background.jpg');
     background-size: cover;
     width: 100%;
     height: 100%;
@@ -627,7 +627,7 @@ h2 {
     text-align: center;
 }
 #brightEngramBg {
-    background-image: url('../icons/eververse.png');
+    background-image: url('../images/eververse.png');
     background-size: cover;
     width: 100%;
     height: 100%;

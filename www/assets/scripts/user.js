@@ -37,6 +37,7 @@ import { AddEventListeners } from './utils/Events.js';
 VerifyState();
 
 // Globals
+// Utils
 var urlParams = new URLSearchParams(window.location.search),
     sessionStorage = window.sessionStorage,
     localStorage = window.localStorage,
@@ -76,7 +77,6 @@ userStruct.homeUrl = '';
 userStruct.bools = {};
 userStruct.ints = {};
 userStruct.objs = {};
-userStruct.stringsArr = {};
 
 // Push data
 userStruct.objs.currView = document.getElementById('pursuitsContainer');
