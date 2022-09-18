@@ -382,12 +382,8 @@ var CalcXpYield = (bountyArr, utils) => {
 var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack, itemDefinitions) => {
 
     // Get total season rank
-    let seasonRank = seasonInfo.level + prestigeInfo.level,
+    let seasonRank = seasonInfo.level + prestigeInfo.level + 100,
         returnArr = [];
-    
-    log(seasonInfo);
-    log(prestigeInfo);
-    log(seasonRank, seasonInfo.level, prestigeInfo.level);
 
     // Check if the season pass is higher than level 100 (prestige level)
     if (seasonRank >= 100) { // Prestige
@@ -395,24 +391,35 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
         // Calculate Xp needed for next bright engram based on the current prestige level
         // Here, we are assuming that you get a bright engram every other five levels
         let nextEngramRank = Math.ceil((seasonRank+1)/5)*5,
-            brightEngramCount = 0;
+            brightEngramCount = 0,
+            fireteamBonusXpPercent = 0,
+            bonusXpPercent = 0;
 
-        // Push results to return array
+        // Push Xp required until next engram to returnArr
         returnArr.push(((nextEngramRank - seasonRank) * 100_000) - prestigeInfo.progressToNextLevel);
-        log(((nextEngramRank - seasonRank) * 100_000) - prestigeInfo.progressToNextLevel);
 
         // Iterate through the entire season pass and count all bright engrams
         Object.keys(rewardsTrack).forEach(v => {
             rewardsTrack[v].forEach(x => {
+
+                let itemDisplayProperties = itemDefinitions[x].displayProperties;
+
                 if (x === 1968811824) {
                     brightEngramCount++;
+                }
+                else if (itemDisplayProperties.name === 'Small Fireteam XP Boost') {
+                    fireteamBonusXpPercent = fireteamBonusXpPercent + 2;
+                }
+                else if (itemDisplayProperties.name === 'Small XP Boost') {
+                    bonusXpPercent = bonusXpPercent + 2;
                 };
             });
         });
 
         let prestigeRanksDividedNthTerm = (seasonRank - 100) / 5;
         returnArr[1] = brightEngramCount + Math.trunc(prestigeRanksDividedNthTerm);
-        log(brightEngramCount + Math.trunc(prestigeRanksDividedNthTerm));
+        returnArr[2] = fireteamBonusXpPercent;
+        returnArr[3] = bonusXpPercent;
     }
 
     else if (seasonRank < 100) { // Not prestige (less than 100)
@@ -433,7 +440,6 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
         // Push results to return array
         let nextEngramRank = engramRanks[0];
         returnArr.push(((nextEngramRank - seasonRank) * 100_000) - seasonInfo.progressToNextLevel);
-        log(((nextEngramRank - seasonRank) * 100_000) - seasonInfo.progressToNextLevel);
 
         // Iterate through indexes before and upto the season rank level to get total number of bright engrams earnt
         let RewardsTrackUptoSeasonRank = Object.keys(rewardsTrack).splice(0, seasonRank),
@@ -462,11 +468,9 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
         returnArr[1] = brightEngramCount;
         returnArr[2] = fireteamBonusXpPercent;
         returnArr[3] = bonusXpPercent;
-        log(brightEngramCount, fireteamBonusXpPercent, bonusXpPercent);
     };
 
     // Return our array
-    log(returnArr);
     return returnArr;
 };
 

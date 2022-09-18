@@ -472,10 +472,8 @@ var LoadCharacter = async (classType, isRefresh) => {
 
         // Pass in stats for: next bright engram, fireteam boost, and xp multiplier
         let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonInfo, prestigeSeasonInfo, rewardsTrack, definitions);
-        log(seasonProgressionStats);
-        console.table(seasonProgressionStats);
         AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
-        AddNumberToElementInner('brightEngramXpToNextSeasonPassEngram', InsertSeperators(seasonProgressionStats[1]));
+        AddNumberToElementInner('totalBrightEngramsEarned', InsertSeperators(seasonProgressionStats[1]));
         AddNumberToElementInner('seasonPassFireteamBonus', `${seasonProgressionStats[2]}%`);
         AddNumberToElementInner('seasonPassXpBonus', `${seasonProgressionStats[3]}%`);
 
@@ -506,6 +504,8 @@ var LoadCharacter = async (classType, isRefresh) => {
 
         // Add season pass statistics
         AddNumberToElementInner('seasonPassRankLevel', seasonPassLevel);
+        log(seasonInfo.progressToNextLevel);
+        log(seasonInfo);
         AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonInfo.progressToNextLevel));
         AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators((seasonInfo.levelCap - seasonInfo.level) * 100_000 + seasonInfo.progressToNextLevel));
 
