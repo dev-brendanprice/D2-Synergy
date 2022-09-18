@@ -384,6 +384,10 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
     // Get total season rank
     let seasonRank = seasonInfo.level + prestigeInfo.level,
         returnArr = [];
+    
+    log(seasonInfo);
+    log(prestigeInfo);
+    log(seasonRank, seasonInfo.level, prestigeInfo.level);
 
     // Check if the season pass is higher than level 100 (prestige level)
     if (seasonRank >= 100) { // Prestige
@@ -395,6 +399,7 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
 
         // Push results to return array
         returnArr.push(((nextEngramRank - seasonRank) * 100_000) - prestigeInfo.progressToNextLevel);
+        log(((nextEngramRank - seasonRank) * 100_000) - prestigeInfo.progressToNextLevel);
 
         // Iterate through the entire season pass and count all bright engrams
         Object.keys(rewardsTrack).forEach(v => {
@@ -407,6 +412,7 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
 
         let prestigeRanksDividedNthTerm = (seasonRank - 100) / 5;
         returnArr[1] = brightEngramCount + Math.trunc(prestigeRanksDividedNthTerm);
+        log(brightEngramCount + Math.trunc(prestigeRanksDividedNthTerm));
     }
 
     else if (seasonRank < 100) { // Not prestige (less than 100)
@@ -427,6 +433,7 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
         // Push results to return array
         let nextEngramRank = engramRanks[0];
         returnArr.push(((nextEngramRank - seasonRank) * 100_000) - seasonInfo.progressToNextLevel);
+        log(((nextEngramRank - seasonRank) * 100_000) - seasonInfo.progressToNextLevel);
 
         // Iterate through indexes before and upto the season rank level to get total number of bright engrams earnt
         let RewardsTrackUptoSeasonRank = Object.keys(rewardsTrack).splice(0, seasonRank),
@@ -455,9 +462,11 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
         returnArr[1] = brightEngramCount;
         returnArr[2] = fireteamBonusXpPercent;
         returnArr[3] = bonusXpPercent;
+        log(brightEngramCount, fireteamBonusXpPercent, bonusXpPercent);
     };
 
     // Return our array
+    log(returnArr);
     return returnArr;
 };
 
