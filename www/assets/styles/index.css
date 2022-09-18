@@ -18,19 +18,45 @@
 } */
 
 #mainContainer {
-    position: absolute;
+    margin: 0 auto;
     margin-top: 60px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    width: 55vw;
+    width: 785px;
     border: 1px #56606d solid;
     background-color: #3e454e;
     border-radius: 3px;
     text-align: center;
 	align-items: center;
 	justify-content: center;
+}
+
+#serverDeadContainer {
+    display: none;
+    margin: 0 auto;
+    margin-top: 15px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    width: 775px;
+    border: 1px rgb(255, 15, 15) solid;
+    background-color: rgba(255, 69, 69, 0.787);
+    border-radius: 3px;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
+#errorHeading {
+    font-size: 25px;
+}
+
+#errorContent {
+    margin-top: 20px;
+    font-size: 17px;
+}
+
+#hyperlink {
+    display: inline-block;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 #heading {
@@ -52,10 +78,9 @@
 #btnAuthorize {
     position: relative;
     margin-top: 10px;
+    padding: 10px;
     padding-top: 8px;
     padding-bottom: 8px;
-    padding-left: 10px;
-    padding-right: 10px;
 	width: auto;
     color: rgb(34, 34, 34);
     background-color: #e44749;
@@ -86,6 +111,13 @@
 }
 
 #githubIcon {
+    margin-right: 10px;
+    width: 25px;
+    height: auto;
+    cursor: pointer;
+}
+
+#kofiIcon {
     margin-right: 10px;
     width: 25px;
     height: auto;

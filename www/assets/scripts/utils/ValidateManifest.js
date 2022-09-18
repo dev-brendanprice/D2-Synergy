@@ -43,7 +43,7 @@ const ValidateTables = async () => {
 
             let newTable;
                 
-            newTable = await axios.get(`https://www.bungie.net${suffix}?brendan=123`)
+            newTable = await axios.get(`https://www.bungie.net${suffix}`)
                 .then((res) => {
                     return res;
                 })

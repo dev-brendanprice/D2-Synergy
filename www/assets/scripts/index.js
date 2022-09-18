@@ -9,7 +9,7 @@ var log = console.log.bind(console),
 // Generate state parameter
 var GenerateState = (len) => {
     let result = ' ';
-    let characters ='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     for (let i = 0; i < len; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     };
@@ -17,7 +17,7 @@ var GenerateState = (len) => {
 };
 
 // Check localStorage to determine if user has signed in already
-var CheckSession = () => {
+var CheckSession = async () => {
 
     var acToken = JSON.parse(localStorage.getItem('accessToken')),
         rsToken = JSON.parse(localStorage.getItem('refreshToken')),
@@ -34,6 +34,18 @@ var CheckSession = () => {
         window.location.href = 'user.html';
     };
 };
+
+// Check for server availability
+axios.get('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": 'f7857fa32f5f4675bd49d3efb9ab3491'}})
+    .catch((error) => {
+        if (error.response) {
+
+            console.error(error.response);
+            if (error.response.status === 503) {
+                document.getElementById('serverDeadContainer').style.display = 'block';
+            };
+        };
+    });
 
 
 // Check for session
