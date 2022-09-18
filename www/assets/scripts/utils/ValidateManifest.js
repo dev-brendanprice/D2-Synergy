@@ -43,7 +43,7 @@ const ValidateTables = async () => {
 
             let newTable;
                 
-            newTable = await axios.get(`https://www.bungie.net${suffix}`)
+            newTable = await axios.get(`https://www.bungie.net${suffix}?brendan=123`)
                 .then((res) => {
                     return res;
                 })
@@ -64,7 +64,17 @@ const ValidateTables = async () => {
 const ValidateManifest = async () => {
     
     // Change load content
-    document.getElementById('loadingText').innerHTML = 'Downloading New Manifest';
+    let loadContent = document.getElementById('loadingText');
+    loadContent.innerHTML = 'Downloading New Manifest';
+
+    // Add timeout function for long(er) waits :/
+    let newLoadContentTimeout = setTimeout(() => {
+
+        loadContent.innerHTML = 'Sorry this is taking so long, We are nearly there...';
+        setTimeout(() => {
+            loadContent.innerHTML = 'Again, really sorry for the long wait. Try logging out, logging back in, and restarting it all eh?'
+        }, 7_000);
+    }, 10_000);
 
     // Fetch manifest
     var localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
@@ -77,6 +87,9 @@ const ValidateManifest = async () => {
     if (localStorageManifestVersion !== manifest.data.Response.version) {
         window.localStorage.setItem('destinyManifestVersion', manifest.data.Response.version);
     };
+
+    // Remove timeout, just in the case overlapping instructions
+    clearTimeout(newLoadContentTimeout);
 };
 
 
