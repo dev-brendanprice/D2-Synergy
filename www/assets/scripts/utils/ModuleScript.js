@@ -252,9 +252,25 @@ var ParseBounties = (charInventory, charObjectives, utils) => {
                 item.progress.push(prg);
             };
 
-            // Add other item information
+            // Add isExpired property
             item.isExpired = new Date(v.expirationDate) < new Date(); 
             item.props = [];
+
+            // Add isComplete property
+            let entriesAmount = item.progress.length,
+                entriesCount = 0;
+
+            for (let progressEntry of item.progress) {
+                if (progressEntry.complete) {
+                    entriesCount++;
+                };
+            };
+
+            // Set to true otherwise false by default
+            item.isComplete = false;
+            if (entriesAmount === entriesCount) {
+                item.isComplete = true;
+            };
 
             // Push item to arr
             charBounties.push(item);
@@ -379,10 +395,10 @@ var CalcXpYield = (bountyArr, utils) => {
 
 
 // Calculate XP required for next bright engram
-var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack, itemDefinitions) => {
+var ReturnSeasonProgressionStats = async (seasonProgressionInfo, prestigeInfo, rewardsTrack, itemDefinitions) => {
 
     // Get total season rank
-    let seasonRank = seasonInfo.level + prestigeInfo.level,
+    let seasonRank = seasonProgressionInfo.level + prestigeInfo.level,
         returnArr = [];
 
     // Check if the season pass is higher than level 100 (prestige level)
@@ -441,7 +457,7 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
 
         // Push results to return array
         let nextEngramRank = engramRanks[0];
-        returnArr.push(((nextEngramRank - seasonRank) * 100_000) - seasonInfo.progressToNextLevel);
+        returnArr.push(((nextEngramRank - seasonRank) * 100_000) - seasonProgressionInfo.progressToNextLevel);
 
         // Iterate through indexes before and upto the season rank level to get total number of bright engrams earnt
         let RewardsTrackUptoSeasonRank = Object.keys(rewardsTrack).splice(0, seasonRank),
@@ -470,8 +486,8 @@ var ReturnSeasonProgressionStats = async (seasonInfo, prestigeInfo, rewardsTrack
         returnArr[1] = brightEngramCount;
         returnArr[2] = fireteamBonusXpPercent;
         returnArr[3] = bonusXpPercent;
-        returnArr[4] = seasonInfo.progressToNextLevel;
-        returnArr[5] = (seasonInfo.levelCap - seasonInfo.level) * 100_000 + seasonInfo.progressToNextLevel;
+        returnArr[4] = seasonProgressionInfo.progressToNextLevel;
+        returnArr[5] = (seasonProgressionInfo.levelCap - seasonProgressionInfo.level) * 100_000 + seasonProgressionInfo.progressToNextLevel;
     };
 
     // Return our array
@@ -486,14 +502,14 @@ var CalculatePercentage = async (a, b) => {
 
 
 // Return season pass level, even when prestige level
-var ReturnSeasonPassLevel = async (seasonInfo, prestigeSeasonInfo) => {
+var ReturnSeasonPassLevel = async (seasonProgressionInfo, prestigeProgressionSeasonInfo) => {
     
     var levelToReturn = 0;
-    levelToReturn += seasonInfo.level;
+    levelToReturn += seasonProgressionInfo.level;
 
     // If the season pass level is more than 100
-    if (prestigeSeasonInfo.level !== 0) {
-        levelToReturn += prestigeSeasonInfo.level;
+    if (prestigeProgressionSeasonInfo.level !== 0) {
+        levelToReturn += prestigeProgressionSeasonInfo.level;
     };
     return levelToReturn;
 };

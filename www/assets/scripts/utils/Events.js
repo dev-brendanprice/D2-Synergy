@@ -15,6 +15,21 @@ const AddEventListeners = async () => {
         Logout();
     });
 
+    // Settings buttion listener
+    document.getElementById('navBarSettingsContainer').addEventListener('click', () => {
+
+        let mainContainerDisplay = document.getElementById('mainContainer').style.display;
+
+        if (mainContainerDisplay === 'none') {
+            document.getElementById('settingsContainer').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+        }
+        else if (mainContainerDisplay !== 'none') {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('settingsContainer').style.display = 'block';
+        };
+    });
+
     // Hover events for "Current Yield"
     document.getElementById('statsTitleQuery').addEventListener('mousemove', () => {
         document.getElementById('queryDiv').style.display = 'block';
@@ -98,20 +113,21 @@ const AddEventListeners = async () => {
     });
 
     // Configure refresh intervals
-    setInterval(() => {
-        if ((new Date() - userStruct.ints.refreshTime)/1000 > CacheReturnItem('refreshInterval')) {
-            LoadCharacter(CacheReturnItem('lastChar'), true);
-            userStruct.ints.refreshTime = new Date();
-        };
-    }, CacheReturnItem('refreshInterval'));
-    document.addEventListener('visibilitychange', event => {
-        if (document.visibilityState === 'visible') {
-            if ((new Date() - userStruct.ints.refreshTime)/1000 > CacheReturnItem('refreshInterval')) {
-                LoadCharacter(CacheReturnItem('lastChar'), true);
-                userStruct.ints.refreshTime = new Date();
-            };
-        };
-    });
+    // setInterval(() => {
+    //     if ((new Date() - userStruct.ints.refreshTime)/1000 > CacheReturnItem('refreshInterval')) {
+    //         LoadCharacter(CacheReturnItem('lastChar'), true);
+    //         userStruct.ints.refreshTime = new Date();
+    //     };
+    // }, CacheReturnItem('refreshInterval'));
+
+    // document.addEventListener('visibilitychange', event => {
+    //     if (document.visibilityState === 'visible') {
+    //         if ((new Date() - userStruct.ints.refreshTime)/1000 > CacheReturnItem('refreshInterval')) {
+    //             LoadCharacter(CacheReturnItem('lastChar'), true);
+    //             userStruct.ints.refreshTime = new Date();
+    //         };
+    //     };
+    // });
     
 };
 

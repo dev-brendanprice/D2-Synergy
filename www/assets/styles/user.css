@@ -18,6 +18,12 @@
     z-index: 0;
 }
 
+#SettingsContainer {
+    position: absolute;
+    height: 200px;
+    color: white;
+}
+
 h2 {
     padding-bottom: 0px;
     text-transform: uppercase;
@@ -152,7 +158,7 @@ h2 {
     letter-spacing: 1px;
 }
 
-#bountiesAmountField {
+.subheadingFields {
     display: inline-block;
     padding-right: 3px;
     font-size: 15px;
@@ -178,6 +184,7 @@ h2 {
 }
 
 #currentSeasonNameField {
+    display: inline-block;
     color: white;
     font-size: 15px;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";

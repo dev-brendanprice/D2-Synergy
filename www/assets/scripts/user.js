@@ -86,7 +86,7 @@ userStruct.objs = {};
 // Push data
 userStruct.objs.currView = document.getElementById('pursuitsContainer');
 userStruct.bools.characterLoadToggled = false;
-userStruct.ints.refreshTime = new Date();
+// userStruct.ints.refreshTime = new Date();
 userStruct.bools.filterToggled = false;
 CacheAuditItem('refreshInterval', 5*60000);
 
@@ -349,10 +349,10 @@ var LoadCharacter = async (classType, isRefresh) => {
             seasonPassInfo = {},
             seasonPassLevel = 0,
             CharacterEquipment,
-            prestigeSeasonInfo,
+            prestigeProgressionSeasonInfo,
             CurrentSeasonHash,
             charBounties = [],
-            seasonInfo = {},
+            seasonProgressionInfo = {},
             characterId,
             ItemSockets;
 
@@ -493,10 +493,10 @@ var LoadCharacter = async (classType, isRefresh) => {
         });
 
         // Get season pass info
-        seasonInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
+        seasonProgressionInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
         seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
-        prestigeSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
-        seasonPassLevel = await ReturnSeasonPassLevel(seasonInfo, prestigeSeasonInfo);
+        prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
+        seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
 
         let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems,
             rewardsTrack = {};
@@ -512,7 +512,7 @@ var LoadCharacter = async (classType, isRefresh) => {
         });
 
         // Pass in stats for: next bright engram, fireteam boost, and xp multiplier
-        let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonInfo, prestigeSeasonInfo, rewardsTrack, definitions);
+        let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, definitions);
         let xpBonus = seasonProgressionStats[3] + 12;
         AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
         AddNumberToElementInner('totalBrightEngramsEarned', InsertSeperators(seasonProgressionStats[1]));
@@ -532,6 +532,24 @@ var LoadCharacter = async (classType, isRefresh) => {
         AddNumberToElementInner('seasonPassRankLevel', seasonPassLevel);
         AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonProgressionStats[4]));
         AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonProgressionStats[5]));
+
+        // Get statistics for subheadings
+        let amountOfExpiredBounties = 0,
+            amountOfCompletedBounties = 0;
+
+        for (let bounty of userStruct.charBounties) {
+            if (bounty.isComplete) {
+                amountOfCompletedBounties++;
+            };
+            if (bounty.isExpired) {
+                amountOfExpiredBounties++;
+            };
+        };
+
+        // Push subheading statistics
+        AddNumberToElementInner('expiredBountiesAmountField', amountOfExpiredBounties);
+        AddNumberToElementInner('completedBountiesAmountField', amountOfCompletedBounties);
+        AddNumberToElementInner('currentSeasonNameField', seasonPassInfo.displayProperties.name);
 
         // Update net breakdown checkmarks to represent status
         if (!ghostModBonusXp) {
@@ -576,10 +594,13 @@ var LoadCharacter = async (classType, isRefresh) => {
             // Make potential yeild stats 0 by default
             AddNumberToElementInner('totalXpField', 0);
             AddNumberToElementInner('totalSpLevelsField', 0);
+
+            // Change subheading field to show amount of bounties
+            AddNumberToElementInner('bountiesAmountField', 0);
         }
         else if (amountOfBounties > 0) {
 
-            // Append number of bounties on to the end of the "Bounties" heading
+            // Change subheading field to show amount of bounties
             AddNumberToElementInner('bountiesAmountField', `${amountOfBounties}`);
 
             // Change potential yield stats since there are bounties present
@@ -627,7 +648,7 @@ var LoadCharacter = async (classType, isRefresh) => {
     await LoadPrimaryCharacter(userStruct.characters);
     await AddEventListeners();
     log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
-
+    log(userStruct);
 })()
 .catch (error => {
     console.error(error);
