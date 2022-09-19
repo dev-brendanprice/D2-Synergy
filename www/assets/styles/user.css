@@ -20,6 +20,7 @@
 
 #SettingsContainer {
     position: absolute;
+    display: none;
     height: 200px;
     color: white;
 }
