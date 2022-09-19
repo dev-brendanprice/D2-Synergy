@@ -46,6 +46,8 @@ html, body {
     color: rgb(203,116,116);
 }
 
+
+/* Logout container */
 #navBarLogoutContainer {
     position: absolute;
     margin-top: 12px;
@@ -72,6 +74,38 @@ html, body {
     transition: 0.25s;
 }
 #navBarLogout:hover {
+    color: white;
+    border-color: white;
+    transition: 0.25s;
+}
+
+/* Settings container */
+#navBarSettingsContainer {
+    position: absolute;
+    margin-top: 12px;
+    margin-right: 90px;
+    right: 0;
+    cursor: pointer;
+}
+#navBarSettings {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    width: auto;
+    border: 1px solid gray;
+    border-radius: 4px;
+    color: gray;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 15px;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    transition: 0.25s;
+}
+#navBarSettings:hover {
     color: white;
     border-color: white;
     transition: 0.25s;
@@ -189,39 +223,7 @@ html, body {
 }
 
 
-/* Error Message */
-#errorContainer {
-    position: absolute;
-    margin-bottom: 15px;
-    margin-right: 15px;
-    right: 0;
-    bottom: 0;
-    height: 60px;
-    width: 240px;
-    background-color: rgb(0, 0, 0);
-    border: 1px dashed gray;
-    border-radius: 4px;
-    opacity: 90%;
-}
-#errorTitle {
-    margin-bottom: 15px;
-    margin-left: 15px;
-    color: white;
-    font-family: Verdana, Geneva, Tahoma, sans-serif, monospace;
-    font-size: 13px;
-    font-weight: bold;
-}
-#errorMessage {
-    margin-bottom: 15px;
-    margin-left: 15px;
-    color: white;
-    font-family: Verdana, Geneva, Tahoma, sans-serif, monospace;
-    font-size: 12px;
-    font-style: italic;
-}
-
-
-/* Misc */
+/* Breakline styles */
 hr.titleBreaker {
     display: absolute;
     opacity: 20%;
@@ -230,13 +232,13 @@ hr.titleBreaker {
     border-radius: 20px;
 }
 
-hr.errorTitleBreaker {
-    display: absolute;
-    width: 50%;
-    opacity: 80%;
-    color: rgb(153, 153, 153);
-    border: 1px solid rgb(153, 153, 153);
-    border-radius: 20px;
+hr.half {
+	width: 100%;
+	padding: none;
+	border: none;
+	height: 2px;
+	border-radius: 2px;
+	background-color: #7e8891;
 }
 
 /* Loading Indicator */

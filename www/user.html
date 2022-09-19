@@ -18,6 +18,9 @@
             <div id="navBarTitle">D2 Synergy</div>
             <a id="navBarVersion" href="https://github.com/brendanprice2003/D2-Synergy/issues" target="_blank" style="text-decoration: none;">Alpha v0.1.0</a>
         </div>
+        <div id="navBarSettingsContainer">
+            <div id="navBarSettings">Settings</div>
+        </div>
         <div id="navBarLogoutContainer">
             <div id="navBarLogout">Log Out</div>
         </div>
@@ -140,8 +143,13 @@
             <div id="pursuitsContainer">
 
                 <div id="bountyDisplayContainer">
-                    <div id="displayTitle_Bounties" class="containerTitle">Bounties</div><div id="bountiesAmountField"></div>
-                    <hr class="titleBreaker">
+
+                    <div class="bountiesContainerTitle">Bounties</div><br>
+                    <div id="bountiesAmountField"></div><div id="bountiesFieldSubText">total  · </div>
+                    <div id="bountiesAmountField">8</div><div id="bountiesFieldSubText">completed  · </div>
+                    <div id="bountiesAmountField">1</div><div id="bountiesFieldSubText">expired</div>
+                    <hr class="half">
+
                     <div id="filterContentContainer">
                         <div id="filters"></div>
                         <div class="filter" id="removeFiltersID">
@@ -157,8 +165,9 @@
                     </div>
                 </div>
 
-                <div id="displayTitle_Levelling" class="containerTitle" style="margin-top: 25px;">Levelling Statistics</div>
-                <hr class="titleBreaker">
+                <div class="levellingContainerTitle">Levelling Statistics</div>
+                <div id="currentSeasonNameField">Season 14  ·  Season of Plunder</div>
+                <hr class="half">
 
                 <div id="statsTableLayoutContainer">
 

@@ -513,18 +513,19 @@ var LoadCharacter = async (classType, isRefresh) => {
 
         // Pass in stats for: next bright engram, fireteam boost, and xp multiplier
         let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonInfo, prestigeSeasonInfo, rewardsTrack, definitions);
+        let xpBonus = seasonProgressionStats[3] + 12;
         AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
         AddNumberToElementInner('totalBrightEngramsEarned', InsertSeperators(seasonProgressionStats[1]));
         AddNumberToElementInner('seasonPassFireteamBonus', `${seasonProgressionStats[2]}%`);
-        AddNumberToElementInner('seasonPassXpBonus', `${seasonProgressionStats[3] + 12}%`); // +12 for bonus large xp modifier
+        AddNumberToElementInner('seasonPassXpBonus', `${xpBonus}%`); // +12 for bonus large xp modifier
 
         // Pass in stats for the net breakdown section
-        AddNumberToElementInner('bonusXpValue', `${seasonProgressionStats[3] + 12}%`);
+        AddNumberToElementInner('bonusXpValue', `${xpBonus}%`);
         AddNumberToElementInner('sharedWisdomValue', `${seasonProgressionStats[2]}%`);
         AddNumberToElementInner('ghostModValue', `${ghostModBonusXp}%`);
 
         // Add all the modifiers together, append 1 and times that value by the base total Xp
-        let netXpWithModifiers = totalXpYield * (((seasonProgressionStats[3] + 12 + seasonProgressionStats[2] + ghostModBonusXp) / 100) + 1)
+        let netXpWithModifiers = totalXpYield * (((xpBonus + seasonProgressionStats[2] + ghostModBonusXp) / 100) + 1)
         AddNumberToElementInner('totalNetXpField', `${InsertSeperators(netXpWithModifiers)}`);
 
         // Add season pass statistics
@@ -579,7 +580,7 @@ var LoadCharacter = async (classType, isRefresh) => {
         else if (amountOfBounties > 0) {
 
             // Append number of bounties on to the end of the "Bounties" heading
-            AddNumberToElementInner('bountiesAmountField', `(${amountOfBounties})`);
+            AddNumberToElementInner('bountiesAmountField', `${amountOfBounties}`);
 
             // Change potential yield stats since there are bounties present
             AddNumberToElementInner('totalXpField', InsertSeperators(totalXpYield));
