@@ -1,0 +1,35 @@
+# Build solution with snowpack
+
+name: Build
+
+# Schedule to run every Sunday at 00:00 UTC
+on:
+  schedule:
+  - cron: "0 0 * * 0"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# The type of runner that the job will run on
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Sequence of commands following after this
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so the job can access it
+      - uses: actions/checkout@v3
+
+      # Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.6.0'
+
+      # Install node modules
+      - name: Install Dependencies
+        run: npm install
+        
+      # Build with snowpack
+      - name: Build solution
+        run: npm run dev
