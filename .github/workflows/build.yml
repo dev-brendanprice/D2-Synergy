@@ -30,6 +30,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
         
+      # Update package.json
+      - name: Update package.json
+        run: npm update
+        
       # Build with snowpack
       - name: Build solution
         run: npm run dev
