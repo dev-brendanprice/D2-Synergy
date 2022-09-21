@@ -25,21 +25,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '18.x'
-          cache: 'npm'
-#           cache-dependency-path: www/package-lock.json
-          
-      # CD into www
-      - name: Change Directories
-        run: cd www
 
       # Install node modules
       - name: Install Dependencies
+        working-directory: ./www
         run: npm install
-        
-      # Update package.json
-      - name: Update package.json
-        run: npm update
         
       # Build with snowpack
       - name: Build solution
-        run: npm run dev
+        working-directory: ./www
+        run: npm run build
