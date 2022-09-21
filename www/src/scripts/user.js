@@ -2,6 +2,7 @@ console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
 // Import modules
+import axios from 'axios';
 import { ValidateManifest, ReturnEntry } from './utils/ValidateManifest.js';
 import {
     VerifyState,
@@ -32,7 +33,6 @@ import { bountyPropCount, PushProps } from './utils/MatchProps.js';
 import { AddEventListeners } from './utils/Events.js';
 
 
-
 // Validate state parameter
 VerifyState();
 
@@ -61,12 +61,12 @@ var destinyMembershipId,
     characters;
 
 // Authorization information
-var homeUrl = 'http://localhost:5500/www/',
+var homeUrl = 'https://synergy.brendanprice.xyz/',
     axiosHeaders = {
-        ApiKey: 'f7857fa32f5f4675bd49d3efb9ab3491',
-        Authorization: 'NDAwMjI6WEEwYXA0MnlTR29tM1kwLVREMFRuWDFCQjNRU1lmTXdGdjRiTTcwUGd5OA=='
+        ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
+        Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
     },
-    clientId = 40022;
+    clientId = 38074;
 
 // Set default axios header
 userStruct.homeUrl = homeUrl;
@@ -221,7 +221,6 @@ var CheckComponents = async (bool) => {
         isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
     };
     if (bool) log('-> Tokens Validated!');
-    // bool ? log('-> Tokens Validated!') : null;
 };
 
 

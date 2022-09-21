@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
 import { GenerateRandomString } from './ModuleScript.js';
 

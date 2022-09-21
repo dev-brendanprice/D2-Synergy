@@ -1,9 +1,11 @@
 console.log('%cD2 SYNERGY _V0.3', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
+import axios from 'axios';
+
 var log = console.log.bind(console),
     localStorage = window.localStorage,
-    clientId = 40022;
+    clientId = 38074;
 
 
 // Generate state parameter
