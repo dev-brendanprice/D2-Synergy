@@ -25,6 +25,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '18.x'
+          cache: 'npm'
+          cache-dependency-path: www/package-lock.json
 
       # Install node modules
       - name: Install Dependencies
