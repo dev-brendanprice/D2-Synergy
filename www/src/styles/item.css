@@ -36,28 +36,6 @@
     z-index: -10;
 }
 
-/* These are broken */
-/* #itemContainerExpired {
-    position: relative;
-    display: none;
-    width: 210px;
-    height: 260px;
-    background-color: rgba(0, 0, 0, 0.639);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(87, 87, 87, 0.66);
-}
-
-#itemContainerExpired::after {
-    position: absolute;
-    content: "";
-    height: 30%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    background: linear-gradient(rgb(179,73,73) 0%, transparent 100%);
-    z-index: -10;
-} */
-
 #items > div {
     user-select: none;
     -moz-user-select: none;

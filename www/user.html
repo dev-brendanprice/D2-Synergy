@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 
 <head>
-    <link rel="stylesheet" href="assets/styles/user.css">
-    <link rel="stylesheet" href="assets/styles/src.css">
-    <link rel="stylesheet" href="assets/styles/item.css">
-    <link rel="stylesheet" href="assets/styles/viewports.css">
+    <link rel="stylesheet" href="./src/styles/user.css">
+    <link rel="stylesheet" href="./src/styles/src.css">
+    <link rel="stylesheet" href="./src/styles/item.css">
+    <link rel="stylesheet" href="./src/styles/viewports.css">
 
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link rel="shortcut icon" href="#">
@@ -77,7 +77,7 @@
                 <div id="baseStatsTitleContainer">
                     <div id="statsTitle">Base Yield</div>
                     <div id="queryDiv">This is NOT calculated with any XP modifiers.</div>
-                    <img id="statsTitleQuery" src="./assets/icons/interface_help.webp">
+                    <img id="statsTitleQuery" src="./src/icons/interface_help.webp">
                 </div>
 
                 <div id="baseStatsContainer">
@@ -91,29 +91,29 @@
 
                 <div id="netStatsContainer">
                     <div>
-                        <img class="statsCheckmark" id="bonusXpCheckmark" src="./assets/icons/checkmark.png">
-                        <img class="statsCross" id="bonusXpCross" src="./assets/icons/checkmark.png">
+                        <img class="statsCheckmark" id="bonusXpCheckmark" src="./src/icons/checkmark.png">
+                        <img class="statsCross" id="bonusXpCross" src="./src/icons/checkmark.png">
                         <div class="netStatBuffHeading" id="statBonusXp">Bonus XP</div>
                         <div id="BonusXpPopupContainer">
-                            <img class="popupArrow" src="./assets/icons/sort_down.png"><div class="percentagePopup" id="bonusXpValue"></div>
+                            <img class="popupArrow" src="./src/icons/sort_down.png"><div class="percentagePopup" id="bonusXpValue"></div>
                         </div>
                     </div>
 
                     <div>
-                        <img class="statsCheckmark" id="ghostModCheckmark" src="./assets/icons/checkmark.png">
-                        <img class="statsCross" id="ghostModCross" src="./assets/icons/checkmark.png">
+                        <img class="statsCheckmark" id="ghostModCheckmark" src="./src/icons/checkmark.png">
+                        <img class="statsCross" id="ghostModCross" src="./src/icons/checkmark.png">
                         <div class="netStatBuffHeading" id="statGhostMod">Ghost Mods</div>
                         <div id="ghostModPopupContainer">
-                            <img class="popupArrow" src="./assets/icons/sort_down.png"><div class="percentagePopup" id="ghostModValue"></div>
+                            <img class="popupArrow" src="./src/icons/sort_down.png"><div class="percentagePopup" id="ghostModValue"></div>
                         </div> 
                     </div>
 
                     <div>
-                        <img class="statsCheckmark" id="sharedWisdomCheckmark" src="./assets/icons/checkmark.png">
-                        <img class="statsCross" id="sharedWisdomCross" src="./assets/icons/checkmark.png">
+                        <img class="statsCheckmark" id="sharedWisdomCheckmark" src="./src/icons/checkmark.png">
+                        <img class="statsCross" id="sharedWisdomCross" src="./src/icons/checkmark.png">
                         <div class="netStatBuffHeading" id="statSharedWisdom">Shared Wisdom</div>
                         <div id="sharedWisdomPopupContainer">
-                            <img class="popupArrow" src="./assets/icons/sort_down.png"><div class="percentagePopup" id="sharedWisdomValue"></div>
+                            <img class="popupArrow" src="./src/icons/sort_down.png"><div class="percentagePopup" id="sharedWisdomValue"></div>
                         </div>
                     </div>
 
@@ -124,7 +124,7 @@
             </div>
         </div>
         <div id="loadingContentContainer">
-            <img id="loadingIcon" src="assets/icons/rocket_ship.webp">
+            <img id="loadingIcon" src="./src/icons/rocket_ship.webp">
             <div id="loadingText">Loading</div>
         </div>
     
@@ -227,9 +227,9 @@
                                 <div class="containerMetricNumber" id="totalBrightEngramsEarned"></div><div id="brightEngramSuffix"> bright engrams earned</div>
                             </div>
                         </div>
-                        <img id="brightEngramEngramImageLeft" src="./assets/images/engram_outline.png">
-                        <img id="brightEngramEngramImageMiddle" src="./assets/images/engram_outline.png">
-                        <img id="brightEngramEngramImageRight" src="./assets/images/engram_outline.png">
+                        <img id="brightEngramEngramImageLeft" src="./src/images/engram_outline.png">
+                        <img id="brightEngramEngramImageMiddle" src="./src/images/engram_outline.png">
+                        <img id="brightEngramEngramImageRight" src="./src/images/engram_outline.png">
                     </div>
 
 
@@ -243,15 +243,9 @@
     </div>
 
     <div id="overlays"></div>
-<!-- 
-    <div id="errorContainer">
-        <div id="errorIcon"></div>
-        <div id="errorTitle"></div>
-        <div id="errorMessage"></div>
-    </div> -->
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="module" src="assets/scripts/user.js"></script>
-    <script type="module" src="assets/scripts/utils/StructBrowser.js"></script>
+    <script type="module" src="./src/scripts/user.js"></script>
+    <script type="module" src="./src/scripts/utils/StructBrowser.js"></script>
 </body>
