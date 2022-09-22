@@ -69,6 +69,9 @@ var homeUrl = 'https://synergy.brendanprice.xyz/',
     },
     clientId = 38074;
 
+// Put version number in navbar
+document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+
 // Set default axios header
 userStruct.homeUrl = homeUrl;
 axios.defaults.headers.common = {
