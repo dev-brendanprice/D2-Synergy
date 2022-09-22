@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx snowpack dev",
-    "build": "build.sh"
+    "build": "npx snowpack build"
   },
   "keywords": [
     "Destiny",
