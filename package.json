@@ -1,7 +1,7 @@
 {
   "name": "d2-synergy",
   "version": "0.1.0",
-  "description": "",
+  "description": "[![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)\r [![API](https://img.shields.io/badge/API-Bungie.net-blue)](https://bungie-net.github.io/multi/index.html)",
   "main": "index.js",
   "scripts": {
     "dev": "npx snowpack dev",
@@ -21,5 +21,14 @@
   "dependencies": {
     "axios": "^0.27.2",
     "snowpack": "^3.8.8"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brendanprice2003/D2-Synergy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brendanprice2003/D2-Synergy/issues"
+  },
+  "homepage": "https://github.com/brendanprice2003/D2-Synergy#readme"
 }
