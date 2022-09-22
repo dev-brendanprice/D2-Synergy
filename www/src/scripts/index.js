@@ -60,9 +60,9 @@ CheckSession();
 // Main
 window.addEventListener('DOMContentLoaded', () => {
 
-    document.getElementById('btnAuthorize').addEventListener('click', () => {
-        var stateCode = GenerateState(128);
-        localStorage.setItem('stateCode', stateCode);
-        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
-    });
+    // document.getElementById('btnAuthorize').addEventListener('click', () => {
+    //     var stateCode = GenerateState(128);
+    //     localStorage.setItem('stateCode', stateCode);
+    //     window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
+    // });
 });
