@@ -16,7 +16,7 @@
     "D2Synergy",
     "Synergy"
   ],
-  "author": "",
+  "author": "brendanprice2003",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
