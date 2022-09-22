@@ -31,7 +31,6 @@ import {
     petraYields } from './utils/SynergyDefinitions.js';
 import { bountyPropCount, PushProps } from './utils/MatchProps.js';
 import { AddEventListeners } from './utils/Events.js';
-// import packageJson from '../../package.json';
 
 
 // Validate state parameter
@@ -106,7 +105,7 @@ var BungieOAuth = async (authCode) => {
         components = {},
         AuthConfig = {
             headers: {
-                Authorization: `Basic ${axiosHeaders.Authorization}`
+                Authorization: `Basic ${axiosHeaders.Authorization}`,
                 // "Content-Type": "application/x-src-form-urlencoded"
             }
         };
