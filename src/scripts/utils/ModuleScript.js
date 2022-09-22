@@ -65,7 +65,7 @@ const MakeBountyElement = async (param) => {
     // Create bottom element
     item.className = `bounty`;
     item.id = `${param.hash}`;
-    item.src = `https://src.bungie.net${param.displayProperties.icon}`;
+    item.src = `https://www.bungie.net${param.displayProperties.icon}`;
     document.querySelector('#bountyItems').appendChild(item);
 
     // Create overlay element

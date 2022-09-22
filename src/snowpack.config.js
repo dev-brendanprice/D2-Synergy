@@ -2,9 +2,8 @@ let packageJson = require('./package.json');
 
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
-  // root: './',
   buildOptions: {
-    out: './build'
+    out: '../build'
   },
   devOptions: {
     port: 5500

@@ -68,7 +68,7 @@ Note: *The dev environment is configured to only work on localhost, so the addre
 
 1. Clone this repository
 
-2. Make a new Bungie.net API application at: https://src.bungie.net/en/Application
+2. Make a new Bungie.net API application at: https://www.bungie.net/en/Application
     - The redirect URL must have the `https` protocol present. This means that you have to manually change `https` to `http` after the initial authorization redirect has taken place. This is only applicable in development environments due to the nature of localhost in its default configuration.
     - The origin URL must have the `http` version of your base URL.
 

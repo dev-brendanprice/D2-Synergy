@@ -106,13 +106,13 @@ var BungieOAuth = async (authCode) => {
         components = {},
         AuthConfig = {
             headers: {
-                Authorization: `Basic ${axiosHeaders.Authorization}`,
-                "Content-Type": "application/x-src-form-urlencoded"
+                Authorization: `Basic ${axiosHeaders.Authorization}`
+                // "Content-Type": "application/x-src-form-urlencoded"
             }
         };
 
     // Authorize user and get credentials (first time sign-on (usually))
-    await axios.post('https://src.bungie.net/platform/app/oauth/token/', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
+    await axios.post('https://www.bungie.net/platform/app/oauth/token/', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
         .then(res => {
             let data = res.data;
 
@@ -136,7 +136,7 @@ var BungieOAuth = async (authCode) => {
         })
         .catch(err => {
             if (err.response.data['error_description'] == 'AuthorizationCodeInvalid' || err.response.data['error_description'] == 'AuthorizationCodeStale') {
-                window.location.href = `https://src.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
+                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
             }
             else {
                 console.error(err);
@@ -201,7 +201,7 @@ var CheckComponents = async (bool) => {
 
         // If either tokens have expired
         isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
-        await axios.post('https://src.bungie.net/Platform/App/OAuth/token/', `grant_type=refresh_token&refresh_token=${rsToken.value}`, AuthConfig)
+        await axios.post('https://www.bungie.net/Platform/App/OAuth/token/', `grant_type=refresh_token&refresh_token=${rsToken.value}`, AuthConfig)
             .then(res => {
                 let data = res.data;
 
@@ -294,13 +294,13 @@ var FetchBungieUserDetails = async () => {
     if (!membershipType || !destinyMembershipId || !destinyUserProfile) {
 
         // Get all linked profiles from users account(s) and get the primary one - even if primaryMembersipId does not exist
-        let LinkedProfiles = await axios.get(`https://src.bungie.net/Platform/Destiny2/1/Profile/${components['membership_id']}/LinkedProfiles/?getAllMemberships=true`, axiosConfig);
+        let LinkedProfiles = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${components['membership_id']}/LinkedProfiles/?getAllMemberships=true`, axiosConfig);
 
         destinyMembershipId = LinkedProfiles.data.Response.profiles[0].membershipId;
         membershipType = LinkedProfiles.data.Response.profiles[0].membershipType;
 
         // Fetch user profile
-        let userProfile = await axios.get(`https://src.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=200`, axiosConfig);
+        let userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=200`, axiosConfig);
         
         destinyUserProfile = userProfile.data.Response;
 
@@ -317,7 +317,7 @@ var FetchBungieUserDetails = async () => {
         characters = destinyUserProfile.characters.data;
         for (let item in characters) {
             let char = characters[item];
-            document.getElementById(`classBg${char.classType}`).src = `https://src.bungie.net${char.emblemBackgroundPath}`;
+            document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
             document.getElementById(`classType${char.classType}`).innerHTML = `${ParseChar(char.classType)}`;
             document.getElementById(`classLight${char.classType}`).innerHTML = `${char.light}`;
         };
@@ -402,7 +402,7 @@ var LoadCharacter = async (classType, isRefresh) => {
                 }
             };
 
-            let resCharacterInventories = await axios.get(`https://src.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,201,202,205,300,301,305`, axiosConfig);
+            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,201,202,205,300,301,305`, axiosConfig);
             let charInvRoot = resCharacterInventories.data.Response;
             
                 CharacterInventories = charInvRoot.characterInventories.data;

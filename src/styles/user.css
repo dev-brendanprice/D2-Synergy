@@ -446,6 +446,7 @@ h2 {
 }
 
 #btnSynergyView {
+    display: none;
     margin-top: 12px;
     padding: 4px;
     padding-left: 7px;

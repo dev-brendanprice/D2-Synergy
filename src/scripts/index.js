@@ -41,7 +41,7 @@ var CheckSession = async () => {
 };
 
 // Check for server availability
-axios.get('https://src.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": 'f7857fa32f5f4675bd49d3efb9ab3491'}})
+axios.get('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": 'f7857fa32f5f4675bd49d3efb9ab3491'}})
     .catch((error) => {
         if (error.response) {
 
@@ -60,9 +60,9 @@ CheckSession();
 // Main
 window.addEventListener('DOMContentLoaded', () => {
 
-    // document.getElementById('btnAuthorize').addEventListener('click', () => {
-    //     var stateCode = GenerateState(128);
-    //     localStorage.setItem('stateCode', stateCode);
-    //     window.location.href = `https://src.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
-    // });
+    document.getElementById('btnAuthorize').addEventListener('click', () => {
+        var stateCode = GenerateState(128);
+        localStorage.setItem('stateCode', stateCode);
+        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
+    });
 });

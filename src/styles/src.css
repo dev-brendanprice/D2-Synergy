@@ -81,6 +81,7 @@ html, body {
 
 /* Settings container */
 #navBarSettingsContainer {
+    display: none;
     position: absolute;
     margin-top: 12px;
     margin-right: 90px;
