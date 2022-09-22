@@ -11,5 +11,8 @@ module.exports = {
   },
   env: {
     version: `${packageJson.version}`
+  },
+  optimize: {
+    bundle: true
   }
 };
