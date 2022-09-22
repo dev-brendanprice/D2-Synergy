@@ -32,6 +32,7 @@
 }
 
 #websiteNotice {
+    display: block;
     margin: 0 auto;
     margin-top: 15px;
     padding-top: 5px;

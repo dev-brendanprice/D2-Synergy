@@ -31,6 +31,7 @@ import {
     petraYields } from './utils/SynergyDefinitions.js';
 import { bountyPropCount, PushProps } from './utils/MatchProps.js';
 import { AddEventListeners } from './utils/Events.js';
+// import packageJson from '../../package.json';
 
 
 // Validate state parameter
@@ -86,7 +87,6 @@ userStruct.objs = {};
 // Push data
 userStruct.objs.currView = document.getElementById('pursuitsContainer');
 userStruct.bools.characterLoadToggled = false;
-// userStruct.ints.refreshTime = new Date();
 userStruct.bools.filterToggled = false;
 CacheAuditItem('refreshInterval', 5*60000);
 

@@ -7,6 +7,9 @@ var log = console.log.bind(console),
     localStorage = window.localStorage,
     clientId = 38074;
 
+// Put version number in navbar
+document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+
 
 // Generate state parameter
 var GenerateState = (len) => {
