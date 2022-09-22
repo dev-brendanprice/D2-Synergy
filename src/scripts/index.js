@@ -2,13 +2,23 @@ console.log('%cD2 SYNERGY _V0.3', 'font-weight: bold;font-size: 40px;color: whit
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
 import axios from 'axios';
+import twitterIconPath from '../icons/twitter.png';
+import githubIconPath from '../icons/github.png';
+import kofiIconPath from '../icons/kofi.png';
+
 
 var log = console.log.bind(console),
     localStorage = window.localStorage,
     clientId = 40022;
+    log(twitterIconPath);
 
 // Put version number in navbar
 document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+
+// Put image paths in html elements
+document.getElementById('twitterIcon').src = twitterIconPath;
+document.getElementById('githubIcon').src = githubIconPath;
+document.getElementById('kofiIcon').src = kofiIconPath;
 
 
 // Generate state parameter
