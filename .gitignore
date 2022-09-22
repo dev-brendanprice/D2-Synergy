@@ -1,5 +1,4 @@
 /D2-Synergy.code-workspace
-src/node_modules
-src/package-lock.json
+/node_modules
 /build
-
+/package-lock.json
