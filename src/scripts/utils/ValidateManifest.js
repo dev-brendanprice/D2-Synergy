@@ -20,7 +20,7 @@ var log = console.log.bind(console),
 const ReturnComponentSuffix = async (entry) => {
 
     if (!manifest) {
-        manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
+        manifest = await axios.get(`https://src.bungie.net/Platform/Destiny2/Manifest/`);
     };
     var components = manifest.data.Response.jsonWorldComponentContentPaths[window.navigator.language.split('-')[0]];
     log(components);
@@ -45,13 +45,13 @@ const ValidateTables = async () => {
             let suffix = await ReturnComponentSuffix(table),
                 newTable;
                 
-            newTable = await axios.get(`https://www.bungie.net${suffix}`)
+            newTable = await axios.get(`https://src.bungie.net${suffix}`)
                 .then((res) => {
                     return res;
                 })
                 .catch((bruh) => {
                     log(bruh)
-                    return axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(4)}=${GenerateRandomString(4)}`)
+                    return axios.get(`https://src.bungie.net${suffix}?${GenerateRandomString(4)}=${GenerateRandomString(4)}`)
                 });
 
             log(newTable);
@@ -82,7 +82,7 @@ const ValidateManifest = async () => {
     var localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
     
     // Validate the current existing tables
-    manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
+    manifest = await axios.get(`https://src.bungie.net/Platform/Destiny2/Manifest/`);
     await ValidateTables();
 
     // Check manifest version

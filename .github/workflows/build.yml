@@ -28,10 +28,10 @@ jobs:
 
       # Install node modules
       - name: Install Dependencies
-        working-directory: ./www
+        working-directory: ./src
         run: npm install
         
       # Build with snowpack
       - name: Build solution
-        working-directory: ./www
+        working-directory: ./src
         run: npm run build

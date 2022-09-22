@@ -2,7 +2,7 @@ let packageJson = require('./package.json');
 
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
-  root: 'src/',
+  // root: './',
   buildOptions: {
     out: './build'
   },

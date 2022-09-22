@@ -68,7 +68,7 @@ Note: *The dev environment is configured to only work on localhost, so the addre
 
 1. Clone this repository
 
-2. Make a new Bungie.net API application at: https://www.bungie.net/en/Application
+2. Make a new Bungie.net API application at: https://src.bungie.net/en/Application
     - The redirect URL must have the `https` protocol present. This means that you have to manually change `https` to `http` after the initial authorization redirect has taken place. This is only applicable in development environments due to the nature of localhost in its default configuration.
     - The origin URL must have the `http` version of your base URL.
 
@@ -80,13 +80,13 @@ Note: *This will be your `Authorization` token.*
 4. Replace the following entries with your Bungie.net API application information.
 
 
-[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/src/scripts/user.js#L56) - Replace with your base URL
+[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/src/src/scripts/user.js#L56) - Replace with your base URL
 
-[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/src/scripts/user.js#L61) - client ID
+[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/src/src/scripts/user.js#L61) - client ID
 
-[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/src/scripts/user.js#L57) - API Key and your Authorization token from step 3.
+[`user.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/src/src/scripts/user.js#L57) - API Key and your Authorization token from step 3.
 
-[`index.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/www/src/scripts/index.js#L6) - client ID
+[`index.js`](https://github.com/brendanprice2003/D2-Synergy/blob/e499948f94a9c79c25170a31f4390dabebf6afb9/src/src/scripts/index.js#L6) - client ID
 
 Note: *These fields have been tested to the bare minimum so they may require some additional elbow grease to get right. :)*
 
@@ -104,11 +104,11 @@ Each item has a hash; take this hash and put it into destinydatasets.
 
 You then have a nice list of all the information you could ever want to know about the bounty, which you should then use to determine what indexes this bounty will go under inside of the bounties.js script.
 
-Ctrl + F for the same hash in [`bounties.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/src/scripts/utils/data/bounties.js).
+Ctrl + F for the same hash in [`bounties.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/src/src/scripts/utils/data/bounties.js).
 
-This bounty has already been done by someone. Then entry has keys that contain and array of indexes that refer to another key value inside of [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/src/scripts/utils/SynergyDefinitions.js).
+This bounty has already been done by someone. Then entry has keys that contain and array of indexes that refer to another key value inside of [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/src/src/scripts/utils/SynergyDefinitions.js).
 
-For example you can see that the `itemCategory` key value has an array of indexes that only contains `0`. If we find `itemCategory` inside [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/www/src/scripts/utils/SynergyDefinitions.js), you can see it has all the possible indexes that are valid for that property. 
+For example you can see that the `itemCategory` key value has an array of indexes that only contains `0`. If we find `itemCategory` inside [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/src/src/scripts/utils/SynergyDefinitions.js), you can see it has all the possible indexes that are valid for that property. 
 ![image](https://user-images.githubusercontent.com/56489848/187028214-acf601ee-0b9a-4db3-94da-4da89cdde1ae.png)
 
 You would then put the relevant indexes in the corresponding properties for that bounty.
