@@ -2,4 +2,5 @@
 www/node_modules
 www/package-lock.json
 www/build
+www/.github
 
