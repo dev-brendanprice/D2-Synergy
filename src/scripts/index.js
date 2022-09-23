@@ -40,7 +40,7 @@ var CheckSession = async () => {
 };
 
 // Check for server availability
-axios.get('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": 'e62a8257ba2747d4b8450e7ad469785d'}})
+axios.get('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": 'f7857fa32f5f4675bd49d3efb9ab3491'}})
     .catch((error) => {
         if (error.response) {
 
