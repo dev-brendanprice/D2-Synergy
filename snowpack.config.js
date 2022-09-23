@@ -1,6 +1,5 @@
 let packageJson = require('./package.json');
 require('dotenv').config();
-console.log(process.env);
 
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
