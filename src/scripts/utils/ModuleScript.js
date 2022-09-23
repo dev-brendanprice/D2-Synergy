@@ -163,7 +163,7 @@ const MakeBountyElement = async (param) => {
     if (param.isExpired && !param.areObjectivesComplete) {
         itemStatus.className = `expire`;
         itemStatus.id = `expire_${param.hash}`;
-        itemStatus.src = '../../icons/pursuit_expired.svg';
+        itemStatus.src = 'https://cdn.brendanprice.xyz/synergy/icons/pursuit_expired.svg';
 
         // Change style to represent state
         // document.getElementById(`item_${param.hash}`).className = 'itemContainerExpired';
@@ -172,7 +172,7 @@ const MakeBountyElement = async (param) => {
     else if (param.areObjectivesComplete) {
         itemStatus.className = `complete`;
         itemStatus.id = `complete_${param.hash}`;
-        itemStatus.src = '../../icons/pursuit_completed.svg';
+        itemStatus.src = 'https://cdn.brendanprice.xyz/synergy/icons/pursuit_completed.svg';
     };
     document.querySelector(`#bountyItems`).append(itemStatus);
     
