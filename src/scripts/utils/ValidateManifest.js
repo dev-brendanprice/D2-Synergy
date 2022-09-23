@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
+import { get, set } from 'idb-keyval';
 import { GenerateRandomString } from './ModuleScript.js';
 
 const requiredTables = [

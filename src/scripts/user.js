@@ -61,12 +61,12 @@ var destinyMembershipId,
     characters;
 
 // Authorization information
-var homeUrl = 'https://synergy.brendanprice.xyz/',
+var homeUrl = import.meta.env.HOME_URL,
     axiosHeaders = {
-        ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
-        Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
+        ApiKey: import.meta.env.API_KEY,
+        Authorization: import.meta.env.AUTH
     },
-    clientId = 38074;
+    clientId = import.meta.env.CLIENT_ID;
 
 // Put version number in navbar
 document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
