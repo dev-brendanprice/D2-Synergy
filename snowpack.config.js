@@ -10,10 +10,10 @@ module.exports = {
   devOptions: {
     port: 5500
   },
-  // optimize: {
-  //   bundle: true,
-  //   minify: true
-  // },
+  optimize: {
+    bundle: true,
+    minify: true
+  },
   env: {
     version: `Alpha v${packageJson.version}`,
     CLIENT_ID: process.env.CLIENT_ID,
