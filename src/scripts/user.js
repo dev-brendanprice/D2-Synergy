@@ -61,7 +61,7 @@ var destinyMembershipId,
     characters;
 
 // Authorization information
-var homeUrl = 'http://localhost:5500/',
+var homeUrl = 'https://synergy.brendanprice.xyz/',
     axiosHeaders = {
         ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
         Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
