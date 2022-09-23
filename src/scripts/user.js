@@ -63,10 +63,10 @@ var destinyMembershipId,
 // Authorization information
 var homeUrl = 'http://localhost:5500/',
     axiosHeaders = {
-        ApiKey: 'f7857fa32f5f4675bd49d3efb9ab3491',
-        Authorization: 'NDAwMjI6WEEwYXA0MnlTR29tM1kwLVREMFRuWDFCQjNRU1lmTXdGdjRiTTcwUGd5OA=='
+        ApiKey: 'e62a8257ba2747d4b8450e7ad469785d',
+        Authorization: 'MzgwNzQ6OXFCc1lwS0M3aWVXQjRwZmZvYmFjWTd3ZUljemlTbW1mRFhjLm53ZThTOA=='
     },
-    clientId = 40022;
+    clientId = 38074;
 
 // Put version number in navbar
 document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;

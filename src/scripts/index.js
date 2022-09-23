@@ -5,7 +5,7 @@ import axios from 'axios';
 
 var log = console.log.bind(console),
     localStorage = window.localStorage,
-    clientId = 40022;
+    clientId = 38074;
 
 // Put version number in navbar
 document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
@@ -40,7 +40,7 @@ var CheckSession = async () => {
 };
 
 // Check for server availability
-axios.get('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": 'f7857fa32f5f4675bd49d3efb9ab3491'}})
+axios.get('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": 'e62a8257ba2747d4b8450e7ad469785d'}})
     .catch((error) => {
         if (error.response) {
 
