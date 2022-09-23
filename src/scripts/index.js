@@ -6,8 +6,6 @@ import axios from 'axios';
 var log = console.log.bind(console),
     localStorage = window.localStorage,
     clientId = import.meta.env.CLIENT_ID;
-    log(import.meta.env)
-    log(process.env);
 
 // Put version number in navbar
 document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
