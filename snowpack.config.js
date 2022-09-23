@@ -11,6 +11,7 @@ module.exports = {
     port: 5500
   },
   optimize: {
+    bundle: true,
     minify: true
   },
   env: {
