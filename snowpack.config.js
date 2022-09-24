@@ -1,6 +1,7 @@
 let packageJson = require('./package.json');
 require('dotenv').config();
 
+// Snowpack config
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
   root: './src',
