@@ -106,7 +106,7 @@ var BungieOAuth = async (authCode) => {
         AuthConfig = {
             headers: {
                 Authorization: `Basic ${axiosHeaders.Authorization}`,
-                // "Content-Type": "application/x-src-form-urlencoded"
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         };
 
@@ -156,7 +156,7 @@ var CheckComponents = async (bool) => {
         AuthConfig = {
             headers: {
                 Authorization: `Basic ${axiosHeaders.Authorization}`,
-                "Content-Type": "application/x-src-form-urlencoded",
+                "Content-Type": "application/x-www-form-urlencoded"
             }
         };
 

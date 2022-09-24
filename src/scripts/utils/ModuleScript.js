@@ -14,7 +14,7 @@ const VerifyState = async () => {
     if (state != window.localStorage.getItem('stateCode')) {
         window.localStorage.clear();
         window.sessionStorage.clear();
-        // window.location.href = 'http://localhost:5500/src/';
+        window.location.reload();
     }
     else {
         window.localStorage.removeItem('stateCode');
