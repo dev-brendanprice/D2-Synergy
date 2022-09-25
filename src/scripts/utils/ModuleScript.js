@@ -1,5 +1,5 @@
 import { itemTypeKeys } from "./SynergyDefinitions.js";
-import { LoadCharacter, userStruct, homeUrl } from "../user.js";
+import { LoadCharacter, userStruct } from "../user.js";
 
 const log = console.log.bind(console),
       localStorage = window.localStorage,
@@ -217,7 +217,7 @@ const Logout = () => {
     localStorage.clear();
     sessionStorage.clear();
     indexedDB.deleteDatabase('keyval-store');
-    window.location.href = homeUrl;
+    window.location.href = '../';
 };
 
 
