@@ -81,7 +81,6 @@ axios.defaults.headers.common = {
 userStruct.charBounties = [];
 userStruct.characters = {};
 userStruct.filterDivs = {};
-userStruct.homeUrl = '';
 userStruct.bools = {};
 userStruct.ints = {};
 userStruct.objs = {};
