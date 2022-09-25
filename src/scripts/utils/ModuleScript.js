@@ -217,7 +217,7 @@ const Logout = () => {
     localStorage.clear();
     sessionStorage.clear();
     indexedDB.deleteDatabase('keyval-store');
-    window.location.href = '../';
+    window.location.href = import.meta.env.HOME_URL;
 };
 
 

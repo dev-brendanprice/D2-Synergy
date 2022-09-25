@@ -18,6 +18,7 @@ module.exports = {
     version: `Alpha v${packageJson.version}`,
     CLIENT_ID: process.env.CLIENT_ID,
     API_KEY: process.env.API_KEY,
-    AUTH: process.env.AUTH
+    AUTH: process.env.AUTH,
+    HOME_URL: process.env.HOME_URL
   }
 };
