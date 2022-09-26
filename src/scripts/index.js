@@ -10,6 +10,8 @@ var log = console.log.bind(console),
 // Put version number in navbar
 document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
 
+document.getElementById('fubar').src = 'icons/pursuit_expired.svg';
+
 // Generate state parameter
 var GenerateState = (len) => {
     let result = ' ';
