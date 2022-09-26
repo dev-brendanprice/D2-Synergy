@@ -8,17 +8,89 @@ import {
     ItemCategory,
     KillType } from './SynergyDefinitions.js';
 
-    const log = console.log.bind(console);
+    var log = console.log.bind(console);
+    
+    var tableForPropertyDefinitions = {
+        'Destination': Destination,
+        'ActivityMode': ActivityMode,
+        'DamageType': DamageType,
+        'ItemCategory': ItemCategory,
+        'AmmoType': AmmoType,
+        'KillType': KillType
+    };
 
-    var bountyPropCount = {},
-        propTypes = {
-            'Destination': Destination,
-            'ActivityMode': ActivityMode,
-            'DamageType': DamageType,
-            'ItemCategory': ItemCategory,
-            'AmmoType': AmmoType,
-            'KillType': KillType
-        }; // This array supersedes the need to use an if statement to check for props
+    let bountyPropCount = {};
+
+
+// Push properties to bounty in arguments
+const PushIndexesFromProperty = async (bountyEntry, propertyString, i) => {
+
+    let propertyName = Object.keys(bountyEntry)[propertyString],
+        propertyIndexArray = bountyEntry[Object.keys(bountyEntry)[propertyString]];
+
+    if (propertyIndexArray.length !== 0) {
+
+        // Add only specified indexes, inside the property
+        let propertyDefinition = tableForPropertyDefinitions[propertyName];
+
+        propertyIndexArray.forEach(index => {
+
+            let typeOfProperty = propertyDefinition[index];
+            
+            // Push to charBounties global object
+            userStruct.charBounties[i].props.push(typeOfProperty);
+
+            // Push to property counters
+            log(bountyPropCount)
+            log(typeOfProperty)
+            // log(bountyPropCount[typeOfProperty]);
+
+            if (!bountyPropCount[typeOfProperty]) {
+                bountyPropCount[typeOfProperty] = 1;
+            }
+            else if (bountyPropCount[typeOfProperty]) {
+                bountyPropCount[typeOfProperty] += 1;
+            };
+
+            // if (bountyPropCount[typeOfProperty] === undefined) {
+            //     bountyPropCount[typeOfProperty] = 0;
+            //     bountyPropCount[typeOfProperty] += 1;
+            // }
+            // else if (bountyPropCount[typeOfProperty] !== undefined) {
+            //     bountyPropCount[typeOfProperty] += 1;
+            // };
+        });
+    }
+    else if (propertyIndexArray.length === 0) {
+
+        // Add all indexes, inside the property, to the bounty
+        let propertyDefinition = tableForPropertyDefinitions[propertyName];
+
+        propertyDefinition.forEach(typeOfProperty => {
+            
+            // Push to charBounties global object
+            userStruct.charBounties[i].props.push(typeOfProperty);
+
+            // Push to property counters
+            // log(typeOfProperty);
+
+            // if (!bountyPropCount[typeOfProperty]) {
+            //     bountyPropCount[typeOfProperty] = 1;
+            // }
+            // else if (bountyPropCount[typeOfProperty]) {
+            //     bountyPropCount[typeOfProperty] += 1;
+            // };
+
+            // if (bountyPropCount[typeOfProperty] === undefined) {
+            //     bountyPropCount[typeOfProperty] = 0;
+            //     bountyPropCount[typeOfProperty] += 1;
+            // }
+            // else if (bountyPropCount[typeOfProperty] !== undefined) {
+            //     bountyPropCount[typeOfProperty] += 1;
+            // };
+        });
+    };
+};
 
 
 // Push the props onto charBounties
@@ -27,51 +99,32 @@ const PushProps = async () => {
     // Clear counters
     bountyPropCount = {};
 
-    // Loop over charBounties and append counters
+    // Loop over charBounties and append heuristics
     for (let i=0; i < userStruct.charBounties.length; i++) {
 
-        let entry = bountyHashes[userStruct.charBounties[i].hash];
-        var counters = {};
+        let bountyEntry = bountyHashes[userStruct.charBounties[i].hash];
 
-        for (let prop in entry) {
+        for (let property in Object.keys(bountyEntry)) {
 
-            if (entry[prop].length !== 0) { // I am changing this so it checks absence
-
-                var propNames = [];
-                for (let foo of entry[prop]) {
-
-                    // Push the property to the filter array with the count
-                    propNames.push(propTypes[prop][foo]);
-                };
-                // log(propNames);
-
-                // Loop through all types in propNames
-                for (let type of propNames) {
-
-                    // Push each type to the array that is used to visually filter
-                    if (bountyPropCount[type] === undefined) {
-                        bountyPropCount[type] = 0;
-                        bountyPropCount[type] += 1;
-                    }
-                    else if (bountyPropCount[type] !== undefined) {
-                        bountyPropCount[type] += 1;
-                    };
-
-                    // I think this is done elsewhere anyways
-                    // if (counters[type] === undefined) {
-                    //     counters[type] = 0;
-                    //     counters[type] += 1;
-                    // }
-                    // else if (counters[type] !== undefined) {
-                    //     counters[type] += 1;
-                    // };
-
-                    // Add each type to the userStruct to enable global access
-                    userStruct.charBounties[i].props.push(type);
-                };
+            if ('Destination' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('ActivityMode' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('DamageType' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('ItemCategory' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('AmmoType' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('KillType' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
             };
         };
-        // log(counters);
     };
 };
 
