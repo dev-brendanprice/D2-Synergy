@@ -10,7 +10,7 @@ var log = console.log.bind(console),
 // Put version number in navbar
 document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
 
-document.getElementById('fubar').src = './icons/pursuit_expired.svg';
+document.getElementById('fubar').src = `${import.meta.env.HOME_URL}icons/pursuit_expired.svg`;
 
 // Generate state parameter
 var GenerateState = (len) => {
