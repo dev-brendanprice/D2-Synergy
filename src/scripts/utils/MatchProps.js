@@ -41,8 +41,8 @@ const PushIndexesFromProperty = async (bountyEntry, propertyString, i) => {
             userStruct.charBounties[i].props.push(typeOfProperty);
 
             // Push to property counters
-            log(bountyPropCount)
-            log(typeOfProperty)
+            // log(bountyPropCount)
+            // log(typeOfProperty)
             // log(bountyPropCount[typeOfProperty]);
 
             if (!bountyPropCount[typeOfProperty]) {
@@ -74,12 +74,12 @@ const PushIndexesFromProperty = async (bountyEntry, propertyString, i) => {
             // Push to property counters
             // log(typeOfProperty);
 
-            // if (!bountyPropCount[typeOfProperty]) {
-            //     bountyPropCount[typeOfProperty] = 1;
-            // }
-            // else if (bountyPropCount[typeOfProperty]) {
-            //     bountyPropCount[typeOfProperty] += 1;
-            // };
+            if (!bountyPropCount[typeOfProperty]) {
+                bountyPropCount[typeOfProperty] = 1;
+            }
+            else if (bountyPropCount[typeOfProperty]) {
+                bountyPropCount[typeOfProperty] += 1;
+            };
 
             // if (bountyPropCount[typeOfProperty] === undefined) {
             //     bountyPropCount[typeOfProperty] = 0;
