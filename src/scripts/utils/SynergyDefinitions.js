@@ -161,32 +161,32 @@ const Destination = [
 
 // Hashes for activity modes
 const ActivityMode = [
-    'gambit', //0
-    'strike', //1
-    'nightfall', //2
-    'crucible', //3
-    'mayhem', //4
-    'control', //5
-    'breakthrough', //6
-    'countdown', //7
-    'elimination', //8
-    'doubles', //9
-    'supremacy', //10
-    'rumble', //11
-    'survival', //12
-    'ironBanner', //13
-    'dungeon', //14
+    'Gambit', //0
+    'Strike', //1
+    'Nightfall', //2
+    'Crucible', //3
+    'Mayhem', //4
+    'Control', //5
+    'Breakthrough', //6
+    'Countdown', //7
+    'Elimination', //8
+    'Doubles', //9
+    'Supremacy', //10
+    'Rumble', //11
+    'Survival', //12
+    'IronBanner', //13
+    'Dungeon', //14
     'NightmareHunt', //15
-    'story', //16
-    'trials', //17
-    'explore', //18
+    'Story', //16
+    'Trials', //17
+    'Explore', //18
     'DofE', //19
-    'raid', // 20
-    'clash', //21
-    'momentum', //22
-    'scorched', //23
-    'lockdown', //24
-    'showdown', // 25
+    'Raid', // 20
+    'Clash', //21
+    'Momentum', //22
+    'Scorched', //23
+    'Lockdown', //24
+    'Showdown', // 25
     'EmpireHunt', // 26
 ];
 
@@ -222,8 +222,8 @@ const ItemCategory = [
 
 // Hashes for weapon ammuniation type
 const AmmoType = [
-    'SpecialAmmo', //0
-    'PrimaryAmmo', //1
+    'PrimaryAmmo', //0
+    'SpecialAmmo', //1
     'HeavyAmmo', // 2
 ];
 
@@ -238,13 +238,13 @@ const KillType = [
     'CloseRange', // 6
     'RapidKills', // 7
     'NoReload', // 8
+    'GuardianKills' // 9
 ];
 
-// Race type signifer ?? ## Priority
+// Race type signifer ??
 // "As a fireteam" signifier ??
-// "Kill, Eliminate" signifiers ??
-// "Guardians are worth more points" OR "Kill PvE enemies" signifiers
-// Lost sector signifiers or hashes ?? - maybe not
+
+// Weight bounties with bonus progress modifiers (Gaurdians are worth more etc)
 
 
 export {

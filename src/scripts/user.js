@@ -648,7 +648,6 @@ var LoadCharacter = async (classType, isRefresh) => {
     await LoadPrimaryCharacter(userStruct.characters);
     await AddEventListeners();
     log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
-    log(userStruct);
 })()
 .catch (error => {
     console.error(error);
