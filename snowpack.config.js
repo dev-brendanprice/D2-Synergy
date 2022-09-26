@@ -12,7 +12,7 @@ module.exports = {
     port: 5500
   },
   optimize: {
-    minify: true
+    // minify: true
   },
   env: {
     version: `Alpha v${packageJson.version}`,
