@@ -1,5 +1,5 @@
 import { userStruct } from '../user.js';
-import { bountyHashes } from './data/bounties.js';
+import { bountyHashes } from '../../data/bounties.js';
 import {
     ActivityMode,
     Destination,
@@ -41,24 +41,12 @@ const PushIndexesFromProperty = async (bountyEntry, propertyString, i) => {
             userStruct.charBounties[i].props.push(typeOfProperty);
 
             // Push to property counters
-            // log(bountyPropCount)
-            // log(typeOfProperty)
-            // log(bountyPropCount[typeOfProperty]);
-
             if (!bountyPropCount[typeOfProperty]) {
                 bountyPropCount[typeOfProperty] = 1;
             }
             else if (bountyPropCount[typeOfProperty]) {
                 bountyPropCount[typeOfProperty] += 1;
             };
-
-            // if (bountyPropCount[typeOfProperty] === undefined) {
-            //     bountyPropCount[typeOfProperty] = 0;
-            //     bountyPropCount[typeOfProperty] += 1;
-            // }
-            // else if (bountyPropCount[typeOfProperty] !== undefined) {
-            //     bountyPropCount[typeOfProperty] += 1;
-            // };
         });
     }
     else if (propertyIndexArray.length === 0) {
@@ -72,22 +60,12 @@ const PushIndexesFromProperty = async (bountyEntry, propertyString, i) => {
             userStruct.charBounties[i].props.push(typeOfProperty);
 
             // Push to property counters
-            // log(typeOfProperty);
-
             if (!bountyPropCount[typeOfProperty]) {
                 bountyPropCount[typeOfProperty] = 1;
             }
             else if (bountyPropCount[typeOfProperty]) {
                 bountyPropCount[typeOfProperty] += 1;
             };
-
-            // if (bountyPropCount[typeOfProperty] === undefined) {
-            //     bountyPropCount[typeOfProperty] = 0;
-            //     bountyPropCount[typeOfProperty] += 1;
-            // }
-            // else if (bountyPropCount[typeOfProperty] !== undefined) {
-            //     bountyPropCount[typeOfProperty] += 1;
-            // };
         });
     };
 };
