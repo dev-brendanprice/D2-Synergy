@@ -7,8 +7,7 @@ const requiredTables = [
     'DestinyInventoryItemDefinition',
     'DestinyObjectiveDefinition',
     'DestinyProgressionDefinition',
-    'DestinySeasonPassDefinition',
-    'DestinyPlugSetDefinition'
+    'DestinySeasonPassDefinition'
 ];
 
 var log = console.log.bind(console),
@@ -75,8 +74,8 @@ const ValidateManifest = async () => {
         loadContent.innerHTML = 'Sorry this is taking so long, We are nearly there...';
         setTimeout(() => {
             loadContent.innerHTML = 'Again, really sorry for the long wait. Try logging out, logging back in, and restarting it all eh?'
-        }, 7_000);
-    }, 10_000);
+        }, 15_000);
+    }, 15_000);
 
     // Fetch manifest
     var localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');

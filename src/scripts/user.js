@@ -52,8 +52,7 @@ var progressionDefinitions = {},
     objectiveDefinitions = {},
     destinyUserProfile = {},
     seasonDefinitions = {},
-    definitions = {},
-    socketDefinitions = {};
+    definitions = {};
 
 // General response variable
 var destinyMembershipId,
@@ -642,7 +641,6 @@ var LoadCharacter = async (classType, isRefresh) => {
     progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition');
     objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
     definitions = await ReturnEntry('DestinyInventoryItemDefinition');
-    socketDefinitions = await ReturnEntry('DestinyPlugSetDefinition');
 
     // Load first character on profile
     await LoadPrimaryCharacter(userStruct.characters);
