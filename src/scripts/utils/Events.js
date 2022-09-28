@@ -18,16 +18,19 @@ const AddEventListeners = async () => {
     // Settings buttion listener
     document.getElementById('navBarSettingsContainer').addEventListener('click', () => {
 
-        let mainContainerDisplay = document.getElementById('mainContainer').style.display;
+        document.getElementById('mainContainer').style.display = 'none';
+        document.getElementById('settingsContainer').style.display = 'block';
+        document.getElementById('backButtonContainer').style.display = 'block';
+        document.getElementById('settingsContent').style.display = 'block';
+    });
 
-        if (mainContainerDisplay === 'none') {
-            document.getElementById('settingsContainer').style.display = 'none';
-            document.getElementById('mainContainer').style.display = 'block';
-        }
-        else if (mainContainerDisplay !== 'none') {
-            document.getElementById('mainContainer').style.display = 'none';
-            document.getElementById('settingsContainer').style.display = 'block';
-        };
+    // Back button event listener in settings menu
+    document.getElementById('backButtonContainer').addEventListener('click', () => {
+
+        document.getElementById('mainContainer').style.display = 'block';
+        document.getElementById('settingsContainer').style.display = 'none';
+        document.getElementById('backButtonContainer').style.display = 'none';
+        document.getElementById('settingsContent').style.display = 'none';
     });
 
     // Hover events for "Current Yield"
@@ -112,22 +115,14 @@ const AddEventListeners = async () => {
         };
     });
 
-    // Configure refresh intervals
-    // setInterval(() => {
-    //     if ((new Date() - userStruct.ints.refreshTime)/1000 > CacheReturnItem('refreshInterval')) {
-    //         LoadCharacter(CacheReturnItem('lastChar'), true);
-    //         userStruct.ints.refreshTime = new Date();
-    //     };
-    // }, CacheReturnItem('refreshInterval'));
+    // Item size range slider
+    let rangeSlider = document.getElementById('itemSizeSlider');
+    let rangeValueField = document.getElementById('itemSizeField');
+    rangeValueField.innerHTML = rangeSlider.value;
 
-    // document.addEventListener('visibilitychange', event => {
-    //     if (document.visibilityState === 'visible') {
-    //         if ((new Date() - userStruct.ints.refreshTime)/1000 > CacheReturnItem('refreshInterval')) {
-    //             LoadCharacter(CacheReturnItem('lastChar'), true);
-    //             userStruct.ints.refreshTime = new Date();
-    //         };
-    //     };
-    // });
+    rangeSlider.oninput = function() {
+        rangeValueField.innerHTML = this.value + 'px';
+    };
     
 };
 

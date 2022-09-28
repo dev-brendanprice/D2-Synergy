@@ -81,7 +81,7 @@ html, body {
 
 /* Settings container */
 #navBarSettingsContainer {
-    display: none;
+    /* display: none; */
     position: absolute;
     margin-top: 12px;
     margin-right: 90px;
@@ -231,6 +231,16 @@ hr.titleBreaker {
     color: #555;
     border: 1px solid grey;
     border-radius: 20px;
+}
+
+hr.settingsBreaker {
+    margin-top: -15px;
+    width: 100%;
+	padding: none;
+	border: none;
+	height: 2px;
+	border-radius: 2px;
+	background-color: #7e8891;
 }
 
 hr.half {

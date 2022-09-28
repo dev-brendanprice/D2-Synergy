@@ -25,6 +25,57 @@
     color: white;
 }
 
+#settingsContent {
+    display: none;
+    margin-top: 10px;
+    margin-left: 20px;
+    font-size: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	color: white;
+}
+
+#backButtonContainer {
+	display: none;
+	margin-top: 65px;
+    margin-left: 20px;
+	width: 125px;
+	height: 28px;
+	cursor: pointer;
+}
+
+#backButtonImg {
+	display: inline-block;
+	width: 20px;
+	filter: invert(1) brightness(1);
+}
+
+#backButtonText {
+	position: absolute;
+	display: inline-block;
+	margin-top: 1px;
+	margin-left: 10px;
+	font-size: 16px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	color: white;
+}
+
+#check-box {
+    display: inline-flex;
+}
+
+.settingText {
+    display: inline-flex;
+    font-size: 16px;
+}
+
+#itemSizeSlider {
+    width: 20%;
+}
+
+#itemSizeField {
+    display: inline-block;
+}
+
 h2 {
     padding-bottom: 0px;
     text-transform: uppercase;

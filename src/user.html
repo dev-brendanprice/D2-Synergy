@@ -240,7 +240,46 @@
     </div>
 
     <div id="settingsContainer">
-        Settings Page
+        <div id="backButtonContainer">
+			<img id="backButtonImg" src="ico/backArrow.png">
+			<div id="backButtonText">
+				Go Back
+			</div>
+		</div>
+
+        <div id="settingsContent">
+            <h1>Settings</h1>
+            <hr class="settingsBreaker">
+
+            <!-- Refresh when tab is focused -->
+            <div id="check-box">
+                <input type="checkbox" class="check-box" checked>
+            </div>
+            <div class="settingText">Refresh when tab is focused</div>
+
+            <br>
+
+            <!-- Refresh at interval -->
+            <div id="check-box">
+                <input type="checkbox" class="check-box">
+            </div>
+            <div class="settingText">Refresh at an interval</div>
+
+            <br>
+
+            <!-- Item size in px -->
+            <div>
+                <div class="settingText">Item Size</div><input id="itemSizeSlider" type="range" min="40" max="70" value="55"><div class="settingText" id="itemSizeField"></div><br>
+                <div class="settingText">The default item size looks the best, keeping all screen sizes in mind.</div>
+            </div>
+
+            <br>
+
+            <!-- Default content display -->
+            <div>
+
+            </div>
+        </div>
     </div>
 
     <div id="overlays"></div>
