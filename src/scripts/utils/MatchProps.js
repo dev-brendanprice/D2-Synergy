@@ -23,12 +23,11 @@ import {
 
 
 // Push properties to bounty in arguments
-const PushIndexesFromProperty = async (bountyEntry, propertyString, i) => {
+const PushIndexesFromProperty = async (bountyEntry, propertyName, i) => {
 
-    let propertyName = Object.keys(bountyEntry)[propertyString],
-        propertyIndexArray = bountyEntry[Object.keys(bountyEntry)[propertyString]];
+    let propertyIndexArray = bountyEntry[propertyName];
 
-    if (propertyIndexArray.length !== 0) {
+    if (Object.keys(propertyIndexArray).length !== 0) {
 
         // Add only specified indexes, inside the property
         let propertyDefinition = tableForPropertyDefinitions[propertyName];
@@ -49,7 +48,7 @@ const PushIndexesFromProperty = async (bountyEntry, propertyString, i) => {
             };
         });
     }
-    else if (propertyIndexArray.length === 0) {
+    else if (Object.keys(propertyIndexArray).length === 0) {
 
         // Add all indexes, inside the property, to the bounty
         let propertyDefinition = tableForPropertyDefinitions[propertyName];
@@ -82,7 +81,7 @@ const PushProps = async () => {
 
         let bountyEntry = bountyHashes[userStruct.charBounties[i].hash];
 
-        for (let property in Object.keys(bountyEntry)) {
+        for (let property in bountyEntry) {
 
             if ('Destination' in bountyEntry) {
                 await PushIndexesFromProperty(bountyEntry, property, i);
