@@ -60,7 +60,7 @@ To figure out what heuristics you should be contributing:
 Clone my (and use the Readme.md) BuildStruct repo to query bounties that are actively being sold by a specified vendor via vendorHash
 
 ##### [Destiny Datasets](https://data.destinysets.com/) -
-You should also utilize destinydatasets to query each bounty via the definitions to determine what the bounty entails
+You should also utilize destinydatasets to query each bounty via the itemDefinitions to determine what the bounty entails
 <br><br>
 # Reproduction
 
