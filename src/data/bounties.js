@@ -736,8 +736,8 @@ const bountyHashes = {
         "KillType": []
     },
     "459676116": {
-        "Destination": [],
-        "ActivityMode": [],
+        "Destination": [0,1],
+        "ActivityMode": [0],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -1496,12 +1496,12 @@ const bountyHashes = {
         "KillType": []
     },
     "852248609": {
-        "Destination": [],
-        "ActivityMode": [],
+        "Destination": [0,1],
+        "ActivityMode": [0],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [9]
     },
     "857633000": {
         "Destination": [],
@@ -2448,8 +2448,8 @@ const bountyHashes = {
         "KillType": []
     },
     "1381806136": {
-        "Destination": [],
-        "ActivityMode": [],
+        "Destination": [0,1,3,4,5,6,7],
+        "ActivityMode": [2],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -2560,8 +2560,8 @@ const bountyHashes = {
         "KillType": [4,9]
     },
     "1441461394": {
-        "Destination": [],
-        "ActivityMode": [],
+        "Destination": [4,5,7],
+        "ActivityMode": [20],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -2960,8 +2960,8 @@ const bountyHashes = {
         "KillType": []
     },
     "1794825180": {
-        "Destination": [],
-        "ActivityMode": [],
+        "Destination": [0,1,4,7],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -4040,8 +4040,8 @@ const bountyHashes = {
         "KillType": []
     },
     "2655712924": {
-        "Destination": [],
-        "ActivityMode": [],
+        "Destination": [0,1],
+        "ActivityMode": [0],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
@@ -4120,12 +4120,12 @@ const bountyHashes = {
         "KillType": [4]
     },
     "2729271716": {
-        "Destination": [],
-        "ActivityMode": [],
+        "Destination": [0,1,4,7],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [9]
     },
     "2731635990": {
         "Destination": [],
@@ -4384,8 +4384,8 @@ const bountyHashes = {
         "KillType": []
     },
     "2850564884": {
-        "Destination": [],
-        "ActivityMode": [],
+        "Destination": [0,1,4,7],
+        "ActivityMode": [3],
         "DamageType": [],
         "ItemCategory": [],
         "AmmoType": [],

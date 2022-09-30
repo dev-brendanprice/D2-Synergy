@@ -243,6 +243,9 @@ const KillType = [
 
 // Race type signifer ??
 // "As a fireteam" signifier ??
+// "With clan" signifier ??
+
+// Make a bucket system to easily apply properties to a selection of bounties all at once
 
 // Weight bounties with bonus progress modifiers (Gaurdians are worth more etc)
 
