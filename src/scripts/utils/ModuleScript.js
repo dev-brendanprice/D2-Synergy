@@ -1,15 +1,14 @@
 import { itemTypeKeys } from "./SynergyDefinitions.js";
-import { LoadCharacter, userStruct } from "../user.js";
+import { LoadCharacter, userStruct, itemDisplaySize } from "../user.js";
 
 const log = console.log.bind(console),
       localStorage = window.localStorage,
       sessionStorage = window.sessionStorage;
 
 // Check if state query parameter exists in URL
-const VerifyState = async () => {
+async function VerifyState() {
 
-    var urlParams = new URLSearchParams(window.location.search),
-        state = urlParams.get('state');
+    let urlParams = new URLSearchParams(window.location.search), state = urlParams.get('state');
 
     if (state != window.localStorage.getItem('stateCode')) {
         window.localStorage.clear();
@@ -23,49 +22,45 @@ const VerifyState = async () => {
 
 // Redirect user back to specified url
 // @string {url}, @string {param}
-const RedirUser = (url, param) => {
+function RedirUser(url, param) {
     window.location.href = `${url}?${param ? param : ''}`;
 };
 
 
 // Returns corresponding class name using classType
 // @int {classType}
-const ParseChar = (classType) => {
-    var r;
+function ParseChar(classType) {
+
+    let returnCharString;
     switch (classType) {
         case 0:
-            r='Titan';
+            returnCharString = 'Titan';
             break;
         case 1:
-            r='Hunter';
+            returnCharString = 'Hunter';
             break;
         case 2:
-            r='Warlock';
+            returnCharString = 'Warlock';
             break;
         default:
             console.error('Could not parse character, parseChar() @function');
     };
-    return r;
+    return returnCharString;
 };
 
 
-// Make element for entry data when hash is found in definitions
+// Make element for entry data when hash is found in itemDefinitions
 // @obj {param}
-const MakeBountyElement = async (param) => {
+async function MakeBountyElement(param) {
 
-    let itemOverlay = document.createElement('div'),
-        itemStatus = document.createElement('img'),
-        itemTitle = document.createElement('div'),
-        itemType = document.createElement('div'),
-        itemDesc = document.createElement('div'),
-        item = document.createElement('img'),
-        hr = document.createElement('hr');
+    let itemOverlay = document.createElement('div'), itemStatus = document.createElement('img'), itemTitle = document.createElement('div'), itemType = document.createElement('div'), itemDesc = document.createElement('div'), item = document.createElement('img'), hr = document.createElement('hr');
 
 
     // Create bottom element
     item.className = `bounty`;
     item.id = `${param.hash}`;
     item.src = `https://www.bungie.net${param.displayProperties.icon}`;
+    item.style.width = `${itemDisplaySize}px`;
     document.querySelector('#bountyItems').appendChild(item);
 
     // Create overlay element
@@ -86,18 +81,16 @@ const MakeBountyElement = async (param) => {
     document.querySelector(`#item_${param.hash}`).append(itemTitle, itemType, hr, itemDesc);
 
     // Create item progress and push to DOM
-    let rootIndex = param.objectiveDefinitions,
-        completionCounter = 0;
+    let rootIndex = param.objectiveDefinitions, completionCounter = 0;
 
-    for (let indexCount=0; indexCount < rootIndex.length; indexCount++) {
+    for (let indexCount = 0; indexCount < rootIndex.length; indexCount++) {
 
-        let itemPrgCounter = document.createElement('div'),
-            itemPrgDesc = document.createElement('div');
+        let itemPrgCounter = document.createElement('div'), itemPrgDesc = document.createElement('div');
 
         // Check if progess string exceeds char limit
         if (rootIndex[indexCount].progressDescription.length >= 24) {
 
-            var rt = rootIndex[indexCount].progressDescription.slice(0, 24);
+            let rt = rootIndex[indexCount].progressDescription.slice(0, 24);
             if (rt.charAt(rt.length - 1) === ' ') {
                 rt = rt.slice(0, rt.length - 1); // Remove deadspaces at the end of strings
             };
@@ -136,10 +129,10 @@ const MakeBountyElement = async (param) => {
         let paddingStepAmount = 40 / (rootIndex.length) === Infinity ? (0) : (40 / (rootIndex.length));
         itemPrgCounter.style.paddingBottom = '21px';
         itemPrgDesc.style.paddingBottom = '20px';
-        
-        for (let padC=1; padC < rootIndex.length; padC++) { // Seperate objectives
 
-            var offset = paddingStepAmount*indexCount;
+        for (let padC = 1; padC < rootIndex.length; padC++) { // Seperate objectives
+
+            let offset = paddingStepAmount * indexCount;
             if (offset !== 0) {
                 itemPrgCounter.style.paddingBottom = `${parseInt(itemPrgCounter.style.paddingBottom.split('px')[0]) + Math.trunc(offset)}px`;
                 itemPrgDesc.style.paddingBottom = `${parseInt(itemPrgDesc.style.paddingBottom.split('px')[0]) + Math.trunc(offset)}px`;
@@ -175,7 +168,7 @@ const MakeBountyElement = async (param) => {
         itemStatus.src = './ico/pursuit_expired.svg';
     };
     document.querySelector(`#bountyItems`).append(itemStatus);
-    
+
     // Watch for mouse events
     item.addEventListener('mousemove', (e) => {
         let el = itemOverlay.style;
@@ -191,7 +184,7 @@ const MakeBountyElement = async (param) => {
 
 
 // Start loading sequence
-const StartLoad = () => {
+function StartLoad() {
 
     // Add loading bar
     document.getElementById('slider').style.display = 'block';
@@ -202,18 +195,18 @@ const StartLoad = () => {
 
 
 // Stop loading sequence
-const StopLoad = () => {
+function StopLoad() {
 
     // Remove loading bar
     document.getElementById('slider').style.display = 'none';
 
-    // Remove load content
+    // Use mobile layout for content
     document.getElementById('loadingContentContainer').style.display = 'none';
 };
 
 
 // Log user out on request
-const Logout = () => {
+function Logout() {
     localStorage.clear();
     sessionStorage.clear();
     indexedDB.deleteDatabase('keyval-store');
@@ -223,26 +216,25 @@ const Logout = () => {
 
 // Insert commas into numbers where applicable
 // @int {num}
-const InsertSeperators = (num) => {
+function InsertSeperators(num) {
     return new Intl.NumberFormat().format(num);
 };
 
 
 // Capitalize First letter of string
-const CapitilizeFirstLetter = (string) => {
+function CapitilizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 
 // Sort items into bounties
-var ParseBounties = (charInventory, charObjectives, utils) => {
+function ParseBounties(charInventory, charObjectives, utils) {
 
-    var charBounties = [],
-        amountOfBounties = 0;
+    let charBounties = [], amountOfBounties = 0;
 
     charInventory.forEach(v => {
 
-        let item = utils.definitions[v.itemHash];
+        let item = utils.itemDefinitions[v.itemHash];
 
         if (item.itemType === 26) {
 
@@ -253,12 +245,11 @@ var ParseBounties = (charInventory, charObjectives, utils) => {
             };
 
             // Add isExpired property
-            item.isExpired = new Date(v.expirationDate) < new Date(); 
+            item.isExpired = new Date(v.expirationDate) < new Date();
             item.props = [];
 
             // Add isComplete property
-            let entriesAmount = item.progress.length,
-                entriesCount = 0;
+            let entriesAmount = item.progress.length, entriesCount = 0;
 
             for (let progressEntry of item.progress) {
                 if (progressEntry.complete) {
@@ -282,7 +273,7 @@ var ParseBounties = (charInventory, charObjectives, utils) => {
 
 
 // Push bounties to DOM
-var PushToDOM = (bountyArr, utils) => {
+function PushToDOM(bountyArr, utils) {
 
     Object.keys(bountyArr).forEach(v => {
 
@@ -298,11 +289,11 @@ var PushToDOM = (bountyArr, utils) => {
 
 
 // Sort bounties via vendor group
-var SortByGroup = (charBounties, utils) => {
+function SortByGroup(charBounties, utils) {
 
     charBounties.forEach(v => {
-        for (let i=1; i < utils.vendorKeys.length; i++) {
-            if (utils.vendorKeys.length-1 === i) {
+        for (let i = 1; i < utils.vendorKeys.length; i++) {
+            if (utils.vendorKeys.length - 1 === i) {
                 utils.bountyArr['other'].push(v);
                 break;
             }
@@ -319,7 +310,7 @@ var SortByGroup = (charBounties, utils) => {
 
 
 // Sort bounties via bounty type
-var SortByType = (bountyArr, utils) => {
+function SortByType(bountyArr, utils) {
 
     Object.keys(bountyArr).forEach(v => {
 
@@ -334,13 +325,10 @@ var SortByType = (bountyArr, utils) => {
 
 
 // Sorts by index of item in itemTypeKeys
-var SortBountiesByType = (a, b) => {
+function SortBountiesByType(a, b) {
 
-    var stackLabelA = a.inventory.stackUniqueLabel,
-        stackLabelB = b.inventory.stackUniqueLabel,
-        stackTypeA,
-        stackTypeB;
-    
+    let stackLabelA = a.inventory.stackUniqueLabel, stackLabelB = b.inventory.stackUniqueLabel, stackTypeA, stackTypeB;
+
     // Remove numbers & get key names from stackUniqueLabel even if it contains _
     stackLabelA.split('.').forEach(v => {
         let keyFromStack = v.replace(/[0-9]/g, '');
@@ -352,10 +340,10 @@ var SortBountiesByType = (a, b) => {
     });
 
     // Sort items by returning index
-    if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)){
+    if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)) {
         return -1;
     };
-    if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)){
+    if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)) {
         return 1;
     };
     return 0;
@@ -363,17 +351,17 @@ var SortBountiesByType = (a, b) => {
 
 
 // Calculate total XP gain from (active) bounties
-var CalcXpYield = (bountyArr, utils) => {
+function CalcXpYield(bountyArr, utils) {
 
-    var totalXP = 0;
+    let totalXP = 0;
     Object.keys(bountyArr).forEach(v => {
 
         let group = bountyArr[v];
-        
+
         if (group.length !== 0) {
             group.forEach(z => {
 
-                for (let i=0; i<utils.itemTypeKeys.length; i++) {
+                for (let i = 0; i < utils.itemTypeKeys.length; i++) {
 
                     let label = z.inventory.stackUniqueLabel;
                     if (label.includes(utils.itemTypeKeys[i])) {
@@ -393,26 +381,41 @@ var CalcXpYield = (bountyArr, utils) => {
     return totalXP;
 };
 
+// BRIGHT ENGRAMS:
+// If the user is level 97 then this means their next engram is 102 (5 levels)
+// The 5n term starts at level 97 instead of 100
 
-// Calculate XP required for next bright engram
-var ReturnSeasonProgressionStats = async (seasonProgressionInfo, prestigeInfo, rewardsTrack, itemDefinitions) => {
+// For this we can use a linear function (y = mx + b)
+// and rearrange it to solve for x
 
-    // Get total season rank
-    let seasonRank = seasonProgressionInfo.level + prestigeInfo.level,
-        returnArr = [];
+// In this scenario we can just assume that x will yeild a decimal value that we can
+// use as a percentage progress to the next level that awards a bright engram
+
+// nextEngramLevel = (currentLevel - startLevel) / nth term
+// nextEngramLevel = (102 - 97) / 5;
+// nextEngramLevel = 0.8 or 80%
+
+// Of course this is all assuming that b always starts at 97 and not some other arbitrary value, other than 100.
+
+
+// Calculate stats based around the season pass XP structure 
+async function ReturnSeasonProgressionStats(seasonProgressionInfo, prestigeInfo, rewardsTrack, itemDefinitions) {
+
+    // Get total season rank 
+    let seasonRank = seasonProgressionInfo.level + prestigeInfo.level, returnArr = [];
 
     // Check if the season pass is higher than level 100 (prestige level)
     if (seasonRank >= 100) { // Prestige
-
         // Calculate Xp needed for next bright engram based on the current prestige level
         // Here, we are assuming that you get a bright engram every other five levels
-        let nextEngramRank = Math.ceil((seasonRank+1)/5)*5,
-            brightEngramCount = 0,
-            fireteamBonusXpPercent = 0,
-            bonusXpPercent = 0;
+        // starting at level 97
+        // Read above this function for more info on this
+        let levelsOutOfFiveToNextRank = (((seasonRank - 97) / 5) * 10) / 2;
+
+        let nextEngramRank = (seasonRank + ((levelsOutOfFiveToNextRank) - 5)), brightEngramCount = 0, fireteamBonusXpPercent = 0, bonusXpPercent = 0;
 
         // Push Xp required until next engram to returnArr
-        returnArr.push(((nextEngramRank - seasonRank) * 100_000) - prestigeInfo.progressToNextLevel);
+        returnArr[0] = ((nextEngramRank - seasonRank) * 100000) - prestigeInfo.progressToNextLevel;
 
         // Iterate through the entire season pass and count all bright engrams
         Object.keys(rewardsTrack).forEach(v => {
@@ -432,19 +435,23 @@ var ReturnSeasonProgressionStats = async (seasonProgressionInfo, prestigeInfo, r
             });
         });
 
+        // Push all results to the array that we return
         let prestigeRanksDividedNthTerm = (seasonRank - 100) / 5;
         returnArr[1] = brightEngramCount + Math.trunc(prestigeRanksDividedNthTerm);
         returnArr[2] = fireteamBonusXpPercent;
         returnArr[3] = bonusXpPercent;
         returnArr[4] = prestigeInfo.progressToNextLevel;
         returnArr[5] = 0;
+
+        // Change DOM content if the user is over rank 100
+        document.getElementById('seasonPassSecondContainer').style.color = 'rgb(99, 99, 99)';
+        document.getElementById('seasonPassXpToMaxRank').style.color = 'rgb(63, 96, 112)';
     }
 
     else if (seasonRank < 100) { // Not prestige (less than 100)
-        
-        // Here, we are assuming that you get bright engrams relative to the season pass structure, because we are not past level 100
-        let splicedRewardsTrack = Object.keys(rewardsTrack).splice(seasonRank),
-            engramRanks = [];
+        // Here, we are earning bright engrams relative to the season pass structure, because we are not past level 100
+        // Once we are level 97, the n5 term applies to the levelling structure
+        let splicedRewardsTrack = Object.keys(rewardsTrack).splice(seasonRank), engramRanks = [];
 
         // Iterate through rewards track and get every bright engram at their respective levels
         splicedRewardsTrack.forEach(v => {
@@ -456,14 +463,21 @@ var ReturnSeasonProgressionStats = async (seasonProgressionInfo, prestigeInfo, r
         });
 
         // Push results to return array
-        let nextEngramRank = engramRanks[0];
-        returnArr.push(((nextEngramRank - seasonRank) * 100_000) - seasonProgressionInfo.progressToNextLevel);
+        if (!engramRanks[0]) {
+
+            // Read above this function for more info on this
+            let levelsOutOfFiveToNextRank = (((seasonRank - 97) / 5) * 10) / 2;
+            let xpRequiredForNextRankThatGivesEngram = ((5 - (levelsOutOfFiveToNextRank + 1)) * 100000) + seasonProgressionInfo.progressToNextLevel;
+            returnArr[0] = xpRequiredForNextRankThatGivesEngram;
+        }
+        else if (engramRanks[0]) {
+
+            let nextEngramRank = engramRanks[0];
+            returnArr[0] = ((nextEngramRank - seasonRank) * 100000) - seasonProgressionInfo.progressToNextLevel;
+        };
 
         // Iterate through indexes before and upto the season rank level to get total number of bright engrams earnt
-        let RewardsTrackUptoSeasonRank = Object.keys(rewardsTrack).splice(0, seasonRank),
-            brightEngramCount = 0,
-            fireteamBonusXpPercent = 0,
-            bonusXpPercent = 0;
+        let RewardsTrackUptoSeasonRank = Object.keys(rewardsTrack).splice(0, seasonRank), brightEngramCount = 0, fireteamBonusXpPercent = 0, bonusXpPercent = 0;
 
         RewardsTrackUptoSeasonRank.forEach(v => {
             rewardsTrack[v].forEach(x => {
@@ -487,7 +501,7 @@ var ReturnSeasonProgressionStats = async (seasonProgressionInfo, prestigeInfo, r
         returnArr[2] = fireteamBonusXpPercent;
         returnArr[3] = bonusXpPercent;
         returnArr[4] = seasonProgressionInfo.progressToNextLevel;
-        returnArr[5] = (seasonProgressionInfo.levelCap - seasonProgressionInfo.level) * 100_000 + seasonProgressionInfo.progressToNextLevel;
+        returnArr[5] = (seasonProgressionInfo.levelCap - seasonProgressionInfo.level) * 100000 + seasonProgressionInfo.progressToNextLevel;
     };
 
     // Return our array
@@ -496,15 +510,15 @@ var ReturnSeasonProgressionStats = async (seasonProgressionInfo, prestigeInfo, r
 
 
 // Calculate percentage based on first parameter
-var CalculatePercentage = async (a, b) => {
+async function CalculatePercentage(a, b) {
     return Math.trunc((100 * a) / b);
 };
 
 
 // Return season pass level, even when prestige level
-var ReturnSeasonPassLevel = async (seasonProgressionInfo, prestigeProgressionSeasonInfo) => {
-    
-    var levelToReturn = 0;
+async function ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo) {
+
+    let levelToReturn = 0;
     levelToReturn += seasonProgressionInfo.level;
 
     // If the season pass level is more than 100
@@ -516,41 +530,60 @@ var ReturnSeasonPassLevel = async (seasonProgressionInfo, prestigeProgressionSea
 
 
 // Load first character on profile
-var LoadPrimaryCharacter = async (characters) => {
-    var lastChar = CacheReturnItem('lastChar');
-    if (lastChar) { 
-        LoadCharacter(lastChar);
-    }
-    else if (!lastChar) {
-        LoadCharacter(characters[Object.keys(characters)[0]].classType);
-    };
+async function LoadPrimaryCharacter(characters) {
+
+    CacheReturnItem('lastChar')
+    .then(async (data) => {
+        if (!data) {
+            CacheAuditItem('lastChar', characters[Object.keys(characters)[0]].classType);
+            await LoadCharacter(characters[Object.keys(characters)[0]].classType);
+        }
+        else {
+            await LoadCharacter(data);
+        };
+    });
+
 };
 
 
-// Wrappers for localStorage userCache
-var CacheAuditItem = async (key, value) => {
+// Change item in userCache, add if it doesn't exist
+async function CacheAuditItem(key, value) {
 
     // Configure userCache if it does not exist#
-    if (!localStorage.getItem('userCache')) localStorage.setItem('userCache', JSON.stringify({}));
-    
-    var userCache = JSON.parse(localStorage.getItem('userCache'));
+    if (!localStorage.getItem('userCache')) {
+        if (value) {
+            localStorage.setItem('userCache', JSON.stringify({key: value}));
+        }
+        else {
+            localStorage.setItem('userCache', JSON.stringify({}));
+        };
+    };
+
+    // Get current userCache and append new key:value pair
+    let userCache = JSON.parse(localStorage.getItem('userCache'));
     userCache[key] = value;
     localStorage.setItem('userCache', JSON.stringify(userCache));
 };
-var CacheRemoveItem = async (key, value) => {
-    var userCache = JSON.parse(localStorage.getItem('userCache'));
+
+// Get current userCache and remove specified key:value pair
+async function CacheRemoveItem(key) {
+
+    let userCache = JSON.parse(localStorage.getItem('userCache'));
     delete userCache[key];
     localStorage.setItem('userCache', JSON.stringify(userCache));
 };
-var CacheReturnItem = (key, value) => {
-    var userCache = JSON.parse(localStorage.getItem('userCache'));
+
+// Get current userCache and return specified key:value pair using key
+async function CacheReturnItem(key) {
+
+    let userCache = JSON.parse(localStorage.getItem('userCache'));
     return userCache[key];
 };
 
 
 // Adds something to the targets' innerHTML
 // @string {target}, @string {content}
-var AddNumberToElementInner = (target, content) => {
+function AddNumberToElementInner(target, content) {
 
     // Change target innerHTML
     document.getElementById(`${target}`).innerHTML = content;
@@ -559,7 +592,7 @@ var AddNumberToElementInner = (target, content) => {
 
 // Load heuristics and configure data
 // @array {initArrStr}, @int {propCount}
-var CreateFilters = async (initArrStr, propCount) => {
+async function CreateFilters(initArrStr, propCount) {
 
     // Create new object for filter elements
     userStruct['filterDivs'] = {};
@@ -568,9 +601,8 @@ var CreateFilters = async (initArrStr, propCount) => {
     for (let v in propCount) {
 
         if (propCount[v] > 1) {
-            
-            let filterContainer = document.createElement('div'),
-                  filterContent = document.createElement('div');
+
+            let filterContainer = document.createElement('div'), filterContent = document.createElement('div');
 
             // Assign id's and classes + change innerHTML
             filterContainer.className = 'filter';
@@ -615,9 +647,9 @@ var CreateFilters = async (initArrStr, propCount) => {
 
 // Generate a random string with defined length
 // @int {len}
-var GenerateRandomString = (len) => {
+function GenerateRandomString(len) {
     let result = ' ';
-    let characters ='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     for (let i = 0; i < len; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     };

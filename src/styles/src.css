@@ -9,11 +9,11 @@ html, body {
 }
 
 .elBlur {
-    -webkit-filter: blur(1.5px);
-    -moz-filter: blur(1.5px);
-    -o-filter: blur(1.5px);
-    -ms-filter: blur(1.5px);
-    filter: blur(1.5px);
+    -webkit-filter: blur(1.5px) brightness(60%);
+    -moz-filter: blur(1.5px) brightness(60%);
+    -o-filter: blur(1.5px) brightness(60%);
+    -ms-filter: blur(1.5px) brightness(60%);
+    filter: blur(1.5px) brightness(60%);
 }
 
 
@@ -44,6 +44,7 @@ html, body {
     display: inline-block;
     font-size: 15px;
     color: rgb(203,116,116);
+    text-decoration: none;
 }
 
 
@@ -235,19 +236,21 @@ hr.titleBreaker {
 
 hr.settingsBreaker {
     margin-top: -15px;
-    width: 100%;
-	padding: none;
+    padding: none;
+    margin-left: 0;
+    height: 2px;
+    width: 90%;
 	border: none;
-	height: 2px;
 	border-radius: 2px;
 	background-color: #7e8891;
 }
 
 hr.half {
+    padding: none;
+    margin-left: 0;
+    height: 2px;
 	width: 100%;
-	padding: none;
 	border: none;
-	height: 2px;
 	border-radius: 2px;
 	background-color: #7e8891;
 }

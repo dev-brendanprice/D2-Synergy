@@ -23,7 +23,8 @@ import {
     LoadPrimaryCharacter,
     CacheAuditItem,
     AddNumberToElementInner,
-    CreateFilters } from './utils/ModuleScript.js';
+    CreateFilters, 
+    CacheReturnItem } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -36,7 +37,9 @@ import { AddEventListeners } from './utils/Events.js';
 // Validate state parameter
 VerifyState();
 
-// Globals
+// Start load sequence
+StartLoad();
+
 // Utils
 var urlParams = new URLSearchParams(window.location.search),
     sessionStorage = window.sessionStorage,
@@ -52,9 +55,9 @@ var progressionDefinitions = {},
     objectiveDefinitions = {},
     destinyUserProfile = {},
     seasonDefinitions = {},
-    definitions = {};
+    itemDefinitions = {};
 
-// General response variable
+// User info variables
 var destinyMembershipId,
     membershipType,
     characters;
@@ -88,11 +91,31 @@ userStruct.objs = {};
 userStruct.objs.currView = document.getElementById('pursuitsContainer');
 userStruct.bools.characterLoadToggled = false;
 userStruct.bools.filterToggled = false;
-CacheAuditItem('refreshInterval', 5*60000);
 
-// Start load sequence
-StartLoad();
+// Get user settings and apply to DOM/call stack
+export let itemDisplaySize;
 
+let rangeSlider = document.getElementById('itemSizeSlider'),
+    rangeValueField = document.getElementById('itemSizeField'),
+    bountyImage = document.getElementById('settingsBountyImage');
+
+await CacheReturnItem('itemDisplaySize')
+    .then((result) => {
+        itemDisplaySize = result;
+    })
+    .catch((error) => {
+        CacheAuditItem('itemDisplaySize', 55);
+        itemDisplaySize = 55;
+    });
+
+// Slider section values
+rangeSlider.value = itemDisplaySize;
+rangeValueField.innerHTML = `${itemDisplaySize}px`;
+bountyImage.style.width = `${itemDisplaySize}px`;
+
+// Set checkboxes to chosen state, from localStorage (userCache)
+document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
+document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
 
 
 // Authorize with Bungie.net
@@ -112,6 +135,8 @@ var BungieOAuth = async (authCode) => {
     await axios.post('https://www.bungie.net/platform/app/oauth/token/', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
         .then(res => {
             let data = res.data;
+
+            log(res);
 
             components['membership_id'] = data['membership_id'];
             components['token_type'] = data['token_type'];
@@ -226,7 +251,7 @@ var CheckComponents = async (bool) => {
 
 // Main OAuth flow mechanism
 var OAuthFlow = async () => {
-
+    log('OAuthFlow START')
     let rsToken = JSON.parse(localStorage.getItem('refreshToken')),
         acToken = JSON.parse(localStorage.getItem('accessToken')),
         comps = JSON.parse(localStorage.getItem('components')),
@@ -264,12 +289,14 @@ var OAuthFlow = async () => {
     } catch (error) {
         console.error(error); // display error page, with error and options for user
     };
+    log('OAuthFlow END');
+    log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
 };
 
 
 // Fetch basic bungie user details
 var FetchBungieUserDetails = async () => {
-    
+    log('FetchBungieUserDetails START')
     let components = JSON.parse(localStorage.getItem('components')),
         axiosConfig = {
             headers: {
@@ -327,20 +354,23 @@ var FetchBungieUserDetails = async () => {
         document.getElementById('categories').style.display = 'block';
         document.getElementById('statsContainer').style.display = 'block';
     };
+    log('FetchBungieUserDetails END')
 };
 
 
 // Load character from specific index
-var LoadCharacter = async (classType, isRefresh) => {
+async function LoadCharacter(classType, isRefresh) {
+
+    log('LoadPrimaryCharacter START');
 
     if (!userStruct.characterLoadToggled) {
 
         // Configure load sequence
         document.getElementById('loadingText').innerHTML = 'Indexing Character';
         await CheckComponents(false);
-        
+
         // Globals in this scope
-        let membershipType = sessionStorage.getItem('membershipType'),
+        let membershipType = sessionStorage.getItem('membershipType'), 
             CharacterProgressions,
             CharacterInventories,
             CharacterObjectives,
@@ -380,11 +410,12 @@ var LoadCharacter = async (classType, isRefresh) => {
             document.getElementById(`charContainer${characters[char].classType}`).style.display = 'block';
         };
 
-        // Get chosen character and save index  
-        for (let item in destinyUserProfile.characters.data) {
-            let char = destinyUserProfile.characters.data[item];
-            if (char.classType === classType) {
-                characterId = char.characterId;
+        // Get chosen character and save index
+        for (let entry in destinyUserProfile.characters.data) {
+
+            let character = destinyUserProfile.characters.data[entry];
+            if (character.classType === classType) {
+                characterId = character.characterId;
             };
         };
 
@@ -401,32 +432,31 @@ var LoadCharacter = async (classType, isRefresh) => {
 
             let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,201,202,205,300,301,305`, axiosConfig);
             let charInvRoot = resCharacterInventories.data.Response;
-            
-                CharacterInventories = charInvRoot.characterInventories.data;
-                CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
-                CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
-                CharacterObjectives = charInvRoot.itemComponents.objectives.data;
-                CharacterEquipment = charInvRoot.characterEquipment.data[characterId].items;
-                ProfileProgressions = charInvRoot.profileProgression.data;
-                ItemSockets = charInvRoot.itemComponents.sockets.data;
-                sessionCache.resCharacterInventories = resCharacterInventories;
+
+            CharacterInventories = charInvRoot.characterInventories.data;
+            CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
+            CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
+            CharacterObjectives = charInvRoot.itemComponents.objectives.data;
+            CharacterEquipment = charInvRoot.characterEquipment.data[characterId].items;
+            ProfileProgressions = charInvRoot.profileProgression.data;
+            ItemSockets = charInvRoot.itemComponents.sockets.data;
+            sessionCache.resCharacterInventories = resCharacterInventories;
         }
         else if (sessionCache.resCharacterInventories) {
 
             let charInvRoot = sessionCache.resCharacterInventories.data.Response;
 
-                CharacterInventories = charInvRoot.characterInventories.data;
-                CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
-                CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
-                CharacterObjectives = charInvRoot.itemComponents.objectives.data;
-                CharacterEquipment = charInvRoot.characterEquipment.data[characterId].items;
-                ProfileProgressions = charInvRoot.profileProgression.data;
-                ItemSockets = charInvRoot.itemComponents.sockets.data;
+            CharacterInventories = charInvRoot.characterInventories.data;
+            CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
+            CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
+            CharacterObjectives = charInvRoot.itemComponents.objectives.data;
+            CharacterEquipment = charInvRoot.characterEquipment.data[characterId].items;
+            ProfileProgressions = charInvRoot.profileProgression.data;
+            ItemSockets = charInvRoot.itemComponents.sockets.data;
         };
 
         // Iterate over CharacterInventories[characterId].items
-        let charInventory = CharacterInventories[characterId].items,
-            amountOfBounties = 0;
+        let charInventory = CharacterInventories[characterId].items, amountOfBounties = 0;
 
         // Make array with specified groups
         let bountyArr = {};
@@ -435,11 +465,11 @@ var LoadCharacter = async (classType, isRefresh) => {
         });
 
         // Loop over inventory items and emit bounties
-        let parsedBounties = ParseBounties(charInventory, CharacterObjectives, {definitions, objectiveDefinitions});
-            charBounties = parsedBounties[0]
-            amountOfBounties = parsedBounties[1];
+        let parsedBounties = ParseBounties(charInventory, CharacterObjectives, { itemDefinitions, objectiveDefinitions });
+        charBounties = parsedBounties[0];
+        amountOfBounties = parsedBounties[1];
 
-        // Assign objective(s) definitions to each item
+        // Assign objective(s) itemDefinitions to each item
         Object.keys(charBounties).forEach(v => {
             let objHashes = charBounties[v].objectives.objectiveHashes;
             charBounties[v].objectiveDefinitions = [];
@@ -447,15 +477,15 @@ var LoadCharacter = async (classType, isRefresh) => {
                 charBounties[v].objectiveDefinitions.push(objectiveDefinitions[objHash]);
             };
         });
-        
+
         // Loop over bounties and sort into groups then by type
-        bountyArr = SortByGroup(charBounties, {bountyArr, vendorKeys, itemTypeKeys});
-        bountyArr = SortByType(bountyArr, {SortBountiesByType});
-        PushToDOM(bountyArr, {MakeBountyElement, amountOfBounties});
+        bountyArr = SortByGroup(charBounties, { bountyArr, vendorKeys, itemTypeKeys });
+        bountyArr = SortByType(bountyArr, { SortBountiesByType });
+        PushToDOM(bountyArr, { MakeBountyElement, amountOfBounties });
         userStruct['charBounties'] = charBounties;
 
         // Calculate XP yield from (active) bounties
-        let totalXpYield = CalcXpYield(bountyArr, {itemTypeKeys, baseYields, petraYields});
+        let totalXpYield = CalcXpYield(bountyArr, { itemTypeKeys, baseYields, petraYields });
 
         // Ghost mod bonus Xp modifier variable
         let ghostModBonusXp = 0;
@@ -463,7 +493,7 @@ var LoadCharacter = async (classType, isRefresh) => {
         // Fetch equipped ghost mods
         CharacterEquipment.forEach(v => {
             if (v.bucketHash === 4023194814) { // Ghost bucket hash
-                
+
                 let itemPlugSet = ItemSockets[v.itemInstanceId].sockets;
 
                 Object.keys(itemPlugSet).forEach(v => {
@@ -497,8 +527,7 @@ var LoadCharacter = async (classType, isRefresh) => {
         prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
         seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
 
-        let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems,
-            rewardsTrack = {};
+        let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems, rewardsTrack = {};
 
         // Iterate through rewards track and formalize into a clean(er) array structure
         seasonPassRewardsTrack.forEach(v => {
@@ -511,12 +540,13 @@ var LoadCharacter = async (classType, isRefresh) => {
         });
 
         // Pass in stats for: next bright engram, fireteam boost, and xp multiplier
-        let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, definitions);
+        let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, itemDefinitions);
         let xpBonus = seasonProgressionStats[3] + 12;
         AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
         AddNumberToElementInner('totalBrightEngramsEarned', InsertSeperators(seasonProgressionStats[1]));
         AddNumberToElementInner('seasonPassFireteamBonus', `${seasonProgressionStats[2]}%`);
         AddNumberToElementInner('seasonPassXpBonus', `${xpBonus}%`); // +12 for bonus large xp modifier
+
 
         // Pass in stats for the net breakdown section
         AddNumberToElementInner('bonusXpValue', `${xpBonus}%`);
@@ -524,7 +554,7 @@ var LoadCharacter = async (classType, isRefresh) => {
         AddNumberToElementInner('ghostModValue', `${ghostModBonusXp}%`);
 
         // Add all the modifiers together, append 1 and times that value by the base total Xp
-        let netXpWithModifiers = totalXpYield * (((xpBonus + seasonProgressionStats[2] + ghostModBonusXp) / 100) + 1)
+        let netXpWithModifiers = totalXpYield * (((xpBonus + seasonProgressionStats[2] + ghostModBonusXp) / 100) + 1);
         AddNumberToElementInner('totalNetXpField', `${InsertSeperators(netXpWithModifiers)}`);
 
         // Add season pass statistics
@@ -533,8 +563,7 @@ var LoadCharacter = async (classType, isRefresh) => {
         AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonProgressionStats[5]));
 
         // Get statistics for subheadings
-        let amountOfExpiredBounties = 0,
-            amountOfCompletedBounties = 0;
+        let amountOfExpiredBounties = 0, amountOfCompletedBounties = 0;
 
         for (let bounty of userStruct.charBounties) {
             if (bounty.isComplete) {
@@ -604,7 +633,7 @@ var LoadCharacter = async (classType, isRefresh) => {
 
             // Change potential yield stats since there are bounties present
             AddNumberToElementInner('totalXpField', InsertSeperators(totalXpYield));
-            AddNumberToElementInner('totalSpLevelsField', totalXpYield / 100_000);
+            AddNumberToElementInner('totalSpLevelsField', totalXpYield / 100000);
         };
 
         // Load synergyDefinitions and match against bounties
@@ -619,36 +648,59 @@ var LoadCharacter = async (classType, isRefresh) => {
         userStruct.objs.currView.style.display = 'block';
         document.getElementById('contentDisplay').style.display = 'inline-block';
     };
+    log('LoadPrimaryCharacter END');
 };
 
 
 
+// Anonymous function for main
+async function main (isPassiveReload) {
 
-// -- MAIN
-(async () => {
-    
+    // Check for passive reload
+    if (isPassiveReload) {
+        startTime = new Date();
+        StartLoad();
+        log(`-> Passive Reload Started..`);
+    };
+
     // OAuth Flow
     await OAuthFlow();
 
     // Add default headers back, in case OAuthFlow needed a refresh
     axios.defaults.headers.common = { "X-API-Key": `${axiosHeaders.ApiKey}` };
-    await ValidateManifest();
+
+    // Fetch bungie user details
     await FetchBungieUserDetails();
 
-    // Fetch manifest
-    seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
-    seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition');
-    progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition');
-    objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
-    definitions = await ReturnEntry('DestinyInventoryItemDefinition');
+    // Validate and fetch manifest
+    await ValidateManifest();
 
-    // Load first character on profile
+    // Assign defintions to their global counterparts
+    progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition');
+    seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition');
+    objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
+    seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
+    itemDefinitions = await ReturnEntry('DestinyInventoryItemDefinition');
+
+    // Load first char on profile/last loaded char
     await LoadPrimaryCharacter(userStruct.characters);
-    await AddEventListeners();
-    log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
-})()
-.catch (error => {
+
+    // Check for passive reload
+    if (isPassiveReload) {
+        StopLoad();
+        log(`-> Passive Reload Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
+    }
+    else if (!isPassiveReload) {
+        // Don't add the event listeners again when passive reloading
+        await AddEventListeners();
+    };
+
+};
+
+// Run main
+main()
+.catch((error) => {
     console.error(error);
 });
 
-export { LoadCharacter, userStruct, homeUrl };
+export { LoadCharacter, userStruct, homeUrl, main }

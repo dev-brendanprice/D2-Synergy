@@ -16,12 +16,12 @@ var log = console.log.bind(console),
 
 
 // Return manifest components
-const ReturnComponentSuffix = async (entry) => {
+var ReturnComponentSuffix = async (entry) => {
 
     if (!manifest) {
         manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
     };
-    var components = manifest.data.Response.jsonWorldComponentContentPaths[window.navigator.language.split('-')[0]];
+    let components = manifest.data.Response.jsonWorldComponentContentPaths[window.navigator.language.split('-')[0]];
     log(components);
 
     return components[entry];
@@ -30,11 +30,11 @@ const ReturnComponentSuffix = async (entry) => {
 
 
 // Check if each (required) table exists
-const ValidateTables = async () => {
+var ValidateTables = async () => {
 
-    for (var table of requiredTables) {
+    for (let table of requiredTables) {
 
-        var entry = await get(table);
+        let entry = await get(table);
         if (!entry) {
 
             // Omit API key from request
@@ -48,9 +48,9 @@ const ValidateTables = async () => {
                 .then((res) => {
                     return res;
                 })
-                .catch((bruh) => {
-                    log(bruh)
-                    return axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(4)}=${GenerateRandomString(4)}`)
+                .catch((error) => {
+                    console.error(error);
+                    return axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(4)}=${GenerateRandomString(4)}`);
                 });
 
             log(newTable);
@@ -62,8 +62,8 @@ const ValidateTables = async () => {
 
 
 // Check manifest version
-const ValidateManifest = async () => {
-    
+var ValidateManifest = async () => {
+    log('ValidateManifest START')
     // Change load content
     let loadContent = document.getElementById('loadingText');
     loadContent.innerHTML = 'Downloading New Manifest';
@@ -78,7 +78,7 @@ const ValidateManifest = async () => {
     }, 15_000);
 
     // Fetch manifest
-    var localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
+    let localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
     
     // Validate the current existing tables
     manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
@@ -91,14 +91,15 @@ const ValidateManifest = async () => {
 
     // Remove timeout, just in the case overlapping instructions
     clearTimeout(newLoadContentTimeout);
+    log('ValidateManifest END')
 };
 
 
 
 // Return passed component
-const ReturnEntry = async (entry) => {
+var ReturnEntry = async (entry) => {
 
-    var res = await get(entry);
+    let res = await get(entry);
     if (!res) {
         await ValidateTables();
         res = await get(entry);

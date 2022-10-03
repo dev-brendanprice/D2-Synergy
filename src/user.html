@@ -253,34 +253,36 @@
             <h1>Settings</h1>
             <hr class="settingsBreaker">
 
+            <div class="settingSectionHeader">General</div>
+
             <!-- Refresh when tab is focused -->
-            <div id="check-box">
-                <input type="checkbox" class="check-box" checked>
+            <div id="checkBox">
+                <input type="checkbox" class="checkBox" id="checkboxRefreshWhenFocused" checked>
             </div>
-            <div class="settingText">Refresh when tab is focused</div>
+            <div class="settingText">Refresh data when browser tab is back in focus</div>
 
             <br>
 
             <!-- Refresh at interval -->
-            <div id="check-box">
-                <input type="checkbox" class="check-box">
+            <div id="checkBox">
+                <input type="checkbox" class="checkBox" id="checkboxRefreshOnInterval">
             </div>
-            <div class="settingText">Refresh at an interval</div>
+            <div class="settingText">Refresh data at 2 minute intervals</div>
 
             <br>
+            <div class="settingSectionHeader" id="itemBorderSizeHeading">Item/Border Size</div>
 
             <!-- Item size in px -->
-            <div>
-                <div class="settingText">Item Size</div><input id="itemSizeSlider" type="range" min="40" max="70" value="55"><div class="settingText" id="itemSizeField"></div><br>
-                <div class="settingText">The default item size looks the best, keeping all screen sizes in mind.</div>
+            <div id="rangeSliderContainer">
+                <div id="itemSizeText">Item Size</div>
+                <input id="itemSizeSlider" type="range" min="40" max="70" value="55">
+                <div id="itemSizeField"></div>
+                <div id="resetItemSize">Reset</div>
             </div>
 
-            <br>
-
-            <!-- Default content display -->
-            <div>
-
-            </div>
+            <div class="settingText" id="sliderNoticeText">Note: The default size has the best clarity, keeping all screen sizes in mind.</div>
+            <div class="settingText" id="sliderPreviewText">Preview:</div>
+            <img id="settingsBountyImage" src="./images/bounty_image.png">
         </div>
     </div>
 

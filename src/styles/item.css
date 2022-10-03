@@ -13,6 +13,7 @@
     backdrop-filter: blur(6px);
     border: 1px solid rgba(87, 87, 87, 0.66);
     z-index: 10;
+    box-shadow: 2px 2px 2px rgb(63, 63, 63);
 }
 
 .itemContainerComplete {
