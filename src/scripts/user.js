@@ -18,6 +18,7 @@ import {
     SortByType,
     SortBountiesByType,
     CalcXpYield,
+    ReturnSeasonPassProgressionStats,
     ReturnSeasonProgressionStats,
     ReturnSeasonPassLevel,
     LoadPrimaryCharacter,
@@ -540,27 +541,31 @@ async function LoadCharacter(classType, isRefresh) {
         });
 
         // Pass in stats for: next bright engram, fireteam boost, and xp multiplier
-        let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, itemDefinitions);
-        let xpBonus = seasonProgressionStats[3] + 12;
-        AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
-        AddNumberToElementInner('totalBrightEngramsEarned', InsertSeperators(seasonProgressionStats[1]));
-        AddNumberToElementInner('seasonPassFireteamBonus', `${seasonProgressionStats[2]}%`);
-        AddNumberToElementInner('seasonPassXpBonus', `${xpBonus}%`); // +12 for bonus large xp modifier
+        // let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, itemDefinitions);
 
+        const seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, itemDefinitions);
+
+        // Season Pass innerHTML changes
+        AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonPassProgressionStats.progressToNextLevel));
+        AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonPassProgressionStats.xpToMaxSeasonPassRank));
+        AddNumberToElementInner('seasonPassFireteamBonus', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
+        AddNumberToElementInner('seasonPassRankLevel', seasonPassProgressionStats.seasonPassLevel);
+        AddNumberToElementInner('seasonPassXpBonus', `${seasonPassProgressionStats.bonusXpValue}%`); // +12 for bonus large xp modifier
 
         // Pass in stats for the net breakdown section
-        AddNumberToElementInner('bonusXpValue', `${xpBonus}%`);
-        AddNumberToElementInner('sharedWisdomValue', `${seasonProgressionStats[2]}%`);
+        AddNumberToElementInner('sharedWisdomValue', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
         AddNumberToElementInner('ghostModValue', `${ghostModBonusXp}%`);
+        AddNumberToElementInner('bonusXpValue', `${seasonPassProgressionStats.bonusXpValue}%`);
 
-        // Add all the modifiers together, append 1 and times that value by the base total Xp
-        let netXpWithModifiers = totalXpYield * (((xpBonus + seasonProgressionStats[2] + ghostModBonusXp) / 100) + 1);
-        AddNumberToElementInner('totalNetXpField', `${InsertSeperators(netXpWithModifiers)}`);
+        // Bright Engram innerHTML changes
+        // AddNumberToElementInner('totalBrightEngramsEarned', InsertSeperators(seasonProgressionStats[1]));
+        // AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
 
-        // Add season pass statistics
-        AddNumberToElementInner('seasonPassRankLevel', seasonPassLevel);
-        AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonProgressionStats[4]));
-        AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonProgressionStats[5]));
+
+        // Add all the modifiers together, append 1 and times that value by the base total XP
+        const totalXpBonusPercent = ((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) / 100) + 1; // Format to 1.x
+        AddNumberToElementInner('totalNetXpField', `${InsertSeperators(totalXpYield * totalXpBonusPercent)}`);
+
 
         // Get statistics for subheadings
         let amountOfExpiredBounties = 0, amountOfCompletedBounties = 0;
@@ -584,11 +589,11 @@ async function LoadCharacter(classType, isRefresh) {
             document.getElementById('ghostModCheckmark').style.display = 'none';
             document.getElementById('ghostModCross').style.display = 'inline-block';
         };
-        if (!seasonProgressionStats[2]) {
+        if (!seasonPassProgressionStats.sharedWisdomBonusValue) {
             document.getElementById('sharedWisdomCheckmark').style.display = 'none';
             document.getElementById('sharedWisdomCross').style.display = 'inline-block';
         };
-        if (!seasonProgressionStats[3]) {
+        if (!seasonPassProgressionStats.bonusXpValue) {
             document.getElementById('bonusXpCheckmark').style.display = 'none';
             document.getElementById('bonusXpCross').style.display = 'inline-block';
         };

@@ -1,6 +1,6 @@
 {
   "name": "d2-synergy",
-  "version": "Alpha v1.1.4",
+  "version": "Alpha v1.1.5",
   "description": "[![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)\r [![API](https://img.shields.io/badge/API-Bungie.net-blue)](https://bungie-net.github.io/multi/index.html)",
   "main": "index.js",
   "scripts": {

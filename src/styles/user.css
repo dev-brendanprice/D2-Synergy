@@ -783,7 +783,7 @@ h2 {
 
 /* Bright engram statistic container */
 #brightEngram {
-    display: inline-block;
+    display: none;
     margin-left: 20px;
     text-align: center;
 }
