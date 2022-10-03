@@ -1,7 +1,15 @@
-import { LoadCharacter, userStruct, main } from '../user.js';
-import { CacheAuditItem, CacheReturnItem, Logout } from './ModuleScript.js';
+import { 
+    LoadCharacter,
+    userStruct, 
+    charBounties,
+    main, 
+    filterDivs } from '../user.js';
+import { 
+    CacheAuditItem, 
+    CacheReturnItem, 
+    Logout } from './ModuleScript.js';
 
-let log = console.log.bind(console);
+const log = console.log.bind(console);
 
 export async function AddEventListeners() {
     log('AddEventListeners START');
@@ -27,7 +35,7 @@ export async function AddEventListeners() {
 
     // Hover events for "Net Breakdown"
     // Shared wisdom bonus hover
-    let statSharedWisdom = document.getElementById('statSharedWisdom');
+    const statSharedWisdom = document.getElementById('statSharedWisdom');
     statSharedWisdom.addEventListener('mouseover', () => {
         document.getElementById('sharedWisdomPopupContainer').style.display = 'inline-block';
     });
@@ -36,7 +44,7 @@ export async function AddEventListeners() {
     });
 
     // Ghost mod bonus hover
-    let statGhostMod = document.getElementById('statGhostMod');
+    const statGhostMod = document.getElementById('statGhostMod');
     statGhostMod.addEventListener('mouseover', () => {
         document.getElementById('ghostModPopupContainer').style.display = 'inline-block';
     });
@@ -45,7 +53,7 @@ export async function AddEventListeners() {
     });
 
     // Bonus XP hover
-    let statBonusXp = document.getElementById('statBonusXp');
+    const statBonusXp = document.getElementById('statBonusXp');
     statBonusXp.addEventListener('mouseover', () => {
         document.getElementById('BonusXpPopupContainer').style.display = 'inline-block';
     });
@@ -57,7 +65,7 @@ export async function AddEventListeners() {
     document.getElementById('removeFiltersID').addEventListener('click', () => {
 
         // Loop over charBounties and reverse filtered items
-        userStruct.charBounties.forEach(bounty => {
+        charBounties.forEach(bounty => {
             if (userStruct.greyOutDivs) {
                 userStruct.greyOutDivs.forEach(greyHash => {
                     document.getElementById(`${bounty.hash}`).style.opacity = 'unset';
@@ -69,8 +77,8 @@ export async function AddEventListeners() {
 
 
         // Loop over bounty filters and reverse selected filers
-        Object.keys(userStruct.filterDivs).forEach(filter => {
-            userStruct.filterDivs[filter].element.style.color = 'rgb(138, 138, 138)';
+        Object.keys(filterDivs).forEach(filter => {
+            filterDivs[filter].element.style.color = 'rgb(138, 138, 138)';
         });
     });
 
@@ -107,18 +115,22 @@ export async function AddEventListeners() {
         };
     });
 
-    // Settings buttion listener
+    // Settings and back button
+    const userMainContainer = document.getElementById('userMainContainer'),
+        settingsContainer = document.getElementById('settingsContainer');
+
+    // User clicks settings button on main page
     document.getElementById('navBarSettingsContainer').addEventListener('click', () => {
 
-        document.getElementById('userMainContainer').style.display = 'none';
-        document.getElementById('settingsContainer').style.display = 'block';
+        userMainContainer.style.display = 'none';
+        settingsContainer.style.display = 'block';
     });
 
-    // Back button event listener in settings menu
+    // User clicks the back button in settings menu
     document.getElementById('backButtonContainer').addEventListener('click', () => {
 
-        document.getElementById('userMainContainer').style.display = 'block';
-        document.getElementById('settingsContainer').style.display = 'none';
+        userMainContainer.style.display = 'block';
+        settingsContainer.style.display = 'none';
     });
 
     // Settings toggles input listeners
@@ -149,7 +161,7 @@ export async function AddEventListeners() {
         if (!document.hidden) {
             CacheReturnItem('isRefreshOnFocusToggled')
             .then(result => {
-                log(result);
+
                 if (result === true) {
                     document.getElementById('loadingIcon').style.display = 'none';
                     document.getElementById('loadingText').style.marginTop = '-65px';

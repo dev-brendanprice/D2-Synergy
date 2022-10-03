@@ -19,7 +19,6 @@ import {
     SortBountiesByType,
     CalcXpYield,
     ReturnSeasonPassProgressionStats,
-    ReturnSeasonProgressionStats,
     ReturnSeasonPassLevel,
     LoadPrimaryCharacter,
     CacheAuditItem,
@@ -42,7 +41,7 @@ VerifyState();
 StartLoad();
 
 // Utils
-var urlParams = new URLSearchParams(window.location.search),
+let urlParams = new URLSearchParams(window.location.search),
     sessionStorage = window.sessionStorage,
     localStorage = window.localStorage,
     log = console.log.bind(console),
@@ -51,7 +50,7 @@ var urlParams = new URLSearchParams(window.location.search),
     userStruct = {};
 
 // Defintion objects
-var progressionDefinitions = {},
+let progressionDefinitions = {},
     seasonPassDefinitions = {},
     objectiveDefinitions = {},
     destinyUserProfile = {},
@@ -59,12 +58,12 @@ var progressionDefinitions = {},
     itemDefinitions = {};
 
 // User info variables
-var destinyMembershipId,
+let destinyMembershipId,
     membershipType,
     characters;
 
 // Authorization information
-var homeUrl = import.meta.env.HOME_URL,
+export const homeUrl = import.meta.env.HOME_URL,
     axiosHeaders = {
         ApiKey: import.meta.env.API_KEY,
         Authorization: import.meta.env.AUTH
@@ -75,15 +74,13 @@ var homeUrl = import.meta.env.HOME_URL,
 document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
 
 // Set default axios header
-userStruct.homeUrl = homeUrl;
 axios.defaults.headers.common = {
     "X-API-Key": `${axiosHeaders.ApiKey}`
 };
 
-// Configure userStruct properties
-userStruct.charBounties = [];
-userStruct.characters = {};
-userStruct.filterDivs = {};
+// Declare global exports
+export let charBounties = [];
+export let filterDivs = {};
 userStruct.bools = {};
 userStruct.ints = {};
 userStruct.objs = {};
@@ -93,13 +90,13 @@ userStruct.objs.currView = document.getElementById('pursuitsContainer');
 userStruct.bools.characterLoadToggled = false;
 userStruct.bools.filterToggled = false;
 
-// Get user settings and apply to DOM/call stack
+// Assign element fields for user settings
 export let itemDisplaySize;
-
 let rangeSlider = document.getElementById('itemSizeSlider'),
     rangeValueField = document.getElementById('itemSizeField'),
     bountyImage = document.getElementById('settingsBountyImage');
 
+// Push cache results to vars
 await CacheReturnItem('itemDisplaySize')
     .then((result) => {
         itemDisplaySize = result;
@@ -120,7 +117,8 @@ document.getElementById('checkboxRefreshWhenFocused').checked = await CacheRetur
 
 
 // Authorize with Bungie.net
-var BungieOAuth = async (authCode) => {
+// @string {authCode}
+export async function BungieOAuth (authCode) {
 
     let AccessToken = {},
         RefreshToken = {},
@@ -169,7 +167,7 @@ var BungieOAuth = async (authCode) => {
 
 
 // Check tokens for expiration
-var CheckComponents = async (bool) => {
+export async function CheckComponents () {
     
     let acToken = JSON.parse(localStorage.getItem('accessToken')),
         rsToken = JSON.parse(localStorage.getItem('refreshToken')),
@@ -246,12 +244,12 @@ var CheckComponents = async (bool) => {
             });
         isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
     };
-    if (bool) log('-> Tokens Validated!');
+    log('-> Tokens Validated!')
 };
 
 
 // Main OAuth flow mechanism
-var OAuthFlow = async () => {
+export async function OAuthFlow() {
     log('OAuthFlow START')
     let rsToken = JSON.parse(localStorage.getItem('refreshToken')),
         acToken = JSON.parse(localStorage.getItem('accessToken')),
@@ -296,7 +294,7 @@ var OAuthFlow = async () => {
 
 
 // Fetch basic bungie user details
-var FetchBungieUserDetails = async () => {
+export async function FetchBungieUserDetails() {
     log('FetchBungieUserDetails START')
     let components = JSON.parse(localStorage.getItem('components')),
         axiosConfig = {
@@ -360,7 +358,8 @@ var FetchBungieUserDetails = async () => {
 
 
 // Load character from specific index
-async function LoadCharacter(classType, isRefresh) {
+// @int {classType}, @boolean {isRefresh}
+export async function LoadCharacter(classType, isRefresh) {
 
     log('LoadPrimaryCharacter START');
 
@@ -368,7 +367,7 @@ async function LoadCharacter(classType, isRefresh) {
 
         // Configure load sequence
         document.getElementById('loadingText').innerHTML = 'Indexing Character';
-        await CheckComponents(false);
+        await CheckComponents();
 
         // Globals in this scope
         let membershipType = sessionStorage.getItem('membershipType'), 
@@ -381,7 +380,6 @@ async function LoadCharacter(classType, isRefresh) {
             CharacterEquipment,
             prestigeProgressionSeasonInfo,
             CurrentSeasonHash,
-            charBounties = [],
             seasonProgressionInfo = {},
             characterId,
             ItemSockets;
@@ -466,27 +464,32 @@ async function LoadCharacter(classType, isRefresh) {
         });
 
         // Loop over inventory items and emit bounties
-        let parsedBounties = ParseBounties(charInventory, CharacterObjectives, { itemDefinitions, objectiveDefinitions });
-        charBounties = parsedBounties[0];
-        amountOfBounties = parsedBounties[1];
+        let parsedBountiesResponse = ParseBounties(charInventory, CharacterObjectives, itemDefinitions, objectiveDefinitions);
+        charBounties = parsedBountiesResponse.charBounties;
+        amountOfBounties = parsedBountiesResponse.amountOfBounties;
 
         // Assign objective(s) itemDefinitions to each item
         Object.keys(charBounties).forEach(v => {
+            
             let objHashes = charBounties[v].objectives.objectiveHashes;
             charBounties[v].objectiveDefinitions = [];
+
             for (let objHash of objHashes) {
                 charBounties[v].objectiveDefinitions.push(objectiveDefinitions[objHash]);
             };
         });
 
-        // Loop over bounties and sort into groups then by type
-        bountyArr = SortByGroup(charBounties, { bountyArr, vendorKeys, itemTypeKeys });
-        bountyArr = SortByType(bountyArr, { SortBountiesByType });
-        PushToDOM(bountyArr, { MakeBountyElement, amountOfBounties });
-        userStruct['charBounties'] = charBounties;
+        // Sort bounties by group (vanguard, gunsmith etc)
+        bountyArr = SortByGroup(charBounties, bountyArr, vendorKeys);
+
+        // Sort bounties by type (weekly, daily etc)
+        bountyArr = SortByType(bountyArr, SortBountiesByType);
+
+        // Push sorted bounties to the page
+        PushToDOM(bountyArr, amountOfBounties, MakeBountyElement);
 
         // Calculate XP yield from (active) bounties
-        let totalXpYield = CalcXpYield(bountyArr, { itemTypeKeys, baseYields, petraYields });
+        let totalXpYield = CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields);
 
         // Ghost mod bonus Xp modifier variable
         let ghostModBonusXp = 0;
@@ -540,9 +543,7 @@ async function LoadCharacter(classType, isRefresh) {
             rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
         });
 
-        // Pass in stats for: next bright engram, fireteam boost, and xp multiplier
-        // let seasonProgressionStats = await ReturnSeasonProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, itemDefinitions);
-
+        // Call function to get progressions for season pass XP and bonus stats
         const seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, itemDefinitions);
 
         // Season Pass innerHTML changes
@@ -570,7 +571,7 @@ async function LoadCharacter(classType, isRefresh) {
         // Get statistics for subheadings
         let amountOfExpiredBounties = 0, amountOfCompletedBounties = 0;
 
-        for (let bounty of userStruct.charBounties) {
+        for (let bounty of charBounties) {
             if (bounty.isComplete) {
                 amountOfCompletedBounties++;
             };
@@ -584,18 +585,34 @@ async function LoadCharacter(classType, isRefresh) {
         AddNumberToElementInner('completedBountiesAmountField', amountOfCompletedBounties);
         AddNumberToElementInner('currentSeasonNameField', seasonPassInfo.displayProperties.name);
 
-        // Update net breakdown checkmarks to represent status
+        // Check if ghost mods are slotted, turn off checkmark if not
         if (!ghostModBonusXp) {
             document.getElementById('ghostModCheckmark').style.display = 'none';
             document.getElementById('ghostModCross').style.display = 'inline-block';
+        }
+        else {
+            document.getElementById('ghostModCheckmark').style.display = 'inline-block';
+            document.getElementById('ghostModCross').style.display = 'none';
         };
+
+        // Check if shared wisdom is not equal to 0, turn off checkmark if not
         if (!seasonPassProgressionStats.sharedWisdomBonusValue) {
             document.getElementById('sharedWisdomCheckmark').style.display = 'none';
             document.getElementById('sharedWisdomCross').style.display = 'inline-block';
+        }
+        else {
+            document.getElementById('sharedWisdomCheckmark').style.display = 'inline-block';
+            document.getElementById('sharedWisdomCross').style.display = 'none';
         };
+
+        // Check if bonus xp is not equal to 0, turn off checkmark if not
         if (!seasonPassProgressionStats.bonusXpValue) {
             document.getElementById('bonusXpCheckmark').style.display = 'none';
             document.getElementById('bonusXpCross').style.display = 'inline-block';
+        }
+        else {
+            document.getElementById('bonusXpCheckmark').style.display = 'inline-block';
+            document.getElementById('bonusXpCross').style.display = 'none';
         };
 
         // Get artifact info -- check if profile has artifact
@@ -657,9 +674,9 @@ async function LoadCharacter(classType, isRefresh) {
 };
 
 
-
 // Anonymous function for main
-async function main (isPassiveReload) {
+// @boolean {isPassiveReload}
+export async function main(isPassiveReload) {
 
     // Check for passive reload
     if (isPassiveReload) {
@@ -688,7 +705,7 @@ async function main (isPassiveReload) {
     itemDefinitions = await ReturnEntry('DestinyInventoryItemDefinition');
 
     // Load first char on profile/last loaded char
-    await LoadPrimaryCharacter(userStruct.characters);
+    await LoadPrimaryCharacter(characters);
 
     // Check for passive reload
     if (isPassiveReload) {
@@ -700,6 +717,10 @@ async function main (isPassiveReload) {
         await AddEventListeners();
     };
 
+    setTimeout(() => {
+        log(userStruct);
+    }, 12_000);
+
 };
 
 // Run main
@@ -708,4 +729,4 @@ main()
     console.error(error);
 });
 
-export { LoadCharacter, userStruct, homeUrl, main }
+export { userStruct }

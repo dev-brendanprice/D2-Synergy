@@ -1,4 +1,4 @@
-import { userStruct } from '../user.js';
+import { charBounties, userStruct } from '../user.js';
 import { bountyHashes } from '../../data/bounties.js';
 import {
     ActivityMode,
@@ -8,9 +8,8 @@ import {
     ItemCategory,
     KillType } from './SynergyDefinitions.js';
 
-    var log = console.log.bind(console);
-    
-    var tableForPropertyDefinitions = {
+    const log = console.log.bind(console),
+        tableForPropertyDefinitions = {
         'Destination': Destination,
         'ActivityMode': ActivityMode,
         'DamageType': DamageType,
@@ -19,11 +18,12 @@ import {
         'KillType': KillType
     };
 
-    let bountyPropCount = {};
+    export let bountyPropCount = {};
 
 
 // Push properties to bounty in arguments
-const PushIndexesFromProperty = async (bountyEntry, propertyName, i) => {
+// @object {bountyEntry}, @string {propertyName}, @int {i}
+export async function PushIndexesFromProperty(bountyEntry, propertyName, i) {
 
     let propertyIndexArray = bountyEntry[propertyName];
 
@@ -37,7 +37,7 @@ const PushIndexesFromProperty = async (bountyEntry, propertyName, i) => {
             let typeOfProperty = propertyDefinition[index];
             
             // Push to charBounties global object
-            userStruct.charBounties[i].props.push(typeOfProperty);
+            charBounties[i].props.push(typeOfProperty);
 
             // Push to property counters
             if (!bountyPropCount[typeOfProperty]) {
@@ -56,7 +56,7 @@ const PushIndexesFromProperty = async (bountyEntry, propertyName, i) => {
         propertyDefinition.forEach(typeOfProperty => {
             
             // Push to charBounties global object
-            userStruct.charBounties[i].props.push(typeOfProperty);
+            charBounties[i].props.push(typeOfProperty);
 
             // Push to property counters
             if (!bountyPropCount[typeOfProperty]) {
@@ -71,15 +71,15 @@ const PushIndexesFromProperty = async (bountyEntry, propertyName, i) => {
 
 
 // Push the props onto charBounties
-const PushProps = async () => {
+export async function PushProps() {
 
     // Clear counters
     bountyPropCount = {};
 
     // Loop over charBounties and append heuristics
-    for (let i=0; i < userStruct.charBounties.length; i++) {
+    for (let i=0; i < charBounties.length; i++) {
 
-        let bountyEntry = bountyHashes[userStruct.charBounties[i].hash];
+        let bountyEntry = bountyHashes[charBounties[i].hash];
 
         for (let property in bountyEntry) {
 
@@ -104,6 +104,3 @@ const PushProps = async () => {
         };
     };
 };
-
-
-export { bountyPropCount, PushProps };

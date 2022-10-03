@@ -5,8 +5,10 @@ const log = console.log.bind(console),
       localStorage = window.localStorage,
       sessionStorage = window.sessionStorage;
 
+
+
 // Check if state query parameter exists in URL
-async function VerifyState() {
+export async function VerifyState() {
 
     let urlParams = new URLSearchParams(window.location.search), state = urlParams.get('state');
 
@@ -20,16 +22,19 @@ async function VerifyState() {
     };
 };
 
+
+
 // Redirect user back to specified url
 // @string {url}, @string {param}
-function RedirUser(url, param) {
+export function RedirUser(url, param) {
     window.location.href = `${url}?${param ? param : ''}`;
 };
 
 
+
 // Returns corresponding class name using classType
 // @int {classType}
-function ParseChar(classType) {
+export function ParseChar(classType) {
 
     let returnCharString;
     switch (classType) {
@@ -49,9 +54,10 @@ function ParseChar(classType) {
 };
 
 
+
 // Make element for entry data when hash is found in itemDefinitions
-// @obj {param}
-async function MakeBountyElement(param) {
+// @object {param}
+export async function MakeBountyElement(param) {
 
     let itemOverlay = document.createElement('div'), itemStatus = document.createElement('img'), itemTitle = document.createElement('div'), itemType = document.createElement('div'), itemDesc = document.createElement('div'), item = document.createElement('img'), hr = document.createElement('hr');
 
@@ -183,8 +189,9 @@ async function MakeBountyElement(param) {
 };
 
 
+
 // Start loading sequence
-function StartLoad() {
+export function StartLoad() {
 
     // Add loading bar
     document.getElementById('slider').style.display = 'block';
@@ -194,8 +201,9 @@ function StartLoad() {
 };
 
 
+
 // Stop loading sequence
-function StopLoad() {
+export function StopLoad() {
 
     // Remove loading bar
     document.getElementById('slider').style.display = 'none';
@@ -205,8 +213,9 @@ function StopLoad() {
 };
 
 
+
 // Log user out on request
-function Logout() {
+export function Logout() {
     localStorage.clear();
     sessionStorage.clear();
     indexedDB.deleteDatabase('keyval-store');
@@ -214,27 +223,34 @@ function Logout() {
 };
 
 
+
 // Insert commas into numbers where applicable
 // @int {num}
-function InsertSeperators(num) {
+export function InsertSeperators(num) {
     return new Intl.NumberFormat().format(num);
 };
 
 
+
 // Capitalize First letter of string
-function CapitilizeFirstLetter(string) {
+// @string {string}
+export function CapitilizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 
-// Sort items into bounties
-function ParseBounties(charInventory, charObjectives, utils) {
 
-    let charBounties = [], amountOfBounties = 0;
+// Sort items into bounties
+// @array {charInventory}, @object {charObjectives}, @object {itemDefintiions}
+export function ParseBounties(charInventory, charObjectives, itemDefinitions) {
+
+    let charBounties = [], 
+        amountOfBounties = 0,
+        returnObject = {};
 
     charInventory.forEach(v => {
 
-        let item = utils.itemDefinitions[v.itemHash];
+        let item = itemDefinitions[v.itemHash];
 
         if (item.itemType === 26) {
 
@@ -268,64 +284,75 @@ function ParseBounties(charInventory, charObjectives, utils) {
             amountOfBounties++;
         };
     });
-    return [charBounties, amountOfBounties];
+    
+    returnObject.charBounties = charBounties;
+    returnObject.amountOfBounties = amountOfBounties;
+    return returnObject;
 };
 
 
+
 // Push bounties to DOM
-function PushToDOM(bountyArr, utils) {
+// @array {bountyArr}, @int {amountOfBounties}, @function {MakeBountyElement}
+export function PushToDOM(bountyArr, amountOfBounties, MakeBountyElement) {
 
     Object.keys(bountyArr).forEach(v => {
 
         let group = bountyArr[v];
         if (group.length !== 0) {
             group.forEach(item => {
-                utils.MakeBountyElement(item);
-                utils.amountOfBounties++;
+                MakeBountyElement(item);
+                amountOfBounties++;
             });
         };
     });
 };
 
 
+
 // Sort bounties via vendor group
-function SortByGroup(charBounties, utils) {
+// @array {charBounties}, @array {bountyArr}, @object {vendorKeys}
+export function SortByGroup(charBounties, bountyArr, vendorKeys) {
 
     charBounties.forEach(v => {
-        for (let i = 1; i < utils.vendorKeys.length; i++) {
-            if (utils.vendorKeys.length - 1 === i) {
-                utils.bountyArr['other'].push(v);
+        for (let i = 1; i < vendorKeys.length; i++) {
+            if (vendorKeys.length - 1 === i) {
+                bountyArr['other'].push(v);
                 break;
             }
-            else if (utils.vendorKeys.length !== i) {
-                if (v.inventory.stackUniqueLabel.includes(utils.vendorKeys[i])) {
-                    utils.bountyArr[utils.vendorKeys[i]].push(v);
+            else if (vendorKeys.length !== i) {
+                if (v.inventory.stackUniqueLabel.includes(vendorKeys[i])) {
+                    bountyArr[vendorKeys[i]].push(v);
                     break;
                 };
             };
-        };
-    });
-    return utils.bountyArr;
-};
-
-
-// Sort bounties via bounty type
-function SortByType(bountyArr, utils) {
-
-    Object.keys(bountyArr).forEach(v => {
-
-        let group = bountyArr[v];
-
-        if (group.length !== 0) {
-            group.sort(utils.sortBountiesByType);
         };
     });
     return bountyArr;
 };
 
 
+
+// Sort bounties via bounty type
+// @array {bountyArr}, @function {sortBountiesByType}
+export function SortByType(bountyArr, sortBountiesByType) {
+
+    Object.keys(bountyArr).forEach(v => {
+
+        let group = bountyArr[v];
+
+        if (group.length !== 0) {
+            group.sort(sortBountiesByType);
+        };
+    });
+    return bountyArr;
+};
+
+
+
 // Sorts by index of item in itemTypeKeys
-function SortBountiesByType(a, b) {
+// @array {a}, @object {b}
+export function SortBountiesByType(a, b) {
 
     let stackLabelA = a.inventory.stackUniqueLabel, stackLabelB = b.inventory.stackUniqueLabel, stackTypeA, stackTypeB;
 
@@ -350,8 +377,10 @@ function SortBountiesByType(a, b) {
 };
 
 
+
 // Calculate total XP gain from (active) bounties
-function CalcXpYield(bountyArr, utils) {
+// @array {bountyArr}, @array {itemTypeKeys}, @object {baseYields}, @object {petraYields}
+export function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields) {
 
     let totalXP = 0;
     Object.keys(bountyArr).forEach(v => {
@@ -361,16 +390,16 @@ function CalcXpYield(bountyArr, utils) {
         if (group.length !== 0) {
             group.forEach(z => {
 
-                for (let i = 0; i < utils.itemTypeKeys.length; i++) {
+                for (let i = 0; i < itemTypeKeys.length; i++) {
 
                     let label = z.inventory.stackUniqueLabel;
-                    if (label.includes(utils.itemTypeKeys[i])) {
+                    if (label.includes(itemTypeKeys[i])) {
 
                         if (label.includes('dreaming_city')) {
-                            totalXP += utils.petraYields[utils.itemTypeKeys[i]];
+                            totalXP += petraYields[itemTypeKeys[i]];
                         }
                         else {
-                            totalXP += utils.baseYields[utils.itemTypeKeys[i]];
+                            totalXP += baseYields[itemTypeKeys[i]];
                         };
                         break;
                     };
@@ -382,8 +411,10 @@ function CalcXpYield(bountyArr, utils) {
 };
 
 
+
 // Return season pass progressional statistics
-async function ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeInfo, rewardsTrack, itemDefinitions) {
+// @object {seasonProgressionInfo}, @object {prestigeInfo}, @object {rewardsTrack}, @object {itemDefinitions}
+export async function ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeInfo, rewardsTrack, itemDefinitions) {
 
     const seasonRank = seasonProgressionInfo.level + prestigeInfo.level;
     
@@ -441,6 +472,7 @@ async function ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeI
 };
 
 
+
 // Return bright engram progressional statistics
 async function ReturnBrightEngramProgressionStats(seasonProgressionInfo, prestigeInfo, rewardsTrack, itemDefinitions) {
 
@@ -458,127 +490,124 @@ async function ReturnBrightEngramProgressionStats(seasonProgressionInfo, prestig
 };
 
 
+
 // Calculate stats based around the season pass XP structure 
-async function ReturnSeasonProgressionStats(seasonProgressionInfo, prestigeInfo, rewardsTrack, itemDefinitions) {
+// async function ReturnSeasonProgressionStats(seasonProgressionInfo, prestigeInfo, rewardsTrack, itemDefinitions) {
 
-    // Get total season rank 
-    let seasonRank = seasonProgressionInfo.level + prestigeInfo.level, 
-        returnArr = {};
+//     // Get total season rank 
+//     let seasonRank = seasonProgressionInfo.level + prestigeInfo.level, 
+//         returnArr = {};
 
-    // Check if the season pass is higher than level 100 (prestige level)
-    if (seasonRank >= 100) { // Prestige
+//     // Check if the season pass is higher than level 100 (prestige level)
+//     if (seasonRank >= 100) { // Prestige
 
-        let levelsOutOfFiveToNextRank = (((seasonRank - 97) / 5) * 10) / 2;
+//         let levelsOutOfFiveToNextRank = (((seasonRank - 97) / 5) * 10) / 2;
 
-        let nextEngramRank = (seasonRank + ((levelsOutOfFiveToNextRank) - 5)),
-            brightEngramCount = 0,
-            fireteamBonusXpPercent = 0,
-            bonusXpPercent = 0;
+//         let nextEngramRank = (seasonRank + ((levelsOutOfFiveToNextRank) - 5)),
+//             brightEngramCount = 0,
+//             fireteamBonusXpPercent = 0,
+//             bonusXpPercent = 0;
 
-        // Push Xp required until next engram to returnArr
-        returnArr.xpRequiredForNextEngram = ((nextEngramRank - seasonRank) * 100000) - prestigeInfo.progressToNextLevel;
+//         // Push Xp required until next engram to returnArr
+//         returnArr.xpRequiredForNextEngram = ((nextEngramRank - seasonRank) * 100000) - prestigeInfo.progressToNextLevel;
 
-        // Iterate through the entire season pass and count all bright engrams
-        Object.keys(rewardsTrack).forEach(v => {
-            rewardsTrack[v].forEach(x => {
+//         // Iterate through the entire season pass and count all bright engrams
+//         Object.keys(rewardsTrack).forEach(v => {
+//             rewardsTrack[v].forEach(x => {
 
-                let itemDisplayProperties = itemDefinitions[x].displayProperties;
+//                 let itemDisplayProperties = itemDefinitions[x].displayProperties;
 
-                if (x === 1968811824) {
-                    brightEngramCount++;
-                }
-                else if (itemDisplayProperties.name === 'Small Fireteam XP Boost') {
-                    fireteamBonusXpPercent = fireteamBonusXpPercent + 2;
-                }
-                else if (itemDisplayProperties.name === 'Small XP Boost') {
-                    bonusXpPercent = bonusXpPercent + 2;
-                };
-            });
-        });
+//                 if (x === 1968811824) {
+//                     brightEngramCount++;
+//                 }
+//                 else if (itemDisplayProperties.name === 'Small Fireteam XP Boost') {
+//                     fireteamBonusXpPercent = fireteamBonusXpPercent + 2;
+//                 }
+//                 else if (itemDisplayProperties.name === 'Small XP Boost') {
+//                     bonusXpPercent = bonusXpPercent + 2;
+//                 };
+//             });
+//         });
 
-        // Push all results to the array that we return
-        let prestigeRanksDividedNthTerm = (seasonRank - 100) / 5;
-        returnArr.totalBrightEngramsEarnt = brightEngramCount + Math.trunc(prestigeRanksDividedNthTerm);
-        returnArr.sharedWisdomBonusValue = fireteamBonusXpPercent;
-        returnArr.bonusXpBonusValue = bonusXpPercent;
-        returnArr.progressToNextLevel = prestigeInfo.progressToNextLevel;
-        returnArr.xpToMaxSeasonPassRank = 0;
+//         // Push all results to the array that we return
+//         let prestigeRanksDividedNthTerm = (seasonRank - 100) / 5;
+//         returnArr.totalBrightEngramsEarnt = brightEngramCount + Math.trunc(prestigeRanksDividedNthTerm);
+//         returnArr.sharedWisdomBonusValue = fireteamBonusXpPercent;
+//         returnArr.bonusXpBonusValue = bonusXpPercent;
+//         returnArr.progressToNextLevel = prestigeInfo.progressToNextLevel;
+//         returnArr.xpToMaxSeasonPassRank = 0;
 
-        // Change DOM content if the user is over rank 100
-        document.getElementById('seasonPassSecondContainer').style.color = 'rgb(99, 99, 99)';
-        document.getElementById('seasonPassXpToMaxRank').style.color = 'rgb(63, 96, 112)';
-    }
+//         // Change DOM content if the user is over rank 100
+//         document.getElementById('seasonPassSecondContainer').style.color = 'rgb(99, 99, 99)';
+//         document.getElementById('seasonPassXpToMaxRank').style.color = 'rgb(63, 96, 112)';
+//     }
 
-    else if (seasonRank < 100) { // Not prestige (less than 100)
-        // Here, we are earning bright engrams relative to the season pass structure, because we are not past level 100
-        // Once we are level 97, the n5 term applies to the levelling structure
-        let splicedRewardsTrack = Object.keys(rewardsTrack).splice(seasonRank), 
-            seasonPassEngramRanks = [];
+//     else if (seasonRank < 100) { // Not prestige (less than 100)
+//         // Here, we are earning bright engrams relative to the season pass structure, because we are not past level 100
+//         // Once we are level 97, the n5 term applies to the levelling structure
+//         let splicedRewardsTrack = Object.keys(rewardsTrack).splice(seasonRank), 
+//             seasonPassEngramRanks = [];
 
-        // Iterate through rewards track and get every bright engram at their respective levels
-        splicedRewardsTrack.forEach(v => {
-            rewardsTrack[v].forEach(x => {
-                if (x === 1968811824) {
-                    seasonPassEngramRanks.push(v);
-                };
-            });
-        });
+//         // Iterate through rewards track and get every bright engram at their respective levels
+//         splicedRewardsTrack.forEach(v => {
+//             rewardsTrack[v].forEach(x => {
+//                 if (x === 1968811824) {
+//                     seasonPassEngramRanks.push(v);
+//                 };
+//             });
+//         });
 
-        // Push results to return array
-        if (!seasonPassEngramRanks[0]) {
+//         // Push results to return array
+//         if (!seasonPassEngramRanks[0]) {
 
-            // Read above this function for more info on this
-            let levelsOutOfFiveToNextRank = (((seasonRank - 97) / 5) * 10) / 2;
-            let xpRequiredForNextRankThatGivesEngram = ((5 - (levelsOutOfFiveToNextRank)) * 100000) + seasonProgressionInfo.progressToNextLevel;
-            returnArr.xpRequiredForNextEngram = xpRequiredForNextRankThatGivesEngram;
-        }
-        else if (seasonPassEngramRanks[0]) {
+//             // Read above this function for more info on this
+//             let levelsOutOfFiveToNextRank = (((seasonRank - 97) / 5) * 10) / 2;
+//             let xpRequiredForNextRankThatGivesEngram = ((5 - (levelsOutOfFiveToNextRank)) * 100000) + seasonProgressionInfo.progressToNextLevel;
+//             returnArr.xpRequiredForNextEngram = xpRequiredForNextRankThatGivesEngram;
+//         }
+//         else if (seasonPassEngramRanks[0]) {
 
-            let nextEngramRank = seasonPassEngramRanks[0];
-            returnArr.xpRequiredForNextEngram = ((nextEngramRank - seasonRank) * 100000) - seasonProgressionInfo.progressToNextLevel;
-        };
+//             let nextEngramRank = seasonPassEngramRanks[0];
+//             returnArr.xpRequiredForNextEngram = ((nextEngramRank - seasonRank) * 100000) - seasonProgressionInfo.progressToNextLevel;
+//         };
 
-        // Iterate through indexes before and upto the season rank level to get total number of bright engrams earnt
-        let RewardsTrackUptoSeasonRank = Object.keys(rewardsTrack).splice(0, seasonRank), brightEngramCount = 0, fireteamBonusXpPercent = 0, bonusXpPercent = 0;
+//         // Iterate through indexes before and upto the season rank level to get total number of bright engrams earnt
+//         let RewardsTrackUptoSeasonRank = Object.keys(rewardsTrack).splice(0, seasonRank), brightEngramCount = 0, fireteamBonusXpPercent = 0, bonusXpPercent = 0;
 
-        RewardsTrackUptoSeasonRank.forEach(v => {
-            rewardsTrack[v].forEach(x => {
+//         RewardsTrackUptoSeasonRank.forEach(v => {
+//             rewardsTrack[v].forEach(x => {
 
-                let itemDisplayProperties = itemDefinitions[x].displayProperties;
+//                 let itemDisplayProperties = itemDefinitions[x].displayProperties;
 
-                if (x === 1968811824) {
-                    brightEngramCount++;
-                }
-                else if (itemDisplayProperties.name === 'Small Fireteam XP Boost') {
-                    fireteamBonusXpPercent = fireteamBonusXpPercent + 2;
-                }
-                else if (itemDisplayProperties.name === 'Small XP Boost') {
-                    bonusXpPercent = bonusXpPercent + 2;
-                };
-            });
-        });
+//                 if (x === 1968811824) {
+//                     brightEngramCount++;
+//                 }
+//                 else if (itemDisplayProperties.name === 'Small Fireteam XP Boost') {
+//                     fireteamBonusXpPercent = fireteamBonusXpPercent + 2;
+//                 }
+//                 else if (itemDisplayProperties.name === 'Small XP Boost') {
+//                     bonusXpPercent = bonusXpPercent + 2;
+//                 };
+//             });
+//         });
 
-        // Push results to return array
-        returnArr.totalBrightEngramsEarnt = brightEngramCount;
-        returnArr.sharedWisdomBonusValue = fireteamBonusXpPercent;
-        returnArr.bonusXpBonusValue = bonusXpPercent;
-        returnArr.progressToNextLevel = seasonProgressionInfo.progressToNextLevel;
-        returnArr.xpToMaxSeasonPassRank = (seasonProgressionInfo.levelCap - seasonProgressionInfo.level) * 100000 + seasonProgressionInfo.progressToNextLevel;
-    };
+//         // Push results to return array
+//         returnArr.totalBrightEngramsEarnt = brightEngramCount;
+//         returnArr.sharedWisdomBonusValue = fireteamBonusXpPercent;
+//         returnArr.bonusXpBonusValue = bonusXpPercent;
+//         returnArr.progressToNextLevel = seasonProgressionInfo.progressToNextLevel;
+//         returnArr.xpToMaxSeasonPassRank = (seasonProgressionInfo.levelCap - seasonProgressionInfo.level) * 100000 + seasonProgressionInfo.progressToNextLevel;
+//     };
 
-    // Return our object
-    return returnArr;
-};
+//     // Return our object
+//     return returnArr;
+// };
 
-
-// Calculate percentage based on first parameter
-async function CalculatePercentage(a, b) {
-    return Math.trunc((100 * a) / b);
-};
 
 
 // Return season pass level, even when prestige level
-async function ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo) {
+// @object {seasonProgressionInfo}, @object {prestigeProgressionSeasonInfo}
+export async function ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo) {
 
     let levelToReturn = 0;
     levelToReturn += seasonProgressionInfo.level;
@@ -591,8 +620,10 @@ async function ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionS
 };
 
 
+
 // Load first character on profile
-async function LoadPrimaryCharacter(characters) {
+// @object {characters}
+export async function LoadPrimaryCharacter(characters) {
 
     CacheReturnItem('lastChar')
     .then(async (data) => {
@@ -608,10 +639,12 @@ async function LoadPrimaryCharacter(characters) {
 };
 
 
-// Change item in userCache, add if it doesn't exist
-async function CacheAuditItem(key, value) {
 
-    // Configure userCache if it does not exist#
+// Change item in userCache, add if it doesn't exist
+// @string {key}, @int {value}
+export async function CacheAuditItem(key, value) {
+
+    // Configure userCache if it does not exist
     if (!localStorage.getItem('userCache')) {
         if (value) {
             localStorage.setItem('userCache', JSON.stringify({key: value}));
@@ -627,34 +660,42 @@ async function CacheAuditItem(key, value) {
     localStorage.setItem('userCache', JSON.stringify(userCache));
 };
 
+
+
 // Get current userCache and remove specified key:value pair
-async function CacheRemoveItem(key) {
+// @string {key}
+export async function CacheRemoveItem(key) {
 
     let userCache = JSON.parse(localStorage.getItem('userCache'));
     delete userCache[key];
     localStorage.setItem('userCache', JSON.stringify(userCache));
 };
 
+
+
 // Get current userCache and return specified key:value pair using key
-async function CacheReturnItem(key) {
+// @string {key}
+export async function CacheReturnItem(key) {
 
     let userCache = JSON.parse(localStorage.getItem('userCache'));
     return userCache[key];
 };
 
 
+
 // Adds something to the targets' innerHTML
 // @string {target}, @string {content}
-function AddNumberToElementInner(target, content) {
+export function AddNumberToElementInner(target, content) {
 
     // Change target innerHTML
     document.getElementById(`${target}`).innerHTML = content;
 };
 
 
+
 // Load heuristics and configure data
 // @array {initArrStr}, @int {propCount}
-async function CreateFilters(initArrStr, propCount) {
+export async function CreateFilters(initArrStr, propCount) {
 
     // Create new object for filter elements
     userStruct['filterDivs'] = {};
@@ -707,44 +748,14 @@ async function CreateFilters(initArrStr, propCount) {
 };
 
 
+
 // Generate a random string with defined length
 // @int {len}
-function GenerateRandomString(len) {
+export function GenerateRandomString(len) {
     let result = ' ';
     let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     for (let i = 0; i < len; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     };
     return result;
-};
-
-
-
-export {
-    VerifyState,
-    ParseChar,
-    Logout,
-    StartLoad,
-    StopLoad,
-    MakeBountyElement,
-    RedirUser,
-    InsertSeperators,
-    CapitilizeFirstLetter,
-    ParseBounties,
-    PushToDOM,
-    SortByGroup,
-    SortByType,
-    SortBountiesByType,
-    CalcXpYield,
-    ReturnSeasonPassProgressionStats,
-    ReturnSeasonProgressionStats,
-    CalculatePercentage,
-    ReturnSeasonPassLevel,
-    LoadPrimaryCharacter,
-    CacheAuditItem,
-    CacheRemoveItem,
-    CacheReturnItem,
-    AddNumberToElementInner,
-    CreateFilters,
-    GenerateRandomString
 };
