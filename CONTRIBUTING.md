@@ -79,7 +79,7 @@ Note: *This will be your `Authorization` token.*
 
 4. Make a new `.env` file and place it in the root directory. P.s. that's the same directory that the `snowpack.config.js` script is sitting in.
 
-Note: *These fields have been tested to the bare minimum so they may require some additional elbow grease to get right. :)*
+Note: *These fields may require some additional elbow grease to get right. :)*
 
 
 <br><br>
