@@ -83,11 +83,23 @@
         text-align: center;
     }
 
+    #brightEngram {
+        margin-bottom: 50px;
+    }
+
     #loadingIcon {
         display: none;
     }
 
     #loadingText {
         margin-top: -65px;
+    }
+
+    #indexMainContainer {
+        width: 90%;
+    }
+
+    .indexNotice {
+        width: 88% !important;
     }
 }

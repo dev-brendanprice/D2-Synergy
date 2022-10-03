@@ -4,7 +4,7 @@
  * Style for the landing page of the website
  */
 
-#mainContainer {
+#indexMainContainer {
     margin: 0 auto;
     margin-top: 60px;
     width: 785px;
@@ -63,6 +63,7 @@
 }
 
 #errorHeading {
+    margin-top: 5px;
     font-size: 25px;
 }
 
@@ -78,7 +79,7 @@
 }
 
 #heading {
-    margin-top: 5px;
+    margin-top: 10px;
     color: white;
     font-family: 'Josefin Sans', sans-serif;
     font-size: 25px;
@@ -86,11 +87,14 @@
 }
 
 #subText {
+    padding-left: 30px;
+    padding-right: 30px;
     color: white;
     justify-content: end;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
     font-weight: 400;
+    text-align: center;
 }
 
 #btnAuthorize {

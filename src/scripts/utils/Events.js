@@ -110,14 +110,14 @@ export async function AddEventListeners() {
     // Settings buttion listener
     document.getElementById('navBarSettingsContainer').addEventListener('click', () => {
 
-        document.getElementById('mainContainer').style.display = 'none';
+        document.getElementById('userMainContainer').style.display = 'none';
         document.getElementById('settingsContainer').style.display = 'block';
     });
 
     // Back button event listener in settings menu
     document.getElementById('backButtonContainer').addEventListener('click', () => {
 
-        document.getElementById('mainContainer').style.display = 'block';
+        document.getElementById('userMainContainer').style.display = 'block';
         document.getElementById('settingsContainer').style.display = 'none';
     });
 
