@@ -18,7 +18,7 @@ jobs:
     
       - name: get-npm-version
         id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
+      - uses: martinbeentjes/npm-get-version-action@main
         with:
           path: package.json
 
