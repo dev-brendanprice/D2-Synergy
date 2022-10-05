@@ -16,7 +16,10 @@ jobs:
     
       - name: get-npm-version
         id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
+        run: |
+          echo "${{ secrets.ACTION_CRON_JOB_SECRET }}"
+        
+      - uses: martinbeentjes/npm-get-version-action@main
         with:
           path: packages/package.json
           
@@ -36,3 +39,4 @@ jobs:
           title: Test
           prerelease: true
           automatic_release_tag: "${{ steps.package-version.outputs.current-version }}"
+
