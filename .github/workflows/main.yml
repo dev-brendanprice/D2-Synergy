@@ -21,7 +21,7 @@ jobs:
         
       - uses: martinbeentjes/npm-get-version-action@main
         with:
-          path: packages
+          path: package.json
           
           
       - name: Create Tag
