@@ -27,6 +27,6 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.ACTION_CRON_JOB_SECRET }}"
-          title: ${{ steps.package-version.outputs.current-version}}
+          title: Test
           prerelease: true
-          automatic_release_tag: "latest"
+          automatic_release_tag: ${{ steps.package-version.outputs.current-version}}
