@@ -14,12 +14,11 @@ jobs:
 
     steps:
     
-      - name: get-npm-version
-        id: package-version
+      - name: Extract Package Version
         run: |
-          echo "${{ secrets.ACTION_CRON_JOB_SECRET }}"
-        
-      - uses: martinbeentjes/npm-get-version-action@main
+          echo "${{ steps.extract_version.outputs.version }}"
+          
+      - uses: Saionaro/extract-package-version@v1.1.1
           
           
       - name: Create Tag
