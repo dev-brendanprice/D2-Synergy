@@ -14,6 +14,10 @@ jobs:
 
     steps:
     
+      - name: Checkout code
+        uses: actions/checkout@master
+        
+    
       - name: Extract Package Version
         run: |
           echo "${{ steps.extract_version.outputs.version }}"
