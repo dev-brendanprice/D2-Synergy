@@ -4,8 +4,6 @@ name: PublishNewRelease
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
   workflow_dispatch:
 
@@ -21,6 +19,14 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@main
         with:
           path: packages/package.json
+          
+          
+      - name: Create Tag
+        uses: negz/create-tag@v1
+        with:
+          version: ${{ github.event.inputs.version }}
+          message: ${{ github.event.inputs.message }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
 
       - name: "Build & test"
