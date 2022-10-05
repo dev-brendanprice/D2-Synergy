@@ -14,6 +14,13 @@ jobs:
 
     steps:
     
+    
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+          
+    
       - name: get-npm-version
         id: package-version
         run: |
