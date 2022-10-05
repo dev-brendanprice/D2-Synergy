@@ -29,4 +29,4 @@ jobs:
           repo_token: "${{ secrets.ACTION_CRON_JOB_SECRET }}"
           title: Test
           prerelease: true
-          automatic_release_tag: ${{ steps.package-version.outputs.current-version}}
+          automatic_release_tag: "${{ steps.package-version.outputs.current-version}}"
