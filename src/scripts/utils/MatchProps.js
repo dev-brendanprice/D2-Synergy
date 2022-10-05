@@ -1,4 +1,4 @@
-import { charBounties, userStruct } from '../user.js';
+import { charBounties } from '../user.js';
 import { bountyHashes } from '../../data/bounties.js';
 import {
     ActivityMode,

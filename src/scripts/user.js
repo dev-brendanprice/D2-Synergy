@@ -40,14 +40,18 @@ VerifyState();
 // Start load sequence
 StartLoad();
 
+// Put version number in navbar
+document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+
 // Utils
-let urlParams = new URLSearchParams(window.location.search),
+const urlParams = new URLSearchParams(window.location.search),
     sessionStorage = window.sessionStorage,
     localStorage = window.localStorage,
-    log = console.log.bind(console),
-    startTime = new Date(),
-    sessionCache = {},
-    userStruct = {};
+    log = console.log.bind(console);
+
+let startTime = new Date(),
+    sessionCache = {};
+
 
 // Defintion objects
 let progressionDefinitions = {},
@@ -62,33 +66,43 @@ let destinyMembershipId,
     membershipType,
     characters;
 
+
+// Declare global vars and exports
+let characterLoadToggled = false;
+export let charBounties = [];
+export let currentMainContentView = {};
+// export let grayedOutBounties = [];
+export let eventBooleans = {
+    areFiltersToggled: false,
+    ReverseBoolean: function(bool) {
+        bool = !bool;
+        return bool;
+    }
+};
+export let eventFilters = {
+    filterDivs: {},
+    grayedOutBounties: [],
+    UpdateFilters: function(value) {
+        this.filterDivs = value;
+    }
+};
+
+
 // Authorization information
 export const homeUrl = import.meta.env.HOME_URL,
-    axiosHeaders = {
-        ApiKey: import.meta.env.API_KEY,
-        Authorization: import.meta.env.AUTH
-    },
-    clientId = import.meta.env.CLIENT_ID;
-
-// Put version number in navbar
-document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+             axiosHeaders = {
+                 ApiKey: import.meta.env.API_KEY,
+                 Authorization: import.meta.env.AUTH
+             },
+             clientId = import.meta.env.CLIENT_ID;
 
 // Set default axios header
 axios.defaults.headers.common = {
     "X-API-Key": `${axiosHeaders.ApiKey}`
 };
 
-// Declare global exports
-export let charBounties = [];
-export let filterDivs = {};
-userStruct.bools = {};
-userStruct.ints = {};
-userStruct.objs = {};
-
-// Push data
-userStruct.objs.currView = document.getElementById('pursuitsContainer');
-userStruct.bools.characterLoadToggled = false;
-userStruct.bools.filterToggled = false;
+// Set the main container to show bounties by default
+currentMainContentView = document.getElementById('pursuitsContainer');
 
 // Assign element fields for user settings
 export let itemDisplaySize;
@@ -114,6 +128,7 @@ bountyImage.style.width = `${itemDisplaySize}px`;
 // Set checkboxes to chosen state, from localStorage (userCache)
 document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
 document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
+
 
 
 // Authorize with Bungie.net
@@ -250,7 +265,9 @@ export async function CheckComponents () {
 
 // Main OAuth flow mechanism
 export async function OAuthFlow() {
-    log('OAuthFlow START')
+
+    log('OAuthFlow START');
+
     let rsToken = JSON.parse(localStorage.getItem('refreshToken')),
         acToken = JSON.parse(localStorage.getItem('accessToken')),
         comps = JSON.parse(localStorage.getItem('components')),
@@ -295,7 +312,9 @@ export async function OAuthFlow() {
 
 // Fetch basic bungie user details
 export async function FetchBungieUserDetails() {
-    log('FetchBungieUserDetails START')
+
+    log('FetchBungieUserDetails START');
+
     let components = JSON.parse(localStorage.getItem('components')),
         axiosConfig = {
             headers: {
@@ -345,9 +364,6 @@ export async function FetchBungieUserDetails() {
             document.getElementById(`classLight${char.classType}`).innerHTML = `${char.light}`;
         };
 
-        // Push relevant items to the browser
-        userStruct['characters'] = characters;
-
         // Change DOM content
         document.getElementById('charactersContainer').style.display = 'inline-block';
         document.getElementById('categories').style.display = 'block';
@@ -363,7 +379,7 @@ export async function LoadCharacter(classType, isRefresh) {
 
     log('LoadPrimaryCharacter START');
 
-    if (!userStruct.characterLoadToggled) {
+    if (!characterLoadToggled) {
 
         // Configure load sequence
         document.getElementById('loadingText').innerHTML = 'Indexing Character';
@@ -386,7 +402,7 @@ export async function LoadCharacter(classType, isRefresh) {
 
 
         // Toggle character load
-        userStruct.characterLoadToggled = true;
+        characterLoadToggled = true;
         CacheAuditItem('lastChar', classType);
 
         // Clear (emtpy fields that are going to change) DOM content
@@ -660,14 +676,14 @@ export async function LoadCharacter(classType, isRefresh) {
 
         // Load synergyDefinitions and match against bounties
         await PushProps();
-        await CreateFilters('charBounties', bountyPropCount);
-        userStruct.characterLoadToggled = false;
+        await CreateFilters(charBounties, bountyPropCount);
+        characterLoadToggled = false;
 
         // Stop loading sequence
         StopLoad();
 
         // Toggle elements
-        userStruct.objs.currView.style.display = 'block';
+        currentMainContentView.style.display = 'block';
         document.getElementById('contentDisplay').style.display = 'inline-block';
     };
     log('LoadPrimaryCharacter END');
@@ -716,11 +732,6 @@ export async function main(isPassiveReload) {
         // Don't add the event listeners again when passive reloading
         await AddEventListeners();
     };
-
-    setTimeout(() => {
-        log(userStruct);
-    }, 12_000);
-
 };
 
 // Run main
@@ -728,5 +739,3 @@ main()
 .catch((error) => {
     console.error(error);
 });
-
-export { userStruct }

@@ -1,9 +1,10 @@
 import { 
     LoadCharacter,
-    userStruct, 
+    eventBooleans,
     charBounties,
+    currentMainContentView,
     main, 
-    filterDivs } from '../user.js';
+    eventFilters } from '../user.js';
 import { 
     CacheAuditItem, 
     CacheReturnItem, 
@@ -66,53 +67,56 @@ export async function AddEventListeners() {
 
         // Loop over charBounties and reverse filtered items
         charBounties.forEach(bounty => {
-            if (userStruct.greyOutDivs) {
-                userStruct.greyOutDivs.forEach(greyHash => {
+            if (eventFilters.grayedOutBounties) {
+                eventFilters.grayedOutBounties.forEach(greyHash => {
                     document.getElementById(`${bounty.hash}`).style.opacity = 'unset';
                     document.getElementById(`item_${bounty.hash}`).style.opacity = 'unset';
                 });
             };
         });
-        userStruct.greyOutDivs = []; // Clear array
+        eventFilters.grayedOutBounties = []; // Clear array
 
 
         // Loop over bounty filters and reverse selected filers
-        Object.keys(filterDivs).forEach(filter => {
-            filterDivs[filter].element.style.color = 'rgb(138, 138, 138)';
+        Object.keys(eventFilters.filterDivs).forEach(filter => {
+            eventFilters.filterDivs[filter].element.style.color = 'rgb(138, 138, 138)';
         });
     });
 
     // Events for character menu buttons
     // document.getElementById('cgDefaultLoadouts').addEventListener('click', () => {
-    //     userStruct.objs.currView.style.display = 'none';
+    //     currentMainContentView.style.display = 'none';
     //     document.getElementById('loadoutsContainer').style.display = 'block';
-    //     userStruct.objs.currView = document.getElementById('loadoutsContainer');
+    //     currentMainContentView = document.getElementById('loadoutsContainer');
     // });
 
     // document.getElementById('cgPursuits').addEventListener('click', () => {
-    //     userStruct.objs.currView.style.display = 'none';
+    //     currentMainContentView.style.display = 'none';
     //     document.getElementById('pursuitsContainer').style.display = 'block';
-    //     userStruct.objs.currView = document.getElementById('pursuitsContainer');
+    //     currentMainContentView = document.getElementById('pursuitsContainer');
     // });
 
     // document.getElementById('btnSynergyView').addEventListener('click', () => {
-    //     userStruct.objs.currView.style.display = 'none';
+    //     currentMainContentView.style.display = 'none';
     //     document.getElementById('synergyContainer').style.display = 'block';
-    //     userStruct.objs.currView = document.getElementById('synergyContainer');
+    //     currentMainContentView = document.getElementById('synergyContainer');
     // });
 
     // Toggle item filters button(s)
     document.getElementById('btnHideFilters').addEventListener('click', () => {
 
         let filterContent = document.getElementById('filterContentContainer').style;
-        if (!userStruct.bools.filterToggled) {
-            userStruct.bools.filterToggled = true;
+
+        // Check if boolean is true/false - change content
+        if (!eventBooleans.areFiltersToggled) {
             filterContent.display = 'block';
         }
-        else if (userStruct.bools.filterToggled) {
-            userStruct.bools.filterToggled = false;
+        else if (eventBooleans.areFiltersToggled) {
             filterContent.display = 'none';
         };
+
+        // Reverse the boolean
+        eventBooleans.areFiltersToggled =  eventBooleans.ReverseBoolean(eventBooleans.areFiltersToggled);
     });
 
     // Settings and back button

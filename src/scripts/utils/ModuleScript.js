@@ -1,5 +1,8 @@
 import { itemTypeKeys } from "./SynergyDefinitions.js";
-import { LoadCharacter, userStruct, itemDisplaySize } from "../user.js";
+import { 
+    LoadCharacter,
+    itemDisplaySize,
+    eventFilters } from "../user.js";
 
 const log = console.log.bind(console),
       localStorage = window.localStorage,
@@ -694,11 +697,11 @@ export function AddNumberToElementInner(target, content) {
 
 
 // Load heuristics and configure data
-// @array {initArrStr}, @int {propCount}
-export async function CreateFilters(initArrStr, propCount) {
+// @array {charBounties}, @int {propCount}
+export async function CreateFilters(charBounties, propCount) {
 
     // Create new object for filter elements
-    userStruct['filterDivs'] = {};
+    eventFilters.UpdateFilters({});
 
     // Create a filter for each prop
     for (let v in propCount) {
@@ -714,9 +717,9 @@ export async function CreateFilters(initArrStr, propCount) {
             filterContent.id = `propName_${v}${propCount[v]}`;
             filterContent.innerHTML = `${CapitilizeFirstLetter(v)} (${propCount[v]})`;
 
-            // Add filter to UserStruct
-            userStruct['filterDivs'][`propName_${v}${propCount[v]}`] = {};
-            userStruct['filterDivs'][`propName_${v}${propCount[v]}`].element = filterContent;
+            // Add filter to eventFilters
+            eventFilters.filterDivs[`propName_${v}${propCount[v]}`] = {};
+            eventFilters.filterDivs[`propName_${v}${propCount[v]}`].element = filterContent;
 
             // Append children elements to respective parent elements
             document.querySelector('#filters').appendChild(filterContainer);
@@ -724,7 +727,7 @@ export async function CreateFilters(initArrStr, propCount) {
 
             // Show bounties as per filter
             filterContainer.addEventListener('click', () => {
-                userStruct[initArrStr].forEach(b => {
+                charBounties.forEach(b => {
 
                     // Find bounties that match the filter index
                     if (!b.props.includes(v)) {
@@ -733,12 +736,12 @@ export async function CreateFilters(initArrStr, propCount) {
                         document.getElementById(`item_${b.hash}`).style.opacity = '50%';
                         document.getElementById(`propName_${v}${propCount[v]}`).style.color = 'rgb(224, 224, 224)';
 
-                        if (!userStruct['greyOutDivs']) {
-                            userStruct['greyOutDivs'] = [];
-                            userStruct['greyOutDivs'].push(b.hash);
+                        if (!eventFilters.grayedOutBounties) {
+                            eventFilters.grayedOutBounties = [];
+                            eventFilters.grayedOutBounties.push(b.hash);
                         }
-                        else if (!userStruct['greyOutDivs'].includes(b.hash)) {
-                            userStruct['greyOutDivs'].push(b.hash);
+                        else if (!eventFilters.grayedOutBounties.includes(b.hash)) {
+                            eventFilters.grayedOutBounties.push(b.hash);
                         };
                     };
                 });
