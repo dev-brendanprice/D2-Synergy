@@ -13,5 +13,8 @@
 # Ignore environment variables
 /.env
 
+# This dir updates bounties.json so I can push the new json (it is not required for synergy to run)
+/manifestCheck
+
 # Misc
 /package-lock.json
