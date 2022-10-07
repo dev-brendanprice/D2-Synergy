@@ -66,7 +66,17 @@
 * Each bounty is mutated and gains a `props` array that contains all the strings, yielded from `MatchProps.js`.
 
 **Then entire process is characterized by this flowchart:**
+
 ![image](https://user-images.githubusercontent.com/56489848/194643881-3904a20f-1875-483f-b662-f0dec9092afc.png)
 
 ## Adding Entries
-**Manually adding entries to Synergy is the best course of action to ensure that the accuracy of synergies, between progressional items, are as best as possible. (Or at least "mostly" reliable.)**
+**Manually adding entries to Synergy is the best course of action to ensure that the accuracy of synergies, between progressional items, are as vast and best as possible. (Or at least "mostly" reliable.)**
+
+**This section contains a step-by-step guide on how to efficiently add entries to D2 Synergy. I recommend that you utilize my tool: [QueryVendorBounties](https://github.com/brendanprice2003/QueryVendorBounties) for this process.**
+
+**Once you have followed this guide, you should have a development environment ready to go:**
+
+### Adding Bounty Entries:
+1. Use [QueryVendorBounties](https://github.com/brendanprice2003/QueryVendorBounties) to get all the bounties from a vendor. ([Read Here for info on that](https://github.com/brendanprice2003/QueryVendorBounties/blob/main/README.md))
+
+### To:do
