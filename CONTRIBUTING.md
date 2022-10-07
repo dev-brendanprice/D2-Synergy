@@ -2,7 +2,7 @@
 **Contriubting helps the project progress a huge amount. Read on to learn about standards and information on contributing.**
 
 ## Contents
-* [Standards](https://github.com/brendanprice2003/D2-Synergy/edit/main/CONTRIBUTING.md#standards)
+* [Standards](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#standards)
 * [Heuristics](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#heuristics)
     - General Information
     - [Resources](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#resources)
