@@ -7,7 +7,6 @@
 * [Resources]()
 * [Standards](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#standards)
 * [Heuristics](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#heuristics)
-* [Reproduction](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#reproduction)
 
 
 # Standards
@@ -54,4 +53,5 @@ The layout of element CSS properties follow a standard via:
 2. `/scripts/utils/SynergyDefinitions.js` contains the definitions to translate the indexes found in bounty entries from `/data/bounties.json`
 3. `/scripts/utils/MatchProps.js` mutates the actual bounty entry, that is present in `charBounties` in `user.js` and adds a `.props` property that contains an array of corresponding strings, translated using `/scripts/utils/SynergyDefinitions.js`.
 
-todo
+> add a diagram to explain the process better
+> add a rough process to contribute bounties
