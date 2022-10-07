@@ -1,14 +1,15 @@
 # Contributing
 **Contriubting helps the project progress a huge amount. Read on to learn about standards and information on contributing.**
 
+**Before continuing, ensure that you have configured a development environment. You can use [this]() if you haven't.
+
 ## Contents
+* [Resources]()
 * [Standards](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#standards)
 * [Heuristics](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#heuristics)
-    - General Information
-    - [Resources](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#resources)
 * [Reproduction](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#reproduction)
-    - [Adding Bounty Entries](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#example)
-<br><br>
+
+
 # Standards
 
 *Please excuse me if some syntax does not follow the below standards. Sometimes I miss some things out :)*
@@ -44,20 +45,18 @@ The layout of CSS props follow a standard via:
 <br><br>
 # Heuristics
 
-`scripts/utils/data/bounties.js` contains a hash map of all the bounties that have ever existed on the API.
-`scripts/utils/SynergyDefinitions.js` contains `key:value` pairs, that signify the indexes in each prop from a given bounty in `scripts/utils/data/bounties.js`
-
-To figure out what heuristics you should be contributing:
-<br>:construction::construction::construction:
+`/data/bounties.json` contains all the bounties that currently exist on the Bunige.net API<br>
+`/scripts/utils/SynergyDefinitions.js` contains `key:value` pairs, that signify the indexes in each property array, from a given bounty entry in `/data/bounties.json`.
 
 ### Resources
 
-##### [BuildStruct](https://github.com/brendanprice2003/QueryVendorBounties) -
-Clone my (and use the Readme.md) BuildStruct repo to query bounties that are actively being sold by a specified vendor via vendorHash
+##### [QueryVendorBounties Tool](https://github.com/brendanprice2003/QueryVendorBounties) -
+Clone this repo to easily query a specified vendor, via vendor hash, and return all bounties.
 
-##### [Destiny Datasets](https://data.destinysets.com/) -
-You should also utilize destinydatasets to query each bounty via the itemDefinitions to determine what the bounty entails
-<br><br>
+##### [destinydatasets](https://data.destinysets.com/) -
+Using destinydatasets may be necessarry to use if the above tool is returning partial data. (for some reason)
+
+
 # Reproduction
 
 Note: *The dev environment is configured to only work on localhost, so the address 127.0.0.1 and alike, won't work.*
