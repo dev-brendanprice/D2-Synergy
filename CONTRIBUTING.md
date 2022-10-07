@@ -67,7 +67,7 @@
 
 **Then entire process is characterized by this flowchart:**
 
-![image](https://user-images.githubusercontent.com/56489848/194643881-3904a20f-1875-483f-b662-f0dec9092afc.png)
+![image](https://user-images.githubusercontent.com/56489848/194653354-9f426da9-555b-41b2-97d3-dba16a865b63.png)
 
 ## Adding Entries
 **Manually adding entries to Synergy is the best course of action to ensure that the accuracy of synergies, between progressional items, are as vast and best as possible. (Or at least "mostly" reliable.)**
