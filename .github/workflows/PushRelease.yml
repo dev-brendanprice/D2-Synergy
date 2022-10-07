@@ -1,4 +1,6 @@
 
+# Will not make a new version tag unless the version was incremented in package.json
+
 name: PublishNewRelease
 
 on:
