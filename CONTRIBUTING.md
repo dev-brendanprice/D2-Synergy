@@ -4,9 +4,10 @@
 **Before continuing, ensure that you have configured a development environment. You can use [this wiki page](https://github.com/brendanprice2003/D2-Synergy/wiki/Developer-Guide) if you haven't.**
 
 ## Contents
-* [Resources]()
+* [Resources](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#resources)
 * [Standards](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#standards)
 * [Heuristics](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#heuristics)
+    * [Data Structure](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#data-structure)
 
 
 # Resources
