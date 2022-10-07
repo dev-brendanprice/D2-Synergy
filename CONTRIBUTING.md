@@ -18,7 +18,7 @@
 
 Some `variables` may include arrays and objects; they *should* inherit the same standard. An exception to this standard is if the right hand is a method that returns a promise, In which case you should use PascalCase.
 
-For example, I want to fetch data for the players characterProgression; I would use an `await axios.get()`. This means that the variable I assign the response to is going to follow the PascalCase scheme.
+For example, I want to fetch data for the players characterProgression; I would use `await axios.get()`. This means that the variable I assign the response to is going to follow the PascalCase scheme.
 
 ### HTML/CSS
 
