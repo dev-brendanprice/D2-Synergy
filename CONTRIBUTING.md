@@ -54,4 +54,5 @@ The layout of element CSS properties follow a standard via:
 3. `/scripts/utils/MatchProps.js` mutates the actual bounty entry, that is present in `charBounties` in `user.js` and adds a `.props` property that contains an array of corresponding strings, translated using `/scripts/utils/SynergyDefinitions.js`.
 
 > add a diagram to explain the process better
+
 > add a rough process to contribute bounties
