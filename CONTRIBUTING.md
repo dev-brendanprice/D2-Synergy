@@ -1,16 +1,12 @@
-# D2 Synergy - Contributing
-
-Contributing helps the project progress a huge amount. Read on below to find out how you can contribute using this projects' standards.<br><br>
-If a commit request does not follow these standards (to an extent), 9 times out of 10 you will be referred to this page.<br><br>
+# Contributing
+**Contriubting helps the project progress a huge amount. Read on to learn about standards and information on contributing.**
 
 ## Contents
-1. [Standards](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#standards)
-    - General Information
-    - [HTML, CSS](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#html-css)
-2. [Heuristics](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#heuristics)
+* [Standards](https://github.com/brendanprice2003/D2-Synergy/edit/main/CONTRIBUTING.md#standards)
+* [Heuristics](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#heuristics)
     - General Information
     - [Resources](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#resources)
-3. [Reproduction](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#reproduction)
+* [Reproduction](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#reproduction)
     - [Adding Bounty Entries](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#example)
 <br><br>
 # Standards
