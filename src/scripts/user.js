@@ -29,8 +29,9 @@ import {
     itemTypeKeys,
     vendorKeys,
     baseYields,
-    petraYields } from './utils/SynergyDefinitions.js';
-import { bountyPropCount, PushProps } from './utils/MatchProps.js';
+    petraYields,
+    CurrentlyAddedVendors } from './utils/SynergyDefinitions.js';
+import { bountyPropertiesCount, PushProps } from './utils/MatchProps.js';
 import { AddEventListeners } from './utils/Events.js';
 
 
@@ -484,14 +485,14 @@ export async function LoadCharacter(classType, isRefresh) {
         charBounties = parsedBountiesResponse.charBounties;
         amountOfBounties = parsedBountiesResponse.amountOfBounties;
 
-        // Assign objective(s) itemDefinitions to each item
-        Object.keys(charBounties).forEach(v => {
+        // Translate objective hashes to objective strings
+        Object.keys(charBounties).forEach(bounty => {
             
-            let objHashes = charBounties[v].objectives.objectiveHashes;
-            charBounties[v].objectiveDefinitions = [];
+            let objHashes = charBounties[bounty].objectives.objectiveHashes;
+            charBounties[bounty].objectiveDefinitions = [];
 
             for (let objHash of objHashes) {
-                charBounties[v].objectiveDefinitions.push(objectiveDefinitions[objHash]);
+                charBounties[bounty].objectiveDefinitions.push(objectiveDefinitions[objHash]);
             };
         });
 
@@ -657,6 +658,9 @@ export async function LoadCharacter(classType, isRefresh) {
             document.getElementById('noItemsTooltip').innerHTML = `You don't have bounties on this character. How dare you. (-(-_(-_-)_-)-)`;
             document.getElementById('noItemsTooltip').style.display = 'inline-block';
 
+            // Hide toggle filters button
+            document.getElementById('btnHideFilters').style.display = 'none';
+
             // Make potential yeild stats 0 by default
             AddNumberToElementInner('totalXpField', 0);
             AddNumberToElementInner('totalSpLevelsField', 0);
@@ -665,6 +669,11 @@ export async function LoadCharacter(classType, isRefresh) {
             AddNumberToElementInner('bountiesAmountField', 0);
         }
         else if (amountOfBounties > 0) {
+
+            // Hide toggle filters button if there is only one bounty
+            if (amountOfBounties === 1) {
+                document.getElementById('btnHideFilters').style.display = 'none';
+            };
 
             // Change subheading field to show amount of bounties
             AddNumberToElementInner('bountiesAmountField', `${amountOfBounties}`);
@@ -676,7 +685,7 @@ export async function LoadCharacter(classType, isRefresh) {
 
         // Load synergyDefinitions and match against bounties
         await PushProps();
-        await CreateFilters(charBounties, bountyPropCount);
+        await CreateFilters(charBounties, bountyPropertiesCount);
         characterLoadToggled = false;
 
         // Stop loading sequence
@@ -732,6 +741,9 @@ export async function main(isPassiveReload) {
         // Don't add the event listeners again when passive reloading
         await AddEventListeners();
     };
+
+    // Log currently support vendors
+    console.table('Supported Vendors:', CurrentlyAddedVendors);
 };
 
 // Run main

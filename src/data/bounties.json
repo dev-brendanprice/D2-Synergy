@@ -1,4 +1,4 @@
-const bountyHashes = {
+{
     "13409814": {
         "Destination": [],
         "ActivityMode": [],
@@ -99,9 +99,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [3],
+        "AmmoType": [0,1],
+        "KillType": [9,10]
     },
     "42252934": {
         "Destination": [],
@@ -179,9 +179,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [5],
+        "AmmoType": [2],
+        "KillType": [9,10]
     },
     "146278979": {
         "Destination": [],
@@ -419,9 +419,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [2],
+        "AmmoType": [0,1],
+        "KillType": [9,10]
     },
     "316370328": {
         "Destination": [],
@@ -467,9 +467,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [14],
+        "AmmoType": [1],
+        "KillType": [9,10]
     },
     "346263927": {
         "Destination": [],
@@ -867,9 +867,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [11],
+        "AmmoType": [1],
+        "KillType": [9,10]
     },
     "515493511": {
         "Destination": [],
@@ -1316,8 +1316,8 @@ const bountyHashes = {
         "ActivityMode": [],
         "DamageType": [],
         "ItemCategory": [12],
-        "AmmoType": [],
-        "KillType": []
+        "AmmoType": [0],
+        "KillType": [9,10]
     },
     "712137159": {
         "Destination": [],
@@ -1427,9 +1427,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [4],
+        "AmmoType": [1,2],
+        "KillType": [9,10]
     },
     "848944256": {
         "Destination": [],
@@ -2755,9 +2755,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [0],
+        "AmmoType": [1],
+        "KillType": [9,10]
     },
     "1568028958": {
         "Destination": [],
@@ -2931,9 +2931,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [8],
+        "AmmoType": [2],
+        "KillType": [9,10]
     },
     "1774447862": {
         "Destination": [],
@@ -3076,7 +3076,7 @@ const bountyHashes = {
         "ActivityMode": [],
         "DamageType": [2],
         "ItemCategory": [0,1,2,3,4,5,7,12,15,16],
-        "AmmoType": [1],
+        "AmmoType": [0],
         "KillType": [4,9]
     },
     "1869722155": {
@@ -3491,9 +3491,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [15],
+        "AmmoType": [0,1],
+        "KillType": [9,10]
     },
     "2231267738": {
         "Destination": [],
@@ -3563,9 +3563,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
+        "ItemCategory": [10],
         "AmmoType": [],
-        "KillType": []
+        "KillType": [9,10]
     },
     "2271002093": {
         "Destination": [],
@@ -3579,9 +3579,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [16],
+        "AmmoType": [0,2],
+        "KillType": [9,10]
     },
     "2286242737": {
         "Destination": [],
@@ -3659,9 +3659,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [5],
+        "AmmoType": [1],
+        "KillType": [9,10]
     },
     "2338128705": {
         "Destination": [],
@@ -4411,9 +4411,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [9],
+        "AmmoType": [1,2],
+        "KillType": [9,10]
     },
     "2864963410": {
         "Destination": [],
@@ -4889,11 +4889,11 @@ const bountyHashes = {
     },
     "3109359403": {
         "Destination": [4],
-        "ActivityMode": [1,2,16,18],
+        "ActivityMode": [1,2,15,16,18],
         "DamageType": [],
         "ItemCategory": [0],
-        "AmmoType": [],
-        "KillType": []
+        "AmmoType": [0],
+        "KillType": [4,7]
     },
     "3109359404": {
         "Destination": [],
@@ -4971,9 +4971,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [11],
+        "AmmoType": [1],
+        "KillType": [0,9,10]
     },
     "3155878395": {
         "Destination": [],
@@ -5083,9 +5083,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [1],
+        "AmmoType": [0],
+        "KillType": [9,10]
     },
     "3238546247": {
         "Destination": [],
@@ -5300,8 +5300,8 @@ const bountyHashes = {
         "ActivityMode": [],
         "DamageType": [],
         "ItemCategory": [6],
-        "AmmoType": [],
-        "KillType": []
+        "AmmoType": [2],
+        "KillType": [9,10]
     },
     "3486486983": {
         "Destination": [],
@@ -5947,9 +5947,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [7],
+        "AmmoType": [1,2],
+        "KillType": [9,10]
     },
     "3723696828": {
         "Destination": [],
@@ -5996,7 +5996,7 @@ const bountyHashes = {
         "ActivityMode": [],
         "DamageType": [],
         "ItemCategory": [13],
-        "AmmoType": [],
+        "AmmoType": [2],
         "KillType": [8,9]
     },
     "3801019442": {
@@ -6523,9 +6523,9 @@ const bountyHashes = {
         "Destination": [],
         "ActivityMode": [],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ItemCategory": [13],
+        "AmmoType": [2],
+        "KillType": [9,10]
     },
     "4086613787": {
         "Destination": [],
@@ -6790,7 +6790,13 @@ const bountyHashes = {
         "ItemCategory": [],
         "AmmoType": [],
         "KillType": []
+    },
+    "2794679185": {
+        "Destination": [5],
+        "ActivityMode": [27],
+        "DamageType": [],
+        "ItemCategory": [],
+        "AmmoType": [],
+        "KillType": [0,12,3,4,5,6,7,8,10]
     }
-};
-
-export { bountyHashes };
+}

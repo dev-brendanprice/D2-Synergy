@@ -188,6 +188,7 @@ export const ActivityMode = [
     'Lockdown', //24
     'Showdown', // 25
     'EmpireHunt', // 26
+    'Expedition', // 27
 ];
 
 // Hashes for damage type
@@ -238,8 +239,15 @@ export const KillType = [
     'CloseRange', // 6
     'RapidKills', // 7
     'NoReload', // 8
-    'GuardianKills' // 9
+    'GuardianKills', // 9
+    'InASingleLife' // 10
 ];
+
+// Currently added vendors via hashes
+export const CurrentlyAddedVendors = {
+    672118013: 'Banshee-44',
+    3347378076: 'Hawthorne'
+};
 
 // Race type signifer ??
 // "As a fireteam" signifier ??

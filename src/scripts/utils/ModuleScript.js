@@ -62,8 +62,13 @@ export function ParseChar(classType) {
 // @object {param}
 export async function MakeBountyElement(param) {
 
-    let itemOverlay = document.createElement('div'), itemStatus = document.createElement('img'), itemTitle = document.createElement('div'), itemType = document.createElement('div'), itemDesc = document.createElement('div'), item = document.createElement('img'), hr = document.createElement('hr');
-
+    let itemOverlay = document.createElement('div'), 
+        itemStatus = document.createElement('img'), 
+        itemTitle = document.createElement('div'), 
+        itemType = document.createElement('div'), 
+        itemDesc = document.createElement('div'), 
+        item = document.createElement('img'), 
+        hr = document.createElement('hr');
 
     // Create bottom element
     item.className = `bounty`;
@@ -151,31 +156,35 @@ export async function MakeBountyElement(param) {
 
     // Mark item as complete
     if (param.progress.length === completionCounter) {
-        param.areObjectivesComplete = true;
-
+        
         // Change style to represent state
-        document.getElementById(`item_${param.hash}`).className = 'itemContainerComplete'; // ?
         document.getElementById(`${param.hash}`).style.border = '1px solid rgba(182,137,67, 0.749)';
+
+        // Change areObjectivesComplete boolean
+        param.areObjectivesComplete = true;
     }
     else if (param.progress.length !== completionCounter) {
+
+        // Change areObjectivesComplete boolean
         param.areObjectivesComplete = false;
     };
 
     // Mark item as expired
     if (param.isExpired && !param.areObjectivesComplete) {
+
+        // Change style to represent state
         itemStatus.className = `expire`;
         itemStatus.id = `expire_${param.hash}`;
         itemStatus.src = './ico/pursuit_expired.svg';
-
-        // Change style to represent state
-        // document.getElementById(`item_${param.hash}`).className = 'itemContainerExpired';
         document.getElementById(`${param.hash}`).style.border = '1px solid rgba(179,73,73, 0.749)';
     }
     else if (param.areObjectivesComplete) {
         itemStatus.className = `complete`;
         itemStatus.id = `complete_${param.hash}`;
-        itemStatus.src = './ico/pursuit_expired.svg';
+        itemStatus.src = './ico/pursuit_completed.svg';
     };
+
+    // Append the item status to the item
     document.querySelector(`#bountyItems`).append(itemStatus);
 
     // Watch for mouse events
@@ -259,30 +268,33 @@ export function ParseBounties(charInventory, charObjectives, itemDefinitions) {
 
             // Add objectives to item
             item.progress = [];
-            for (let prg of charObjectives[v.itemInstanceId].objectives) {
-                item.progress.push(prg);
+            for (let objective of charObjectives[v.itemInstanceId].objectives) {
+                item.progress.push(objective);
             };
 
             // Add isExpired property
             item.isExpired = new Date(v.expirationDate) < new Date();
+
+            // Add properties array
             item.props = [];
 
             // Add isComplete property
-            let entriesAmount = item.progress.length, entriesCount = 0;
+            let entriesAmount = item.progress.length, 
+                entriesCount = 0;
 
-            for (let progressEntry of item.progress) {
-                if (progressEntry.complete) {
+            for (let objective of item.progress) {
+                if (objective.complete) {
                     entriesCount++;
                 };
             };
 
-            // Set to true otherwise false by default
+            // Set isComplete to true if the counted amount and length is the same (false by default)
             item.isComplete = false;
             if (entriesAmount === entriesCount) {
                 item.isComplete = true;
             };
 
-            // Push item to arr
+            // Push bounty item to charBounties and increment amountOfBounties
             charBounties.push(item);
             amountOfBounties++;
         };
@@ -318,12 +330,16 @@ export function PushToDOM(bountyArr, amountOfBounties, MakeBountyElement) {
 export function SortByGroup(charBounties, bountyArr, vendorKeys) {
 
     charBounties.forEach(v => {
+
         for (let i = 1; i < vendorKeys.length; i++) {
+
             if (vendorKeys.length - 1 === i) {
+
                 bountyArr['other'].push(v);
                 break;
             }
             else if (vendorKeys.length !== i) {
+
                 if (v.inventory.stackUniqueLabel.includes(vendorKeys[i])) {
                     bountyArr[vendorKeys[i]].push(v);
                     break;
@@ -357,23 +373,37 @@ export function SortByType(bountyArr, sortBountiesByType) {
 // @array {a}, @object {b}
 export function SortBountiesByType(a, b) {
 
-    let stackLabelA = a.inventory.stackUniqueLabel, stackLabelB = b.inventory.stackUniqueLabel, stackTypeA, stackTypeB;
+    let firstStackUniqueLabel = a.inventory.stackUniqueLabel, 
+        secondStackUniqueLabel = b.inventory.stackUniqueLabel, 
+        bountyTypeA,
+        bountyTypeB;
 
-    // Remove numbers & get key names from stackUniqueLabel even if it contains _
-    stackLabelA.split('.').forEach(v => {
-        let keyFromStack = v.replace(/[0-9]/g, '');
-        keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeA = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeA = v.replace(/[0-9]/g, '') : null;
-    });
-    stackLabelB.split('.').forEach(v => {
-        let keyFromStack = v.replace(/[0-9]/g, '');
-        keyFromStack.includes('_') ? keyFromStack.split('_').forEach(x => itemTypeKeys.includes(x) ? stackTypeB = x : null) : itemTypeKeys.includes(v.replace(/[0-9]/g, '')) ? stackTypeB = v.replace(/[0-9]/g, '') : null;
+
+    // Remove numbers from substring that we got from stackUniqueLabel
+    // banshee44 is not acceptable so we strip it to banshee for example (not a valid use-case ofc)
+    firstStackUniqueLabel.split('.').forEach(v => {
+
+        let cleanStackUniqueLabel = v.replace(/[0-9]/g, '');
+        if (itemTypeKeys.includes(cleanStackUniqueLabel)) {
+            bountyTypeA = cleanStackUniqueLabel;
+        };
     });
 
-    // Sort items by returning index
-    if (itemTypeKeys.indexOf(stackTypeA) < itemTypeKeys.indexOf(stackTypeB)) {
+    secondStackUniqueLabel.split('.').forEach(v => {
+
+        let cleanStackUniqueLabel = v.replace(/[0-9]/g, '');
+        if (itemTypeKeys.includes(cleanStackUniqueLabel)) {
+            bountyTypeB = cleanStackUniqueLabel;
+        };
+    });
+
+
+    // Sort items by comparing indexes based on where the bountyType is in itemTypeKeys
+    // weekly, daily, repeatable (in that order)
+    if (itemTypeKeys.indexOf(bountyTypeA) < itemTypeKeys.indexOf(bountyTypeB)) {
         return -1;
     };
-    if (itemTypeKeys.indexOf(stackTypeA) > itemTypeKeys.indexOf(stackTypeB)) {
+    if (itemTypeKeys.indexOf(bountyTypeA) > itemTypeKeys.indexOf(bountyTypeB)) {
         return 1;
     };
     return 0;
@@ -704,44 +734,44 @@ export async function CreateFilters(charBounties, propCount) {
     eventFilters.UpdateFilters({});
 
     // Create a filter for each prop
-    for (let v in propCount) {
+    for (let filterName in propCount) {
 
-        if (propCount[v] > 1) {
+        if (propCount[filterName] > 1) {
 
             let filterContainer = document.createElement('div'), filterContent = document.createElement('div');
 
             // Assign id's and classes + change innerHTML
             filterContainer.className = 'filter';
             filterContent.className = 'propName';
-            filterContainer.id = `filter_${v}${propCount[v]}`;
-            filterContent.id = `propName_${v}${propCount[v]}`;
-            filterContent.innerHTML = `${CapitilizeFirstLetter(v)} (${propCount[v]})`;
+            filterContainer.id = `filter_${filterName}${propCount[filterName]}`;
+            filterContent.id = `propName_${filterName}${propCount[filterName]}`;
+            filterContent.innerHTML = `${CapitilizeFirstLetter(filterName)} (${propCount[filterName]})`;
 
             // Add filter to eventFilters
-            eventFilters.filterDivs[`propName_${v}${propCount[v]}`] = {};
-            eventFilters.filterDivs[`propName_${v}${propCount[v]}`].element = filterContent;
+            eventFilters.filterDivs[`propName_${filterName}${propCount[filterName]}`] = {};
+            eventFilters.filterDivs[`propName_${filterName}${propCount[filterName]}`].element = filterContent;
 
             // Append children elements to respective parent elements
             document.querySelector('#filters').appendChild(filterContainer);
-            document.querySelector(`#filter_${v}${propCount[v]}`).appendChild(filterContent);
+            document.querySelector(`#filter_${filterName}${propCount[filterName]}`).appendChild(filterContent);
 
             // Show bounties as per filter
             filterContainer.addEventListener('click', () => {
-                charBounties.forEach(b => {
+                charBounties.forEach(bounty => {
 
-                    // Find bounties that match the filter index
-                    if (!b.props.includes(v)) {
-
-                        document.getElementById(`${b.hash}`).style.opacity = '50%';
-                        document.getElementById(`item_${b.hash}`).style.opacity = '50%';
-                        document.getElementById(`propName_${v}${propCount[v]}`).style.color = 'rgb(224, 224, 224)';
+                    // Check if the current bounty in the loop has the selected filter present in .props
+                    if (!bounty.props.includes(filterName)) {
+                        log('bruh')
+                        document.getElementById(`${bounty.hash}`).style.opacity = '50%';
+                        document.getElementById(`item_${bounty.hash}`).style.opacity = '50%';
+                        document.getElementById(`propName_${filterName}${propCount[filterName]}`).style.color = 'rgb(224, 224, 224)';
 
                         if (!eventFilters.grayedOutBounties) {
                             eventFilters.grayedOutBounties = [];
-                            eventFilters.grayedOutBounties.push(b.hash);
+                            eventFilters.grayedOutBounties.push(bounty.hash);
                         }
-                        else if (!eventFilters.grayedOutBounties.includes(b.hash)) {
-                            eventFilters.grayedOutBounties.push(b.hash);
+                        else if (!eventFilters.grayedOutBounties.includes(bounty.hash)) {
+                            eventFilters.grayedOutBounties.push(bounty.hash);
                         };
                     };
                 });
