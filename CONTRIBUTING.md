@@ -8,6 +8,7 @@
 * [Standards](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#standards)
 * [Heuristics](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#heuristics)
     * [Data Structure](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#data-structure)
+    * [Adding Entries]()
 
 
 # Resources
@@ -35,7 +36,7 @@
 (1) *For example, I want to fetch data for the players characterProgression; I would use `await axios.get()`. This means that the variable I assign the response to is going to follow the `PascalCase` scheme, as the aforementioned function returns a promise.*
 
 # Heuristics
-**There are a few main points of focus when it comes to heuristics:**
+**Synergy has a lot of heuristics that are manually entered, so I strongly recommend you read and *try* to understand.**
 
 * `/data/bounties.json`
 * `/scripts/utils/SynergyDefinitions.js`
@@ -59,8 +60,13 @@
 ```
 
 ## Data Structure
+**This section explains how synergy processes the heuristics into meaningful information for the user. (and the rest of Synergy)**
 
+* Every bounty that is fetched from a players inventory can be cross-referenced, via hash, using the corresponding json files.
+* Each bounty is mutated and gains a `props` array that contains all the strings, yielded from `MatchProps.js`.
 
-> add a diagram to explain the process better
+**Then entire process is characterized by this flowchart:**
+![image](https://user-images.githubusercontent.com/56489848/194643881-3904a20f-1875-483f-b662-f0dec9092afc.png)
 
-> add a rough process to contribute bounties
+## Adding Entries
+**Manually adding entries to Synergy is the best course of action to ensure that the accuracy of synergies, between progressional items, are as best as possible. (Or at least "mostly" reliable.)**
