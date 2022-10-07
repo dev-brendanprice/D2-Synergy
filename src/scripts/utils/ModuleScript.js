@@ -275,7 +275,7 @@ export function ParseBounties(charInventory, charObjectives, itemDefinitions) {
             // Add isExpired property
             item.isExpired = new Date(v.expirationDate) < new Date();
 
-            // Add properties array
+            // Add props (properties) array
             item.props = [];
 
             // Add isComplete property
