@@ -12,22 +12,22 @@
 
 # Standards
 
-*Please excuse me if some syntax does not follow the below standards. Sometimes I miss some things out :)*
+*Not all syntax may conform to these standards, however, it is good practice to have a general rule for how to format 'things' :)*
 
 `variable` names are camelCase.<br>
-`function` and `method` names are PascalCase.<br>
-`Async method operand` names are PascalCase
+`function` names are PascalCase.
 
-Some variations of `variables` may include arrays and objects; they *should* inherit the same standard. An exception to this standard is if the right hand is a method that returns a promise, In which case you should use PascalCase.
+Some `variables` may include arrays and objects; they *should* inherit the same standard. An exception to this standard is if the right hand is a method that returns a promise, In which case you should use PascalCase.
 
-All progress that is commited must have some sort of comment present, unless it is on a branch that could be seen as a "burner" or "rubbish heap".
-This does not mean that you should comment every line. A comment for each code block should be enough.
+For example, I want to fetch data for the players characterProgression; I would use an `await axios.get()`. This means that the variable I assign the response to is going to follow the PascalCase scheme.
 
-### HTML, CSS
+### HTML/CSS
 
-I had originally just decided to use `id` as the default identifier for an element. A `class` may be used in the case of an element where there is more than one identifier or a temporary identifer other than `id`.
+Each element has it's own style in an external `.css` file, which tends to follow an "order" inside of each CSS element reference. This standard doesn't matter as much as the above. This is almost an optional standard.. but is still a nice-to-have.
 
-The layout of CSS props follow a standard via:
+There are currently no standards for HTML syntax. (Please make it readable, even if HTML isn't a language)
+
+The layout of element CSS properties follow a standard via:
 
 ```
 .el {
@@ -42,63 +42,16 @@ The layout of CSS props follow a standard via:
     misc;
 }
 ```
-<br><br>
+
 # Heuristics
+**There are a few main points of focus when it comes to heuristics:**
 
-`/data/bounties.json` contains all the bounties that currently exist on the Bunige.net API<br>
-`/scripts/utils/SynergyDefinitions.js` contains `key:value` pairs, that signify the indexes in each property array, from a given bounty entry in `/data/bounties.json`.
+* `/data/bounties.json`
+* `/scripts/utils/SynergyDefinitions.js`
+* `/scripts/utils/MatchProps.js`
 
-### Resources
+1. `/data/bounties.json` is a hash map that contains all the bounties that currently exist on the Bunige.net API
+2. `/scripts/utils/SynergyDefinitions.js` contains the definitions to translate the indexes found in bounty entries from `/data/bounties.json`
+3. `/scripts/utils/MatchProps.js` mutates the actual bounty entry, that is present in `charBounties` in `user.js` and adds a `.props` property that contains an array of corresponding strings, translated using `/scripts/utils/SynergyDefinitions.js`.
 
-##### [QueryVendorBounties Tool](https://github.com/brendanprice2003/QueryVendorBounties) -
-Clone this repo to easily query a specified vendor, via vendor hash, and return all bounties.
-
-##### [destinydatasets](https://data.destinysets.com/) -
-Using destinydatasets may be necessarry to use if the above tool is returning partial data. (for some reason)
-
-
-# Reproduction
-
-Note: *The dev environment is configured to only work on localhost, so the address 127.0.0.1 and alike, won't work.*
-
-1. Clone this repository
-
-2. Make a new Bungie.net API application at: https://www.bungie.net/en/Application
-    - The redirect URL must have the `https` protocol present. This means that you have to manually change `https` to `http` after the initial authorization redirect has taken place. This is only applicable in development environments due to the nature of localhost in its default configuration.
-    - The origin URL must have the `http` version of your base URL.
-
-3. Take the client ID and client secret and encrypt it using base-64, using the following string format. <br>
-`Base-64 "<client-id>:<client-secret>"`
-<br>
-Note: *This will be your `Authorization` token.*
-
-4. Make a new `.env` file and place it in the root directory. P.s. that's the same directory that the `snowpack.config.js` script is sitting in.
-
-Note: *These fields may require some additional elbow grease to get right. :)*
-
-
-<br><br>
-# Adding Bounty Entries
-
-Here we can see the console output from my QueryVendorBounties tool that I made:
-
-![image](https://user-images.githubusercontent.com/56489848/186026026-0953508e-5e2d-49d1-baf3-e61a0a9da7dd.png)
-
-Each item has a hash; take this hash and put it into destinydatasets.
-
-![image](https://user-images.githubusercontent.com/56489848/186026001-faa410f5-e61b-45fb-b0ef-0915ca25ea26.png)
-
-You then have a nice list of all the information you could ever want to know about the bounty, which you should then use to determine what indexes this bounty will go under inside of the bounties.js script.
-
-Ctrl + F for the same hash in [`bounties.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/src/scripts/utils/data/bounties.js).
-
-This bounty has already been done by someone. Then entry has keys that contain and array of indexes that refer to another key value inside of [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/src/scripts/utils/SynergyDefinitions.js).
-
-For example you can see that the `itemCategory` key value has an array of indexes that only contains `0`. If we find `itemCategory` inside [`SynergyDefinitions.js`](https://github.com/brendanprice2003/D2-Synergy/blob/main/src/scripts/utils/SynergyDefinitions.js), you can see it has all the possible indexes that are valid for that property. 
-![image](https://user-images.githubusercontent.com/56489848/187028214-acf601ee-0b9a-4db3-94da-4da89cdde1ae.png)
-
-You would then put the relevant indexes in the corresponding properties for that bounty.
-
-**IMPORTANT:** if there are no valid indexes for that property please remove that property from the bounty entry. 
-
-*Note: `SynergyDefinitions.js` will have more indexes in the future to better signify deeper relationships such as, enemy race types and "killstreaks" bounties. Adding heuristics manually for these new(er) indexes will not be necessary as string matching will suffice.*
+todo
