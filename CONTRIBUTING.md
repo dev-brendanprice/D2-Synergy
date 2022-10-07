@@ -9,38 +9,29 @@
 * [Heuristics](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#heuristics)
 
 
+# Resources
+**To contribute, I recommend that you make use of these resources.**
+
+* [QueryVendorBounties](https://github.com/brendanprice2003/QueryVendorBounties)
+* [Destiny Datasets](https://data.destinysets.com/)
+* [Bungie.net API Docs](https://bungie-net.github.io/multi/index.html)
+
+
 # Standards
+**This is an open-source project which means that any one person is able to contribute their own changes. Following coding standards enforces the quality of the project, under several different counts.**
 
-*Not all syntax may conform to these standards, however, it is good practice to have a general rule for how to format 'things' :)*
+* Syntax inherits a uniform style/appearance
+* Improves readability, maintainability and reduces complexity (spaghetti code)
+* Enables easy resusability of code and debugging
+* Is good practice
 
-`variable` names are camelCase.<br>
-`function` names are PascalCase.
+### Variable Name Standards
 
-Some `variables` may include arrays and objects; they *should* inherit the same standard. An exception to this standard is if the right hand is a method that returns a promise, In which case you should use PascalCase.
+* Specific scope variable names are `camelCase`.
+* Function names are `PascalCase`.
+* Global/Promise operand variables are `PascalCase`. (1)
 
-For example, I want to fetch data for the players characterProgression; I would use `await axios.get()`. This means that the variable I assign the response to is going to follow the PascalCase scheme.
-
-### HTML/CSS
-
-Each element has it's own style in an external `.css` file, which tends to follow an "order" inside of each CSS element reference. This standard doesn't matter as much as the above. This is almost an optional standard.. but is still a nice-to-have.
-
-There are currently no standards for HTML syntax. (Please make it readable, even if HTML isn't a language)
-
-The layout of element CSS properties follow a standard via:
-
-```
-.el {
-    display;
-    position;
-    top,bottom;
-    margin;
-    padding;
-    element size;
-    alignment;
-    typography;
-    misc;
-}
-```
+(1) *For example, I want to fetch data for the players characterProgression; I would use `await axios.get()`. This means that the variable I assign the response to is going to follow the `PascalCase` scheme, as the aforementioned function returns a promise.*
 
 # Heuristics
 **There are a few main points of focus when it comes to heuristics:**
@@ -50,8 +41,24 @@ The layout of element CSS properties follow a standard via:
 * `/scripts/utils/MatchProps.js`
 
 1. `/data/bounties.json` is a hash map that contains all the bounties that currently exist on the Bunige.net API
-2. `/scripts/utils/SynergyDefinitions.js` contains the definitions to translate the indexes found in bounty entries from `/data/bounties.json`
-3. `/scripts/utils/MatchProps.js` mutates the actual bounty entry, that is present in `charBounties` in `user.js` and adds a `.props` property that contains an array of corresponding strings, translated using `/scripts/utils/SynergyDefinitions.js`.
+2. `/scripts/utils/SynergyDefinitions.js` are definitions that are used to translate indexes that can be found in the properties, inside of each bounty from `/data/bounties.json`
+3. `/scripts/utils/MatchProps.js` mutates an actual bounty entry, that can be found in [charBounties](https://github.com/brendanprice2003/D2-Synergy/blob/adcc8243e3036eaa011e3740d7e4bb95a5178152/src/scripts/user.js#L73). It does this by taking the bounties hash from `/data/bounties.json`and applying the corresponding translated indexes, to a new `.props[]` array.
+
+* Each entry inside of `/data/bounties.json` has the same default properties, like so:
+
+```json
+"13409814": {
+    "Destination": [],
+    "ActivityMode": [],
+    "DamageType": [],
+    "ItemCategory": [],
+    "AmmoType": [],
+    "KillType": []
+}
+```
+
+## Data Structure
+
 
 > add a diagram to explain the process better
 
