@@ -9,7 +9,7 @@ D2 Synergy is a powerful application that allows players to view items, change c
 
 ### Technical User Guide
 
-See [`GUIDE.md`](https://github.com/brendanprice2003/D2-Synergy/wiki).
+See [`GUIDE.md`](https://github.com/brendanprice2003/D2-Synergy/wiki). (it's on the todo list)
 
 ### Contributing
 
