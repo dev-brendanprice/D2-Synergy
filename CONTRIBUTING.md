@@ -116,3 +116,7 @@ A populated bounty entry will look like this:
      "KillType": [9,10]
  }
 ```
+
+Notice how we left some of the property arrays empty. This is because all the indexes that are defined in `SynergyDefinitions.js`, for that property, all correspond to what the bounty entails. 
+
+Other bounty entries may require you to remove a property if no indexes correspond to the entry property.
