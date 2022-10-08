@@ -78,5 +78,20 @@
 
 ### Adding Bounty Entries:
 1. Use [QueryVendorBounties](https://github.com/brendanprice2003/QueryVendorBounties) to get all the bounties from a vendor. ([Read Here for info on that](https://github.com/brendanprice2003/QueryVendorBounties/blob/main/README.md))
+2. Going down the list of bounties that are returned, Take the hash and `Ctrl+f` for that entry inside of `bounties.json`. Also dropdown the object that is returned under the `Item Hash: 2655712924` log.
+   * The information inside of `displayProperties` refers to what the bounty entails.
+3. Navigate to `SynergyDefinitions.js` and find the corresponding definition arrays. (These can be found at the bottom)
+4. For every property in the bounty entry, you need to enter the relevent indexes.
 
-### To:do
+### Exemplar:
+Take this bounty entry for example:
+```json
+ "58287472": {
+     "Destination": [],
+     "ActivityMode": [17],
+     "DamageType": [],
+     "ItemCategory": [],
+     "AmmoType": [],
+     "KillType": [4]
+ }
+```
