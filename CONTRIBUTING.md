@@ -8,7 +8,7 @@
 * [Standards](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#standards)
 * [Heuristics](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#heuristics)
     * [Data Structure](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#data-structure)
-    * [Adding Entries]()
+    * [Adding Entries](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#exemplar)
 
 
 # Resources
@@ -65,7 +65,7 @@
 * Every bounty that is fetched from a players inventory can be cross-referenced, via hash, using the corresponding json files.
 * Each bounty is mutated and gains a `props` array that contains all the strings, yielded from `MatchProps.js`.
 
-**Then entire process is characterized by this flowchart:**
+**Then entire process can be characterized by this flowchart:**
 
 ![image](https://user-images.githubusercontent.com/56489848/194653354-9f426da9-555b-41b2-97d3-dba16a865b63.png)
 
@@ -78,5 +78,54 @@
 
 ### Adding Bounty Entries:
 1. Use [QueryVendorBounties](https://github.com/brendanprice2003/QueryVendorBounties) to get all the bounties from a vendor. ([Read Here for info on that](https://github.com/brendanprice2003/QueryVendorBounties/blob/main/README.md))
+2. Going down the list of bounties that are returned, Take the hash and `Ctrl+f` for that entry inside of `bounties.json`. Also dropdown the object that is returned under the `Item Hash: 2655712924` log.
+   * The information inside of `displayProperties` refers to what the bounty entails.
+3. Navigate to `SynergyDefinitions.js` and find the corresponding definition arrays. (These can be found at the bottom)
+4. For every property in the bounty entry, you need to enter the relevent indexes.
 
-### To:do
+### Functionality - <span style="color:orange;">Please Read</span>
+* If no indexes apply to the current property, remove the property from the entry entirely but keep the others.
+* If all indexes apply to the current property, you can leave the array empty. (this is optional)
+* If some indexes apply to the current property, enter the corresponding indexes into the array.
+
+### Exemplar:
+Take this bounty entry for example:
+```json
+ "130487539": {
+     "Destination": [],
+     "ActivityMode": [],
+     "DamageType": [],
+     "ItemCategory": [],
+     "AmmoType": [],
+     "KillType": []
+ }
+```
+
+Current it's empty, which means we need to add indexes to each of its properties. The properties are the `keys` like `Destination` or `ActivityMode`. To do this, we have to fetch information about the bounty using the hash; in this case the hash is `130487539`. By fetching the information about the bounty we are able to determine what exactly the bounty entails.
+
+Using `SynergyDefinitions.js` we should navigate to the definition arrays (at the bottom) and enter in the corresponding indexes, that relate to the bounty objective(s), into each of the corresponding properties.
+
+A populated bounty entry will look like this:
+```json
+ "130487539": {
+     "Destination": [],
+     "ActivityMode": [],
+     "DamageType": [],
+     "ItemCategory": [5],
+     "AmmoType": [2],
+     "KillType": [9,10]
+ }
+```
+
+Notice how we left some of the property arrays empty. This is because all the indexes that are defined in `SynergyDefinitions.js`, for that property, all correspond to what the bounty entails. 
+
+Other bounty entries may require you to remove a property if no indexes correspond to the entry property, Like so:
+```json
+ "552709554": {
+     "Destination": [],
+     "ActivityMode": [0],
+     "AmmoType": [],
+     "KillType": []
+ }
+```
+This is not a valid bounty entry btw. It's an entry for a gambit bounty. It's also just an example to show how you would remove a property.
