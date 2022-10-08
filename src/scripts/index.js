@@ -1,14 +1,10 @@
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
-import axios from 'axios';
 
-var log = console.log.bind(console),
-    localStorage = window.localStorage,
-    clientId = import.meta.env.CLIENT_ID;
-
-// Put version number in navbar
-document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+const log = console.log.bind(console),
+      localStorage = window.localStorage,
+      clientId = import.meta.env.CLIENT_ID;
 
 // Generate state parameter
 var GenerateState = (len) => {
@@ -40,7 +36,7 @@ var CheckSession = async () => {
 };
 
 // Check for server availability
-axios.get('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": import.meta.env.API_KEY}})
+fetch('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": import.meta.env.API_KEY}})
     .catch((error) => {
         if (error.response) {
 
@@ -52,16 +48,19 @@ axios.get('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryIte
     });
 
 
-// Check for session
-CheckSession();
-
-
 // Main
 window.addEventListener('DOMContentLoaded', () => {
 
+    // Put version number in navbar
+    document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+
+    // Listen for authorize button click
     document.getElementById('btnAuthorize').addEventListener('click', () => {
         var stateCode = GenerateState(128);
         localStorage.setItem('stateCode', stateCode);
         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
     });
+
+    // Check for a pre-existing session
+    CheckSession();
 });

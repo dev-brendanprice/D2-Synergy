@@ -69,10 +69,9 @@ let destinyMembershipId,
 
 
 // Declare global vars and exports
-let characterLoadToggled = false;
+let characterLoadToggled = false; // Used to lockout character select button during load
 export let charBounties = [];
-export let currentMainContentView = {};
-// export let grayedOutBounties = [];
+export let currentMainContentView = {}; // Contains an element that characterizes what the currently selected content page is
 export let eventBooleans = {
     areFiltersToggled: false,
     ReverseBoolean: function(bool) {
@@ -386,6 +385,10 @@ export async function LoadCharacter(classType, isRefresh) {
         document.getElementById('loadingText').innerHTML = 'Indexing Character';
         await CheckComponents();
 
+        // Toggle character load
+        characterLoadToggled = true;
+        CacheAuditItem('lastChar', classType);
+
         // Globals in this scope
         let membershipType = sessionStorage.getItem('membershipType'), 
             CharacterProgressions,
@@ -401,10 +404,6 @@ export async function LoadCharacter(classType, isRefresh) {
             characterId,
             ItemSockets;
 
-
-        // Toggle character load
-        characterLoadToggled = true;
-        CacheAuditItem('lastChar', classType);
 
         // Clear (emtpy fields that are going to change) DOM content
         document.getElementById('loadingContentContainer').style.display = 'block';
@@ -484,6 +483,8 @@ export async function LoadCharacter(classType, isRefresh) {
         let parsedBountiesResponse = ParseBounties(charInventory, CharacterObjectives, itemDefinitions, objectiveDefinitions);
         charBounties = parsedBountiesResponse.charBounties;
         amountOfBounties = parsedBountiesResponse.amountOfBounties;
+        log(charBounties);
+        log(amountOfBounties);
 
         // Translate objective hashes to objective strings
         Object.keys(charBounties).forEach(bounty => {
@@ -683,9 +684,12 @@ export async function LoadCharacter(classType, isRefresh) {
             AddNumberToElementInner('totalSpLevelsField', totalXpYield / 100000);
         };
 
-        // Load synergyDefinitions and match against bounties
-        await PushProps();
-        await CreateFilters(charBounties, bountyPropertiesCount);
+        // Load synergyDefinitions and match against bounties, if charBounties is not empty
+        log(charBounties.length);
+        if (charBounties.length !== 0) {
+            await PushProps();
+            await CreateFilters(charBounties, bountyPropertiesCount);
+        };
         characterLoadToggled = false;
 
         // Stop loading sequence

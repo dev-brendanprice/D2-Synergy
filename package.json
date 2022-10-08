@@ -1,6 +1,6 @@
 {
   "name": "d2-synergy",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "[![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)\r [![API](https://img.shields.io/badge/API-Bungie.net-blue)](https://bungie-net.github.io/multi/index.html)",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "author": "brendanprice2003",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.27.2",
+    "axios": "^1.1.2",
     "dotenv": "^16.0.2",
     "idb-keyval": "^6.2.0",
     "snowpack": "^3.8.8"

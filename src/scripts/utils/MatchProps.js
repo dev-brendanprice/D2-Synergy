@@ -94,15 +94,18 @@ export async function PushProps() {
 
         // Get the specific bounty entry via from bounties.json
         let bountyEntry = bountyHashes[charBounties[i].hash];
+        log(bountyEntry, charBounties.length);
+        log(bountyHashes[charBounties[i].hash]);
 
         // Check if bounty has been implemented yet in bounties.json
         // e.g. Checking if the properties are empty (means the bounty hasnt been implemented but exists as an empty entry in bounties.json)
-        if (Object.values(bountyEntry).every(x => x.length !== 0)) {
+        if (Object.values(bountyEntry).every(item => item.length !== 0)) {
 
             // Check if property exists in the entry
             // If it doesn't exist then this means the property should be ignored; it doesnt apply to the bounty
             for (let property in bountyEntry) {
 
+                log(property);
                 if ('Destination' in bountyEntry) {
                     await PushIndexesFromProperty(bountyEntry, property, i);
                 }

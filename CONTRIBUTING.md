@@ -33,7 +33,7 @@
 * Function names are `PascalCase`.
 * Global/Promise operand variables are `PascalCase`. (1)
 
-(1) *For example, I want to fetch data for the players characterProgression; I would use `await axios.get()`. This means that the variable I assign the response to is going to follow the `PascalCase` scheme, as the aforementioned function returns a promise.*
+(1) *For example, I want to fetch data for the players characterProgression; I would use `await fetch()`. This means that the variable I assign the response to is going to follow the `PascalCase` scheme, as the aforementioned function returns a promise.*
 
 # Heuristics
 **Synergy has a lot of heuristics that are manually entered, so I strongly recommend you read and *try* to understand.**
