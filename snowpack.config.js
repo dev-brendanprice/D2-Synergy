@@ -15,7 +15,7 @@ module.exports = {
     // minify: true
   },
   env: {
-    version: `${packageJson.version}`,
+    version: `Alpha v${packageJson.version}`,
     CLIENT_ID: process.env.CLIENT_ID,
     API_KEY: process.env.API_KEY,
     AUTH: process.env.AUTH,
