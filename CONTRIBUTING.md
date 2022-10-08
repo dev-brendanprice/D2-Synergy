@@ -128,4 +128,4 @@ Other bounty entries may require you to remove a property if no indexes correspo
      "KillType": []
  }
 ```
-This is not a valid bounty entry btw. It's an entry for a gambit bounty.
+This is not a valid bounty entry btw. It's an entry for a gambit bounty. It's also just an example to show how you would remove a property.
