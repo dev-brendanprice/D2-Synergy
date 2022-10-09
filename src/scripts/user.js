@@ -23,7 +23,7 @@ import {
     LoadPrimaryCharacter,
     CacheAuditItem,
     AddNumberToElementInner,
-    CreateFilters, 
+    CreateFilters,
     CacheReturnItem } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
@@ -592,8 +592,8 @@ export async function LoadCharacter(classType, isRefresh) {
         for (let bounty of charBounties) {
             if (bounty.isComplete) {
                 amountOfCompletedBounties++;
-            };
-            if (bounty.isExpired) {
+            }
+            else {
                 amountOfExpiredBounties++;
             };
         };
@@ -659,8 +659,9 @@ export async function LoadCharacter(classType, isRefresh) {
             document.getElementById('noItemsTooltip').innerHTML = `You don't have bounties on this character. How dare you. (-(-_(-_-)_-)-)`;
             document.getElementById('noItemsTooltip').style.display = 'inline-block';
 
-            // Hide toggle filters button
+            // Hide filters content
             document.getElementById('btnHideFilters').style.display = 'none';
+            document.getElementById('filterContentContainer').style.display = 'none';
 
             // Make potential yeild stats 0 by default
             AddNumberToElementInner('totalXpField', 0);
@@ -671,9 +672,14 @@ export async function LoadCharacter(classType, isRefresh) {
         }
         else if (amountOfBounties > 0) {
 
+            // Set default style for toggle button filter and filter(s) container
+            document.getElementById('btnHideFilters').style.display = 'block';
+            document.getElementById('filterContentContainer').style.display = 'none';
+
             // Hide toggle filters button if there is only one bounty
             if (amountOfBounties === 1) {
                 document.getElementById('btnHideFilters').style.display = 'none';
+                document.getElementById('filterContentContainer').style.display = 'none';
             };
 
             // Change subheading field to show amount of bounties

@@ -761,9 +761,13 @@ export async function CreateFilters(charBounties, propCount) {
 
                     // Check if the current bounty in the loop has the selected filter present in .props
                     if (!bounty.props.includes(filterName)) {
-                        log('bruh')
+                        log(filterName, bounty.props);
+
+                        // Change bounty elements to 50% transparency
                         document.getElementById(`${bounty.hash}`).style.opacity = '50%';
                         document.getElementById(`item_${bounty.hash}`).style.opacity = '50%';
+
+                        // Change selected filter to white
                         document.getElementById(`propName_${filterName}${propCount[filterName]}`).style.color = 'rgb(224, 224, 224)';
 
                         if (!eventFilters.grayedOutBounties) {

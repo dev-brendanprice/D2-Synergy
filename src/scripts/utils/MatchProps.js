@@ -30,7 +30,7 @@ export async function PushIndexesFromProperty(bountyEntry, propertyName, i) {
     // Get array of indexes from specified property
     let propertyIndexArray = bountyEntry[propertyName];
 
-    
+    log(propertyIndexArray);
     // Apply all indexes to current property
     if (propertyIndexArray.length === 0) {
         
@@ -42,6 +42,7 @@ export async function PushIndexesFromProperty(bountyEntry, propertyName, i) {
 
             // Push property to the .props obj on the bounty
             charBounties[i].props.push(index);
+            log(charBounties[i]);
 
             // Make changes to the property counters
              // If the counter does not exist, set to one
@@ -67,6 +68,7 @@ export async function PushIndexesFromProperty(bountyEntry, propertyName, i) {
             
             // Push property to the .props obj on the bounty
             charBounties[i].props.push(definitionsForProperty[index]);
+            log(charBounties[i]);
 
             // Make changes to the property counters
             // If the counter does not exist, set to one
@@ -99,7 +101,8 @@ export async function PushProps() {
 
         // Check if bounty has been implemented yet in bounties.json
         // e.g. Checking if the properties are empty (means the bounty hasnt been implemented but exists as an empty entry in bounties.json)
-        if (Object.values(bountyEntry).every(item => item.length !== 0)) {
+        // Loop over each property. if all the properties are empty, it is likely that the bounty has not been implemented yet
+        if (!(Object.values(bountyEntry).every(item => item.length !== 0))) {
 
             // Check if property exists in the entry
             // If it doesn't exist then this means the property should be ignored; it doesnt apply to the bounty

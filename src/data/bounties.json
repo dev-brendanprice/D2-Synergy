@@ -5949,7 +5949,7 @@
         "DamageType": [],
         "ItemCategory": [7],
         "AmmoType": [1,2],
-        "KillType": [9,10]
+        "KillType": [4,9,10]
     },
     "3723696828": {
         "Destination": [],

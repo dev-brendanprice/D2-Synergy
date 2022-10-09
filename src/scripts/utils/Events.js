@@ -102,21 +102,18 @@ export async function AddEventListeners() {
     //     currentMainContentView = document.getElementById('synergyContainer');
     // });
 
-    // Toggle item filters button(s)
+    // Toggle item filters button(s) (reverse container style)
     document.getElementById('btnHideFilters').addEventListener('click', () => {
 
-        let filterContent = document.getElementById('filterContentContainer').style;
+        let filterContentContainer = document.getElementById('filterContentContainer');
 
         // Check if boolean is true/false - change content
-        if (!eventBooleans.areFiltersToggled) {
-            filterContent.display = 'block';
+        if (filterContentContainer.style.display === 'block') {
+            filterContentContainer.style.display = 'none';
         }
-        else if (eventBooleans.areFiltersToggled) {
-            filterContent.display = 'none';
+        else if (filterContentContainer.style.display === 'none') {
+            filterContentContainer.style.display = 'block';
         };
-
-        // Reverse the boolean
-        eventBooleans.areFiltersToggled =  eventBooleans.ReverseBoolean(eventBooleans.areFiltersToggled);
     });
 
     // Settings and back button

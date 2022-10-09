@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Listen for authorize button click
     document.getElementById('btnAuthorize').addEventListener('click', () => {
-        
+
         const stateCode = GenerateState(128);
         localStorage.setItem('stateCode', stateCode);
         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
