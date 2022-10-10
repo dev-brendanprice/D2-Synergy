@@ -147,6 +147,9 @@ export const petraYields = {
     'repeatable': 0
 };
 
+// Currently added vendors via hashes
+export const CurrentlyAddedVendors = {};
+
 // Hashes for destinations
 export const Destination = [
     'EDZ', //0
@@ -243,11 +246,6 @@ export const KillType = [
     'InASingleLife' // 10
 ];
 
-// Currently added vendors via hashes
-export const CurrentlyAddedVendors = {
-    672118013: 'Banshee-44',
-    3347378076: 'Hawthorne'
-};
 
 // Race type signifer ??
 // "As a fireteam" signifier ??

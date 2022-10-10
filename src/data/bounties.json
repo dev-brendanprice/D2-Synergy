@@ -2428,8 +2428,7 @@
         "ActivityMode": [1,2],
         "DamageType": [],
         "ItemCategory": [8],
-        "AmmoType": [],
-        "KillType": []
+        "AmmoType": [2]
     },
     "1362091940": {
         "Destination": [],
@@ -3067,8 +3066,6 @@
         "Destination": [],
         "ActivityMode": [1,2],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
         "KillType": [1]
     },
     "1869653095": {
@@ -3395,9 +3392,7 @@
         "Destination": [],
         "ActivityMode": [3,4,5,6,7,8,9,10,11,12,13,21,22,23,24,25],
         "DamageType": [0,1,3,4],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "AmmoType": []
     },
     "2057293080": {
         "Destination": [],
@@ -5193,11 +5188,8 @@
     },
     "3285890782": {
         "Destination": [],
-        "ActivityMode": [3],
-        "DamageType": [],
-        "ItemCategory": [5,6,8,9,10,13,14],
-        "AmmoType": [3],
-        "KillType": []
+        "ActivityMode": [3,4,5,6,7,8,9,10,11,12,13,21,22,23,24,25],
+        "AmmoType": [3]
     },
     "3286744862": {
         "Destination": [],
@@ -5257,11 +5249,7 @@
     },
     "3361783295": {
         "Destination": [],
-        "ActivityMode": [11],
-        "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ActivityMode": [11]
     },
     "3401935316": {
         "Destination": [],

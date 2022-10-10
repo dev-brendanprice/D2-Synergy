@@ -738,7 +738,8 @@ export async function CreateFilters(charBounties, propCount) {
 
         if (propCount[filterName] > 1) {
 
-            let filterContainer = document.createElement('div'), filterContent = document.createElement('div');
+            let filterContainer = document.createElement('div'),
+                filterContent = document.createElement('div');
 
             // Assign id's and classes + change innerHTML
             filterContainer.className = 'filter';
@@ -761,7 +762,6 @@ export async function CreateFilters(charBounties, propCount) {
 
                     // Check if the current bounty in the loop has the selected filter present in .props
                     if (!bounty.props.includes(filterName)) {
-                        log(filterName, bounty.props);
 
                         // Change bounty elements to 50% transparency
                         document.getElementById(`${bounty.hash}`).style.opacity = '50%';
@@ -777,7 +777,14 @@ export async function CreateFilters(charBounties, propCount) {
                         else if (!eventFilters.grayedOutBounties.includes(bounty.hash)) {
                             eventFilters.grayedOutBounties.push(bounty.hash);
                         };
-                    };
+                    }
+                    else {
+
+                        // Change selected filter to white anyways
+                        // In this situation the filter corresponds to all the bounties that are present, 
+                        // so selecting one of these filters wont make a difference
+                        document.getElementById(`propName_${filterName}${propCount[filterName]}`).style.color = 'rgb(224, 224, 224)';
+                    }
                 });
             });
         };

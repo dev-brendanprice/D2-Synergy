@@ -259,7 +259,7 @@ export async function CheckComponents () {
             });
         isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
     };
-    log('-> Tokens Validated!')
+    log('-> Tokens Validated!');
 };
 
 
@@ -369,7 +369,7 @@ export async function FetchBungieUserDetails() {
         document.getElementById('categories').style.display = 'block';
         document.getElementById('statsContainer').style.display = 'block';
     };
-    log('FetchBungieUserDetails END')
+    log('FetchBungieUserDetails END');
 };
 
 
@@ -435,6 +435,7 @@ export async function LoadCharacter(classType, isRefresh) {
         };
 
         // OAuth header guarantees a response
+        log('loadCharacter if statement')
         if (!sessionCache.resCharacterInventories || isRefresh) {
 
             // Set request information
@@ -444,7 +445,7 @@ export async function LoadCharacter(classType, isRefresh) {
                     "X-API-Key": `${axiosHeaders.ApiKey}`
                 }
             };
-
+            log('loadCharacter top request')
             let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,201,202,205,300,301,305`, axiosConfig);
             let charInvRoot = resCharacterInventories.data.Response;
 
@@ -458,7 +459,7 @@ export async function LoadCharacter(classType, isRefresh) {
             sessionCache.resCharacterInventories = resCharacterInventories;
         }
         else if (sessionCache.resCharacterInventories) {
-
+            log('loadCharacter bottom request')
             let charInvRoot = sessionCache.resCharacterInventories.data.Response;
 
             CharacterInventories = charInvRoot.characterInventories.data;
@@ -480,6 +481,7 @@ export async function LoadCharacter(classType, isRefresh) {
         });
 
         // Loop over inventory items and emit bounties
+        log('loadCharacter parsing bounties')
         let parsedBountiesResponse = ParseBounties(charInventory, CharacterObjectives, itemDefinitions, objectiveDefinitions);
         charBounties = parsedBountiesResponse.charBounties;
         amountOfBounties = parsedBountiesResponse.amountOfBounties;

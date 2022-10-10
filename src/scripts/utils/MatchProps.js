@@ -30,7 +30,6 @@ export async function PushIndexesFromProperty(bountyEntry, propertyName, i) {
     // Get array of indexes from specified property
     let propertyIndexArray = bountyEntry[propertyName];
 
-    log(propertyIndexArray);
     // Apply all indexes to current property
     if (propertyIndexArray.length === 0) {
         
@@ -42,10 +41,10 @@ export async function PushIndexesFromProperty(bountyEntry, propertyName, i) {
 
             // Push property to the .props obj on the bounty
             charBounties[i].props.push(index);
-            log(charBounties[i]);
 
             // Make changes to the property counters
-             // If the counter does not exist, set to one
+            // If the counter does not exist, set to one
+            // log(bountyPropertiesCount[index]);
             if (!bountyPropertiesCount[index]) {
                 bountyPropertiesCount[index] = 1;
             }
@@ -61,24 +60,33 @@ export async function PushIndexesFromProperty(bountyEntry, propertyName, i) {
     else {
 
         // Get definitions for property
-        let definitionsForProperty = tableForPropertyDefinitions[propertyName];
+        const definitionsForProperty = tableForPropertyDefinitions[propertyName];
 
         // Loop over the property definitions and apply indexes to the bounty using SynergyDefinitions.js
         propertyIndexArray.forEach(index => {
+
+            let propertyDefinition;
+
+            // This if statement checks if an index is higher than what a definition can translate
+            // In which case it will default to the highest index available on the definition (please dont do this in the heuristics)
+            if (index > (definitionsForProperty.length - 1)) {
+                propertyDefinition = definitionsForProperty[definitionsForProperty.length - 1];
+            }
+            else {
+                propertyDefinition = definitionsForProperty[index];
+            };
             
             // Push property to the .props obj on the bounty
-            charBounties[i].props.push(definitionsForProperty[index]);
-            log(charBounties[i]);
+            charBounties[i].props.push(propertyDefinition);
 
-            // Make changes to the property counters
-            // If the counter does not exist, set to one
-            if (!bountyPropertiesCount[definitionsForProperty[index]]) {
-                bountyPropertiesCount[definitionsForProperty[index]] = 1;
+            // Make changes to the property counters, If the counter does not exist, set to one
+            if (!bountyPropertiesCount[propertyDefinition]) {
+                bountyPropertiesCount[propertyDefinition] = 1;
             }
 
             // If the counter does exist, increment by one
             else {
-                bountyPropertiesCount[definitionsForProperty[index]] = bountyPropertiesCount[definitionsForProperty[index]] + 1;
+                bountyPropertiesCount[propertyDefinition] = bountyPropertiesCount[propertyDefinition] + 1;
             };
         });
     };
@@ -96,8 +104,6 @@ export async function PushProps() {
 
         // Get the specific bounty entry via from bounties.json
         let bountyEntry = bountyHashes[charBounties[i].hash];
-        log(bountyEntry, charBounties.length);
-        log(bountyHashes[charBounties[i].hash]);
 
         // Check if bounty has been implemented yet in bounties.json
         // e.g. Checking if the properties are empty (means the bounty hasnt been implemented but exists as an empty entry in bounties.json)
@@ -108,7 +114,6 @@ export async function PushProps() {
             // If it doesn't exist then this means the property should be ignored; it doesnt apply to the bounty
             for (let property in bountyEntry) {
 
-                log(property);
                 if ('Destination' in bountyEntry) {
                     await PushIndexesFromProperty(bountyEntry, property, i);
                 }
@@ -130,4 +135,5 @@ export async function PushProps() {
             };
         };
     };
+    log(bountyPropertiesCount);
 };
