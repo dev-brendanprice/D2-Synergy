@@ -71,6 +71,7 @@
             <div id="categories">
                 <div id="cgDefaultLoadouts">Loadouts</div>
                 <div id="cgPursuits">Bounties</div>
+                <div id="cgSynergy">Synergy</div>
             </div>
 
             <div id="statsContainer">
@@ -120,8 +121,6 @@
 
                     <div class="netXpHeading">Net XP: </div><div id="totalNetXpField"></div><br>
                 </div>
-
-                <div id="btnSynergyView">View Synergy</div>
             </div>
         </div>
         
@@ -133,39 +132,33 @@
         <div id="contentDisplay">
 
             <div id="synergyContainer">
-                <div id="displayTitle_Synergy" class="containerTitle">Synergy</div>
-                <hr class="titleBreaker">
+                <div class="containerTitle" style="margin-bottom: 10px;">Synergy</div>
+                <hr class="half">
             </div>
 
             <div id="loadoutsContainer">
-                <div id="displayTitle_Loadouts" class="containerTitle">Default Loadouts</div>
-                <hr class="titleBreaker">
+                <div class="containerTitle">Default Loadouts</div>
+                <hr class="half">
             </div>
 
             <div id="pursuitsContainer">
 
-                <div id="bountyDisplayContainer">
+                <div class="containerTitle">Bounties</div><br>
+                <div class="subheadingFields" id="bountiesAmountField"></div><div id="bountiesFieldSubText">total  · </div>
+                <div class="subheadingFields" id="completedBountiesAmountField"></div><div id="bountiesFieldSubText">completed  · </div>
+                <div class="subheadingFields" id="expiredBountiesAmountField"></div><div id="bountiesFieldSubText">expired</div>
+                <hr class="half">
 
-                    <div class="bountiesContainerTitle">Bounties</div><br>
-                    <div class="subheadingFields" id="bountiesAmountField"></div><div id="bountiesFieldSubText">total  · </div>
-                    <div class="subheadingFields" id="completedBountiesAmountField"></div><div id="bountiesFieldSubText">completed  · </div>
-                    <div class="subheadingFields" id="expiredBountiesAmountField"></div><div id="bountiesFieldSubText">expired</div>
-                    <hr class="half">
-
-                    <div id="filterContentContainer">
-                        <div id="filters"></div>
-                        <div class="filter" id="removeFiltersID">
-                            <div class="propName" style="color: orangered;">Clear Filters</div>
-                        </div>
-                    </div>
-                    <div id="btnHideFilters">Toggle Filters</div>
-                    <div id="noItemsTooltip"></div>
-                    <div id="bountyItems"></div>
-                    <br>
-                    <div id="itemStats">
-                        <div id="totalBounties"></div>
+                <div id="filterContentContainer">
+                    <div id="filters"></div>
+                    <div class="filter" id="removeFiltersID">
+                        <div class="propName" style="color: orangered;">Clear Filters</div>
                     </div>
                 </div>
+                <div id="btnHideFilters">Toggle Filters</div>
+                <div id="noItemsTooltip"></div>
+                <div id="bountyItems"></div>
+                <div id="btnSynergyView">View Synergy</div>
 
                 <div class="levellingContainerTitle">Levelling Statistics</div>
                 <div id="currentSeasonNameField">Season of Plunder</div>
@@ -283,6 +276,18 @@
             <div class="settingText" id="sliderNoticeText">Note: The default size has the best clarity, keeping all screen sizes in mind.</div>
             <div class="settingText" id="sliderPreviewText">Preview:</div>
             <img id="settingsBountyImage" src="./images/bounty_image.png">
+
+            <br>
+            <div class="settingSectionHeader" id="defaultDisplayHeading">Default Display</div>
+
+            <!-- Dropdown menu for default views -->
+            <form action="#">
+                <select name="Views" id="defaultViewDropdown">
+                  <option value="pursuitsContainer">Bounties</option>
+                  <option value="synergyContainer">Synergy</option>
+                </select>
+            </form>
+            <div class="settingText" id="sliderNoticeText">This is the the display that is going to be shown when you load/refresh.</div>
         </div>
     </div>
 

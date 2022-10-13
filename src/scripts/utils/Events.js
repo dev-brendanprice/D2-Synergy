@@ -1,8 +1,7 @@
 import { 
     LoadCharacter,
-    eventBooleans,
     charBounties,
-    currentMainContentView,
+    contentView,
     main, 
     eventFilters } from '../user.js';
 import { 
@@ -83,24 +82,29 @@ export async function AddEventListeners() {
         });
     });
 
-    // Events for character menu buttons
-    // document.getElementById('cgDefaultLoadouts').addEventListener('click', () => {
-    //     currentMainContentView.style.display = 'none';
-    //     document.getElementById('loadoutsContainer').style.display = 'block';
-    //     currentMainContentView = document.getElementById('loadoutsContainer');
-    // });
+    // Click event for "View Synergy" button
+    document.getElementById('btnSynergyView').addEventListener('click', () => {
 
-    // document.getElementById('cgPursuits').addEventListener('click', () => {
-    //     currentMainContentView.style.display = 'none';
-    //     document.getElementById('pursuitsContainer').style.display = 'block';
-    //     currentMainContentView = document.getElementById('pursuitsContainer');
-    // });
+        document.getElementById('pursuitsContainer').style.display = 'none';
+        document.getElementById('synergyContainer').style.display = 'block';
+        contentView.UpdateView(document.getElementById('synergyContainer'));
+    });
 
-    // document.getElementById('btnSynergyView').addEventListener('click', () => {
-    //     currentMainContentView.style.display = 'none';
-    //     document.getElementById('synergyContainer').style.display = 'block';
-    //     currentMainContentView = document.getElementById('synergyContainer');
-    // });
+    // Click event for "Bounties" side button
+    document.getElementById('cgPursuits').addEventListener('click', () => {
+
+        document.getElementById('synergyContainer').style.display = 'none';
+        document.getElementById('pursuitsContainer').style.display = 'block';
+        contentView.UpdateView(document.getElementById('pursuitsContainer'));
+    });
+
+    // Click event for "Synergy" side button
+    document.getElementById('cgSynergy').addEventListener('click', () => {
+
+        document.getElementById('pursuitsContainer').style.display = 'none';
+        document.getElementById('synergyContainer').style.display = 'block';
+        contentView.UpdateView(document.getElementById('synergyContainer'));
+    });
 
     // Toggle item filters button(s) (reverse container style)
     document.getElementById('btnHideFilters').addEventListener('click', () => {
@@ -230,5 +234,13 @@ export async function AddEventListeners() {
             element.style.width = `${defaultItemSize}px`;
         });
     });
+
+    // Form event for choosing the default content view
+    document.getElementById('defaultViewDropdown').addEventListener('change', () => {
+        
+        let selectedValue = document.getElementById('defaultViewDropdown').value;
+        CacheAuditItem('defaultContentView', selectedValue);
+    });
+
     log('AddEventListeners END');
 };

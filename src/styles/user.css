@@ -41,6 +41,10 @@
     margin-top: 30px;
 }
 
+#defaultDisplayHeading {
+    margin-top: 30px;
+}
+
 #settingsBountyImage {
     width: 55px;
     border: 1px solid gray;
@@ -153,9 +157,11 @@ h2 {
 
 #contentDisplay {
     display: none;
+    margin-top: 3px;
     margin-left: 30px;
     float: left;
     width: 65%;
+    color: white;
 }
 
 #subTitleContainer {
@@ -244,28 +250,19 @@ h2 {
     margin-left: 28px;
 }
 
+#synergyContainer {
+    display: none;
+    margin-top: 13px;
+    margin-left: 28px;
+}
+
 #progressionContainer {
     display: none;
     margin-top: 13px;
     margin-left: 28px;
 }
 
-#bountyDisplayContainer {
-    color: white;
-}
-
 .containerTitle {
-    display: inline-block;
-    padding-bottom: 0px;
-    text-transform: uppercase;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-    letter-spacing: 0.5px;
-}
-
-.bountiesContainerTitle {
     margin-top: -7px;
     margin-bottom: -12px;
     text-transform: uppercase;
@@ -280,7 +277,6 @@ h2 {
     padding-right: 3px;
     font-size: 15px;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-    letter-spacing: 0.5px;
 }
 
 #bountiesFieldSubText {
@@ -341,6 +337,10 @@ h2 {
     transition: 0.25s;
 }
 #cgPursuits:hover {
+    color: white;
+    transition: 0.25s;
+}
+#cgSynergy:hover {
     color: white;
     transition: 0.25s;
 }
@@ -558,7 +558,7 @@ h2 {
 }
 
 #btnSynergyView {
-    display: none;
+    display: block;
     margin-top: 12px;
     padding: 4px;
     padding-left: 7px;

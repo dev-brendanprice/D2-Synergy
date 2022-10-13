@@ -730,6 +730,11 @@ export function AddNumberToElementInner(target, content) {
 // @array {charBounties}, @int {propCount}
 export async function CreateFilters(charBounties, propCount) {
 
+    // Fubar
+    let filtersObj = {},
+        filtersArray = [];
+
+
     // Create new object for filter elements
     eventFilters.UpdateFilters({});
 
@@ -743,8 +748,9 @@ export async function CreateFilters(charBounties, propCount) {
 
             // Assign id's and classes + change innerHTML
             filterContainer.className = 'filter';
-            filterContent.className = 'propName';
             filterContainer.id = `filter_${filterName}${propCount[filterName]}`;
+
+            filterContent.className = 'propName';
             filterContent.id = `propName_${filterName}${propCount[filterName]}`;
             filterContent.innerHTML = `${CapitilizeFirstLetter(filterName)} (${propCount[filterName]})`;
 
@@ -753,8 +759,12 @@ export async function CreateFilters(charBounties, propCount) {
             eventFilters.filterDivs[`propName_${filterName}${propCount[filterName]}`].element = filterContent;
 
             // Append children elements to respective parent elements
-            document.querySelector('#filters').appendChild(filterContainer);
-            document.querySelector(`#filter_${filterName}${propCount[filterName]}`).appendChild(filterContent);
+            // document.querySelector('#filters').appendChild(filterContainer);
+            // document.querySelector(`#filter_${filterName}${propCount[filterName]}`).appendChild(filterContent);
+            filtersObj[`${filterName}_${propCount[filterName]}`] = {};
+            filtersObj[`${filterName}_${propCount[filterName]}`].container = filterContainer;
+            filtersObj[`${filterName}_${propCount[filterName]}`].content = filterContent;
+            filtersArray.push(`${filterName}_${propCount[filterName]}`);
 
             // Show bounties as per filter
             filterContainer.addEventListener('click', () => {
@@ -788,6 +798,28 @@ export async function CreateFilters(charBounties, propCount) {
                 });
             });
         };
+    };
+
+    // Sort filtersArray by the amount of relating bounties the current filter has
+    filtersArray.sort((a, b) => {
+
+        let firstKey = parseInt(a.split('_')[1]),
+            secondKey = parseInt(b.split('_')[1]);
+        
+        if (firstKey > secondKey) {
+            return -1;
+        }
+        else {
+            return 1;
+        };
+    });
+    
+    // Push filter elements to the page now that they are sorted
+    for (let filter of filtersArray) {
+        
+        let filterID = `${filter.split('_')[0]}${filter.split('_')[1]}`;
+        document.querySelector('#filters').appendChild(filtersObj[filter].container);
+        document.querySelector(`#filter_${filterID}`).appendChild(filtersObj[filter].content);
     };
 };
 

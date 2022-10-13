@@ -70,16 +70,21 @@ let destinyMembershipId,
 
 // Declare global vars and exports
 let characterLoadToggled = false; // Used to lockout character select button during load
-export let charBounties = [];
-export let currentMainContentView = {}; // Contains an element that characterizes what the currently selected content page is
-export let eventBooleans = {
+export var charBounties = [];
+export var contentView = { // Contains the element that is the currently selected content page
+    currentView: {},
+    UpdateView: function(element) {
+        this.currentView = element;
+    }
+};
+export var eventBooleans = {
     areFiltersToggled: false,
     ReverseBoolean: function(bool) {
         bool = !bool;
         return bool;
     }
 };
-export let eventFilters = {
+export var eventFilters = {
     filterDivs: {},
     grayedOutBounties: [],
     UpdateFilters: function(value) {
@@ -101,8 +106,10 @@ axios.defaults.headers.common = {
     "X-API-Key": `${axiosHeaders.ApiKey}`
 };
 
-// Set the main container to show bounties by default
-currentMainContentView = document.getElementById('pursuitsContainer');
+// Declare default fetch header
+var commonHeaders = {
+    "X-API-Key": `${axiosHeaders.ApiKey}`
+};
 
 // Assign element fields for user settings
 export let itemDisplaySize;
@@ -110,7 +117,7 @@ let rangeSlider = document.getElementById('itemSizeSlider'),
     rangeValueField = document.getElementById('itemSizeField'),
     bountyImage = document.getElementById('settingsBountyImage');
 
-// Push cache results to vars
+// Push cache results for itemDisplaySize to variables
 await CacheReturnItem('itemDisplaySize')
     .then((result) => {
         itemDisplaySize = result;
@@ -129,6 +136,78 @@ bountyImage.style.width = `${itemDisplaySize}px`;
 document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
 document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
 
+// Push cache results for defaultContenteView to variables
+await CacheReturnItem('defaultContentView')
+    .then((result) => {
+        
+        if (result) {
+
+            // Change the current view based on what is fetched from cache
+            contentView.UpdateView(document.getElementById(`${result}`));
+
+            // Set selection for the defaultContentView dropdown menu
+            document.getElementById('defaultViewDropdown').value = `${result}`;
+        }
+        else {
+
+            // Set the main container to show bounties by default
+            CacheAuditItem('defaultContentView', 'pursuitsContainer');
+            contentView.UpdateView(document.getElementById('pursuitsContainer'));
+
+            // Set default selection for the defaultContentView dropdown menu
+            document.getElementById('defaultViewDropdown').value = 'pursuitsContainer';
+        };
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+
+// Main OAuth flow mechanism
+export async function OAuthFlow() {
+
+    log('OAuthFlow START');
+
+    let rsToken = JSON.parse(localStorage.getItem('refreshToken')),
+        acToken = JSON.parse(localStorage.getItem('accessToken')),
+        comps = JSON.parse(localStorage.getItem('components')),
+        authCode = urlParams.get('code'); // ONLY place where authCode is to be fetched from
+
+        // Remove state and auth code from url
+        window.history.pushState({}, document.title, window.location.pathname);
+
+    // Wrap in try.except for error catching
+    try {
+        // If user has no localStorage items and the code is incorrect
+        if (authCode && (!comps || !acToken || !rsToken)) {
+            await BungieOAuth(authCode);
+        }
+        // User has no credentials, fired before other conditions
+        else if (!authCode && (!comps || !acToken || !rsToken)) {
+            window.location.href = homeUrl;
+        }
+
+        // If user has authorized beforehand, but came back through empty param URL
+        // If user has code and localStorage components
+        else if (!authCode || authCode && (comps || acToken || rsToken)) {
+            await CheckComponents();
+        }
+
+        // When user comes back with localStorage components but without param URL
+        else if (!authCode && (comps || acToken || rsToken)) {
+            await CheckComponents();
+        }
+
+        // Otherwise, redirect the user back to the 'Authorize' page
+        else {
+            window.location.href = homeUrl;
+        };
+    } catch (error) {
+        console.error(error); // display error page, with error and options for user
+    };
+    log('OAuthFlow END');
+    log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
+};
 
 
 // Authorize with Bungie.net
@@ -146,7 +225,7 @@ export async function BungieOAuth (authCode) {
         };
 
     // Authorize user and get credentials (first time sign-on (usually))
-    await axios.post('https://www.bungie.net/platform/app/oauth/token/', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
+    await axios.post('https://www.bungie.net/platform/app/oauth/token', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
         .then(res => {
             let data = res.data;
 
@@ -260,53 +339,6 @@ export async function CheckComponents () {
         isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
     };
     log('-> Tokens Validated!');
-};
-
-
-// Main OAuth flow mechanism
-export async function OAuthFlow() {
-
-    log('OAuthFlow START');
-
-    let rsToken = JSON.parse(localStorage.getItem('refreshToken')),
-        acToken = JSON.parse(localStorage.getItem('accessToken')),
-        comps = JSON.parse(localStorage.getItem('components')),
-        authCode = urlParams.get('code'); // ONLY place where authCode is to be fetched from
-
-        // Clean URL
-        window.history.pushState({}, document.title, window.location.pathname);
-
-    // Wrap in try.except for error catching
-    try {
-        // If user has no localStorage items and the code is incorrect
-        if (authCode && (!comps || !acToken || !rsToken)) {
-            await BungieOAuth(authCode);
-        }
-        // User has no credentials, fired before other conditions
-        else if (!authCode && (!comps || !acToken || !rsToken)) {
-            window.location.href = homeUrl;
-        }
-
-        // If user has authorized beforehand, but came back through empty param URL
-        // If user has code and localStorage components
-        else if (!authCode || authCode && (comps || acToken || rsToken)) {
-            await CheckComponents();
-        }
-
-        // When user comes back with localStorage components but without param URL
-        else if (!authCode && (comps || acToken || rsToken)) {
-            await CheckComponents();
-        }
-
-        // Otherwise, redirect the user back to the 'Authorize' page
-        else {
-            window.location.href = homeUrl;
-        };
-    } catch (error) {
-        console.error(error); // display error page, with error and options for user
-    };
-    log('OAuthFlow END');
-    log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
 };
 
 
@@ -435,7 +467,6 @@ export async function LoadCharacter(classType, isRefresh) {
         };
 
         // OAuth header guarantees a response
-        log('loadCharacter if statement')
         if (!sessionCache.resCharacterInventories || isRefresh) {
 
             // Set request information
@@ -445,7 +476,7 @@ export async function LoadCharacter(classType, isRefresh) {
                     "X-API-Key": `${axiosHeaders.ApiKey}`
                 }
             };
-            log('loadCharacter top request')
+            log('loadCharacter first request');
             let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,201,202,205,300,301,305`, axiosConfig);
             let charInvRoot = resCharacterInventories.data.Response;
 
@@ -459,7 +490,7 @@ export async function LoadCharacter(classType, isRefresh) {
             sessionCache.resCharacterInventories = resCharacterInventories;
         }
         else if (sessionCache.resCharacterInventories) {
-            log('loadCharacter bottom request')
+
             let charInvRoot = sessionCache.resCharacterInventories.data.Response;
 
             CharacterInventories = charInvRoot.characterInventories.data;
@@ -481,7 +512,7 @@ export async function LoadCharacter(classType, isRefresh) {
         });
 
         // Loop over inventory items and emit bounties
-        log('loadCharacter parsing bounties')
+        log('loadCharacter parsing bounties');
         let parsedBountiesResponse = ParseBounties(charInventory, CharacterObjectives, itemDefinitions, objectiveDefinitions);
         charBounties = parsedBountiesResponse.charBounties;
         amountOfBounties = parsedBountiesResponse.amountOfBounties;
@@ -700,11 +731,34 @@ export async function LoadCharacter(classType, isRefresh) {
         };
         characterLoadToggled = false;
 
+        // Find factorial of a given number
+        let factorials = [];
+        function findFactorial (n) {
+            if (n == 0 || n == 1)
+                return 1;
+            if (factorials[n] > 0)
+                return factorials[n];
+            return factorials[n] = findFactorial(n-1) * n;
+        };
+
+        // Index all possible relations between bounty properties
+        // for (let i=0; i < (Object.keys(bountyPropertiesCount).length) - 1; i++) {
+
+        //     for (let k=(Object.keys(bountyPropertiesCount).length) - 1; k > i + 1; k--) {
+        //         log(Object.keys(bountyPropertiesCount)[i], Object.keys(bountyPropertiesCount)[k], i, k);
+        //     };
+        // };
+
+        // Loop through properties
+        // Loop through charBounties
+        // Find bounties that have the same properties
+
         // Stop loading sequence
         StopLoad();
 
         // Toggle elements
-        currentMainContentView.style.display = 'block';
+        // currentMainContentView.style.display = 'block';
+        contentView.currentView.style.display = 'block';
         document.getElementById('contentDisplay').style.display = 'inline-block';
     };
     log('LoadPrimaryCharacter END');
