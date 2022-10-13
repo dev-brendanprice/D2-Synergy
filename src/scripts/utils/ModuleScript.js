@@ -140,7 +140,7 @@ export async function MakeBountyElement(param) {
         });
 
         // Calculate the nth term for seperating objectives
-        let paddingStepAmount = 40 / (rootIndex.length) === Infinity ? (0) : (40 / (rootIndex.length));
+        let paddingStepAmount = 40 / (rootIndex.length); // What is 40??
         itemPrgCounter.style.paddingBottom = '21px';
         itemPrgDesc.style.paddingBottom = '20px';
 
