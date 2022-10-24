@@ -1857,11 +1857,7 @@
     },
     "1117014939": {
         "Destination": [],
-        "ActivityMode": [1,2],
-        "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ActivityMode": [1,2]
     },
     "1123124244": {
         "Destination": [],
@@ -2555,7 +2551,7 @@
         "ActivityMode": [],
         "DamageType": [],
         "ItemCategory": [2],
-        "AmmoType": [0,1],
+        "AmmoType": [0],
         "KillType": [4,9]
     },
     "1441461394": {
@@ -2743,12 +2739,7 @@
         "KillType": []
     },
     "1559535719": {
-        "Destination": [],
-        "ActivityMode": [3,5],
-        "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ActivityMode": [5]
     },
     "1561597496": {
         "Destination": [],
@@ -3683,12 +3674,8 @@
         "KillType": []
     },
     "2367242101": {
-        "Destination": [],
-        "ActivityMode": [3,4,5,6,7,8,9,10,11,12,13,21,22,23,24,25],
-        "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ActivityMode": [3],
+        "KillType": [9]
     },
     "2373217681": {
         "Destination": [],
@@ -4679,8 +4666,7 @@
         "ActivityMode": [1,2],
         "DamageType": [],
         "ItemCategory": [7],
-        "AmmoType": [],
-        "KillType": []
+        "AmmoType": [1,2]
     },
     "3014159912": {
         "Destination": [],
@@ -4943,8 +4929,7 @@
         "ActivityMode": [1,2],
         "DamageType": [1],
         "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "AmmoType": []
     },
     "3141795163": {
         "Destination": [],
@@ -5503,8 +5488,6 @@
         "Destination": [],
         "ActivityMode": [1,2],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
         "KillType": [3]
     },
     "3522663041": {
@@ -5532,11 +5515,8 @@
         "KillType": []
     },
     "3525239115": {
-        "Destination": [],
         "ActivityMode": [3],
         "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
         "KillType": [1]
     },
     "3531980021": {
@@ -7124,12 +7104,9 @@
         "KillType": []
     },
     "2829326474": {
-        "Destination": [],
-        "ActivityMode": [],
-        "DamageType": [],
-        "ItemCategory": [],
-        "AmmoType": [],
-        "KillType": []
+        "ActivityMode": [3],
+        "DamageType": [1],
+        "KillType": [9]
     },
     "2845012064": {
         "Destination": [],

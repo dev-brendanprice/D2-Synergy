@@ -45,6 +45,31 @@
     margin-top: 30px;
 }
 
+#availableVendorStatus {
+    display: none;
+    margin-top: 12px;
+    padding: 5px;
+    padding-bottom: 7px;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius: 5px;
+    border: 1px solid rgb(154, 92, 21);
+    background-color: rgba(255, 143, 15, 0.681);
+}
+
+.propertySubheadings {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.propertyNames {
+    display: inline-block;
+    font-size: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 #settingsBountyImage {
     width: 55px;
     border: 1px solid gray;
@@ -493,10 +518,10 @@ h2 {
 
 .netStatBuffHeading {
     display: inline-block;
-    text-decoration: underline;
     color: rgb(141, 219, 255) !important;
     font-style: italic;
-    cursor: pointer;
+    text-decoration: underline;
+    user-select: none;
 }
 
 .popupArrow {
@@ -552,7 +577,7 @@ h2 {
 }
 
 #btnSynergyView {
-    display: block;
+    display: none;
     margin-top: 12px;
     padding: 4px;
     padding-left: 7px;
@@ -630,11 +655,11 @@ h2 {
     margin-left: 15px;
 }
 #artifactStatsFirstContainer {
-    margin-top: 10px;
+    margin-top: 13px;
     font-size: 22px;
 }
 #artifactStatsSecondContainer {
-    margin-top: 15px;
+    margin-top: 8px;
     font-size: 22px;
 }
 #artifactStatsSuffix {

@@ -105,6 +105,8 @@ export async function PushProps() {
         // Get the specific bounty entry via from bounties.json
         let bountyEntry = bountyHashes[charBounties[i].hash];
 
+        // In case the bounty has not been added to the definitions
+
         // Check if bounty has been implemented yet in bounties.json
         // e.g. Checking if the properties are empty (means the bounty hasnt been implemented but exists as an empty entry in bounties.json)
         // Loop over each property. if all the properties are empty, it is likely that the bounty has not been implemented yet
@@ -135,5 +137,16 @@ export async function PushProps() {
             };
         };
     };
+
+    // Sort bounty props
+    Object.keys(bountyPropertiesCount).sort((a,b) => {
+        
+        if (bountyPropertiesCount[a] > bountyPropertiesCount[b]) {
+            return -1;
+        }
+        else {
+            return 1;
+        };
+    });
     log(bountyPropertiesCount);
 };

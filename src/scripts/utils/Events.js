@@ -215,11 +215,12 @@ export async function AddEventListeners() {
 
         bountyImage.style.width = `${this.value}px`;
         rangeValueField.innerHTML = `${this.value}px`;
-        CacheAuditItem('itemDisplaySize', this.value);
 
         Array.from(document.getElementsByClassName('bounty')).forEach(element => {
             element.style.width = `${this.value}px`;
         });
+
+        CacheAuditItem('itemDisplaySize', this.value);
     };
 
     // Reset item size button event listener

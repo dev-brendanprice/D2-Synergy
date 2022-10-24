@@ -72,7 +72,7 @@ export async function MakeBountyElement(param) {
 
     // Create bottom element
     item.className = `bounty`;
-    item.id = `${param.hash}`;
+    item.id = `bounty_${param.hash}`;
     item.src = `https://www.bungie.net${param.displayProperties.icon}`;
     item.style.width = `${itemDisplaySize}px`;
     document.querySelector('#bountyItems').appendChild(item);
@@ -99,7 +99,8 @@ export async function MakeBountyElement(param) {
 
     for (let indexCount = 0; indexCount < rootIndex.length; indexCount++) {
 
-        let itemPrgCounter = document.createElement('div'), itemPrgDesc = document.createElement('div');
+        let itemPrgCounter = document.createElement('div'), 
+            itemPrgDesc = document.createElement('div');
 
         // Check if progess string exceeds char limit
         if (rootIndex[indexCount].progressDescription.length >= 24) {
@@ -156,9 +157,6 @@ export async function MakeBountyElement(param) {
 
     // Mark item as complete
     if (param.progress.length === completionCounter) {
-        
-        // Change style to represent state
-        document.getElementById(`${param.hash}`).style.border = '1px solid rgba(182,137,67, 0.749)';
 
         // Change areObjectivesComplete boolean
         param.areObjectivesComplete = true;
@@ -176,12 +174,13 @@ export async function MakeBountyElement(param) {
         itemStatus.className = `expire`;
         itemStatus.id = `expire_${param.hash}`;
         itemStatus.src = './ico/pursuit_expired.svg';
-        document.getElementById(`${param.hash}`).style.border = '1px solid rgba(179,73,73, 0.749)';
+        document.getElementById(`bounty_${param.hash}`).style.border = '1px solid rgba(179,73,73, 0.749)';
     }
     else if (param.areObjectivesComplete) {
         itemStatus.className = `complete`;
         itemStatus.id = `complete_${param.hash}`;
         itemStatus.src = './ico/pursuit_completed.svg';
+        document.getElementById(`bounty_${param.hash}`).style.border = '1px solid rgba(182,137,67, 0.749)';
     };
 
     // Append the item status to the item
@@ -189,10 +188,9 @@ export async function MakeBountyElement(param) {
 
     // Watch for mouse events
     item.addEventListener('mousemove', (e) => {
-        let el = itemOverlay.style;
-        el.display = 'inline-block';
-        el.left = `${e.pageX}px`;
-        el.top = `${e.pageY}px`;
+        itemOverlay.style.display = 'inline-block';
+        itemOverlay.style.left = `${e.pageX}px`;
+        itemOverlay.style.top = `${e.pageY}px`;
     });
 
     item.addEventListener('mouseleave', (e) => {
@@ -730,7 +728,6 @@ export function AddNumberToElementInner(target, content) {
 // @array {charBounties}, @int {propCount}
 export async function CreateFilters(charBounties, propCount) {
 
-    // Fubar
     let filtersObj = {},
         filtersArray = [];
 
@@ -778,6 +775,7 @@ export async function CreateFilters(charBounties, propCount) {
                         document.getElementById(`item_${bounty.hash}`).style.opacity = '50%';
 
                         // Change selected filter to white
+                        log(filterName, propCount[filterName])
                         document.getElementById(`propName_${filterName}${propCount[filterName]}`).style.color = 'rgb(224, 224, 224)';
 
                         if (!eventFilters.grayedOutBounties) {
@@ -834,4 +832,30 @@ export function GenerateRandomString(len) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     };
     return result;
+};
+
+
+
+// Turn property name into a readable name (without the spaces)
+// @string {propertyName}
+export function parsePropertyNameIntoWord(propertyName) {
+
+    let subStrings = propertyName.match(/[A-Z][a-z]+/g),
+        word = '';
+
+    if (!subStrings) {
+        return propertyName;
+    };
+
+    for (const d in subStrings) {
+        
+        if (!word) {
+            word += `${subStrings[d]}`;
+        }
+        else {
+            word += ` ${subStrings[d]}`;
+        };
+    };
+
+    return word;
 };

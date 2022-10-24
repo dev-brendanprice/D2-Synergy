@@ -148,7 +148,63 @@ export const petraYields = {
 };
 
 // Currently added vendors via hashes
-export const CurrentlyAddedVendors = {};
+// This must contain the vendors hash as the key and the vendors name as the value
+export const CurrentlyAddedVendors = {
+    
+};
+
+// Add specifiers for seperating PvP specific properties
+export const pvpActivityModes = [
+    'Crucible', //0
+    'Mayhem', //1
+    'Control', //2
+    'Breakthrough', //3
+    'Countdown', //3
+    'Elimination', //4
+    'Doubles', //5
+    'Supremacy', //6
+    'Rumble', //7
+    'Survival', //8
+    'IronBanner', //9
+    'Trials', //10
+    'Clash', //11
+    'Momentum', //12
+    'Scorched', //13
+    'Lockdown', //14
+    'Showdown', //15
+];
+
+// Add specifiers for seperating PvE specific properties
+export const pveActivityModes = [
+    'Gambit', //0
+    'Strike', //1
+    'Nightfall', //2
+    'Dungeon', //3
+    'NightmareHunt', //4
+    'Story', //5
+    'Trials', //6
+    'Explore', //7
+    'DofE', //8 - Dares of Eternity
+    'Raid', //9
+    'EmpireHunt', //10
+    'Expedition', //11
+];
+
+// Add specified for vanguard activities
+export const vanguardActivityModes = [
+    'Strike', //0
+    'Nightfall', //1
+];
+
+// Strings for kill type
+export const weaponSpecificKillTypes = [
+    'Precision', //4
+    'CloseRange', //6
+    'RapidKills', //7
+    'NoReload', //8
+    'GuardianKills', //9
+    'InASingleLife' //10
+];
 
 // Hashes for destinations
 export const Destination = [
@@ -158,8 +214,8 @@ export const Destination = [
     'DreamingCity', //3
     'Moon', //4
     'Europa', //5
-    'Cosmodrome', // 6
-    'Throneworld', // 7
+    'Cosmodrome', //6
+    'Throneworld', //7
 ];
 
 // Hashes for activity modes
@@ -183,15 +239,15 @@ export const ActivityMode = [
     'Story', //16
     'Trials', //17
     'Explore', //18
-    'DofE', //19
-    'Raid', // 20
+    'DofE', //19 - Dares of Eternity
+    'Raid', //20
     'Clash', //21
     'Momentum', //22
     'Scorched', //23
     'Lockdown', //24
-    'Showdown', // 25
-    'EmpireHunt', // 26
-    'Expedition', // 27
+    'Showdown', //25
+    'EmpireHunt', //26
+    'Expedition', //27
 ];
 
 // Hashes for damage type
@@ -200,7 +256,7 @@ export const DamageType = [
     'Arc', //1
     'Kinetic', //2
     'Void', //3
-    'Stasis', // 4
+    'Stasis', //4
 ];
 
 // Strings for weapon type
@@ -221,14 +277,14 @@ export const ItemCategory = [
     'MachineGun', //13
     'TraceRifle', //14
     'Sidearm', //15
-    'Bow', // 16
+    'Bow', //16
 ];
 
 // Hashes for weapon ammuniation type
 export const AmmoType = [
     'PrimaryAmmo', //0
     'SpecialAmmo', //1
-    'HeavyAmmo', // 2
+    'HeavyAmmo', //2
 ];
 
 // Strings for kill type
@@ -238,12 +294,12 @@ export const KillType = [
     'Grenade', //2
     'Finisher', //3
     'Precision', //4
-    'ClassAbility', // 5
-    'CloseRange', // 6
-    'RapidKills', // 7
-    'NoReload', // 8
-    'GuardianKills', // 9
-    'InASingleLife' // 10
+    'ClassAbility', //5
+    'CloseRange', //6
+    'RapidKills', //7
+    'NoReload', //8
+    'GuardianKills', //9
+    'InASingleLife' //10
 ];
 
 

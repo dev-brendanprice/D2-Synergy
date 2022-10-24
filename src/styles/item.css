@@ -61,7 +61,6 @@
 .expire {
     position: absolute;
     margin-left: -59px;
-    margin-right: 2px;
     width: 26px;
     z-index: 2;
     pointer-events: none;
@@ -147,6 +146,7 @@
 }
 
 #btnHideFilters {
+    display: none !important;
     margin-top: 10px;
     margin-left: 2px;
     padding: 3px;

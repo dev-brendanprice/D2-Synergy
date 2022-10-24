@@ -24,13 +24,20 @@ import {
     CacheAuditItem,
     AddNumberToElementInner,
     CreateFilters,
-    CacheReturnItem } from './utils/ModuleScript.js';
+    CacheReturnItem,
+    parsePropertyNameIntoWord } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
     baseYields,
     petraYields,
-    CurrentlyAddedVendors } from './utils/SynergyDefinitions.js';
+    CurrentlyAddedVendors,
+    ActivityMode,
+    Destination,
+    DamageType,
+    AmmoType,
+    ItemCategory,
+    KillType } from './utils/SynergyDefinitions.js';
 import { bountyPropertiesCount, PushProps } from './utils/MatchProps.js';
 import { AddEventListeners } from './utils/Events.js';
 
@@ -223,6 +230,7 @@ export async function BungieOAuth (authCode) {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         };
+        log(axiosHeaders.Authorization);
 
     // Authorize user and get credentials (first time sign-on (usually))
     await axios.post('https://www.bungie.net/platform/app/oauth/token', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
@@ -354,6 +362,7 @@ export async function FetchBungieUserDetails() {
                 "X-API-Key": `${axiosHeaders.ApiKey}`
             }
         };
+        log(JSON.parse(localStorage.getItem('accessToken')).value);
         
 
     // Change load content
@@ -375,7 +384,7 @@ export async function FetchBungieUserDetails() {
 
         // Fetch user profile
         let userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=200`, axiosConfig);
-        
+
         destinyUserProfile = userProfile.data.Response;
 
         // Cache the response
@@ -444,6 +453,11 @@ export async function LoadCharacter(classType, isRefresh) {
         document.getElementById('bountyItems').innerHTML = '';
         document.getElementById('overlays').innerHTML = '';
         document.getElementById('filters').innerHTML = '';
+        
+        // Clear property name fields
+        for (const element of document.getElementsByClassName('propertyNames')) {
+            element.innerHTML = '';
+        };
 
         // Filter out other classes that are not classType
         for (let char in characters) {
@@ -622,11 +636,12 @@ export async function LoadCharacter(classType, isRefresh) {
         // Get statistics for subheadings
         let amountOfExpiredBounties = 0, amountOfCompletedBounties = 0;
 
+        // Count completed and expired bounties
         for (let bounty of charBounties) {
             if (bounty.isComplete) {
                 amountOfCompletedBounties++;
             }
-            else {
+            else if (bounty.isExpired) {
                 amountOfExpiredBounties++;
             };
         };
@@ -672,8 +687,16 @@ export async function LoadCharacter(classType, isRefresh) {
 
             // Change corresponding HTML elements to display stats
             artifact = ProfileProgressions.seasonalArtifact;
+
+            if (artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel !== 0) {
+                AddNumberToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
+            }
+            else {
+                document.getElementById('artifactStatsSecondContainer').style.display = 'none';
+            };
+
+
             AddNumberToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
-            AddNumberToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
             AddNumberToElementInner('artifactXpToNextPowerBonus', InsertSeperators(artifact.powerBonusProgression.nextLevelAt - artifact.powerBonusProgression.progressToNextLevel));
         }
         else if (!ProfileProgressions.seasonalArtifact) {
@@ -728,30 +751,9 @@ export async function LoadCharacter(classType, isRefresh) {
         if (charBounties.length !== 0) {
             await PushProps();
             await CreateFilters(charBounties, bountyPropertiesCount);
+            await findBountyPermutations(charBounties, bountyPropertiesCount);
         };
         characterLoadToggled = false;
-
-        // Find factorial of a given number
-        let factorials = [];
-        function findFactorial (n) {
-            if (n == 0 || n == 1)
-                return 1;
-            if (factorials[n] > 0)
-                return factorials[n];
-            return factorials[n] = findFactorial(n-1) * n;
-        };
-
-        // Index all possible relations between bounty properties
-        // for (let i=0; i < (Object.keys(bountyPropertiesCount).length) - 1; i++) {
-
-        //     for (let k=(Object.keys(bountyPropertiesCount).length) - 1; k > i + 1; k--) {
-        //         log(Object.keys(bountyPropertiesCount)[i], Object.keys(bountyPropertiesCount)[k], i, k);
-        //     };
-        // };
-
-        // Loop through properties
-        // Loop through charBounties
-        // Find bounties that have the same properties
 
         // Stop loading sequence
         StopLoad();
@@ -762,6 +764,270 @@ export async function LoadCharacter(classType, isRefresh) {
         document.getElementById('contentDisplay').style.display = 'inline-block';
     };
     log('LoadPrimaryCharacter END');
+};
+
+
+// Index and find permutations for character bounties
+async function findPermutationsForBounties(charBounties) {
+
+    // Array to easily access synergy definitions for each category via a string
+    const propertyCategories = {
+        Destination: Destination,
+        ActivityMode: ActivityMode,
+        DamageType: DamageType,
+        ItemCategory: ItemCategory,
+        AmmoType: AmmoType,
+        KillType: KillType
+    };
+
+    // Each category with an array that will hold their respective properties
+    let propertiesSortedIntoTheirCategories = {
+        Destination: [],
+        ActivityMode: [],
+        DamageType: [],
+        ItemCategory: [],
+        AmmoType: [],
+        KillType: []
+    };
+    
+    // Holds the property with the highest count for each property
+    let highestPropertyInEachCategory = {
+        Destination: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        ActivityMode: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        DamageType: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        ItemCategory: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        AmmoType: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        KillType: {
+            propertyName: '',
+            propertyCount: 0
+        }
+    };
+
+    // Each category with an array that will hold their respective properties with the highest count
+    let highestPropertiesThatHaveTheSameCount = {
+        Destination: [],
+        ActivityMode: [],
+        DamageType: [],
+        ItemCategory: [],
+        AmmoType: [],
+        KillType: []
+    };
+
+    // Each category with an array that holds their properties that are being tested for permutations
+    let currentPropertiesBeingTestedForPermutations = {
+        Destination: [],
+        ActivityMode: [],
+        DamageType: [],
+        ItemCategory: [],
+        AmmoType: [],
+        KillType: []
+    };
+    
+    // Determine what category the property is in
+    // Choose the highest property from each property (as a starting point for permutations)
+    // Get the highest properties that have the same count
+
+    for (const propertyName in bountyPropertiesCount) {
+
+        for (const category in propertyCategories) {
+
+            // Determine what category the property is in
+            if (propertyCategories[category].includes(propertyName)) {
+
+                const lastPropertyCount = highestPropertyInEachCategory[category].propertyCount;
+
+                // Choose the highest property from each property (as a starting point for permutations)
+                if (lastPropertyCount < bountyPropertiesCount[propertyName]) {
+                    highestPropertyInEachCategory[category].propertyName = propertyName;
+                    highestPropertyInEachCategory[category].propertyCount = bountyPropertiesCount[propertyName];
+                };
+
+                // Push property name into its category for later
+                propertiesSortedIntoTheirCategories[category].push(propertyName);
+            };
+        };
+    };
+
+    // Get the highest properties that have the same count
+    for (const category in highestPropertyInEachCategory) {
+
+        for (const propertyToCompareTo of propertiesSortedIntoTheirCategories[category]) {
+
+            if (bountyPropertiesCount[propertyToCompareTo] === highestPropertyInEachCategory[category].propertyCount) {
+                highestPropertiesThatHaveTheSameCount[category].push(propertyToCompareTo);
+            };
+        };
+    };
+
+    log(highestPropertyInEachCategory);
+
+    let sortedHighestProperties = [];
+    for (const category in highestPropertyInEachCategory) {
+        sortedHighestProperties.push([highestPropertyInEachCategory[category].propertyName, highestPropertyInEachCategory[category].propertyCount]);
+    };
+    log(sortedHighestProperties);
+    sortedHighestProperties.sort((a,b) => {
+        
+        if (a[1] < b[1]) {
+            return 1;
+        }
+        else {
+            return -1;
+        };
+    });
+    log(sortedHighestProperties);
+    let relatedBounties = [];
+    for (const item of sortedHighestProperties) {
+
+        log(item);
+    };
+    log(relatedBounties);
+
+    // Use the highest properties in each category to start for permutations
+    // You are only allowed to use one property from the Destination and ActivityMode categories
+
+
+};
+
+
+// Dev
+async function findBountyPermutations(charBounties) {
+
+    const propertyCategories = {
+        Destination: Destination,
+        ActivityMode: ActivityMode,
+        DamageType: DamageType,
+        ItemCategory: ItemCategory,
+        AmmoType: AmmoType,
+        KillType: KillType
+    };
+
+    var categorized = {
+        Destination: [],
+        ActivityMode: [],
+        DamageType: [],
+        ItemCategory: [],
+        AmmoType: [],
+        KillType: []
+    };
+
+    var highestPropertyInEachCategory = {
+        Destination: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        ActivityMode: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        DamageType: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        ItemCategory: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        AmmoType: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        KillType: {
+            propertyName: '',
+            propertyCount: 0
+        }
+    };
+
+    var permutedPropertiesByCategory = {
+        Destination: {},
+        ActivityMode: {},
+        DamageType: {},
+        ItemCategory: {},
+        AmmoType: {},
+        KillType: {}
+    };
+
+
+    // Determine what category a specified property is in
+    function determineCategory(propertyName) {
+        for (const category in propertyCategories) {
+            if (propertyCategories[category].includes(propertyName)) {
+                return category;
+            };
+        };
+    };
+
+
+    // Sort each property into categories
+    for (const prp in bountyPropertiesCount) {
+        
+        for (const ctg in propertyCategories) {
+
+            let prpName = '';
+
+            // Filter properties by category and find the highest count for each property
+            if (propertyCategories[ctg].includes(prp)) {
+
+                categorized[ctg].push(prp);
+                prpName = prp;
+                // log(propertyCategories[ctg], ctg, prp);
+
+                let highestPropertyCategory = highestPropertyInEachCategory[ctg];
+                if (highestPropertyCategory.propertyCount < bountyPropertiesCount[prp]) {
+                    highestPropertyCategory.propertyName = prp;
+                    highestPropertyCategory.propertyCount = bountyPropertiesCount[prp];
+                };
+
+                // Percentage of bounties that have this property
+                permutedPropertiesByCategory[ctg][prp] = Math.round((bountyPropertiesCount[prp] / charBounties.length) * 100);
+            };
+        };
+    };
+
+    // Turn our object into an array so we can sort it
+    let sortableArray = [];
+    for (var ctg in permutedPropertiesByCategory) {
+        for (var prp in permutedPropertiesByCategory[ctg]) {
+            sortableArray.push([prp, permutedPropertiesByCategory[ctg][prp]]);
+        };
+    };
+
+    // Sort the array by the percentage of bounties that have this property
+    sortableArray.sort((a,b) => {
+        if (a[1] < b[1]) {
+            return 1;
+        }
+        else {
+            return -1;
+        };
+    });
+
+    log(sortableArray);
+
+    // Push the sorted properties to the DOM
+    for (const item of sortableArray) {
+        
+        var category = determineCategory(item[0]),
+            percent = item[1],
+            propertyName = item[0];
+
+        document.getElementById(`ctg${category}`).innerHTML += `${propertyName} (${percent}%) `;
+    };
 };
 
 
@@ -812,8 +1078,10 @@ export async function main(isPassiveReload) {
     console.table('Supported Vendors:', CurrentlyAddedVendors);
 };
 
-// Run main
-main()
-.catch((error) => {
-    console.error(error);
+// Run main after DOM content has loaded
+document.addEventListener('DOMContentLoaded', () => {
+    main()
+    .catch((error) => {
+        console.error(error);
+    });
 });

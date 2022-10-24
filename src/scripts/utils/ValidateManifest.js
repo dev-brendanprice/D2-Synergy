@@ -30,10 +30,11 @@ var ReturnComponentSuffix = async (entry) => {
 
 
 // Check if each (required) table exists
-var ValidateTables = async () => {
+var FixTables = async () => {
 
+    log(requiredTables);
     for (let table of requiredTables) {
-
+        
         let entry = await get(table);
         if (!entry) {
 
@@ -43,7 +44,7 @@ var ValidateTables = async () => {
             // Request/Set new table
             let suffix = await ReturnComponentSuffix(table),
                 newTable;
-                
+
             newTable = await axios.get(`https://www.bungie.net${suffix}`)
                 .then((res) => {
                     return res;
@@ -82,7 +83,7 @@ var ValidateManifest = async () => {
     
     // Validate the current existing tables
     manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-    await ValidateTables();
+    await FixTables();
 
     // Check manifest version
     if (localStorageManifestVersion !== manifest.data.Response.version) {
@@ -101,8 +102,8 @@ var ReturnEntry = async (entry) => {
 
     let res = await get(entry);
     if (!res) {
-        await ValidateTables();
-        res = await get(entry);
+        await FixTables();
+        return await get(entry);
     };
 
     return res;

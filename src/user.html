@@ -93,8 +93,8 @@
 
                 <div id="netStatsContainer">
                     <div>
-                        <img class="statsCheckmark" id="bonusXpCheckmark" src="./ico/checkmark.png">
-                        <img class="statsCross" id="bonusXpCross" src="./ico/checkmark.png">
+                        <img class="statsCheckmark" id="bonusXpCheckmark" src="./ico/checkmark.svg">
+                        <img class="statsCross" id="bonusXpCross" src="./ico/crossmark.svg">
                         <div class="netStatBuffHeading" id="statBonusXp">Bonus XP</div>
                         <div id="BonusXpPopupContainer">
                             <img class="popupArrow" src="./ico/arrow_down.png"><div class="percentagePopup" id="bonusXpValue"></div>
@@ -102,8 +102,8 @@
                     </div>
 
                     <div>
-                        <img class="statsCheckmark" id="ghostModCheckmark" src="./ico/checkmark.png">
-                        <img class="statsCross" id="ghostModCross" src="./ico/checkmark.png">
+                        <img class="statsCheckmark" id="ghostModCheckmark" src="./ico/checkmark.svg">
+                        <img class="statsCross" id="ghostModCross" src="./ico/crossmark.svg">
                         <div class="netStatBuffHeading" id="statGhostMod">Ghost Mods</div>
                         <div id="ghostModPopupContainer">
                             <img class="popupArrow" src="./ico/arrow_down.png"><div class="percentagePopup" id="ghostModValue"></div>
@@ -111,8 +111,8 @@
                     </div>
 
                     <div>
-                        <img class="statsCheckmark" id="sharedWisdomCheckmark" src="./ico/checkmark.png">
-                        <img class="statsCross" id="sharedWisdomCross" src="./ico/checkmark.png">
+                        <img class="statsCheckmark" id="sharedWisdomCheckmark" src="./ico/checkmark.svg">
+                        <img class="statsCross" id="sharedWisdomCross" src="./ico/crossmark.svg">
                         <div class="netStatBuffHeading" id="statSharedWisdom">Shared Wisdom</div>
                         <div id="sharedWisdomPopupContainer">
                             <img class="popupArrow" src="./ico/arrow_down.png"><div class="percentagePopup" id="sharedWisdomValue"></div>
@@ -154,6 +154,24 @@
                 <div id="noItemsTooltip"></div>
                 <div id="bountyItems"></div>
                 <div id="btnSynergyView">View Synergy</div>
+
+                <div id="availableVendorStatus">
+                    <div style="display: inline-block;font-weight: 600;">Note:</div> Not all bounties have been added. <div style="display: inline-block;font-style: italic;">See Here</div>
+                </div>
+
+                <div class="levellingContainerTitle">Synergies</div>
+                <div id="bountiesFieldSubText">In Progress</div>
+                <hr class="half">
+
+                <div id="fubar">
+                    <div class="propertySubheadings">Destinations: </div><div class="propertyNames" id="ctgDestination"></div><br><br>
+                    <div class="propertySubheadings">Activity Modes: </div><div class="propertyNames" id="ctgActivityMode"></div><br><br>
+                    <div class="propertySubheadings">Item Categories: </div><div class="propertyNames" id="ctgItemCategory"></div><br><br>
+                    <div class="propertySubheadings">Kill Types: </div><div class="propertyNames" id="ctgKillType"></div><br><br>
+
+                    <div class="propertySubheadings">Damage Types: </div><div class="propertyNames" id="ctgDamageType"></div><br><br>
+                    <div class="propertySubheadings">Ammo Types: </div><div class="propertyNames" id="ctgAmmoType"></div><br>
+                </div>
 
                 <div class="levellingContainerTitle">Levelling Statistics</div>
                 <div id="currentSeasonNameField">Season of Plunder</div>
