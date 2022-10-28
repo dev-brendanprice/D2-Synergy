@@ -74,7 +74,7 @@
 
 **This section contains a step-by-step guide on how to efficiently add entries to D2 Synergy. I recommend that you utilize my tool: [QueryVendorBounties](https://github.com/brendanprice2003/QueryVendorBounties) for this process.**
 
-**Note:** _Vendors' bounties are added via an order of priority. This priority is determined by which vendors are utilized the most in terms of XP gains. For example: A Vendor like Eris Morn would be quite a high priority vendor to add, because the moon is notorious for it's quick XP farms._
+**Note:** _Vendors' bounties are added via an order of priority. This priority is determined by which vendors are utilized the most in terms of XP gains. For example: A Vendor like Eris Morn would be quite a high priority vendor to add, because the moon is notorious for its quick XP farms._
 
 **Once you have followed this guide, you should have a development environment ready to go:**
 
