@@ -1,8 +1,9 @@
-import { itemTypeKeys } from "./SynergyDefinitions.js";
+import { itemTypeKeys, VendorHashesByLabel, CurrentlyAddedVendors } from "./SynergyDefinitions.js";
 import { 
     LoadCharacter,
     itemDisplaySize,
-    eventFilters } from "../user.js";
+    eventFilters,
+    excludedBountiesByVendor } from "../user.js";
 
 const log = console.log.bind(console),
       localStorage = window.localStorage,
@@ -258,20 +259,37 @@ export function ParseBounties(charInventory, charObjectives, itemDefinitions) {
         amountOfBounties = 0,
         returnObject = {};
 
-    charInventory.forEach(v => {
+    charInventory.forEach(bounty => {
 
-        let item = itemDefinitions[v.itemHash];
+        let item = itemDefinitions[bounty.itemHash];
 
         if (item.itemType === 26) {
 
+            // Find the bounties origin vendor and check if it has been added
+            // If the bounty has not beed added (referenced in CurrentAddedBounties)
+            // then add it to the array so we can exclude it from permutations
+            item.inventory.stackUniqueLabel.split('.').forEach(labelSubString => {
+
+                if (Object.keys(VendorHashesByLabel).includes(labelSubString)) {
+                    if (!Object.keys(CurrentlyAddedVendors).includes(labelSubString)) {
+
+                        // Add the vendor, and the bounties, to the object
+                        if (!excludedBountiesByVendor[labelSubString]) {
+                            excludedBountiesByVendor[labelSubString] = [];
+                        };
+                        excludedBountiesByVendor[labelSubString].push(item.hash);
+                    };
+                };
+            });
+
             // Add objectives to item
             item.progress = [];
-            for (let objective of charObjectives[v.itemInstanceId].objectives) {
+            for (let objective of charObjectives[bounty.itemInstanceId].objectives) {
                 item.progress.push(objective);
             };
 
             // Add isExpired property
-            item.isExpired = new Date(v.expirationDate) < new Date();
+            item.isExpired = new Date(bounty.expirationDate) < new Date();
 
             // Add props (properties) array
             item.props = [];

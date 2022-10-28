@@ -45,18 +45,6 @@
     margin-top: 30px;
 }
 
-#availableVendorStatus {
-    display: none;
-    margin-top: 12px;
-    padding: 5px;
-    padding-bottom: 7px;
-    width: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    border-radius: 5px;
-    border: 1px solid rgb(154, 92, 21);
-    background-color: rgba(255, 143, 15, 0.681);
-}
-
 .propertySubheadings {
     display: inline-block;
     font-size: 15px;
@@ -98,6 +86,92 @@
 	font-size: 16px;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	color: white;
+}
+
+#availableVendorStatus {
+    margin-top: 12px;
+    padding: 5px;
+    padding-bottom: 7px;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius: 5px;
+    border: 1px solid rgb(154, 92, 21);
+    background-color: rgba(255, 143, 15, 0.681);
+    user-select: none;
+}
+
+#availableVendorNoteText {
+    display: inline-block;
+    font-weight: 600;
+}
+
+#availableVendorSeeHerePrompt {
+    display: inline-block;
+    font-style: italic;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#availableVendorPopupCanvas {
+    position: fixed;
+    display: none;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(66, 66, 66, 0.5);
+    z-index: 99; /* Make sure this is always on top, but below availableVendorPopup */
+}
+
+#availableVendorPopup {
+    position: absolute;
+    display: none;
+    width: 500px;
+    height: auto;
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    border: 1px solid rgb(156, 156, 156);
+    border-radius: 5px;
+    background-color: rgb(66,66,66);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    z-index: 100; /* Make sure this is always on top */
+}
+
+#availableVendorContainer {
+    text-align: left;
+}
+
+#availableVendorContentTitle {
+    margin-bottom: 3px;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+#availableVendorPopupClose {
+    margin-bottom: 10px;
+    padding: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    bottom: 0;
+    background-color: rgb(41, 41, 41);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+#availableVendorPopupClose:hover {
+    background-color: rgb(91, 91, 91);
+    transition: all 0.1s ease-in-out;
 }
 
 #checkBox {
@@ -347,19 +421,13 @@ h2 {
     transition: 0.25s;
 }
 
-#cgDefaultLoadouts {
-    display: none;
+
+#cgSeasonalChalls:hover {
+    color: white;
+    transition: 0.25s;
 }
 
-#cgDefaultLoadouts:hover {
-    color: white;
-    transition: 0.25s;
-}
-#cgPursuits:hover {
-    color: white;
-    transition: 0.25s;
-}
-#cgSynergy:hover {
+#cgBounties:hover {
     color: white;
     transition: 0.25s;
 }
@@ -576,30 +644,77 @@ h2 {
     display: inline-block;
 }
 
-#btnSynergyView {
-    display: none;
-    margin-top: 12px;
-    padding: 4px;
-    padding-left: 7px;
-    padding-right: 7px;
-    width: fit-content;
-    color: rgb(203, 116, 116);
-    border: 1px rgb(203, 116, 116) solid;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
-    transition: 0.25s;
+/* #synergiesContainer {
+
+} */
+
+#synergiesContainer > div {
+    margin-top: 20px;
 }
 
-#btnSynergyView:hover {
-    color: rgb(255, 222, 222);
-    border-color: rgb(255, 222, 222);
-    transition: all 0.25s;
+.elementalSubContainer {
+    display: inline-block;
+    margin: auto;
+    margin-right: 5px;
+    text-align: center;
+    justify-content: center;
+}
+
+.elementalIcon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+    width: 40px;
+}
+
+.elementalPercentage {
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: fit-content;
+    background-color: rgb(70, 70, 70);
+    border-radius: 3px;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+}
+
+.ammoSubContainer  {
+    display: inline-block;
+    margin: auto;
+    margin-right: 5px;
+    text-align: center;
+    justify-content: center;
+}
+
+.ammoSubContainer > div {
+    position: relative;
+    left: 49%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.ammoIcon {
+    margin-bottom: 5px;
+    width: 40px;
+}
+
+.ammoPercentage {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: fit-content;
+    background-color: rgb(70, 70, 70);
+    border-radius: 3px;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
 }
 
 #levellingContentDisplay > div {

@@ -105,7 +105,21 @@ export const itemTypeKeys = [
     'weekly',
     'daily',
     'repeatable'
-]
+];
+
+// Normal XP gains
+export const baseYields = {
+    'weekly': 12_000,
+    'daily': 6_000,
+    'repeatable': 4_000
+};
+
+// Petra Venj XP gains
+export const petraYields = {
+    'weekly': 6_000,
+    'daily': 1_000,
+    'repeatable': 0
+};
 
 // Vendor groups
 export const vendorKeys = [
@@ -130,27 +144,42 @@ export const vendorKeys = [
     'transmog',
     'trials',
     'war_table',
+    'star_chart',
     'other'
 ];
 
-// Normal XP gains
-export const baseYields = {
-    'weekly': 12_000,
-    'daily': 6_000,
-    'repeatable': 4_000
+// Vendors by their corresponding substring of the stackUniqueLabel
+export const VendorHashesByLabel = {
+    'gunsmith': 672118013, // Banshee-44
+    'transmog': 350061650, // Ada-1
+    'strikes': 69482069, // Zavala
+    'crucible': 3603221665, // Lord Shaxx
+    'gambit': 248695599, // Drifter
+    'season18': 518338309, // Star Chart
+    'edz': 396892126, // Devrim Kay
+    'cosmodrome': 1816541247, // Shaw Han
+    'myriad': 1576276905, // Failsafe
+    'luna': 1616085565, // Eris Morn
+    'clan': 3347378076, // Hawthorne
+    'trials': 765357505, // Saint-14
+    'europa': 2531198101, // Variks
+    'dreaming_city': 1841717884, // Petra Venj
+    'luna': 3411552308, // Lectern of Enchantment
+    'season17': 2748388973, // Crown of Sorrow
+    'throneworld': 2384113223, // Fynch
+    'dare_cards': 3431983428, // Starhorse (still contains 'xur')
+    'eternity': 3442679730, // Xur
+    'fotl': 919809084, // Festival of the Lost (fotl)
 };
 
-// Petra Venj XP gains
-export const petraYields = {
-    'weekly': 6_000,
-    'daily': 1_000,
-    'repeatable': 0
-};
+// eternity.bounties.xur.dare_cards.legendary.bounty06
+// eternity.bounties.xur.daily.bounty15
 
-// Currently added vendors via hashes
-// This must contain the vendors hash as the key and the vendors name as the value
+// Currently added vendors with hashes
 export const CurrentlyAddedVendors = {
-    
+    'gunsmith': 672118013, // Banshee-44
+    'strikes': 69482069, // Zavala
+    'crucible': 3603221665, // Lord Shaxx
 };
 
 // Add specifiers for seperating PvP specific properties

@@ -20,11 +20,6 @@ export async function AddEventListeners() {
         });
     };
 
-    // Logout button listener
-    document.getElementById('navBarLogoutContainer').addEventListener('click', () => {
-        Logout();
-    });
-
     // Hover events for "Current Yield"
     document.getElementById('statsTitleQuery').addEventListener('mousemove', () => {
         document.getElementById('queryDiv').style.display = 'block';
@@ -82,28 +77,12 @@ export async function AddEventListeners() {
         });
     });
 
-    // Click event for "View Synergy" button
-    document.getElementById('btnSynergyView').addEventListener('click', () => {
-
-        document.getElementById('pursuitsContainer').style.display = 'none';
-        document.getElementById('synergyContainer').style.display = 'block';
-        contentView.UpdateView(document.getElementById('synergyContainer'));
-    });
-
     // Click event for "Bounties" side button
-    document.getElementById('cgPursuits').addEventListener('click', () => {
+    document.getElementById('cgBounties').addEventListener('click', () => {
 
         document.getElementById('synergyContainer').style.display = 'none';
         document.getElementById('pursuitsContainer').style.display = 'block';
         contentView.UpdateView(document.getElementById('pursuitsContainer'));
-    });
-
-    // Click event for "Synergy" side button
-    document.getElementById('cgSynergy').addEventListener('click', () => {
-
-        document.getElementById('pursuitsContainer').style.display = 'none';
-        document.getElementById('synergyContainer').style.display = 'block';
-        contentView.UpdateView(document.getElementById('synergyContainer'));
     });
 
     // Toggle item filters button(s) (reverse container style)
@@ -241,6 +220,24 @@ export async function AddEventListeners() {
         
         let selectedValue = document.getElementById('defaultViewDropdown').value;
         CacheAuditItem('defaultContentView', selectedValue);
+    });
+
+    // Add listener for "See Here" prompt on the note for available vendors
+    document.getElementById('availableVendorSeeHerePrompt').addEventListener('click', () => {
+        document.getElementById('availableVendorPopupCanvas').style.display = 'inline-block';
+        document.getElementById('availableVendorPopup').style.display = 'inline-block';
+    });
+
+    // Add listener for available vendor popup close button
+    document.getElementById('availableVendorPopupClose').addEventListener('click', () => {
+        document.getElementById('availableVendorPopupCanvas').style.display = 'none';
+        document.getElementById('availableVendorPopup').style.display = 'none';
+    });
+
+    // Add an event listener to the canvas to close the popup (for ease of use)
+    document.getElementById('availableVendorPopupCanvas').addEventListener('click', () => {
+        document.getElementById('availableVendorPopupCanvas').style.display = 'none';
+        document.getElementById('availableVendorPopup').style.display = 'none';
     });
 
     log('AddEventListeners END');

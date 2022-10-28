@@ -35,6 +35,21 @@
         </div>
     </div>
 
+    <div id="availableVendorPopup">
+        <div id="availableVendorContainer">
+            <div id="availableVendorContentTitle">Available Vendors</div>
+            <div id="availableVendorContentText">· Bounties are added in order of priority, based on various factors.</div><a style="user-select: none;text-decoration: underline;cursor: pointer;" target="_blank" href="https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#:~:text=Note%3A%20Vendors%27%20bounties%20are%20added%20via%20an%20order%20of%20priority.%20This%20priority%20is%20determined%20by%20which%20vendors%20are%20utilized%20the%20most%20in%20terms%20of%20XP%20gains.%20For%20example%3A%20A%20Vendor%20like%20Eris%20Morn%20would%20be%20quite%20a%20high%20priority%20vendor%20to%20add%2C%20because%20the%20moon%20is%20notorious%20for%20its%20quick%20XP%20farms.">[Read Here]</a>
+            <div id="availableVendorContentText" style="margin-top: 10px;">· The addition of bounties is grouped by vendors.</div>
+            <div id="availableVendorContentText">· The shown list contains the vendors' bounties, that have been added.</div>
+            <ul id="vendorsList"></ul>
+            <div style="margin-bottom: 10px;">
+                <div id="availableVendorContentText" style="display: inline-block;font-weight: 600;">Note:</div><div id="availableVendorContentText" style="display: inline-block;font-style: italic;">  Crucible and Trials are seperate groups</div>
+            </div>
+        </div>
+        <div id="availableVendorPopupClose">Close</div>
+    </div>
+    <div id="availableVendorPopupCanvas"></div>
+
     <div id="userMainContainer">
 
         <div id="sideSelectionBar">
@@ -69,9 +84,8 @@
             </div>
 
             <div id="categories">
-                <div id="cgDefaultLoadouts">Loadouts</div>
-                <div id="cgPursuits">Bounties</div>
-                <div id="cgSynergy">Synergy</div>
+                <div id="cgSeasonalChalls">Seasonal Challenges</div>
+                <div id="cgBounties">Bounties</div>
             </div>
 
             <div id="statsContainer">
@@ -153,24 +167,71 @@
                 <div id="btnHideFilters">Toggle Filters</div>
                 <div id="noItemsTooltip"></div>
                 <div id="bountyItems"></div>
-                <div id="btnSynergyView">View Synergy</div>
-
-                <div id="availableVendorStatus">
-                    <div style="display: inline-block;font-weight: 600;">Note:</div> Not all bounties have been added. <div style="display: inline-block;font-style: italic;">See Here</div>
-                </div>
 
                 <div class="levellingContainerTitle">Synergies</div>
-                <div id="bountiesFieldSubText">In development</div>
+                <div id="bountiesFieldSubText"> 🛠️ In (heavy) Development 🚧</div>
                 <hr class="half">
 
-                <div id="fubar">
-                    <div class="propertySubheadings">Destinations: </div><div class="propertyNames" id="ctgDestination"></div><br><br>
-                    <div class="propertySubheadings">Activity Modes: </div><div class="propertyNames" id="ctgActivityMode"></div><br><br>
-                    <div class="propertySubheadings">Item Categories: </div><div class="propertyNames" id="ctgItemCategory"></div><br><br>
-                    <div class="propertySubheadings">Kill Types: </div><div class="propertyNames" id="ctgKillType"></div><br><br>
+                <div id="synergiesContainer">
 
-                    <div class="propertySubheadings">Damage Types: </div><div class="propertyNames" id="ctgDamageType"></div><br><br>
-                    <div class="propertySubheadings">Ammo Types: </div><div class="propertyNames" id="ctgAmmoType"></div><br>
+                    <div>
+                        <div class="propertySubheadings">Destinations: </div><div class="propertyNames" id="ctgDestination" style="font-style:italic;">There are no (specific) relations for destinations.</div>
+                    </div>
+
+                    <div>
+                        <div class="propertySubheadings">Activity Modes: </div><div class="propertyNames" id="ctgActivityMode" style="font-style:italic;">There are no (specific) relations for activities.</div>
+                    </div>
+
+                    <div>
+                        <div class="propertySubheadings">Weapon Types: </div><div class="propertyNames" id="ctgItemCategory" style="font-style:italic;">There are no (specific) relations for weapon types.</div>
+                    </div>
+
+                    <div>
+                        <div class="propertySubheadings">Kill Types: </div><div class="propertyNames" id="ctgKillType" style="font-style:italic;">There are no (specific) relations for kill types.</div>
+                    </div>
+
+                    <div class="propertySubheadings" style="color: gray;">Elemental Types: </div><div class="propertyNames" id="ctgDamageType" style="font-style:italic;color: gray;">There are no (specific) relations for element types.</div><br>
+                    <div class="propertySubheadings" style="color: gray;">Ammo Types: </div><div class="propertyNames" id="ctgAmmoType" style="font-style:italic;color: gray;">There are no (specific) relations for ammo types.</div>
+
+                    <div>
+                        <div class="elementalSubContainer">
+                            <img class="elementalIcon" src="./ico/arc_icon.png">
+                            <div class="elementalPercentage" id="percentageArc"></div>
+                        </div>
+                        <div class="elementalSubContainer">
+                            <img class="elementalIcon" src="./ico/solar_icon.png">
+                            <div class="elementalPercentage" id="percentageSolar"></div>
+                        </div>
+                        <div class="elementalSubContainer">
+                            <img class="elementalIcon" src="./ico/void_icon.png">
+                            <div class="elementalPercentage" id="percentageVoid"></div>
+                        </div>
+                        <div class="elementalSubContainer">
+                            <img class="elementalIcon" src="./ico/stasis_icon.png">
+                            <div class="elementalPercentage" id="percentageStasis"></div>
+                        </div>
+                    </div>
+                       
+                    <div>
+
+                        <div class="ammoSubContainer">
+                            <img class="ammoIcon" src="./ico/primary_ammo_icon.svg">
+                            <div class="ammoPercentage" id="percentageKinetic">0%</div>
+                        </div>
+                        <div class="ammoSubContainer">
+                            <img class="ammoIcon" src="./ico/special_ammo_icon.svg">
+                            <div class="ammoPercentage" id="percentageSpecial">0%</div>
+                        </div>
+                        <div class="ammoSubContainer">
+                            <img class="ammoIcon" src="./ico/heavy_ammo_icon.svg">
+                            <div class="ammoPercentage" id="percentageHeavy">0%</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="availableVendorStatus">
+                    <div id="availableVendorNoteText">Note:</div> Not all bounties have been added. <div id="availableVendorSeeHerePrompt">See Here</div>
                 </div>
 
                 <div class="levellingContainerTitle">Levelling Statistics</div>
@@ -249,7 +310,7 @@
 
     <div id="settingsContainer">
         <div id="backButtonContainer">
-			<img id="backButtonImg" src="ico/backArrow.png">
+			<img id="backButtonImg" src="ico/back_arrow.png">
 			<div id="backButtonText">
 				Go Back
 			</div>

@@ -1,4 +1,4 @@
-import { charBounties } from '../user.js';
+import { charBounties, excludedBountiesByVendor } from '../user.js';
 import bountyHashes from '../../data/bounties.json';
 import {
     ActivityMode,
@@ -6,7 +6,8 @@ import {
     DamageType,
     AmmoType,
     ItemCategory,
-    KillType } from './SynergyDefinitions.js';
+    KillType,
+    VendorHashesByLabel } from './SynergyDefinitions.js';
 
     const log = console.log.bind(console),
         tableForPropertyDefinitions = {
@@ -96,6 +97,31 @@ export async function PushIndexesFromProperty(bountyEntry, propertyName, i) {
 // Push the props onto charBounties
 export async function PushProps() {
 
+    // Push indexes to the props array on the bounty
+    async function PushPropsToBounty(bountyEntry, i) {
+        for (const property in bountyEntry) {
+
+            if ('Destination' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('ActivityMode' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('DamageType' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('ItemCategory' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('AmmoType' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            }
+            else if ('KillType' in bountyEntry) {
+                await PushIndexesFromProperty(bountyEntry, property, i);
+            };
+        };
+    };
+
     // Clear counters
     bountyPropertiesCount = {};
 
@@ -106,47 +132,34 @@ export async function PushProps() {
         let bountyEntry = bountyHashes[charBounties[i].hash];
 
         // In case the bounty has not been added to the definitions
+        // Check if there are any bounties to be excluded
+        // Ignore the bounty if it's in the excludedBountiesByVendor object (the bounty hasnt been added)
+        charBounties[i].inventory.stackUniqueLabel.split('.').forEach(async (labelSubstring) => {
 
-        // Check if bounty has been implemented yet in bounties.json
-        // e.g. Checking if the properties are empty (means the bounty hasnt been implemented but exists as an empty entry in bounties.json)
-        // Loop over each property. if all the properties are empty, it is likely that the bounty has not been implemented yet
-        if (!(Object.values(bountyEntry).every(item => item.length !== 0))) {
+            // Loop over vendor labels and check if the substring is in the label
+            for (const vendorLabel in VendorHashesByLabel) {
+                if (labelSubstring === vendorLabel) {
 
-            // Check if property exists in the entry
-            // If it doesn't exist then this means the property should be ignored; it doesnt apply to the bounty
-            for (let property in bountyEntry) {
+                    // Check if the vendor is in the excludedBountiesByVendor object
+                    // Ignore the bounty if it exists in the array value of the key:value pair
+                    if (Object.keys(excludedBountiesByVendor).includes(vendorLabel)) {
+                        if (!excludedBountiesByVendor[vendorLabel].includes(charBounties[i].hash)) {
 
-                if ('Destination' in bountyEntry) {
-                    await PushIndexesFromProperty(bountyEntry, property, i);
-                }
-                else if ('ActivityMode' in bountyEntry) {
-                    await PushIndexesFromProperty(bountyEntry, property, i);
-                }
-                else if ('DamageType' in bountyEntry) {
-                    await PushIndexesFromProperty(bountyEntry, property, i);
-                }
-                else if ('ItemCategory' in bountyEntry) {
-                    await PushIndexesFromProperty(bountyEntry, property, i);
-                }
-                else if ('AmmoType' in bountyEntry) {
-                    await PushIndexesFromProperty(bountyEntry, property, i);
-                }
-                else if ('KillType' in bountyEntry) {
-                    await PushIndexesFromProperty(bountyEntry, property, i);
+                            // Push properties onto bounty
+                            await PushPropsToBounty(bountyEntry, i);
+                        };
+                    }
+                    else {
+                        // Push properties onto bounty
+                        await PushPropsToBounty(bountyEntry, i);
+                    };
                 };
             };
-        };
+        });
     };
 
-    // Sort bounty props
-    Object.keys(bountyPropertiesCount).sort((a,b) => {
-        
-        if (bountyPropertiesCount[a] > bountyPropertiesCount[b]) {
-            return -1;
-        }
-        else {
-            return 1;
-        };
-    });
+    // Sort bounty props in descending order
+    Object.keys(bountyPropertiesCount).sort((a,b) => bountyPropertiesCount[a] - bountyPropertiesCount[b]);
     log(bountyPropertiesCount);
+    log(excludedBountiesByVendor);
 };
