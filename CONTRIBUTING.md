@@ -70,9 +70,11 @@
 ![image](https://user-images.githubusercontent.com/56489848/194653354-9f426da9-555b-41b2-97d3-dba16a865b63.png)
 
 ## Adding Entries
-**Manually adding entries to Synergy is the best course of action to ensure that the accuracy of synergies, between progressional items, are as vast and best as possible. (Or at least "mostly" reliable.)**
+**Manually adding entries to Synergy is, by far, the best course of action to ensure that the accuracy of synergies, between progressional items, are as vast and best as possible. (Or at least "mostly" reliable.)**
 
 **This section contains a step-by-step guide on how to efficiently add entries to D2 Synergy. I recommend that you utilize my tool: [QueryVendorBounties](https://github.com/brendanprice2003/QueryVendorBounties) for this process.**
+
+**Note:** _Vendors' bounties are added via an order of priority. This priority is determined by which vendors are utilized the most in terms of XP gains. For example: A Vendor like Eris Morn would be quite a high priority vendor to add, because the moon is notorious for it's quick XP farms._
 
 **Once you have followed this guide, you should have a development environment ready to go:**
 
