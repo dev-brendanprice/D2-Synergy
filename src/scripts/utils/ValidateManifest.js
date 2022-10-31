@@ -7,7 +7,9 @@ const requiredTables = [
     'DestinyInventoryItemDefinition',
     'DestinyObjectiveDefinition',
     'DestinyProgressionDefinition',
-    'DestinySeasonPassDefinition'
+    'DestinySeasonPassDefinition',
+    'DestinyRecordDefinition',
+    'DestinyPresentationNodeDefinition'
 ];
 
 var log = console.log.bind(console),

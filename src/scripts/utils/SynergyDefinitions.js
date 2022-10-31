@@ -177,9 +177,7 @@ export const VendorHashesByLabel = {
 
 // Currently added vendors with hashes
 export const CurrentlyAddedVendors = {
-    'gunsmith': 672118013, // Banshee-44
-    'strikes': 69482069, // Zavala
-    'crucible': 3603221665, // Lord Shaxx
+    'None': null,
 };
 
 // Add specifiers for seperating PvP specific properties

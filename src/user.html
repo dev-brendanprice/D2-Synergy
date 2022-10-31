@@ -136,6 +136,55 @@
                     <div class="netXpHeading">Net XP: </div><div id="totalNetXpField"></div><br>
                 </div>
             </div>
+
+            <div id="seasonalStatsContainer">
+                
+                <div id="baseStatsTitleContainer">
+                    <div id="statsTitle">Base Yield</div>
+                    <div id="queryDiv">This is NOT calculated with any XP modifiers.</div>
+                    <img id="statsTitleQuery" src="./ico/interface_help.webp">
+                </div>
+
+                <div id="baseStatsContainer">
+                    <div id="totalXp">XP: </div><div id="totalXpField"></div><br>
+                    <div id="totalSpLevels">SP Levels: </div><div id="totalSpLevelsField"></div>
+                </div>
+
+                <div id="netStatsContainer">
+                    <div id="baseStatsTitle">Net Breakdown</div>
+                </div>
+
+                <div id="netStatsContainer">
+                    <div>
+                        <img class="statsCheckmark" id="bonusXpCheckmark" src="./ico/checkmark.svg">
+                        <img class="statsCross" id="bonusXpCross" src="./ico/crossmark.svg">
+                        <div class="netStatBuffHeading" id="statBonusXp">Bonus XP</div>
+                        <div id="BonusXpPopupContainer">
+                            <img class="popupArrow" src="./ico/arrow_down.png"><div class="percentagePopup" id="bonusXpValue"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <img class="statsCheckmark" id="ghostModCheckmark" src="./ico/checkmark.svg">
+                        <img class="statsCross" id="ghostModCross" src="./ico/crossmark.svg">
+                        <div class="netStatBuffHeading" id="statGhostMod">Ghost Mods</div>
+                        <div id="ghostModPopupContainer">
+                            <img class="popupArrow" src="./ico/arrow_down.png"><div class="percentagePopup" id="ghostModValue"></div>
+                        </div> 
+                    </div>
+
+                    <div>
+                        <img class="statsCheckmark" id="sharedWisdomCheckmark" src="./ico/checkmark.svg">
+                        <img class="statsCross" id="sharedWisdomCross" src="./ico/crossmark.svg">
+                        <div class="netStatBuffHeading" id="statSharedWisdom">Shared Wisdom</div>
+                        <div id="sharedWisdomPopupContainer">
+                            <img class="popupArrow" src="./ico/arrow_down.png"><div class="percentagePopup" id="sharedWisdomValue"></div>
+                        </div>
+                    </div>
+
+                    <div class="netXpHeading">Net XP: </div><div id="totalNetXpField"></div><br>
+                </div>
+            </div>
         </div>
         
         <div id="loadingContentContainer">
@@ -150,6 +199,7 @@
                 <hr class="half">
             </div>
 
+            <!-- [ CONTAINERS FOR EACH VIEW (BOUNTIES, SCHALLS AND STATISITCS) ] -->
             <div id="pursuitsContainer">
 
                 <div class="containerTitle">Bounties</div><br>
@@ -173,42 +223,46 @@
                 <hr class="half">
 
                 <div id="synergiesContainer">
+                
+                    <div style="display: none;">
+                        <div>
+                            <div class="propertySubheadings">Destinations: </div><div class="propertyNames" id="ctgDestination" style="font-style:italic;">There are no (specific) relations for destinations.</div>
+                        </div>
 
-                    <div>
-                        <div class="propertySubheadings">Destinations: </div><div class="propertyNames" id="ctgDestination" style="font-style:italic;">There are no (specific) relations for destinations.</div>
+                        <div>
+                            <div class="propertySubheadings">Activity Modes: </div><div class="propertyNames" id="ctgActivityMode" style="font-style:italic;">There are no (specific) relations for activities.</div>
+                        </div>
+
+                        <div>
+                            <div class="propertySubheadings">Weapon Types: </div><div class="propertyNames" id="ctgItemCategory" style="font-style:italic;">There are no (specific) relations for weapon types.</div>
+                        </div>
+
+                        <div>
+                            <div class="propertySubheadings">Kill Types: </div><div class="propertyNames" id="ctgKillType" style="font-style:italic;">There are no (specific) relations for kill types.</div>
+                        </div>
+
+                        <div style="display: none;">
+                            <div class="propertySubheadings" style="color: gray;">Elemental Types: </div><div class="propertyNames" id="ctgDamageType" style="font-style:italic;color: gray;">There are no (specific) relations for element types.</div><br>
+                            <div class="propertySubheadings" style="color: gray;">Ammo Types: </div><div class="propertyNames" id="ctgAmmoType" style="font-style:italic;color: gray;">There are no (specific) relations for ammo types.</div>
+                        </div>
                     </div>
-
-                    <div>
-                        <div class="propertySubheadings">Activity Modes: </div><div class="propertyNames" id="ctgActivityMode" style="font-style:italic;">There are no (specific) relations for activities.</div>
-                    </div>
-
-                    <div>
-                        <div class="propertySubheadings">Weapon Types: </div><div class="propertyNames" id="ctgItemCategory" style="font-style:italic;">There are no (specific) relations for weapon types.</div>
-                    </div>
-
-                    <div>
-                        <div class="propertySubheadings">Kill Types: </div><div class="propertyNames" id="ctgKillType" style="font-style:italic;">There are no (specific) relations for kill types.</div>
-                    </div>
-
-                    <div class="propertySubheadings" style="color: gray;">Elemental Types: </div><div class="propertyNames" id="ctgDamageType" style="font-style:italic;color: gray;">There are no (specific) relations for element types.</div><br>
-                    <div class="propertySubheadings" style="color: gray;">Ammo Types: </div><div class="propertyNames" id="ctgAmmoType" style="font-style:italic;color: gray;">There are no (specific) relations for ammo types.</div>
 
                     <div>
                         <div class="elementalSubContainer">
                             <img class="elementalIcon" src="./ico/arc_icon.png">
-                            <div class="elementalPercentage" id="percentageArc">0%</div>
+                            <div class="elementalPercentageField" id="percentageArc">0%</div>
                         </div>
                         <div class="elementalSubContainer">
                             <img class="elementalIcon" src="./ico/solar_icon.png">
-                            <div class="elementalPercentage" id="percentageSolar">0%</div>
+                            <div class="elementalPercentageField" id="percentageSolar">0%</div>
                         </div>
                         <div class="elementalSubContainer">
                             <img class="elementalIcon" src="./ico/void_icon.png">
-                            <div class="elementalPercentage" id="percentageVoid">0%</div>
+                            <div class="elementalPercentageField" id="percentageVoid">0%</div>
                         </div>
                         <div class="elementalSubContainer">
                             <img class="elementalIcon" src="./ico/stasis_icon.png">
-                            <div class="elementalPercentage" id="percentageStasis">0%</div>
+                            <div class="elementalPercentageField" id="percentageStasis">0%</div>
                         </div>
                     </div>
                        
@@ -216,15 +270,15 @@
 
                         <div class="ammoSubContainer">
                             <img class="ammoIcon" src="./ico/primary_ammo_icon.svg">
-                            <div class="ammoPercentage" id="percentageKinetic">0%</div>
+                            <div class="ammoPercentageField" id="percentageKinetic">0%</div>
                         </div>
                         <div class="ammoSubContainer">
                             <img class="ammoIcon" src="./ico/special_ammo_icon.svg">
-                            <div class="ammoPercentage" id="percentageSpecial">0%</div>
+                            <div class="ammoPercentageField" id="percentageSpecial">0%</div>
                         </div>
                         <div class="ammoSubContainer">
                             <img class="ammoIcon" src="./ico/heavy_ammo_icon.svg">
-                            <div class="ammoPercentage" id="percentageHeavy">0%</div>
+                            <div class="ammoPercentageField" id="percentageHeavy">0%</div>
                         </div>
                     </div>
 
@@ -233,6 +287,78 @@
                 <div id="availableVendorStatus">
                     <div id="availableVendorNoteText">Note:</div> Not all bounties have been added. <div id="availableVendorSeeHerePrompt">See Here</div>
                 </div>
+
+            </div>
+
+            <div id="seasonalChallengesContainer">
+
+                <div class="containerTitle">Seasonal Challenges</div><br>
+                <div class="subheadingFields" id="challengesAmountField"></div><div id="bountiesFieldSubText">total  · </div>
+                <div class="subheadingFields" id="completedChallengesAmountField"></div><div id="bountiesFieldSubText">completed  · </div>
+                <div class="subheadingFields" id="outstandingChallengesAmountField"></div><div id="bountiesFieldSubText">outstanding</div>
+                <hr class="half">
+
+                <div id="seasonChallengeControlGridContainer">
+                    <div class="seasonalChallengePageArrow" id="previousSeasonalChallengePageArrow">
+                        <img class="seasonalChallengePageArrowImage" style="transform: rotate(90deg);" src="./ico/arrow_down.png">
+                    </div>
+    
+                    <div id="seasonalChallengeItems"></div>
+                    
+                    <div class="seasonalChallengePageArrow" id="nextSeasonalChallengePageArrow">
+                        <img class="seasonalChallengePageArrowImage" style="transform: rotate(-90deg);" src="./ico/arrow_down.png">
+                    </div>
+                </div>
+
+                <div class="levellingContainerTitle">Synergies</div>
+                <div id="bountiesFieldSubText"> 🛠️ In (heavy) Development 🚧</div>
+                <hr class="half">
+
+                <div id="synergiesContainer">
+
+                    <div>
+                        <div class="elementalSubContainer">
+                            <img class="elementalIcon" src="./ico/arc_icon.png">
+                            <div class="elementalPercentageField" id="percentageArc">0%</div>
+                        </div>
+                        <div class="elementalSubContainer">
+                            <img class="elementalIcon" src="./ico/solar_icon.png">
+                            <div class="elementalPercentageField" id="percentageSolar">0%</div>
+                        </div>
+                        <div class="elementalSubContainer">
+                            <img class="elementalIcon" src="./ico/void_icon.png">
+                            <div class="elementalPercentageField" id="percentageVoid">0%</div>
+                        </div>
+                        <div class="elementalSubContainer">
+                            <img class="elementalIcon" src="./ico/stasis_icon.png">
+                            <div class="elementalPercentageField" id="percentageStasis">0%</div>
+                        </div>
+                    </div>
+                       
+                    <div>
+                        <div class="ammoSubContainer">
+                            <img class="ammoIcon" src="./ico/primary_ammo_icon.svg">
+                            <div class="ammoPercentageField" id="percentageKinetic">0%</div>
+                        </div>
+                        <div class="ammoSubContainer">
+                            <img class="ammoIcon" src="./ico/special_ammo_icon.svg">
+                            <div class="ammoPercentageField" id="percentageSpecial">0%</div>
+                        </div>
+                        <div class="ammoSubContainer">
+                            <img class="ammoIcon" src="./ico/heavy_ammo_icon.svg">
+                            <div class="ammoPercentageField" id="percentageHeavy">0%</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="availableVendorStatus">
+                    <div id="availableVendorNoteText">Note:</div> Not all seasonal challenges have been added. (priority)
+                </div>
+
+            </div>
+
+            <div id="levellingStatisticsContainer">
 
                 <div class="levellingContainerTitle">Levelling Statistics</div>
                 <div id="currentSeasonNameField">Season of Plunder</div>
@@ -302,9 +428,11 @@
                         <img id="brightEngramEngramImageRight" src="images/engram_outline.png">
                     </div>
 
-
                 </div>
+
             </div>
+            <!-- [ CONTAINERS FOR EACH VIEW (BOUNTIES, SCHALLS AND STATISITCS) ] -->
+
         </div>
     </div>
 
@@ -358,7 +486,7 @@
             <form action="#">
                 <select name="Views" id="defaultViewDropdown">
                   <option value="pursuitsContainer">Bounties</option>
-                  <option value="synergyContainer">Synergy</option>
+                  <option value="seasonalChallengesContainer">Seasonal Challenges</option>
                 </select>
             </form>
             <div class="settingText" id="sliderNoticeText">This is the the display that is going to be shown when you load/refresh.</div>

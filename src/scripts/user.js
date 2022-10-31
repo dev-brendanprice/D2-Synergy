@@ -26,7 +26,8 @@ import {
     AddNumberToElementInner,
     CreateFilters,
     CacheReturnItem,
-    parsePropertyNameIntoWord } from './utils/ModuleScript.js';
+    parsePropertyNameIntoWord,
+    ReturnAllSeasonChallenges } from './utils/ModuleScript.js';
 import {
     itemTypeKeys,
     vendorKeys,
@@ -57,29 +58,41 @@ document.getElementById('navBarLogoutContainer').addEventListener('click', () =>
     Logout();
 });
 
-// Utils
+// Utilities
 const urlParams = new URLSearchParams(window.location.search),
     sessionStorage = window.sessionStorage,
     localStorage = window.localStorage,
-    log = console.log.bind(console);
+    log = console.log.bind(console),
+    startTime = new Date();
 
-let startTime = new Date(),
-    sessionCache = {};
+
+let cachedDataInCurrentTab = {};
 
 
 // Defintion objects
 export let progressionDefinitions = {},
+    presentationNodeDefinitions = {},
     seasonPassDefinitions = {},
     objectiveDefinitions = {},
     destinyUserProfile = {},
     seasonDefinitions = {},
+    recordDefinitions = {},
     vendorDefinitions = {},
     itemDefinitions = {};
 
-// User info variables
+// User data
 let destinyMembershipId,
+    characterRecords,
     membershipType,
     characters;
+
+// Profile data
+let CurrentSeasonHash,
+    ProfileProgressions,
+    seasonPassInfo = {},
+    seasonPassLevel = 0,
+    prestigeProgressionSeasonInfo,
+    seasonProgressionInfo = {};
 
 // Object holds all bounties, by vendor, that are to be excluded from permutations
 export let excludedBountiesByVendor = {};
@@ -109,7 +122,6 @@ export var eventFilters = {
     }
 };
 
-
 // Authorization information
 export const homeUrl = import.meta.env.HOME_URL,
              axiosHeaders = {
@@ -122,6 +134,7 @@ export const homeUrl = import.meta.env.HOME_URL,
 axios.defaults.headers.common = {
     "X-API-Key": `${axiosHeaders.ApiKey}`
 };
+
 
 // Assign element fields for user settings
 export let itemDisplaySize;
@@ -148,6 +161,7 @@ bountyImage.style.width = `${itemDisplaySize}px`;
 document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
 document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
 
+
 // Push cache results for defaultContenteView to variables
 await CacheReturnItem('defaultContentView')
     .then((result) => {
@@ -159,6 +173,14 @@ await CacheReturnItem('defaultContentView')
 
             // Set selection for the defaultContentView dropdown menu
             document.getElementById('defaultViewDropdown').value = `${result}`;
+
+            // Show the left hand statistics container
+            if (result === 'pursuitsContainer') {
+                document.getElementById('statsContainer').style.display = 'block';
+            }
+            else {
+                document.getElementById('seasonalStatsContainer').style.display = 'block';
+            };
         }
         else {
 
@@ -168,6 +190,9 @@ await CacheReturnItem('defaultContentView')
 
             // Set default selection for the defaultContentView dropdown menu
             document.getElementById('defaultViewDropdown').value = 'pursuitsContainer';
+
+            // Show the left hand statistics container
+            document.getElementById('statsContainer').style.display = 'block';
         };
     })
     .catch((error) => {
@@ -355,10 +380,14 @@ export async function CheckComponents () {
 };
 
 
-// Fetch basic bungie user details
+// Fetch bungie user data
 export async function FetchBungieUserDetails() {
 
     log('FetchBungieUserDetails START');
+
+    // Change load content
+    document.getElementById('loadingText').innerHTML = 'Fetching Profile Data';
+    await CheckComponents();
 
     let components = JSON.parse(localStorage.getItem('components')),
         axiosConfig = {
@@ -370,35 +399,62 @@ export async function FetchBungieUserDetails() {
         log(JSON.parse(localStorage.getItem('accessToken')).value);
         
 
-    // Change load content
-    document.getElementById('loadingText').innerHTML = 'Fetching User Details';
-
     // Variables to check/store
     membershipType = sessionStorage.getItem('membershipType'),
     destinyMembershipId = JSON.parse(sessionStorage.getItem('destinyMembershipId')),
     destinyUserProfile = JSON.parse(sessionStorage.getItem('destinyUserProfile'));
 
-    // If user has no cache
-    if (!membershipType || !destinyMembershipId || !destinyUserProfile) {
+    // Compare each variable that represents cached data
+    if (!membershipType || !membershipType) {
 
-        // Get all linked profiles from users account(s) and get the primary one - even if primaryMembersipId does not exist
-        let LinkedProfiles = await axios.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${components['membership_id']}/LinkedProfiles/?getAllMemberships=true`, axiosConfig);
+        // GetBungieNetUserById (uses 254 as membershipType)
+        await axios.get(`https://www.bungie.net/Platform/Destiny2/254/Profile/${components.membership_id}/LinkedProfiles/?getAllMemberships=true`, axiosConfig)
+            .then(response => {
 
-        destinyMembershipId = LinkedProfiles.data.Response.profiles[0].membershipId;
-        membershipType = LinkedProfiles.data.Response.profiles[0].membershipType;
+                // Store in memory again
+                destinyMembershipId = response.data.Response.profiles[0].membershipId;
+                membershipType = response.data.Response.profiles[0].membershipType;
 
-        // Fetch user profile
-        let userProfile = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=200`, axiosConfig);
-
-        destinyUserProfile = userProfile.data.Response;
-
-        // Cache the response
-        sessionStorage.setItem('membershipType', membershipType);
-        sessionStorage.setItem('destinyMembershipId', JSON.stringify(destinyMembershipId));
-        sessionStorage.setItem('destinyUserProfile', JSON.stringify(destinyUserProfile));
+                // Cache in sessionStorage
+                sessionStorage.setItem('membershipType', membershipType);
+                sessionStorage.setItem('destinyMembershipId', JSON.stringify(destinyMembershipId));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
-    // Load from cache
+    // Check if destinyUserProfile is cached
+    // If it is not cached then this means it is the first time the user has accessed this page
+    // Otherwise, it is a refresh and we go to the else
+    if (!destinyUserProfile) {
+
+        // GetProfile (uses membershipType & destinyMembershipId)
+        await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900`, axiosConfig)
+        .then(response => {
+                
+                // Store in memory again
+                log(response)
+                destinyUserProfile = response.data.Response;
+
+                // Parse data from destinyUserProfile
+                CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
+                ProfileProgressions = destinyUserProfile.profileProgression.data;
+
+                // Cache in sessionStorage
+                sessionStorage.setItem('destinyUserProfile', JSON.stringify(destinyUserProfile));
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+    else {
+        // Parse data from destinyUserProfile
+        CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
+        ProfileProgressions = destinyUserProfile.profileProgression.data;
+    };
+
+    // Load characters from cache
     if (membershipType && destinyMembershipId && destinyUserProfile) {
 
         // Loop over characters
@@ -413,7 +469,7 @@ export async function FetchBungieUserDetails() {
         // Change DOM content
         document.getElementById('charactersContainer').style.display = 'inline-block';
         document.getElementById('categories').style.display = 'block';
-        document.getElementById('statsContainer').style.display = 'block';
+        // document.getElementById('statsContainer').style.display = 'block';
     };
     log('FetchBungieUserDetails END');
 };
@@ -421,32 +477,24 @@ export async function FetchBungieUserDetails() {
 
 // Load character from specific index
 // @int {classType}, @boolean {isRefresh}
-export async function LoadCharacter(classType, isRefresh) {
-
-    log('LoadPrimaryCharacter START');
+export async function LoadCharacter(classType) {
 
     if (!characterLoadToggled) {
 
+        log('LoadPrimaryCharacter START');
+
         // Configure load sequence
         document.getElementById('loadingText').innerHTML = 'Indexing Character';
-        await CheckComponents();
 
         // Toggle character load
         characterLoadToggled = true;
         CacheAuditItem('lastChar', classType);
 
         // Globals in this scope
-        let membershipType = sessionStorage.getItem('membershipType'), 
-            CharacterProgressions,
+        let CharacterProgressions,
             CharacterInventories,
             CharacterObjectives,
-            ProfileProgressions,
-            seasonPassInfo = {},
-            seasonPassLevel = 0,
             CharacterEquipment,
-            prestigeProgressionSeasonInfo,
-            CurrentSeasonHash,
-            seasonProgressionInfo = {},
             characterId,
             ItemSockets;
 
@@ -458,6 +506,16 @@ export async function LoadCharacter(classType, isRefresh) {
         document.getElementById('bountyItems').innerHTML = '';
         document.getElementById('overlays').innerHTML = '';
         document.getElementById('filters').innerHTML = '';
+        document.getElementById('ctgDestination').innerHTML = 'There are no (specific) relations for destinations.';
+        document.getElementById('ctgActivityMode').innerHTML = 'There are no (specific) relations for activities.';
+        document.getElementById('ctgItemCategory').innerHTML = 'There are no (specific) relations for weapon types.';
+        document.getElementById('ctgKillType').innerHTML = 'There are no (specific) relations for kill types.';
+
+        // Set all percentage based fields back to zero
+        let classes = document.getElementsByClassName('propertyPercentageField');
+        for (const item of classes) {
+            item.innerHTML = '0%';
+        };
 
         // Filter out other classes that are not classType
         for (let char in characters) {
@@ -480,44 +538,19 @@ export async function LoadCharacter(classType, isRefresh) {
             };
         };
 
-        // OAuth header guarantees a response
-        if (!sessionCache.resCharacterInventories || isRefresh) {
+        // Get character-specific data from destinyUserProfile cache
+        CharacterProgressions = destinyUserProfile.characterProgressions.data[characterId].progressions;
+        CharacterEquipment = destinyUserProfile.characterEquipment.data[characterId].items;
+        CharacterObjectives = destinyUserProfile.itemComponents.objectives.data;
+        CharacterInventories = destinyUserProfile.characterInventories.data;
+        CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
+        characterRecords = destinyUserProfile.characterRecords.data[characterId].records;
+        ItemSockets = destinyUserProfile.itemComponents.sockets.data;
 
-            // Set request information
-            let axiosConfig = {
-                headers: {
-                    Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,
-                    "X-API-Key": `${axiosHeaders.ApiKey}`
-                }
-            };
-            log('loadCharacter first request');
-            let resCharacterInventories = await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,201,202,205,300,301,305`, axiosConfig);
-            let charInvRoot = resCharacterInventories.data.Response;
-
-            CharacterInventories = charInvRoot.characterInventories.data;
-            CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
-            CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
-            CharacterObjectives = charInvRoot.itemComponents.objectives.data;
-            CharacterEquipment = charInvRoot.characterEquipment.data[characterId].items;
-            ProfileProgressions = charInvRoot.profileProgression.data;
-            ItemSockets = charInvRoot.itemComponents.sockets.data;
-            sessionCache.resCharacterInventories = resCharacterInventories;
-        }
-        else if (sessionCache.resCharacterInventories) {
-
-            let charInvRoot = sessionCache.resCharacterInventories.data.Response;
-
-            CharacterInventories = charInvRoot.characterInventories.data;
-            CurrentSeasonHash = charInvRoot.profile.data.currentSeasonHash;
-            CharacterProgressions = charInvRoot.characterProgressions.data[characterId].progressions;
-            CharacterObjectives = charInvRoot.itemComponents.objectives.data;
-            CharacterEquipment = charInvRoot.characterEquipment.data[characterId].items;
-            ProfileProgressions = charInvRoot.profileProgression.data;
-            ItemSockets = charInvRoot.itemComponents.sockets.data;
-        };
 
         // Iterate over CharacterInventories[characterId].items
-        let charInventory = CharacterInventories[characterId].items, amountOfBounties = 0;
+        let charInventory = CharacterInventories[characterId].items, 
+            amountOfBounties = 0;
 
         // Make array with specified groups
         let bountyArr = {};
@@ -591,6 +624,7 @@ export async function LoadCharacter(classType, isRefresh) {
         });
 
         // Get season pass info
+        log(seasonDefinitions[CurrentSeasonHash], CurrentSeasonHash)
         seasonProgressionInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
         seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
         prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
@@ -604,7 +638,6 @@ export async function LoadCharacter(classType, isRefresh) {
             if (!rewardsTrack[v.rewardedAtProgressionLevel]) {
                 rewardsTrack[v.rewardedAtProgressionLevel] = [];
             };
-
             rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
         });
 
@@ -626,7 +659,6 @@ export async function LoadCharacter(classType, isRefresh) {
         // Bright Engram innerHTML changes
         // AddNumberToElementInner('totalBrightEngramsEarned', InsertSeperators(seasonProgressionStats[1]));
         // AddNumberToElementInner('XpToNextEngram', InsertSeperators(seasonProgressionStats[0]));
-
 
         // Add all the modifiers together, append 1 and times that value by the base total XP
         const totalXpBonusPercent = ((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) / 100) + 1; // Format to 1.x
@@ -695,7 +727,6 @@ export async function LoadCharacter(classType, isRefresh) {
                 document.getElementById('artifactStatsSecondContainer').style.display = 'none';
             };
 
-
             AddNumberToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
             AddNumberToElementInner('artifactXpToNextPowerBonus', InsertSeperators(artifact.powerBonusProgression.nextLevelAt - artifact.powerBonusProgression.progressToNextLevel));
         }
@@ -759,11 +790,196 @@ export async function LoadCharacter(classType, isRefresh) {
         StopLoad();
 
         // Toggle elements
-        // currentMainContentView.style.display = 'block';
         contentView.currentView.style.display = 'block';
         document.getElementById('contentDisplay').style.display = 'inline-block';
     };
     log('LoadPrimaryCharacter END');
+};
+
+
+// Load seasonal challenges, sort via completion amount, and push to HTML
+export async function LoadSeasonalChallenges() {
+
+    // Clear HTML fields
+    document.getElementById('outstandingChallengesAmountField').innerHTML = '';
+    document.getElementById('completedChallengesAmountField').innerHTML = '';
+    document.getElementById('challengesAmountField').innerHTML = '';
+
+    // Get all seasonal challenges
+    let allSeasonalChallenges = await ReturnAllSeasonChallenges(2809059433, seasonDefinitions, recordDefinitions, presentationNodeDefinitions);
+
+    // Parse seasonal challenges into corresponding objects
+    let completedChallenges = {},
+        notCompletedChallenges = {},
+        allSeasonalChallengesAndTheirDivs = {};
+
+    for (const recordHash in characterRecords) {
+
+        const objectives = characterRecords[recordHash].objectives;
+        if (objectives && objectives.length > 0) {
+
+            if (objectives.every((objective) => objective.complete)) {
+                completedChallenges[recordHash] = {};
+                completedChallenges[recordHash].displayProperties = recordDefinitions[recordHash].displayProperties;
+                completedChallenges[recordHash].objectives = objectives;
+            }
+            else {
+                notCompletedChallenges[recordHash] = {};
+                notCompletedChallenges[recordHash].displayProperties = recordDefinitions[recordHash].displayProperties;
+                notCompletedChallenges[recordHash].objectives = objectives;
+            };
+        };
+    };
+
+    // Create HTML elements for all challenges
+    for (const challengeHash in allSeasonalChallenges) {
+
+        // Create HTML element for challenge
+        let challengeContainer = document.createElement('div'),
+            challengeIcon = document.createElement('img'),
+            challengeName = document.createElement('div'),
+            challengeBreakline = document.createElement('hr'),
+            challengeDescription = document.createElement('div'),
+            challengeProgressContainer = document.createElement('div'),
+            challengeProgressTrack = document.createElement('div'),
+            challengeProgressPercentBar = document.createElement('div');
+
+        // Set attributes for challenge container
+        challengeContainer.className = 'challengeContainer';
+        challengeContainer.id = `${challengeHash}`;
+        challengeIcon.className = 'challengeIcon';
+        challengeName.className = 'challengeName';
+        challengeBreakline.className = 'challengeBreakline';
+        challengeDescription.className = 'challengeDescription';
+        challengeProgressContainer.className = 'challengeProgressContainer';
+        challengeProgressTrack.className = 'challengeProgressTrack';
+        challengeProgressPercentBar.className = 'challengeProgressPercentBar';
+
+        // Set attributes for content
+        challengeDescription.innerHTML = allSeasonalChallenges[challengeHash].displayProperties.description;
+        challengeName.innerHTML = allSeasonalChallenges[challengeHash].displayProperties.name;
+        challengeIcon.src = `https://www.bungie.net${allSeasonalChallenges[challengeHash].displayProperties.icon}`;
+        challengeContainer.style.userSelect = 'none';
+
+        // Check if challenge is completed
+        if (completedChallenges[challengeHash]) {
+            challengeContainer.style.border = '1px solid #b39a36';
+        };
+
+        // Append all the content together
+        challengeProgressContainer.appendChild(challengeProgressTrack);
+        challengeProgressContainer.appendChild(challengeProgressPercentBar);
+        challengeContainer.appendChild(challengeIcon);
+        challengeContainer.appendChild(challengeName);
+        challengeContainer.appendChild(challengeBreakline);
+        challengeContainer.appendChild(challengeDescription);
+        challengeContainer.appendChild(challengeProgressContainer);
+
+        // Store the challenge and its div
+        allSeasonalChallengesAndTheirDivs[challengeHash] = {};
+        allSeasonalChallengesAndTheirDivs[challengeHash].container = challengeContainer;
+        allSeasonalChallengesAndTheirDivs[challengeHash].challenge = allSeasonalChallenges[challengeHash];
+
+        // Append objectives to the challenge
+        allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives = [];
+
+        if (notCompletedChallenges[challengeHash] || completedChallenges[challengeHash]) {
+
+            let challengeObjectives;
+
+            // Parse non-completed objectives
+            if (Object.keys(notCompletedChallenges).includes(challengeHash)) {
+
+                challengeObjectives = notCompletedChallenges[challengeHash].objectives;
+                for (const objective in challengeObjectives) {
+                    allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives.push(notCompletedChallenges[challengeHash].objectives[objective]);
+                };
+            };
+
+            // Parse completed objectives
+            if (Object.keys(completedChallenges).includes(challengeHash)) {
+
+                challengeObjectives = completedChallenges[challengeHash].objectives;
+                for (const objective in challengeObjectives) {
+                    allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives.push(completedChallenges[challengeHash].objectives[objective]);
+                };
+            };
+        };
+
+        // Check if the challenge is completed, set isComplete to true in guard statement, otherwise false by default
+        // This is to make it easier to check if the challenge is complete, as opposed to comparing with completedChallenges
+        allSeasonalChallengesAndTheirDivs[challengeHash].challenge.isComplete = false;
+        if (completedChallenges[challengeHash]) {
+            allSeasonalChallengesAndTheirDivs[challengeHash].challenge.isComplete = true;
+        };
+
+        // Sort challenge completion progress as a percentage of the total completion value
+        let challengeObjectiveProgressTotal = 0,
+            challengeObjectiveCompletionTotal = 0,
+            challengeObjectives = allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives;
+
+        for (const objective of challengeObjectives) {
+            challengeObjectiveProgressTotal += objective.progress;
+            challengeObjectiveCompletionTotal += objective.completionValue;
+        };
+
+        // Calculate progress as a percentage, if objective is "0/1" then it is a boolean, 
+        // so set progress to 0% (if not complete) or 100% (if complete)
+        allSeasonalChallengesAndTheirDivs[challengeHash].challenge.completionPercentage = (challengeObjectiveProgressTotal / challengeObjectiveCompletionTotal) * 100;
+
+        // Change width of challengeProgressPercentBar based on completion percentage
+        if (allSeasonalChallengesAndTheirDivs[challengeHash].challenge.completionPercentage >= 100) {
+            challengeProgressPercentBar.style.width = '100%';
+        }
+        else {
+            challengeProgressPercentBar.style.width = `${allSeasonalChallengesAndTheirDivs[challengeHash].challenge.completionPercentage}%`;
+        };
+    };
+
+    // Sort challenges by completion percentage, in ascending order
+    let sortedChallenges = Object.values(allSeasonalChallengesAndTheirDivs).sort((a, b) => a.challenge.completionPercentage - b.challenge.completionPercentage);
+    log(Object.entries(sortedChallenges));
+
+    // Slice the array of challenges into chunks of 6
+    let chunkedChallenges = [];
+    for (let i=0; i<Object.keys(sortedChallenges).length; i+=6) {
+        chunkedChallenges.push(sortedChallenges.slice(i, i+6));
+    };
+
+    // Create HTML elements for each chunk of challenges
+    for (let i=0; i<chunkedChallenges.length; i++) {
+        
+        // Create container thath olds the current chunk of 6 challenges
+        let chunkContainer = document.createElement('div');
+        chunkContainer.className = 'chunkPage';
+        chunkContainer.id = `challengeChunk${i}`;
+        
+        // If it's the first iteration then, show the container, otherwise hide it
+        if (i === 0) {
+            chunkContainer.style.display = 'grid';
+        }
+        else {
+            chunkContainer.style.display = 'none';
+        };
+
+        // Append each challenge, from the chunk, to the chunk container
+        for (const chunk of chunkedChallenges[i]) {
+            chunkContainer.appendChild(chunk.container);
+        };
+
+        // Append the chunk container to seasonalChallengeItems
+        document.getElementById('seasonalChallengeItems').appendChild(chunkContainer);
+    };
+
+    // Append challenges to the DOM
+    // for (const challenge of sortedChallenges) {
+    //     document.getElementById('seasonalChallengeItems').appendChild(challenge.container);
+    // };
+
+    // Push HTML fields
+    document.getElementById('outstandingChallengesAmountField').innerHTML = `${Object.keys(notCompletedChallenges).length}`;
+    document.getElementById('completedChallengesAmountField').innerHTML = `${Object.keys(completedChallenges).length}`;
+    document.getElementById('challengesAmountField').innerHTML = `${Object.keys(allSeasonalChallenges).length}`;
 };
 
 
@@ -951,9 +1167,14 @@ export async function main(isPassiveReload) {
     objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
     seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
     itemDefinitions = await ReturnEntry('DestinyInventoryItemDefinition');
+    recordDefinitions = await ReturnEntry('DestinyRecordDefinition');
+    presentationNodeDefinitions = await ReturnEntry('DestinyPresentationNodeDefinition');
 
     // Load first char on profile/last loaded char
     await LoadPrimaryCharacter(characters);
+
+    // Load seasonal challenges
+    await LoadSeasonalChallenges();
 
     // Check for passive reload
     if (isPassiveReload) {

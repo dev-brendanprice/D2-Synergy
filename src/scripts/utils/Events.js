@@ -80,9 +80,23 @@ export async function AddEventListeners() {
     // Click event for "Bounties" side button
     document.getElementById('cgBounties').addEventListener('click', () => {
 
-        document.getElementById('synergyContainer').style.display = 'none';
+        document.getElementById('seasonalChallengesContainer').style.display = 'none';
         document.getElementById('pursuitsContainer').style.display = 'block';
-        contentView.UpdateView(document.getElementById('pursuitsContainer'));
+        // contentView.UpdateView(document.getElementById('pursuitsContainer'));
+
+        document.getElementById('seasonalStatsContainer').style.display = 'none';
+        document.getElementById('statsContainer').style.display = 'block';
+    });
+
+    // Click event for "Seasonal Challenges" side button
+    document.getElementById('cgSeasonalChalls').addEventListener('click', () => {
+
+        document.getElementById('pursuitsContainer').style.display = 'none';
+        document.getElementById('seasonalChallengesContainer').style.display = 'block';
+        // contentView.UpdateView(document.getElementById('seasonalChallengesContainer'));
+
+        document.getElementById('statsContainer').style.display = 'none';
+        document.getElementById('seasonalStatsContainer').style.display = 'block';
     });
 
     // Toggle item filters button(s) (reverse container style)
@@ -121,11 +135,9 @@ export async function AddEventListeners() {
     document.getElementById('checkboxRefreshWhenFocused').addEventListener('change', function () {
         
         if (this.checked) {
-            
             CacheAuditItem('isRefreshOnFocusToggled', true);
         }
         else {
-
             CacheAuditItem('isRefreshOnFocusToggled', false);
         };
     });
@@ -238,6 +250,34 @@ export async function AddEventListeners() {
     document.getElementById('availableVendorPopupCanvas').addEventListener('click', () => {
         document.getElementById('availableVendorPopupCanvas').style.display = 'none';
         document.getElementById('availableVendorPopup').style.display = 'none';
+    });
+    
+
+    // Add listener for next arrow to show previous chunk of seasonal challenges
+    // Add listener for next arrow to show next chunk of seasonal challenges
+    let currentlyShowingChunkIndex = 0;
+
+    document.getElementById('nextSeasonalChallengePageArrow').addEventListener('click', () => {
+
+        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
+        if (currentlyShowingChunkIndex === 13) {
+            currentlyShowingChunkIndex = 0;
+        }
+        else {
+            currentlyShowingChunkIndex++;
+        };
+        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
+    });
+    document.getElementById('previousSeasonalChallengePageArrow').addEventListener('click', () => {
+
+        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
+        if (currentlyShowingChunkIndex === 0) {
+            currentlyShowingChunkIndex = 13;
+        }
+        else {
+            currentlyShowingChunkIndex--;
+        };
+        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
     });
 
     log('AddEventListeners END');
