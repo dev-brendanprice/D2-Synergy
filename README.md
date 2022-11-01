@@ -1,4 +1,4 @@
-# D2 Synergy - 01/11/2022
+# D2 Synergy - Soon™
 
 [![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)
 [![API](https://img.shields.io/badge/API-Bungie.net-blue)](https://bungie-net.github.io/multi/index.html)
