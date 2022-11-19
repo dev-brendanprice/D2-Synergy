@@ -275,6 +275,7 @@ export const ActivityMode = [
     'Showdown', //25
     'EmpireHunt', //26
     'Expedition', //27
+    'KetchCrash', //28
 ];
 
 // Hashes for damage type
