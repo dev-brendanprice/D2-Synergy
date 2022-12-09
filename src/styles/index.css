@@ -4,6 +4,10 @@
  * Style for the landing page of the website
  */
 
+body {
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
 #indexMainContainer {
     margin: 0 auto;
     margin-top: 60px;
@@ -29,7 +33,6 @@
     background-color: rgba(255, 69, 69, 0.787);
     border-radius: 3px;
     color: white;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
 
 #websiteAlphaNotice {
@@ -44,7 +47,6 @@
     background-color: rgba(255, 143, 15, 0.681);
     border-radius: 3px;
     color: white;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
 
 #websiteNotice {
@@ -59,7 +61,6 @@
     background-color: rgba(255, 69, 69, 0.787);
     border-radius: 3px;
     color: white;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
 
 #errorHeading {
@@ -81,19 +82,19 @@
 #heading {
     margin-top: 10px;
     color: white;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 25px;
     font-weight: 600;
+    letter-spacing: 1px;
 }
 
 #subText {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 35px;
+    padding-right: 35px;
     color: white;
-    justify-content: end;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 15px;
-    font-weight: 400;
+    letter-spacing: 0.25px;
     text-align: center;
 }
 
@@ -106,7 +107,6 @@
 	width: auto;
     color: rgb(34, 34, 34);
     background-color: #e44749;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 	font-weight: 600;
     font-size: 15px;
 	border: 0px solid black;

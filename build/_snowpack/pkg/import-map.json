@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "axios": "./axios.js",
+    "idb-keyval": "./idb-keyval.js"
+  }
+}

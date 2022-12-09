@@ -242,7 +242,7 @@ export const Destination = [
     'Moon', //4
     'Europa', //5
     'Cosmodrome', //6
-    'Throneworld', //7
+    'Throne World', //7
 ];
 
 // Hashes for activity modes
@@ -266,7 +266,7 @@ export const ActivityMode = [
     'Story', //16
     'Trials', //17
     'Explore', //18
-    'DofE', //19 - Dares of Eternity
+    'DaresOfEternity', //19 - Dares of Eternity
     'Raid', //20
     'Clash', //21
     'Momentum', //22
@@ -276,9 +276,11 @@ export const ActivityMode = [
     'EmpireHunt', //26
     'Expedition', //27
     'KetchCrash', //28
+    'HeistBattleground', //29
+    'Vanguard', //30
 ];
 
-// Hashes for damage type
+// Damage types
 export const DamageType = [
     'Solar', //0
     'Arc', //1
@@ -287,7 +289,7 @@ export const DamageType = [
     'Stasis', //4
 ];
 
-// Strings for weapon type
+// Weapon types
 export const ItemCategory = [
     'AutoRifle', //0
     'ScoutRifle', //1
@@ -308,33 +310,94 @@ export const ItemCategory = [
     'Bow', //16
 ];
 
-// Hashes for weapon ammuniation type
+// Ammunition types
 export const AmmoType = [
     'PrimaryAmmo', //0
     'SpecialAmmo', //1
     'HeavyAmmo', //2
 ];
 
-// Strings for kill type
+// Kill types
 export const KillType = [
     'Melee', //0
     'Super', //1
     'Grenade', //2
-    'Finisher', //3
+    'Finishers', //3
     'Precision', //4
     'ClassAbility', //5
     'CloseRange', //6
-    'RapidKills', //7
+    'Rapidly', //7
     'NoReload', //8
-    'GuardianKills', //9
-    'InASingleLife' //10
+    'Guardian', //10
+    'InASingleLife', //11
+    'LongRange', //12
+    'Abilities', //13
 ];
 
+// Enemy types
+export const EnemyType = [
+    'Vex', //0
+    'Fallen', //1
+    'Hive', //2
+    'Taken', //3
+    'Cabal', //4
+    'Scorn', //5
+];
 
-// Race type signifer ??
-// "As a fireteam" signifier ??
-// "With clan" signifier ??
+// Enemy Modifiers
+export const EnemyModifiers = [
+    'Champions', //0
+    'Nightmares', //1
+];
 
-// Make a bucket system to easily apply properties to a selection of bounties all at once
+// Seasonal Categories via Name
+export const SeasonalCategory = [
+    'SeasonOfTheSeraph', //0
+    'SeasonOfPlunder', //1
+    'SeasonOfTheHaunted', //2
+];
 
-// Weight bounties with bonus progress modifiers (Gaurdians are worth more etc)
+// Location Specifics
+export const LocationSpecifics = [
+    'AnchorOfLight', //0
+    'ArchersLine', //1
+    'Hellmouth', //2
+    "Sorrow's Harbor", //3
+    'Sancutary', //4
+    'Divilian Mists', //5
+    'The Strand', //6
+    'Rheasilvia', //7
+    'Trostland', //8
+    'The Sludge', //9
+    'The Gulch', //10
+    'Outskirts', //11
+    'Winding Cove', //12
+    'Firebase Hades', //13
+    'Sunken Isles', //14
+    'Quagmire', //15
+    'Floresecent Canal', //16
+    'Miasma', //17
+    'Asterion Abyss', //18
+    'Cadmus Ridge', //19
+    'Eventide Ruins', //20
+    'The Cistern', //21
+    "Artifact's Edge", //22
+    'Glade of Echoes', //23
+    'Exodus Black', //24
+    'The Tangle', //25
+    "Watcher's Grave", //26
+    'Mothyards', //27
+    'The Steppes', //28
+    'Forgotten Shore', //29
+    'Skywatch', //30s
+];
+
+// Descriptor Specifics
+export const DescriptorSpecifics = [
+    'LostSectors', //0
+    'PowerfulEnemies', //1
+    'LucentHive', //2
+    'OrbsOfPower', //3
+    'Clanmates', //4
+    'Bosses', //5
+];

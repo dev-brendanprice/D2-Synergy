@@ -1,0 +1,1 @@
+export const version="Alpha v0.1.0",CLIENT_ID="40022",API_KEY="f7857fa32f5f4675bd49d3efb9ab3491",AUTH="NDAwMjI6WEEwYXA0MnlTR29tM1kwLVREMFRuWDFCQjNRU1lmTXdGdjRiTTcwUGd5OA==",HOME_URL="http://localhost:5500/",MODE="production",NODE_ENV="production",SSR=!1;

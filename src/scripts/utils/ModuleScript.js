@@ -1,10 +1,23 @@
-import { itemTypeKeys, VendorHashesByLabel, CurrentlyAddedVendors } from "./SynergyDefinitions.js";
-// import { ReturnEntry } from './utils/ValidateManifest.js';
 import { 
-    LoadCharacter,
+    itemTypeKeys,
+    VendorHashesByLabel, 
+    CurrentlyAddedVendors,
+    vendorKeys,
+    baseYields,
+    petraYields,
+    ActivityMode } from "./SynergyDefinitions.js";
+import {
     itemDisplaySize,
     eventFilters,
-    excludedBountiesByVendor } from "../user.js";
+    charBounties,
+    excludedBountiesByVendor,
+    itemDefinitions,
+    objectiveDefinitions,
+    seasonDefinitions,
+    recordDefinitions,
+    presentationNodeDefinitions,
+    allProgressionProperties } from "../user.js";
+import { LoadCharacter } from './LoadCharacter.js';
 
 const log = console.log.bind(console),
       localStorage = window.localStorage,
@@ -190,12 +203,13 @@ export async function MakeBountyElement(param) {
             };
         });
 
-        // Calculate the nth term for seperating objectives
-        let paddingStepAmount = 40 / (rootIndex.length); // What is 40??
+        // Space out objectives, evenly, if there are more than 1
+        let paddingStepAmount = 40 / (rootIndex.length); // 40 is the max padding-bottom value
         itemPrgCounter.style.paddingBottom = '21px';
         itemPrgDesc.style.paddingBottom = '20px';
 
-        for (let padC = 1; padC < rootIndex.length; padC++) { // Seperate objectives
+        // Space objectives
+        for (let padC = 1; padC < rootIndex.length; padC++) {
 
             let offset = paddingStepAmount * indexCount;
             if (offset !== 0) {
@@ -342,6 +356,10 @@ export function ParseBounties(charInventory, charObjectives, itemDefinitions) {
 
             // Add props (properties) array
             item.props = [];
+
+            // Add item properties
+            item.props = stringMatchProgressionItem(item);
+            log(item.displayProperties.description, item.props);
 
             // Add isComplete property
             let entriesAmount = item.progress.length, 
@@ -512,7 +530,7 @@ export function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields) {
 
 // Return season pass progressional statistics
 // @object {seasonProgressionInfo}, @object {prestigeInfo}, @object {rewardsTrack}, @object {itemDefinitions}
-export async function ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeInfo, rewardsTrack, itemDefinitions) {
+export async function ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeInfo, rewardsTrack) {
 
     const seasonRank = seasonProgressionInfo.level + prestigeInfo.level;
     
@@ -727,10 +745,10 @@ export async function LoadPrimaryCharacter(characters) {
     .then(async (data) => {
         if (!data) {
             CacheAuditItem('lastChar', characters[Object.keys(characters)[0]].classType);
-            await LoadCharacter(characters[Object.keys(characters)[0]].classType);
+            await LoadCharacter(characters[Object.keys(characters)[0]].classType, characters);
         }
         else {
-            await LoadCharacter(data);
+            await LoadCharacter(data, characters);
         };
     });
 
@@ -925,4 +943,593 @@ export function parsePropertyNameIntoWord(propertyName) {
     };
 
     return word;
+};
+
+
+
+// Find permutations of bounties
+// [ DEPRECATED ]
+async function FindBountyPermutations(charBounties) {
+
+    const propertyCategories = {
+        Destination: Destination,
+        ActivityMode: ActivityMode,
+        DamageType: DamageType,
+        ItemCategory: ItemCategory,
+        AmmoType: AmmoType,
+        KillType: KillType
+    };
+
+    var categorized = {
+        Destination: [],
+        ActivityMode: [],
+        DamageType: [],
+        ItemCategory: [],
+        AmmoType: [],
+        KillType: []
+    };
+
+    var highestPropertyInEachCategory = {
+        Destination: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        ActivityMode: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        DamageType: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        ItemCategory: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        AmmoType: {
+            propertyName: '',
+            propertyCount: 0
+        },
+        KillType: {
+            propertyName: '',
+            propertyCount: 0
+        }
+    };
+
+    var permutedPropertiesByCategory = {
+        Destination: {},
+        ActivityMode: {},
+        DamageType: {},
+        ItemCategory: {},
+        AmmoType: {},
+        KillType: {}
+    };
+
+
+    // Determine what category a specified property is in
+    function determineCategory(propertyName) {
+        for (const category in propertyCategories) {
+            if (propertyCategories[category].includes(propertyName)) {
+                return category;
+            };
+        };
+    };
+
+
+    // Sort each property into categories
+    for (const prp in bountyPropertiesCount) {
+        
+        for (const ctg in propertyCategories) {
+
+            // Filter properties by category and find the highest count for each property
+            if (propertyCategories[ctg].includes(prp)) {
+
+                categorized[ctg].push(prp);
+                // log(propertyCategories[ctg], ctg, prp);
+
+                let highestPropertyCategory = highestPropertyInEachCategory[ctg];
+                if (highestPropertyCategory.propertyCount < bountyPropertiesCount[prp]) {
+                    highestPropertyCategory.propertyName = prp;
+                    highestPropertyCategory.propertyCount = bountyPropertiesCount[prp];
+                };
+
+                // Percentage of bounties that have this property
+                permutedPropertiesByCategory[ctg][prp] = Math.round((bountyPropertiesCount[prp] / charBounties.length) * 100);
+            };
+        };
+    };
+
+    // Turn our object into an array so we can sort it
+    log(permutedPropertiesByCategory);
+    let propertyNamesByPercentage = [];
+    for (var ctg in permutedPropertiesByCategory) {
+        for (var prp in permutedPropertiesByCategory[ctg]) {
+            propertyNamesByPercentage.push([prp, permutedPropertiesByCategory[ctg][prp]]);
+        };
+    };
+
+    // Sort the array by the percentage of bounties that have this property in descending order
+    propertyNamesByPercentage.sort((a,b) => b[1] - a[1]);
+    log(permutedPropertiesByCategory);
+
+    // Check if name fields are going to contain anything
+    for (const ctg in permutedPropertiesByCategory) {
+
+        // if there are properties in this category then show add the name field data
+        if (Object.keys(permutedPropertiesByCategory[ctg]).length !== 0) {
+
+            // Field data object
+            let fieldData = {};
+
+            // Clear innerHTML of specified element
+            document.getElementById(`ctg${ctg}`).innerHTML = '';
+            document.getElementById(`ctg${ctg}`).style.fontStyle = 'normal';
+
+            // Push the sorted properties to the DOM
+            for (const keyValueArray of propertyNamesByPercentage) {
+                
+                const percent = keyValueArray[1],
+                      propertyName = keyValueArray[0];
+
+                log(determineCategory(keyValueArray[0]));
+
+                var percentageFieldToChange = document.getElementById(`percentage${propertyName}`);
+                if (percentageFieldToChange) {
+                    percentageFieldToChange.innerHTML = `${percent}%`;
+                };
+
+                // document.getElementById(`ctg${determineCategory(keyValueArray[0])}`).innerHTML += `${propertyName} (${percent}%) `;
+            };
+
+            // Push all the percentages to the HTML
+            for (const ctg in permutedPropertiesByCategory) {
+                log('first');
+                for (const propertyName in permutedPropertiesByCategory[ctg]) {
+                    log('second');
+                    document.getElementById(`ctg${ctg}`).innerHTML += `${propertyName} (${permutedPropertiesByCategory[ctg][propertyName]}%) `;
+                };
+            };
+        };
+    };
+
+    // Push CurrentlyAddedVendors to the popup menu
+    for (const item in CurrentlyAddedVendors) {
+        
+        let newListItem = document.createElement('li');
+
+        newListItem.innerHTML = item;
+        document.getElementById('vendorsList').appendChild(newListItem);
+    };
+};
+
+
+
+// Find percentages between properties of progression items
+export function CountProgressionItemProperties(charBounties, seasonalChallenges, options) {
+
+    // -- options allows user options to be passed in
+    // like: excluding certain properties from the search, or only searching for bounty properties
+
+
+    // Track how many times each property appears in progression items
+    let progressionPropertiesCount = {};
+
+    // Loop over character bounties
+    charBounties.forEach(bounty => {
+        
+        // Loop over bounty properties
+        bounty.props.forEach(prop => {
+            if (allProgressionProperties.includes(prop)) {
+                progressionPropertiesCount[prop] = progressionPropertiesCount[prop] ? progressionPropertiesCount[prop] + 1 : 1;
+            };
+        });
+    });
+
+    // Loop over seasonal challenges
+    seasonalChallenges.forEach(challenge => {
+            
+        // Loop over challenge properties
+        challenge.props.forEach(prop => {
+            if (allProgressionProperties.includes(prop)) {
+                progressionPropertiesCount[prop] = progressionPropertiesCount[prop] ? progressionPropertiesCount[prop] + 1 : 1;
+            };
+        });
+    });
+
+
+    // Convert progressionPropertiesCount values into percentages
+    let progressionPropertiesPercentages = {};
+
+    for (const prop in progressionPropertiesCount) {
+        progressionPropertiesPercentages[prop] = Math.round((progressionPropertiesCount[prop] / (charBounties.length + seasonalChallenges.length)) * 100);
+    };
+
+    // Sort progressionPropertiesPercentages by percentage in descending order
+    progressionPropertiesPercentages.sort((a,b) => b[1] - a[1]);
+    log(progressionPropertiesPercentages);
+};
+
+
+
+// String match progression displayProperties
+// @string {searchString}
+export function stringMatchProgressionItem(progressionItem, options) {
+
+    // Aliases for certain properties
+    let actMode = parsePropertyNameIntoWord(ActivityMode[29]);
+    const propertyAliases = {
+        'Submachine Gun': 'SMG',
+        'Season Of The Seraph': `${actMode}`
+    };
+
+    // Loop through charBounties, seasonalChallenges' displayProperties -- Store items that match a property, and the property itself
+    let progressionDescriptor = progressionItem.displayProperties.description,
+        matchedProperties = [];
+
+    // Match properties to progression items' descriptions
+    allProgressionProperties.forEach(property => {
+
+        // If the description includes the property name, or the property name is an alias of the property
+        // For example, SMG is an alias of Submachine Gun
+        if (progressionDescriptor.toLowerCase().includes(property.toLowerCase()) || progressionDescriptor.includes(propertyAliases[property])) {
+
+            if (propertyAliases[property]) {
+                property = propertyAliases[property];
+            };
+
+            // If the property exists in matchedproperties, as a substring
+            if (!matchedProperties.some(matchedProperty => matchedProperty.includes(property))) {
+                matchedProperties.push(property);
+            };
+        };
+    });
+
+    // Return an array of matched properties
+    return matchedProperties;
+};
+
+
+
+// Function to fetch all progressional items
+export async function GetProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp) {
+
+    // [ -- START OF SEASONAL CHALLENGES -- ]
+    // Clear HTML fields
+    document.getElementById('outstandingChallengesAmountField').innerHTML = '';
+    document.getElementById('completedChallengesAmountField').innerHTML = '';
+    document.getElementById('challengesAmountField').innerHTML = '';
+
+    // Get all seasonal challenges
+    let allSeasonalChallenges = await ReturnAllSeasonChallenges(2809059433, seasonDefinitions, recordDefinitions, presentationNodeDefinitions, null);
+    log('Seasonal Challenges:', allSeasonalChallenges);
+
+    // Parse seasonal challenges into corresponding objects
+    let completedChallenges = {},
+        notCompletedChallenges = {},
+        allSeasonalChallengesAndTheirDivs = {};
+
+    for (const recordHash in characterRecords) {
+
+        const objectives = characterRecords[recordHash].objectives;
+        if (objectives && objectives.length > 0) {
+
+            if (objectives.every((objective) => objective.complete)) {
+                completedChallenges[recordHash] = {};
+                completedChallenges[recordHash].displayProperties = recordDefinitions[recordHash].displayProperties;
+                completedChallenges[recordHash].objectives = objectives;
+            }
+            else {
+                notCompletedChallenges[recordHash] = {};
+                notCompletedChallenges[recordHash].displayProperties = recordDefinitions[recordHash].displayProperties;
+                notCompletedChallenges[recordHash].objectives = objectives;
+            };
+        };
+    };
+
+
+    // Create HTML elements for all challenges
+    for (const challengeHash in allSeasonalChallenges) {
+
+        // Create HTML element for challenge
+        let challengeContainer = document.createElement('div'),
+            challengeIcon = document.createElement('img'),
+            challengeName = document.createElement('div'),
+            challengeBreakline = document.createElement('hr'),
+            challengeDescription = document.createElement('div'),
+            challengeProgressContainer = document.createElement('div'),
+            challengeProgressTrack = document.createElement('div'),
+            challengeProgressPercentBar = document.createElement('div');
+
+        // Set attributes for challenge container
+        challengeContainer.className = 'challengeContainer';
+        challengeContainer.id = `${challengeHash}`;
+        challengeIcon.className = 'challengeIcon';
+        challengeName.className = 'challengeName';
+        challengeBreakline.className = 'challengeBreakline';
+        challengeDescription.className = 'challengeDescription';
+        challengeProgressContainer.className = 'challengeProgressContainer';
+        challengeProgressTrack.className = 'challengeProgressTrack';
+        challengeProgressPercentBar.className = 'challengeProgressPercentBar';
+
+        // Set attributes for content
+        challengeDescription.innerHTML = allSeasonalChallenges[challengeHash].displayProperties.description;
+        challengeName.innerHTML = allSeasonalChallenges[challengeHash].displayProperties.name;
+        challengeIcon.src = `https://www.bungie.net${allSeasonalChallenges[challengeHash].displayProperties.icon}`;
+        challengeContainer.style.userSelect = 'none';
+
+        // Check if challenge is completed
+        if (completedChallenges[challengeHash]) {
+            challengeContainer.style.border = '1px solid #b39a36';
+        };
+
+        // Append all the content together
+        challengeProgressContainer.appendChild(challengeProgressTrack);
+        challengeProgressContainer.appendChild(challengeProgressPercentBar);
+        challengeContainer.appendChild(challengeIcon);
+        challengeContainer.appendChild(challengeName);
+        challengeContainer.appendChild(challengeBreakline);
+        challengeContainer.appendChild(challengeDescription);
+        challengeContainer.appendChild(challengeProgressContainer);
+
+        // Store the challenge and its div
+        allSeasonalChallengesAndTheirDivs[challengeHash] = {};
+        allSeasonalChallengesAndTheirDivs[challengeHash].container = challengeContainer;
+        allSeasonalChallengesAndTheirDivs[challengeHash].challenge = allSeasonalChallenges[challengeHash];
+
+        // Append objectives to the challenge
+        allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives = [];
+
+        if (notCompletedChallenges[challengeHash] || completedChallenges[challengeHash]) {
+
+            let challengeObjectives;
+
+            // Parse non-completed objectives
+            if (Object.keys(notCompletedChallenges).includes(challengeHash)) {
+
+                challengeObjectives = notCompletedChallenges[challengeHash].objectives;
+                for (const objective in challengeObjectives) {
+                    allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives.push(notCompletedChallenges[challengeHash].objectives[objective]);
+                };
+            };
+
+            // Parse completed objectives
+            if (Object.keys(completedChallenges).includes(challengeHash)) {
+
+                challengeObjectives = completedChallenges[challengeHash].objectives;
+                for (const objective in challengeObjectives) {
+                    allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives.push(completedChallenges[challengeHash].objectives[objective]);
+                };
+            };
+        };
+
+        // Check if the challenge is completed, set isComplete to true in guard statement, otherwise false by default
+        // This is to make it easier to check if the challenge is complete, as opposed to comparing with completedChallenges
+        allSeasonalChallengesAndTheirDivs[challengeHash].challenge.isComplete = false;
+        if (completedChallenges[challengeHash]) {
+            allSeasonalChallengesAndTheirDivs[challengeHash].challenge.isComplete = true;
+        };
+
+        // Sort challenge completion progress as a percentage of the total completion value
+        let challengeObjectiveProgressTotal = 0,
+            challengeObjectiveCompletionTotal = 0,
+            challengeObjectives = allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives;
+
+        for (const objective of challengeObjectives) {
+            challengeObjectiveProgressTotal += objective.progress;
+            challengeObjectiveCompletionTotal += objective.completionValue;
+        };
+
+        // Calculate progress as a percentage, if objective is "0/1" then it is a boolean, 
+        // so set progress to 0% (if not complete) or 100% (if complete)
+        allSeasonalChallengesAndTheirDivs[challengeHash].challenge.completionPercentage = (challengeObjectiveProgressTotal / challengeObjectiveCompletionTotal) * 100;
+
+        // Change width of challengeProgressPercentBar based on completion percentage
+        if (allSeasonalChallengesAndTheirDivs[challengeHash].challenge.completionPercentage >= 100) {
+            challengeProgressPercentBar.style.width = '100%';
+        }
+        else {
+            challengeProgressPercentBar.style.width = `${allSeasonalChallengesAndTheirDivs[challengeHash].challenge.completionPercentage}%`;
+        };
+    };
+
+    // Sort challenges by completion percentage, in ascending order
+    let sortedChallenges = Object.values(allSeasonalChallengesAndTheirDivs).sort((a, b) => a.challenge.completionPercentage - b.challenge.completionPercentage);
+    log(Object.entries(sortedChallenges));
+
+    // Slice the array of challenges into chunks of 6
+    let chunkedChallenges = [];
+    for (let i=0; i<Object.keys(sortedChallenges).length; i+=6) {
+        chunkedChallenges.push(sortedChallenges.slice(i, i+6));
+    };
+
+    // Create HTML elements for each chunk of challenges
+    for (let i=0; i<chunkedChallenges.length; i++) {
+        
+        // Create container thath olds the current chunk of 6 challenges
+        let chunkContainer = document.createElement('div');
+        chunkContainer.className = 'chunkPage';
+        chunkContainer.id = `challengeChunk${i}`;
+        
+        // If it's the first iteration then, show the container, otherwise hide it
+        if (i === 0) {
+            chunkContainer.style.display = 'grid';
+        }
+        else {
+            chunkContainer.style.display = 'none';
+        };
+
+        // Append each challenge, from the chunk, to the chunk container
+        for (const chunk of chunkedChallenges[i]) {
+            chunkContainer.appendChild(chunk.container);
+        };
+
+        // Append the chunk container to seasonalChallengeItems
+        document.getElementById('seasonalChallengeItems').appendChild(chunkContainer);
+    };
+
+    // Push HTML fields for challenges header stats
+    document.getElementById('outstandingChallengesAmountField').innerHTML = `${Object.keys(notCompletedChallenges).length}`;
+    document.getElementById('completedChallengesAmountField').innerHTML = `${Object.keys(completedChallenges).length}`;
+    document.getElementById('challengesAmountField').innerHTML = `${Object.keys(allSeasonalChallenges).length}`;
+    // [ -- END OF SEASONAL CHALLENGES -- ]
+
+
+
+    // [ -- START OF BOUNTIES -- ]
+    // Iterate over CharacterInventories[characterId].items
+    let charInventory = CharacterInventories[characterId].items, 
+        amountOfBounties = 0;
+
+    // Make array with specified groups
+    let bountyArr = {};
+    vendorKeys.forEach(key => {
+        bountyArr[key] = [];
+    });
+
+    // Loop over inventory items and emit bounties
+    log('loadCharacter parsing bounties');
+    let parsedBountiesResponse = ParseBounties(charInventory, CharacterObjectives, itemDefinitions, objectiveDefinitions);
+    let characterBounties = parsedBountiesResponse.charBounties;
+    amountOfBounties = parsedBountiesResponse.amountOfBounties;
+    log(amountOfBounties, characterBounties);
+
+    // Translate objective hashes to objective strings
+    Object.keys(characterBounties).forEach(bounty => {
+        
+        let objHashes = characterBounties[bounty].objectives.objectiveHashes;
+        characterBounties[bounty].objectiveDefinitions = [];
+
+        for (let objHash of objHashes) {
+            characterBounties[bounty].objectiveDefinitions.push(objectiveDefinitions[objHash]);
+        };
+    });
+    log(characterBounties);
+
+    // Sort bounties by group (vanguard, gunsmith etc)
+    bountyArr = SortByGroup(characterBounties, bountyArr, vendorKeys);
+
+    // Sort bounties by type (weekly, daily etc)
+    bountyArr = SortByType(bountyArr, SortBountiesByType);
+
+    // Push sorted bounties to the page
+    PushToDOM(bountyArr, amountOfBounties, MakeBountyElement);
+
+    // Get statistics for subheadings
+    let amountOfExpiredBounties = 0, 
+        amountOfCompletedBounties = 0;
+
+    // Count completed and expired bounties
+    for (let bounty of characterBounties) {
+        if (bounty.isComplete) {
+            amountOfCompletedBounties++;
+        }
+        else if (bounty.isExpired) {
+            amountOfExpiredBounties++;
+        };
+    };
+
+    // Calculate XP yield from (active) bounties
+    let totalXpYield = CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields);
+
+    // Push subheading statistics
+    AddNumberToElementInner('expiredBountiesAmountField', amountOfExpiredBounties);
+    AddNumberToElementInner('completedBountiesAmountField', amountOfCompletedBounties);
+
+    // Check if there are no bounties
+    if (amountOfBounties === 0) {
+
+        // Toggle no items tooltip
+        document.getElementById('noItemsTooltip').innerHTML = `You don't have bounties on this character. How dare you. (-(-_(-_-)_-)-)`;
+        document.getElementById('noItemsTooltip').style.display = 'inline-block';
+
+        // Hide filters content
+        document.getElementById('btnHideFilters').style.display = 'none';
+        document.getElementById('filterContentContainer').style.display = 'none';
+
+        // Make potential yeild stats 0 by default
+        AddNumberToElementInner('totalXpField', 0);
+        AddNumberToElementInner('totalSpLevelsField', 0);
+
+        // Change subheading field to show amount of bounties
+        AddNumberToElementInner('bountiesAmountField', 0);
+    }
+    else if (amountOfBounties > 0) {
+
+        // Set default style for toggle button filter and filter(s) container
+        document.getElementById('btnHideFilters').style.display = 'block';
+        document.getElementById('filterContentContainer').style.display = 'none';
+
+        // Hide toggle filters button if there is only one bounty
+        if (amountOfBounties === 1) {
+            document.getElementById('btnHideFilters').style.display = 'none';
+            document.getElementById('filterContentContainer').style.display = 'none';
+        };
+
+        // Change subheading field to show amount of bounties
+        AddNumberToElementInner('bountiesAmountField', `${amountOfBounties}`);
+
+        // Change potential yield stats since there are bounties present
+        AddNumberToElementInner('totalXpField', InsertSeperators(totalXpYield));
+        AddNumberToElementInner('totalSpLevelsField', totalXpYield / 100000);
+    };
+
+    // Load synergyDefinitions and match against bounties, if characterBounties is not empty
+    log(characterBounties.length);
+    // if (characterBounties.length !== 0) {
+    //     await PushProps();
+    //     await CreateFilters(characterBounties, bountyPropertiesCount);
+    // };
+    // [ -- END OF BOUNTIES -- ]
+
+
+
+    // Call function to get progressions for season pass XP and bonus stats
+    const seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack);
+
+    // Season Pass innerHTML changes
+    AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonPassProgressionStats.progressToNextLevel));
+    AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonPassProgressionStats.xpToMaxSeasonPassRank));
+    AddNumberToElementInner('seasonPassFireteamBonus', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
+    AddNumberToElementInner('seasonPassRankLevel', seasonPassProgressionStats.seasonPassLevel);
+    AddNumberToElementInner('seasonPassXpBonus', `${seasonPassProgressionStats.bonusXpValue}%`); // +12 for bonus large xp modifier
+
+    // Pass in stats for the net breakdown section
+    AddNumberToElementInner('sharedWisdomValue', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
+    AddNumberToElementInner('ghostModValue', `${ghostModBonusXp}%`);
+    AddNumberToElementInner('bonusXpValue', `${seasonPassProgressionStats.bonusXpValue}%`);
+
+    // Add all the modifiers together, append 1 and times that value by the base total XP
+    const totalXpBonusPercent = ((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) / 100) + 1; // Format to 1.x
+    AddNumberToElementInner('totalNetXpField', `${InsertSeperators(totalXpYield * totalXpBonusPercent)}`);
+
+    // Check if ghost mods are slotted, turn off checkmark if not
+    if (!ghostModBonusXp) {
+        document.getElementById('ghostModCheckmark').style.display = 'none';
+        document.getElementById('ghostModCross').style.display = 'inline-block';
+    }
+    else {
+        document.getElementById('ghostModCheckmark').style.display = 'inline-block';
+        document.getElementById('ghostModCross').style.display = 'none';
+    };
+
+    // Check if shared wisdom is not equal to 0, turn off checkmark if not
+    if (!seasonPassProgressionStats.sharedWisdomBonusValue) {
+        document.getElementById('sharedWisdomCheckmark').style.display = 'none';
+        document.getElementById('sharedWisdomCross').style.display = 'inline-block';
+    }
+    else {
+        document.getElementById('sharedWisdomCheckmark').style.display = 'inline-block';
+        document.getElementById('sharedWisdomCross').style.display = 'none';
+    };
+
+    // Check if bonus xp is not equal to 0, turn off checkmark if not
+    if (!seasonPassProgressionStats.bonusXpValue) {
+        document.getElementById('bonusXpCheckmark').style.display = 'none';
+        document.getElementById('bonusXpCross').style.display = 'inline-block';
+    }
+    else {
+        document.getElementById('bonusXpCheckmark').style.display = 'inline-block';
+        document.getElementById('bonusXpCross').style.display = 'none';
+    };
+
 };

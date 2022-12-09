@@ -73,3 +73,4 @@ window.addEventListener('DOMContentLoaded', () => {
     // Check for a pre-existing session
     CheckSession();
 });
+

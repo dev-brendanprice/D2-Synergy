@@ -4,17 +4,12 @@
 /.vscode
 /out
 
-# Ignore node modules
-/node_modules
-
-# Project is built using src on webserver
-/build
-
 # Ignore environment variables
 /.env
 
-# This dir updates bounties.json so I can push the new json (it is not required for synergy to run)
+# Is not required for Synergy to run
 /manifestCheck
 
-# Misc
+# Node 
 /package-lock.json
+/node_modules

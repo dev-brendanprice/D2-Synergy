@@ -1,0 +1,1 @@
+import{userStruct as r}from"../user.js";$(document).ready(function(){$.charBounties=t=>{if(t){var u=[];return r.charBounties.forEach(e=>{e.charId===t&&u.push(e)}),u}else return r.charBounties},$.characters=()=>r.characters,$.bin=()=>r.bin,$.propCounts=()=>r.propCounts,$.greyOutDivs=()=>r.greyOutDivs});

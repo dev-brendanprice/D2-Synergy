@@ -4,6 +4,10 @@
  * Style for user.html, does not contain media queries
  */
 
+body {
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
 :root {
     --blurFilterAmount: 3px;
 }
@@ -11,10 +15,6 @@
 #userMainContainer {
     position: absolute;
     margin-top: 60px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
     z-index: 0;
 }
 
@@ -58,6 +58,11 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+.propertySecretIcon {
+    display: none;
+    width: 40px;
+}
+
 #settingsBountyImage {
     width: 55px;
     border: 1px solid gray;
@@ -92,7 +97,6 @@
     margin-top: 12px;
     padding: 5px;
     padding-bottom: 7px;
-    width: 100%;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     border-radius: 5px;
     border: 1px solid rgb(154, 92, 21);
@@ -183,6 +187,10 @@
     font-size: 16px;
 }
 
+#secretIconCheckboxContainer {
+    display: none;
+}
+
 #rangeSliderContainer {
     display: inline-block;
     margin-bottom: 20px;
@@ -248,19 +256,17 @@ h2 {
     padding-bottom: 0px;
     text-transform: uppercase;
     color: white;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 15px;
     font-weight: bold;
     letter-spacing: 0.5px;
 }
 
 #contentDisplay {
-    display: none;
-    margin-top: 3px;
-    margin-left: 30px;
-    float: left;
-    width: 65%;
+    padding-left: 25px;
+    padding-right: 25px;
+    overflow: hidden;
     color: white;
+    /* border: 1px solid red; */
 }
 
 #subTitleContainer {
@@ -273,14 +279,14 @@ h2 {
     color: #e8e6e3;
     font-weight: 600;
     font-size: 20px;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
 }
 
 #displayName {
     color: #e8e6e3;
     font-weight: 600;
     font-size: 28px;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
 }
 
 #entryDataOverlay {
@@ -294,7 +300,7 @@ h2 {
     margin-left: 10px;
     margin-top: 10px;
     color: white;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-size: 20px;
     text-transform: uppercase;
 }
@@ -316,7 +322,7 @@ h2 {
     margin-left: 28px;
     color: white;
     font-weight: bold;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-size: 18px;
     user-select: none;
 }
@@ -326,44 +332,52 @@ h2 {
     color: white;
     font-style: italic;
     font-weight: 0;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-size: 16px;
     letter-spacing: 1px;
 }
 
-#synergyContainer {
-    display: none;
-    margin-top: 13px;
-    margin-left: 28px;
-}
-
-#pursuitsContainer {
-    display: none;
-    margin-top: 13px;
-    margin-left: 28px;
-}
+/* #bountiesContainer {
+    border: 1px solid green;
+} */
 
 #seasonChallengeControlGridContainer {
-    display: grid;
-    grid-template-columns: 3% 94% 3%;
-    gap: 10px;
+    display: inline-flex;
+    width: 100%;
 }
 
 .seasonalChallengePageArrow {
     display: inline-block;
+    padding: 3px;
     padding-top: 8px;
     border: 1px solid rgb(140, 140, 140);
     border-radius: 2px;
     background-color: rgba(60, 60, 60, 0.461);
     user-select: none;
     cursor: pointer;
+    text-align: center;
 }
 
 .seasonalChallengePageArrowImage {
     margin-top: 90px; 
-    margin-left: 5px; 
     width: 20px; 
     filter: invert(100%);
+}
+
+#previousSeasonalChallengeArrow {
+    transform: rotate(90deg);
+}
+
+#nextSeasonalChallengeArrow {
+    transform: rotate(-90deg);
+}
+
+#previousSeasonalChallengePageButton {
+    margin-right: 10px;
+}
+
+#nextSeasonalChallengePageButton {
+    margin-left: 10px;
 }
 
 .chunkPage {
@@ -375,11 +389,10 @@ h2 {
 
 #seasonalChallengesContainer {
     display: none;
-    margin-top: 13px;
-    margin-left: 28px;
 }
 
 .challengeContainer {
+    width: 100%;
     border: 1px solid rgb(140, 140, 140);
     border-radius: 2px;
     background-color:rgba(60, 60, 60, 0.461);
@@ -445,10 +458,9 @@ hr.challengeBreakline {
     z-index: 10;
 }
 
-#levellingStatisticsContainer {
-    margin-top: 10px;
-    margin-left: 28px;
-}
+/* #levellingStatisticsContainer {
+    border: 1px solid green;
+} */
 
 .containerTitle {
     margin-top: -7px;
@@ -497,7 +509,7 @@ hr.challengeBreakline {
     color: rgb(118, 118, 118);
     font-size: 15px;
     font-style: italic;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
 }
 
 #categories {
@@ -510,7 +522,7 @@ hr.challengeBreakline {
     padding-bottom: 7px;
     color: rgb(205, 203, 203);
     letter-spacing: 1px;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     cursor: pointer;
     user-select: none;
     transition: 0.25s;
@@ -534,10 +546,8 @@ hr.challengeBreakline {
 /* char selects */
 
 #sideSelectionBar {
-    margin-top: 15px;
-    margin-left: 15px;
-    width: auto;
     float: left;
+    margin-left: 5px;
 }
 
 #charactersContainer {
@@ -565,7 +575,7 @@ hr.challengeBreakline {
     color: white;
     font-weight: 0;
     letter-spacing: 1.3px;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-size: 18px;
 }
 
@@ -574,7 +584,7 @@ hr.challengeBreakline {
     margin-left: 54px;
     margin-top: 25px;
     color: rgba(255, 234, 0, 0.755);
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-size: 15px;
 }
 
@@ -586,7 +596,6 @@ hr.challengeBreakline {
 }
 
 #statsContainer {
-    display: none;
     margin-top: 50px;
     width: 75%;
 }
@@ -602,7 +611,7 @@ hr.challengeBreakline {
     padding-bottom: 7px;
     text-align: left;
     color: rgb(205, 203, 203);
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -612,7 +621,7 @@ hr.challengeBreakline {
     margin-top: 16px;
     text-align: left;
     color: rgb(205, 203, 203);
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -622,7 +631,6 @@ hr.challengeBreakline {
     margin-left: 8px;
     width: 14px;
     filter: invert(48%) sepia(13%) saturate(3207%);
-    cursor: pointer;
 }
 
 #queryDiv {
@@ -632,7 +640,7 @@ hr.challengeBreakline {
     left: 95px;
     width: 90px;
     color: rgb(205, 203, 203);
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-size: 11px;
     background-color: rgb(49, 49, 49);
     border: 1px solid rgb(88, 88, 88);
@@ -641,7 +649,6 @@ hr.challengeBreakline {
 
 #loadingContentContainer {
     display: none;
-    margin-top: 60px;
     text-align: center;
 }
 
@@ -658,7 +665,7 @@ hr.challengeBreakline {
     padding-top: 3px;
     padding-bottom: 3px;
     color: rgb(205, 203, 203);
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
 }
 
 #netStatsContainer {
@@ -669,7 +676,7 @@ hr.challengeBreakline {
     padding-top: 3px;
     padding-bottom: 3px;
     color: rgb(205, 203, 203);
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
 }
 
 .statsCheckmark {
@@ -745,12 +752,108 @@ hr.challengeBreakline {
     display: inline-block;
 }
 
-/* #synergiesContainer {
+.propertyStatisticContainer {
+    display: table;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0 auto;
+    background-color: rgb(27, 27, 27);
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 5px;
+    justify-content: left;
+    text-align: left;
+}
 
-} */
+.propertyStatisticContainerForDestinations {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0 auto;
+    background-color: rgb(27, 27, 27);
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 5px;
+    justify-content: left;
+    text-align: left;
+}
 
-#synergiesContainer > div {
-    margin-top: 20px;
+.propertyStatisticContainerForDestinations > div {
+    padding-bottom: 5px;
+}
+
+.propertySubContainer {
+    display: inline-block;
+    padding: 5px;
+    margin: 0 auto;
+}
+
+.propertySubContainer2 {
+    display: inline-block;
+    padding: 5px;
+    margin: 0 auto;
+    width: 120px;
+    text-align: center;
+    justify-content: center;
+}
+
+#synergiesContainer {
+    display: flex;
+    margin-top: 15px;
+    height: 100%;
+}
+
+#middleGroup {
+    margin-left: 15px;
+    height: 10%;
+}
+
+#leftGroup {
+    height: 100%;
+}
+
+#rightGroup {
+    margin-left: 15px;
+    width: fit-content;
+    height: 100%;
+}
+
+.propertyTextName {
+    margin-bottom: 5px;
+    font-size: 16px;
+
+}
+
+.weaponTypeContainer {
+    display: inline-block;
+    margin: auto;
+    margin-right: 5px;
+    text-align: center;
+    justify-content: center;
+}
+
+.weaponTypeIcon {
+    display: block;
+    margin-bottom: 5px;
+    width: 50px;
+    filter: invert(100%);
+}
+
+.weaponTypePercentageField {
+    display: block;
+    margin: 0 auto;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: fit-content;
+    background-color: rgb(70, 70, 70);
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 3px;
+
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
 }
 
 .elementalSubContainer {
@@ -768,28 +871,32 @@ hr.challengeBreakline {
 
 .elementalPercentageField {
     display: block;
-    margin: auto;
+    margin: 0 auto;
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 4px;
     padding-right: 4px;
     width: fit-content;
     background-color: rgb(70, 70, 70);
+    border: 1px solid rgb(100, 100, 100);
     border-radius: 3px;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-size: 15px;
     font-variant-numeric: tabular-nums;
 }
 
 .ammoPercentageField {
+    display: block;
+    margin: 0 auto;
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 4px;
     padding-right: 4px;
     width: fit-content;
     background-color: rgb(70, 70, 70);
+    border: 1px solid rgb(100, 100, 100);
     border-radius: 3px;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
     font-size: 15px;
     font-variant-numeric: tabular-nums;
 }
@@ -819,18 +926,19 @@ hr.challengeBreakline {
     padding-top: 7px;
     padding-bottom: 3px;
     color: rgb(205, 203, 203);
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
 }
 
 #levellingStatsDisplay > div {
     padding-top: 7px;
     padding-bottom: 3px;
     color: rgb(205, 203, 203);
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
 }
 
 #statsTableLayoutContainer {
-    margin-top: 20px;
+    display: inline-block;
+    margin-top: 8px;
 }
 #statsTableLayoutContainer > div {
     width: 350px;
@@ -839,7 +947,7 @@ hr.challengeBreakline {
     border: #555 1px solid;
     border-radius: 5px;
     color: white;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+
 }
 
 .containerMetricNumber {
@@ -849,7 +957,7 @@ hr.challengeBreakline {
 
 /* Seasonal artifact statistic container */
 #artifactStats {
-    display: inline-block;
+    /* display: inline-block; */
     text-align: center;
 }
 #artifactStatsBg {
@@ -932,11 +1040,35 @@ hr.challengeBreakline {
     font-style: italic;
 }
 
+#burgerStackIcon {
+    display: none;
+    margin-top: 3px;
+    margin-right: 3px;
+    padding: 5px;
+    width: 30px;
+    float: right;
+    cursor: pointer;
+}
+
+#burgerStackIcon:hover {
+    background-color: rgba(123, 123, 123, 0.42);
+}
+
+#burgerMenuDropdown {
+    /* display: none; */
+    position: absolute;
+    margin-top: 45px;
+    right: 0;
+    width: 100px;
+    height: 150px;
+    background-color: rgb(87, 87, 87);
+}
+
 
 /* Season pass statistic container */
 #seasonPass {
-    display: inline-block;
-    margin-left: 20px;
+    display: block;
+    margin-top: 15px;
     text-align: center;
 }
 #seasonPassBg {

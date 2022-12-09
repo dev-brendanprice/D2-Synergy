@@ -1,15 +1,18 @@
 import { 
-    LoadCharacter,
     charBounties,
-    contentView,
-    main, 
+    MainEntryPoint, 
     eventFilters } from '../user.js';
 import { 
     CacheAuditItem, 
-    CacheReturnItem, 
-    Logout } from './ModuleScript.js';
+    CacheReturnItem } from './ModuleScript.js';
+import { LoadCharacter } from './LoadCharacter.js';
 
+
+// Utilities
 const log = console.log.bind(console);
+
+// Shhh
+var secretCount = 0;
 
 export async function AddEventListeners() {
     log('AddEventListeners START');
@@ -19,6 +22,15 @@ export async function AddEventListeners() {
             LoadCharacter(a);
         });
     };
+
+    // Click on title to show secret setting
+    document.getElementById('navBarTitle').addEventListener('click', () => {
+        secretCount++;
+        if (secretCount >= 5) {
+            document.getElementById('secretIconCheckboxContainer').style.display = 'block';
+            CacheAuditItem('isSecretOn', true);
+        };
+    });
 
     // Hover events for "Current Yield"
     document.getElementById('statsTitleQuery').addEventListener('mousemove', () => {
@@ -80,23 +92,35 @@ export async function AddEventListeners() {
     // Click event for "Bounties" side button
     document.getElementById('cgBounties').addEventListener('click', () => {
 
-        document.getElementById('seasonalChallengesContainer').style.display = 'none';
-        document.getElementById('pursuitsContainer').style.display = 'block';
-        // contentView.UpdateView(document.getElementById('pursuitsContainer'));
+        CacheReturnItem('defaultContentView')
+        .then(result => {
 
-        document.getElementById('seasonalStatsContainer').style.display = 'none';
-        document.getElementById('statsContainer').style.display = 'block';
+            // display: none the current view
+            document.getElementById(result).style.display = 'none';
+
+            // Show the bounties view
+            document.getElementById('bountiesContainer').style.display = 'block';
+
+            // Save the current view to cache
+            CacheAuditItem('defaultContentView', 'bountiesContainer');
+        });
     });
 
     // Click event for "Seasonal Challenges" side button
     document.getElementById('cgSeasonalChalls').addEventListener('click', () => {
 
-        document.getElementById('pursuitsContainer').style.display = 'none';
-        document.getElementById('seasonalChallengesContainer').style.display = 'block';
-        // contentView.UpdateView(document.getElementById('seasonalChallengesContainer'));
+        CacheReturnItem('defaultContentView')
+        .then(result => {
 
-        document.getElementById('statsContainer').style.display = 'none';
-        document.getElementById('seasonalStatsContainer').style.display = 'block';
+            // display: none the current view
+            document.getElementById(result).style.display = 'none';
+
+            // Show the seasonalChallenges view
+            document.getElementById('seasonalChallengesContainer').style.display = 'block';
+
+            // Save the current view to cache
+            CacheAuditItem('defaultContentView', 'seasonalChallengesContainer');
+        });
     });
 
     // Toggle item filters button(s) (reverse container style)
@@ -130,6 +154,22 @@ export async function AddEventListeners() {
         userMainContainer.style.display = 'block';
         settingsContainer.style.display = 'none';
     });
+
+    // -- Mobile navbar buttons --
+    // User clicks settings button on main page
+    document.getElementById('settingsButtonMobile').addEventListener('click', () => {
+
+        userMainContainer.style.display = 'none';
+        settingsContainer.style.display = 'block';
+    });
+
+    // User clicks the back button in settings menu
+    document.getElementById('backButtonContainer').addEventListener('click', () => {
+
+        userMainContainer.style.display = 'block';
+        settingsContainer.style.display = 'none';
+    });
+    
 
     // Settings toggles input listeners
     document.getElementById('checkboxRefreshWhenFocused').addEventListener('change', function () {
@@ -229,9 +269,29 @@ export async function AddEventListeners() {
 
     // Form event for choosing the default content view
     document.getElementById('defaultViewDropdown').addEventListener('change', () => {
+
+        const contentViewsThatINeedToChange = [
+            'bountiesContainer', 
+            'seasonalChallengesContainer'
+        ];
+
+        const selectedValue = document.getElementById('defaultViewDropdown').value;
         
-        let selectedValue = document.getElementById('defaultViewDropdown').value;
+        // Filter my current content views to display: none if they are not selectedValue
+        contentViewsThatINeedToChange
+        .forEach(value => {
+
+            if (value !== selectedValue) {
+                document.getElementById(value).style.display = 'none';
+                return;
+            };
+
+            document.getElementById(value).style.display = 'block';
+        });
+
+        // Save the chosen item to cache and change the current view to the chosen one
         CacheAuditItem('defaultContentView', selectedValue);
+        document.getElementById(selectedValue).style.display = 'block';
     });
 
     // Add listener for "See Here" prompt on the note for available vendors
@@ -257,26 +317,29 @@ export async function AddEventListeners() {
     // Add listener for next arrow to show next chunk of seasonal challenges
     let currentlyShowingChunkIndex = 0;
 
-    document.getElementById('nextSeasonalChallengePageArrow').addEventListener('click', () => {
+    document.getElementById('nextSeasonalChallengePageButton').addEventListener('click', () => {
 
         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
-        if (currentlyShowingChunkIndex === 13) {
+        if (currentlyShowingChunkIndex === 12) {
             currentlyShowingChunkIndex = 0;
         }
         else {
             currentlyShowingChunkIndex++;
         };
+        log(`currentlyShowingChunkIndex: ${currentlyShowingChunkIndex}`);
         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
     });
-    document.getElementById('previousSeasonalChallengePageArrow').addEventListener('click', () => {
+
+    document.getElementById('previousSeasonalChallengePageButton').addEventListener('click', () => {
 
         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
         if (currentlyShowingChunkIndex === 0) {
-            currentlyShowingChunkIndex = 13;
+            currentlyShowingChunkIndex = 12;
         }
         else {
             currentlyShowingChunkIndex--;
         };
+        log(`currentlyShowingChunkIndex: ${currentlyShowingChunkIndex}`);
         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
     });
 

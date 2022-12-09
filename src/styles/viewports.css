@@ -63,7 +63,7 @@
         font-size: 18px;
     }
 
-    #pursuitsContainer {
+    #bountiesContainer {
         margin-top: 50px;
         margin-left: -14px;
         width: 90vw;
@@ -95,5 +95,25 @@
 
     .indexNotice {
         width: 88% !important;
+    }
+}
+
+@media screen and (min-width: 480px) {
+    #elementsToShowIfTheViewportIsBigEnough {
+        display: block;
+    }
+
+    #elementsToShowIfTheViewportIsSmallEnough {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #elementsToShowIfTheViewportIsBigEnough {
+        display: none;
+    }
+
+    #elementsToShowIfTheViewportIsSmallEnough {
+        display: block;
     }
 }

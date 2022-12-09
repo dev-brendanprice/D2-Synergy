@@ -39,12 +39,14 @@ html, body {
 #navBarTitle {
     display: inline-block;
     font-size: 30px;
+    user-select: none;
 }
 #navBarVersion {
     display: inline-block;
     font-size: 15px;
     color: rgb(203,116,116);
     text-decoration: none;
+    user-select: none;
 }
 
 
@@ -94,7 +96,6 @@ html, body {
     padding-right: 8px;
     padding-top: 1px;
     padding-bottom: 1px;
-    width: auto;
     border: 1px solid gray;
     border-radius: 4px;
     color: gray;
@@ -111,6 +112,25 @@ html, body {
     color: white;
     border-color: white;
     transition: 0.25s;
+}
+
+/* Logout button for mobile */
+#logoutButtonMobile {
+    padding: 5px;
+    padding-top: 8px;
+    float: right;
+    width: 30px;
+    filter: invert(50%);
+}
+
+/* Settings button for mobile */
+#settingsButtonMobile {
+    padding: 5px;
+    padding-top: 8px;
+    padding-right: 10px;
+    float: right;
+    width: 30px;
+    filter: invert(50%);
 }
 
 
@@ -226,33 +246,14 @@ html, body {
 
 
 /* Breakline styles */
-hr.titleBreaker {
-    display: absolute;
-    opacity: 20%;
-    color: #555;
-    border: 1px solid grey;
-    border-radius: 20px;
-}
-
-hr.settingsBreaker {
-    margin-top: -15px;
-    padding: none;
-    margin-left: 0;
-    height: 2px;
-    width: 90%;
+hr.horizontalRuler {
+    padding: 0;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 1px;
 	border: none;
-	border-radius: 2px;
-	background-color: #7e8891;
-}
-
-hr.half {
-    padding: none;
-    margin-left: 0;
-    height: 2px;
-	width: 100%;
-	border: none;
-	border-radius: 2px;
-	background-color: #7e8891;
+	background-color: #adadad;
 }
 
 /* Loading Indicator */

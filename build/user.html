@@ -1,0 +1,247 @@
+<!DOCTYPE html><html><head>
+    <link rel="stylesheet" href="styles/user.css">
+    <link rel="stylesheet" href="styles/src.css">
+    <link rel="stylesheet" href="styles/item.css">
+    <link rel="stylesheet" href="styles/viewports.css">
+
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="icon" href="./icons/tab_icon.png">
+    <link rel="shortcut icon" href="#">
+    <meta charset="UTF-8">
+    <title>D2 Synergy</title>
+</head>
+
+<body>
+    <div id="navBarContainer">
+        <div id="navBarTitleContainer">
+            <div id="navBarTitle">D2 Synergy</div>
+            <a id="navBarVersion" href="https://github.com/brendanprice2003/D2-Synergy/issues" target="_blank" style="text-decoration: none;">Alpha v0.1.0</a>
+        </div>
+        <div id="navBarSettingsContainer">
+            <div id="navBarSettings">Settings</div>
+        </div>
+        <div id="navBarLogoutContainer">
+            <div id="navBarLogout">Log Out</div>
+        </div>
+    </div>
+    
+    <div id="loadBarContainer">
+        <div id="slider">
+            <div class="line"></div>
+            <div class="subline inc"></div>
+            <div class="subline dec"></div>
+        </div>
+    </div>
+
+    <div id="mainContainer">
+
+        <div id="sideSelectionBar">
+
+            <div id="charactersContainer">
+                <div id="charContainer0">
+                    <div class="classType" id="classType0"></div>
+                    <div class="classLight" id="classLight0"></div>
+                    <svg class="lightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                        <path fill="#a89332" d="M15.32 30.66A29.2 29.2 0 0 0 1.23 16.63c-1.6-.76-1.56-.62-.33-1.2A29.63 29.63 0 0 0 15.44 1c.63-1.32.51-1.31 1.09-.09A29.48 29.48 0 0 0 31.02 15.4c1.33.63 1.36.48-.25 1.24A29.2 29.2 0 0 0 16.7 30.66c-.36.74-.66 1.34-.69 1.34-.02 0-.33-.6-.68-1.34z"></path>
+                    </svg>
+                    <img class="classBg" id="classBg0">
+                </div>
+    
+                <div id="charContainer1">
+                    <div class="classType" id="classType1"></div>
+                    <div class="classLight" id="classLight1"></div>
+                    <svg class="lightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                        <path fill="#a89332" d="M15.32 30.66A29.2 29.2 0 0 0 1.23 16.63c-1.6-.76-1.56-.62-.33-1.2A29.63 29.63 0 0 0 15.44 1c.63-1.32.51-1.31 1.09-.09A29.48 29.48 0 0 0 31.02 15.4c1.33.63 1.36.48-.25 1.24A29.2 29.2 0 0 0 16.7 30.66c-.36.74-.66 1.34-.69 1.34-.02 0-.33-.6-.68-1.34z"></path>
+                    </svg>
+                    <img class="classBg" id="classBg1">
+                </div>
+    
+                <div id="charContainer2">
+                    <div class="classType" id="classType2"></div>
+                    <div class="classLight" id="classLight2"></div>
+                    <svg class="lightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                        <path fill="#a89332" d="M15.32 30.66A29.2 29.2 0 0 0 1.23 16.63c-1.6-.76-1.56-.62-.33-1.2A29.63 29.63 0 0 0 15.44 1c.63-1.32.51-1.31 1.09-.09A29.48 29.48 0 0 0 31.02 15.4c1.33.63 1.36.48-.25 1.24A29.2 29.2 0 0 0 16.7 30.66c-.36.74-.66 1.34-.69 1.34-.02 0-.33-.6-.68-1.34z"></path>
+                    </svg>
+                    <img class="classBg" id="classBg2">
+                </div>
+            </div>
+
+            <div id="categories">
+                <div id="cgDefaultLoadouts">Loadouts</div>
+                <div id="cgPursuits">Bounties</div>
+            </div>
+
+            <div id="statsContainer">
+                
+                <div id="baseStatsTitleContainer">
+                    <div id="statsTitle">Base Yield</div>
+                    <div id="queryDiv">This is NOT calculated with any XP modifiers.</div>
+                    <img id="statsTitleQuery" src="https://cdn.brendanprice.xyz/synergy/icons/interface_help.webp">
+                </div>
+
+                <div id="baseStatsContainer">
+                    <div id="totalXp">XP: </div><div id="totalXpField"></div><br>
+                    <div id="totalSpLevels">SP Levels: </div><div id="totalSpLevelsField"></div>
+                </div>
+
+                <div id="netStatsContainer">
+                    <div id="baseStatsTitle">Net Breakdown</div>
+                </div>
+
+                <div id="netStatsContainer">
+                    <div>
+                        <img class="statsCheckmark" id="bonusXpCheckmark" src="https://cdn.brendanprice.xyz/synergy/icons/checkmark.png">
+                        <img class="statsCross" id="bonusXpCross" src="https://cdn.brendanprice.xyz/synergy/icons/checkmark.png">
+                        <div class="netStatBuffHeading" id="statBonusXp">Bonus XP</div>
+                        <div id="BonusXpPopupContainer">
+                            <img class="popupArrow" src="https://cdn.brendanprice.xyz/synergy/icons/arrow_down.png"><div class="percentagePopup" id="bonusXpValue"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <img class="statsCheckmark" id="ghostModCheckmark" src="https://cdn.brendanprice.xyz/synergy/icons/checkmark.png">
+                        <img class="statsCross" id="ghostModCross" src="https://cdn.brendanprice.xyz/synergy/icons/checkmark.png">
+                        <div class="netStatBuffHeading" id="statGhostMod">Ghost Mods</div>
+                        <div id="ghostModPopupContainer">
+                            <img class="popupArrow" src="https://cdn.brendanprice.xyz/synergy/icons/arrow_down.png"><div class="percentagePopup" id="ghostModValue"></div>
+                        </div> 
+                    </div>
+
+                    <div>
+                        <img class="statsCheckmark" id="sharedWisdomCheckmark" src="https://cdn.brendanprice.xyz/synergy/icons/checkmark.png">
+                        <img class="statsCross" id="sharedWisdomCross" src="https://cdn.brendanprice.xyz/synergy/icons/checkmark.png">
+                        <div class="netStatBuffHeading" id="statSharedWisdom">Shared Wisdom</div>
+                        <div id="sharedWisdomPopupContainer">
+                            <img class="popupArrow" src="https://cdn.brendanprice.xyz/synergy/icons/arrow_down.png"><div class="percentagePopup" id="sharedWisdomValue"></div>
+                        </div>
+                    </div>
+
+                    <div class="netXpHeading">Net: </div><div id="totalNetXpField"></div><br>
+                </div>
+
+                <div id="btnSynergyView">View Synergy</div>
+            </div>
+        </div>
+        <div id="loadingContentContainer">
+            <img id="loadingIcon" src="https://cdn.brendanprice.xyz/synergy/icons/rocket_ship.webp">
+            <div id="loadingText">Loading</div>
+        </div>
+    
+        <div id="contentDisplay">
+
+            <div id="synergyContainer">
+                <div id="displayTitle_Synergy" class="containerTitle">Synergy</div>
+                <hr class="titleBreaker">
+            </div>
+
+            <div id="loadoutsContainer">
+                <div id="displayTitle_Loadouts" class="containerTitle">Default Loadouts</div>
+                <hr class="titleBreaker">
+            </div>
+
+            <div id="pursuitsContainer">
+
+                <div id="bountyDisplayContainer">
+
+                    <div class="bountiesContainerTitle">Bounties</div><br>
+                    <div class="subheadingFields" id="bountiesAmountField"></div><div id="bountiesFieldSubText">total  · </div>
+                    <div class="subheadingFields" id="completedBountiesAmountField">8</div><div id="bountiesFieldSubText">completed  · </div>
+                    <div class="subheadingFields" id="expiredBountiesAmountField">1</div><div id="bountiesFieldSubText">expired</div>
+                    <hr class="half">
+
+                    <div id="filterContentContainer">
+                        <div id="filters"></div>
+                        <div class="filter" id="removeFiltersID">
+                            <div class="propName" style="color: orangered;">Clear Filters</div>
+                        </div>
+                    </div>
+                    <div id="btnHideFilters">Toggle Filters</div>
+                    <div id="noItemsTooltip"></div>
+                    <div id="bountyItems"></div>
+                    <br>
+                    <div id="itemStats">
+                        <div id="totalBounties"></div>
+                    </div>
+                </div>
+
+                <div class="levellingContainerTitle">Levelling Statistics</div>
+                <div id="currentSeasonNameField">Season of Plunder</div>
+                <hr class="half">
+
+                <div id="statsTableLayoutContainer">
+
+                    <div id="artifactStats">
+                        <div id="artifactStatsBg"></div>
+                        <div id="artifactStatsContentContainer">
+                            <div class="containerTitle">ARTIFACT STATS</div>
+                            <div id="artifactStatsFirstContainer">
+                                <div class="containerMetricNumber" id="artifactXpToNextPowerBonus"></div><div id="artifactStatsSuffix"> XP</div><br>
+                                <div class="artifactStatsSuffixBottom">to next power bonus</div>
+                            </div>
+                            <div id="artifactStatsSecondContainer">
+                                <div class="containerMetricNumber" id="artifactXpToNextUnlock"></div><div id="artifactStatsSuffix"> XP</div><br>
+                                <div class="artifactStatsSuffixBottom">to next artifact unlock</div>
+                            </div>
+                        </div>
+                        <div id="artifactStatsThirdMetricContainer">
+                            <img id="artifactStatsArtifactImage" src="https://www.bungie.net/common/destiny2_content/icons/b1fe56d925a2ffc41d23e4c2ac5bdbb3.jpg">
+                            <div id="artifactStatsArtifactBonus"></div>
+                        </div>
+                        <div id="artifactStatsNoArtifactIsPresent">No Artifact is present on this profile.</div>
+                    </div>
+
+
+                    <div id="seasonPass">
+                        <div id="seasonPassBg"></div>
+                        <div id="seasonPassContentContainer">
+                            <div class="containerTitle">SEASON PASS</div>
+                            <div id="seasonPassFirstContainer">
+                                <div class="containerMetricNumber" id="seasonPassXpToNextRank"></div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to next rank</div>
+                            </div>
+                            <div id="seasonPassSecondContainer">
+                                <div class="containerMetricNumber" id="seasonPassXpToMaxRank"></div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to rank 100</div>
+                            </div>
+                        </div>
+                        <div id="seasonPassThirdMetricContainer">
+                            <div id="seasonPassRankLevel"></div>
+                            <div id="seasonPassRankTitle">RANK</div>
+                            <div id="seasonPassFireteamBonusContainer">
+                                <div id="seasonPassFireteamBonus"></div><br><div id="seasonPassFireteamBonusSuffix">Shared<br>Wisdom</div>
+                            </div>
+                            <div id="seasonPassXpBonusContainer">
+                                <div id="seasonPassXpBonus"></div><br><div id="seasonPassXpBonusSuffix">Bonus XP</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="brightEngram">
+                        <div id="brightEngramBg"></div>
+                        <div id="brightEngramContentContainer">
+                            <div class="containerTitle">BRIGHT ENGRAMS</div>
+                            <div id="brightEngramFirstContainer">
+                                <div class="containerMetricNumber" id="XpToNextEngram"></div><div id="brightEngramSuffix"> XP</div><br><div id="brightEngramSuffixBottom">to next engram</div>
+                            </div>
+                            <div id="brightEngramSecondContainer">
+                                <div class="containerMetricNumber" id="totalBrightEngramsEarned"></div><div id="brightEngramSuffix"> bright engrams earned</div>
+                            </div>
+                        </div>
+                        <img id="brightEngramEngramImageLeft" src="images/engram_outline.png">
+                        <img id="brightEngramEngramImageMiddle" src="images/engram_outline.png">
+                        <img id="brightEngramEngramImageRight" src="images/engram_outline.png">
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsContainer">
+        Settings Page
+    </div>
+
+    <div id="overlays"></div>
+
+    <script type="module" src="scripts/user.js"></script>
+</body></html>

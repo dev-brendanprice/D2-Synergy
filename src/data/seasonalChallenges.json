@@ -1,1 +1,292 @@
-{}
+{
+    "28554240": {
+        "Destination": [1,5,6],
+        "ActivityMode": [27]
+    },
+    "28554242": {
+        "Destination": [1,5,6],
+        "ActivityMode": [27]
+    },
+    "28554244": {
+        "ActivityMode": [0,1,3,28]
+    },
+    "28554245": {
+        "Destination": [1,5,6],
+        "ActivityMode": [27,28]
+    },
+    "28554247": {
+        "Destination": [1,5,6],
+        "ActivityMode": [28]
+    },
+    "34489165": {
+
+    },
+    "34489166": {
+        "Destination": [1,5,6]
+    },
+    "60221640": {
+        "ActivityMode": [3,13]
+    },
+    "191015343": {
+        "ActivityMode": [1,2]
+    },
+    "216676038": {
+        "ActivityMode": [0,1,3]
+    },
+    "336788895": {
+        "ActivityMode": [3],
+        "DamageType": [1,4],
+        "KillType": [9]
+    },
+    "359390289": {
+        "ActivityMode": [3],
+        "ItemCategory": [1,7,9],
+        "KillType": [4,9]
+    },
+    "366322897": {
+        "ActivityMode": [3],
+        "DamageType": [4],
+        "KillType": [9]
+    },
+    "418441854": {
+        "ActivityMode": [0]
+    },
+    "609431010": {
+        "Destination": [1,5,6],
+        "ActivityMode": [27,28]
+    },
+    "609431012": {
+        "Destination": [1,5,6],
+        "ActivityMode": [27,28]
+    },
+    "609431013": {
+
+    },
+    "609431015": {
+
+    },
+    "624217089": {
+        "ActivityMode": [2,20,27,28],
+        "AmmoType": [0,1,2]
+    },
+    "683912445": {
+        "ActivityMode": [3,28],
+        "DamageType": [1],
+        "ItemCategory": [15],
+        "KillType": [9]
+    },
+    "816465502": {
+        "ActivityMode": [0]
+    },
+    "897126116": {
+        "ActivityMode": [1,2]
+    },
+    "954325545": {
+        "Destination": [0]
+    },
+    "987962810": {
+        "ActivityMode": [2,19,20,27,28]
+    },
+    "1116840951": {
+        "Destination": [6]
+    },
+    "1198558310": {
+        "ActivityMode": [2]
+    },
+    "1206774727": {
+        "ActivityMode": [0],
+        "DamageType": [1,4],
+        "KillType": [9]
+    },
+    "1301653713": {
+
+    },
+    "1308176784": {
+        "Destination": [1,5,6],
+        "ActivityMode": [27]
+    },
+    "1308176785": {
+        "Destination": [1,5,6],
+        "ActivityMode": [27]
+    },
+    "1409304923": {
+        "ActivityMode": [3,27,28],
+        "DamageType": [1,4],
+        "KillType": [9]
+    },
+    "1559099357": {
+        "ActivityMode": [0]
+    },
+    "1562594727": {
+
+    },
+    "1627828210": {
+        "ActivityMode": [2]
+    },
+    "1680991712": {
+        "Destination": [5]
+    },
+    "1729121238": {
+        "ActivityMode": [1,2]
+    },
+    "1739635499": {
+
+    },
+    "1873459033": {
+        "Destination": [6],
+        "ItemCategory": [4,8,11,12,15],
+        "KillType": [7]
+    },
+    "1880995598": {
+        "Destination": [5],
+        "ItemCategory": [2,14,16],
+        "KillType": [11]
+    },
+    "1913657597": {
+        "ActivityMode": [4],
+        "KillType": [1,9]
+    },
+    "2036147273": {
+
+    },
+    "2036763674": {
+        "ActivityMode": [12]
+    },
+    "2080015681": {
+        "ActivityMode": [2,19,20,27,28]
+    },
+    "2080015688": {
+        "Destination": [5],
+        "ItemCategory": [10]
+    },
+    "2080015690": {
+        "KillType": [3]
+    },
+    "2080015691": {
+        "KillType": [4]
+    },
+    "2080015692": {
+
+    },
+    "2080015693": {
+        "KillType": [0]
+    },
+    "2080015694": {
+
+    },
+    "2080015695": {
+
+    },
+    "2126232849": {
+        "ActivityMode": [3]
+    },
+    "2191501287": {
+        "ActivityMode": [1,2],
+        "DamageType": [1,4]
+    },
+    "2472292385": {
+        "Destination": []
+    },
+    "2474478477": {
+        "ActivityMode": [17],
+        "KillType": [9]
+    },
+    "2512423273": {
+        
+    },
+    "2801126534": {
+        "ActivityMode": [0,1,3]
+    },
+    "3088843859": {
+        "ActivityMode": [0]
+    },
+    "3226322592": {
+        "ActivityMode": [28]
+    },
+    "3226322594": {
+        "ActivityMode": [28]
+    },
+    "3226322598": {
+        "ActivityMode": [28]
+    },
+    "3226322599": {
+        "ActivityMode": [28]
+    },
+    "3266794452": {
+        "DamageType": [1],
+        "KillType": [9]
+    },
+    "3380361223": {
+        "Destination": [1]
+    },
+    "3440559842": {
+        "ActivityMode": [2]
+    },
+    "3640626870": {
+        "ActivityMode": [12]
+    },
+    "3763804522": {
+        "ActivityMode": [27]
+    },
+    "3763804527": {
+        "ActivityMode": [27]
+    },
+    "4064751954": {
+        "ActivityMode": [28]
+    },
+    "4072425545": {
+        "ActivityMode": [28],
+        "ItemCategory": [9]
+    },
+    "4072425546": {
+        "ActivityMode": [28],
+        "ItemCategory": [1],
+        "KillType": [9]
+    },
+    "4072425547": {
+        "ActivityMode": [27],
+        "DamageType": [1,4],
+        "KillType": [9]
+    },
+    "4072425548": {
+        "ActivityMode": [27],
+        "ItemCategory": [13],
+        "KillType": [9]
+    },
+    "4072425549": {
+        "ActivityMode": [27],
+        "ItemCategory": [4],
+        "KillType": [9]
+    },
+    "4072425551": {
+        "Destination": [],
+        "ActivityMode": [],
+        "DamageType": [],
+        "ItemCategory": [],
+        "AmmoType": [],
+        "KillType": []
+    },
+    "4161761364": {
+        "ActivityMode": [28],
+        "ItemCategory": [12],
+        "KillType": [9]
+    },
+    "4170387177": {
+        "ItemCategory": [13,1,15],
+        "KillType": [7,9]
+    },
+    "4178068145": {
+        "ActivityMode": [0],
+        "ItemCategory": [7,8,13],
+        "KillType": [9]
+    },
+    "4195317835": {
+        "Destination": [1],
+        "ItemCategory": [0,3,10,11,13],
+        "KillType": [7]
+    },
+    "4247196403": {
+        "ActivityMode": [0],
+        "KillType": [9]
+    }
+}
