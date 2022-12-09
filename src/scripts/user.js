@@ -70,17 +70,13 @@ export let progressionDefinitions = {},
 
 // User data
 let destinyMembershipId,
-    characterRecords,
     membershipType,
     characters;
 
-// Profile data
-let CurrentSeasonHash,
-    ProfileProgressions,
-    seasonPassInfo = {},
-    seasonPassLevel = 0,
-    prestigeProgressionSeasonInfo,
-    seasonProgressionInfo = {};
+
+export let ProfileProgressions;
+
+export var CurrentSeasonHash;
 
 // Object holds all bounties, by vendor, that are to be excluded from permutations
 export let excludedBountiesByVendor = {};

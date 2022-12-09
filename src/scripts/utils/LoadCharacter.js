@@ -1,9 +1,29 @@
-import { CacheAuditItem } from './ModuleScript';
-import { destinyUserProfile } from '../user.js';
+import { 
+    CacheAuditItem, 
+    ReturnSeasonPassLevel,
+    AddNumberToElementInner,
+    InsertSeperators,
+    GetProgressionalItems,
+    StopLoad } from './ModuleScript';
+import { 
+    destinyUserProfile, 
+    CurrentSeasonHash,
+    seasonDefinitions,
+    seasonPassDefinitions,
+    progressionDefinitions,
+    ProfileProgressions } from '../user.js';
 
 const log = console.log.bind(console);
 
-var characterLoadToggled = false; // Used to lockout character select button during load
+var characterLoadToggled = false, // Used to lockout character select during a load
+    characterRecords;
+
+// Profile data
+var seasonPassInfo = {},
+    seasonPassLevel = 0,
+    prestigeProgressionSeasonInfo,
+    seasonProgressionInfo = {};
+
 
 // Load character from specific index
 // @int {classType}, @boolean {isRefresh}
@@ -73,7 +93,7 @@ export async function LoadCharacter(classType, characters) {
         CharacterEquipment = destinyUserProfile.characterEquipment.data[characterId].items;
         CharacterObjectives = destinyUserProfile.itemComponents.objectives.data;
         CharacterInventories = destinyUserProfile.characterInventories.data;
-        CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
+        // CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
         characterRecords = destinyUserProfile.characterRecords.data[characterId].records;
         ItemSockets = destinyUserProfile.itemComponents.sockets.data;
 
@@ -135,6 +155,7 @@ export async function LoadCharacter(classType, characters) {
 
         // Get artifact info -- check if profile has artifact
         let artifact;
+        log(ProfileProgressions);
         if (ProfileProgressions.seasonalArtifact) {
 
             // Change corresponding HTML elements to display stats
