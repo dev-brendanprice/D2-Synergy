@@ -36,7 +36,7 @@ body {
 }
 
 #websiteAlphaNotice {
-    display: block;
+    display: none;
     margin: 0 auto;
     margin-top: 15px;
     padding-top: 5px;
@@ -65,7 +65,9 @@ body {
 
 #errorHeading {
     margin-top: 5px;
-    font-size: 25px;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
 }
 
 #errorContent {

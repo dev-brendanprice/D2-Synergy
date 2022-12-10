@@ -294,12 +294,6 @@ export async function AddEventListeners() {
         document.getElementById(selectedValue).style.display = 'block';
     });
 
-    // Add listener for "See Here" prompt on the note for available vendors
-    document.getElementById('availableVendorSeeHerePrompt').addEventListener('click', () => {
-        document.getElementById('availableVendorPopupCanvas').style.display = 'inline-block';
-        document.getElementById('availableVendorPopup').style.display = 'inline-block';
-    });
-
     // Add listener for available vendor popup close button
     document.getElementById('availableVendorPopupClose').addEventListener('click', () => {
         document.getElementById('availableVendorPopupCanvas').style.display = 'none';

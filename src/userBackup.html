@@ -14,40 +14,24 @@
 </head>
 
 <body>
-    
-    <div id="navBarTopColorBar"></div>
     <div id="navBarContainer">
-
         <div id="navBarTitleContainer">
             <div id="navBarTitle">D2 Synergy</div>
             <a id="navBarVersion" href="https://github.com/brendanprice2003/D2-Synergy/issues" target="_blank"></a>
         </div>
 
-        <div id="middleNavBarItems">
-            <div id="navBarBountiesButton">Bounties</div>
-            <div id="navBarChallengesButton">Seasonal Challenges</div>
-            <div id="navBarStatisticsButton">Statistics</div>
+        <div id="elementsToShowIfTheViewportIsBigEnough">
+            <div id="navBarSettingsContainer">
+                <div id="navBarSettings">Settings</div>
+            </div>
+            <div id="navBarLogoutContainer">
+                <div id="navBarLogout">Log Out</div>
+            </div>
         </div>
 
-        <div id="rightNavBarItems">
-            <img class="navBarIcons" id="navBarSettingsIcon" src="./ico/settings.svg">
-            <img class="navBarIcons" id="navBarLogoutIcon" src="./ico/logout.svg">
-        </div>
-
-        <div style="display: none;">
-            <div id="elementsToShowIfTheViewportIsBigEnough">
-                <div id="navBarSettingsContainer">
-                    <div id="navBarSettings">Settings</div>
-                </div>
-                <div id="navBarLogoutContainer">
-                    <div id="navBarLogout">Log Out</div>
-                </div>
-            </div>
-    
-            <div id="elementsToShowIfTheViewportIsSmallEnough">
-                <img id="logoutButtonMobile" src="./ico/logout.svg">
-                <img id="settingsButtonMobile" src="./ico/settings.svg">
-            </div>
+        <div id="elementsToShowIfTheViewportIsSmallEnough">
+            <img id="logoutButtonMobile" src="./ico/logout.svg">
+            <img id="settingsButtonMobile" src="./ico/settings.svg">
         </div>
     </div>
     
@@ -59,14 +43,20 @@
         </div>
     </div>
 
-    <div id="skeletonContainer">
-        <div id="skeletonTest"></div>
-        <div id="skeletonSubContainer">
-            <div id="skeletonTest2"></div>
-            <div id="skeletonTest2"></div>
-            <div id="skeletonTest2"></div>
+    <div id="availableVendorPopup">
+        <div id="availableVendorContainer">
+            <div id="availableVendorContentTitle">Available Vendors</div>
+            <div id="availableVendorContentText">· Bounties are added in order of priority, based on various factors.</div><a style="user-select: none;text-decoration: underline;cursor: pointer;" target="_blank" href="https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md#:~:text=Note%3A%20Vendors%27%20bounties%20are%20added%20via%20an%20order%20of%20priority.%20This%20priority%20is%20determined%20by%20which%20vendors%20are%20utilized%20the%20most%20in%20terms%20of%20XP%20gains.%20For%20example%3A%20A%20Vendor%20like%20Eris%20Morn%20would%20be%20quite%20a%20high%20priority%20vendor%20to%20add%2C%20because%20the%20moon%20is%20notorious%20for%20its%20quick%20XP%20farms.">[Read Here]</a>
+            <div id="availableVendorContentText" style="margin-top: 10px;">· The addition of bounties is grouped by vendors.</div>
+            <div id="availableVendorContentText">· The shown list contains the vendors' bounties, that have been added.</div>
+            <ul id="vendorsList"></ul>
+            <div style="margin-bottom: 10px;">
+                <div id="availableVendorContentText" style="display: inline-block;font-weight: 600;">Note:</div><div id="availableVendorContentText" style="display: inline-block;font-style: italic;">  Crucible and Trials are seperate groups</div>
+            </div>
         </div>
+        <div id="availableVendorPopupClose">Close</div>
     </div>
+    <div id="availableVendorPopupCanvas"></div>
 
     <div id="userMainContainer">
 
@@ -156,10 +146,58 @@
                 </div>
             </div>
 
+            <div id="seasonalStatsContainer">
+                
+                <div id="baseStatsTitleContainer">
+                    <div id="statsTitle">Base Yield</div>
+                    <div id="queryDiv">This is NOT calculated with any XP modifiers.</div>
+                    <img id="statsTitleQuery" src="./ico/interface_help.webp">
+                </div>
+
+                <div id="baseStatsContainer">
+                    <div id="totalXp">XP: </div><div id="totalXpField"></div><br>
+                    <div id="totalSpLevels">SP Levels: </div><div id="totalSpLevelsField"></div>
+                </div>
+
+                <div id="netStatsContainer">
+                    <div id="baseStatsTitle">Net Breakdown</div>
+                </div>
+
+                <div id="netStatsContainer">
+                    <div>
+                        <img class="statsCheckmark" id="bonusXpCheckmark" src="./ico/checkmark.svg">
+                        <img class="statsCross" id="bonusXpCross" src="./ico/crossmark.svg">
+                        <div class="netStatBuffHeading" id="statBonusXp">Bonus XP</div>
+                        <div id="BonusXpPopupContainer">
+                            <img class="popupArrow" src="./ico/arrow_down.png"><div class="percentagePopup" id="bonusXpValue"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <img class="statsCheckmark" id="ghostModCheckmark" src="./ico/checkmark.svg">
+                        <img class="statsCross" id="ghostModCross" src="./ico/crossmark.svg">
+                        <div class="netStatBuffHeading" id="statGhostMod">Ghost Mods</div>
+                        <div id="ghostModPopupContainer">
+                            <img class="popupArrow" src="./ico/arrow_down.png"><div class="percentagePopup" id="ghostModValue"></div>
+                        </div> 
+                    </div>
+
+                    <div>
+                        <img class="statsCheckmark" id="sharedWisdomCheckmark" src="./ico/checkmark.svg">
+                        <img class="statsCross" id="sharedWisdomCross" src="./ico/crossmark.svg">
+                        <div class="netStatBuffHeading" id="statSharedWisdom">Shared Wisdom</div>
+                        <div id="sharedWisdomPopupContainer">
+                            <img class="popupArrow" src="./ico/arrow_down.png"><div class="percentagePopup" id="sharedWisdomValue"></div>
+                        </div>
+                    </div>
+
+                    <div class="netXpHeading">Net XP: </div><div id="totalNetXpField"></div><br>
+                </div>
+            </div>
         </div>
     
         <div id="contentDisplay">
-            
+
             <!-- [ CONTAINERS FOR EACH VIEW (BOUNTIES, SCHALLS AND STATISITCS) ] -->
             <div id="bountiesContainer">
 
@@ -621,6 +659,10 @@
                         </div>
                     </div>
 
+                </div>
+
+                <div id="availableVendorStatus">
+                    <div id="availableVendorNoteText">Note:</div> Not all seasonal challenges have been added. (priority)
                 </div>
 
             </div>

@@ -18,21 +18,34 @@ html, body {
 
 
 /* Navbar */
-#navBarContainer {
-    position: fixed;
-    margin-left: -8px;
+#navBarTopColorBar {
+    position: absolute;
     top: 0;
+    left: 0;
+    height: 2px;
+    width: 100vw;
+    background-color: rgba(237, 77, 77, 0.8);
+    box-shadow: 0px 0px 10px 1px rgb(237, 77, 77);
+    z-index: 99; /* Keep box shadow on top of navbar */
+}
+
+#navBarContainer {
+    position: absolute;
+    display: inline-flex;
+    top: 2px;
+    left: 0;
     height: 45px;
     width: 100vw;
     background-color: #202020;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
     z-index: 10;
 }
 
 #navBarTitleContainer {
-    position: absolute;
-    margin-top: 5px;
     margin-left: 15px;
-    left: 0;
+    top: 5px;
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
@@ -55,7 +68,6 @@ html, body {
     position: absolute;
     margin-top: 12px;
     margin-right: 12px;
-    right: 0;
     cursor: pointer;
 }
 #navBarLogout {
@@ -82,13 +94,68 @@ html, body {
     transition: 0.25s;
 }
 
+#middleNavBarItems {
+    display: flex;
+    margin-top: 3px;
+    margin-right: 200px;
+    gap: 40px;
+    color: rgb(191, 191, 191);
+    font-size: 18px;
+    user-select: none;
+}
+
+#navBarBountiesButton:hover {
+    color: white;
+    cursor: pointer;
+}
+
+#navBarChallengesButton:hover {
+    color: white;
+    cursor: pointer;
+}
+
+#navBarStatisticsButton:hover {
+    color: white;
+    cursor: pointer;
+}
+
+#rightNavBarItems {
+    display: flex;
+    margin-right: 15px;
+    /* margin-top: -25px;
+    margin-right: 15px;
+    right: 0;
+    justify-content: right;
+    align-items: right;
+    text-align: right; */
+    gap: 20px;
+}
+
+.navBarIcons {
+    width: 28px;
+    filter: invert(65%);
+    cursor: pointer;
+    user-select: none;
+}
+
+#navBarSettingsIcon:hover {
+    filter: invert(100%);
+    -webkit-animation: rotating 2s linear infinite;
+    -moz-animation: rotating 2s linear infinite;
+    -ms-animation: rotating 2s linear infinite;
+    -o-animation: rotating 2s linear infinite;
+    animation: rotating 2s linear infinite;
+}
+
+#navBarLogoutIcon:hover {
+    filter: invert(40%) sepia(61%) saturate(2423%) hue-rotate(332deg) brightness(97%) contrast(92%);
+}
+
 /* Settings container */
 #navBarSettingsContainer {
-    /* display: none; */
     position: absolute;
     margin-top: 12px;
     margin-right: 90px;
-    right: 0;
     cursor: pointer;
 }
 #navBarSettings {
@@ -137,8 +204,8 @@ html, body {
 /* Loadbar */
 #loadBarContainer {
     display: inline-block;
-    position: fixed;
-    margin-top: 56px;
+    position: static;
+    margin-top: 58px;
 }
 #slider{
     position: absolute;
@@ -288,5 +355,22 @@ hr.horizontalRuler {
 
     100% {
         transform: translate(0px, 0px);
+    }
+}
+
+@keyframes rotating {
+    from {
+      -ms-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -ms-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
     }
 }

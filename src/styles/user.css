@@ -13,6 +13,7 @@ body {
 }
 
 #userMainContainer {
+    /* display: none !important; */
     position: absolute;
     margin-top: 60px;
     z-index: 0;
@@ -266,7 +267,6 @@ h2 {
     padding-right: 25px;
     overflow: hidden;
     color: white;
-    /* border: 1px solid red; */
 }
 
 #subTitleContainer {
@@ -337,9 +337,9 @@ h2 {
     letter-spacing: 1px;
 }
 
-/* #bountiesContainer {
-    border: 1px solid green;
-} */
+#bountiesContainer {
+    display: none !important;
+}
 
 #seasonChallengeControlGridContainer {
     display: inline-flex;
@@ -388,7 +388,7 @@ h2 {
 }
 
 #seasonalChallengesContainer {
-    display: none;
+    display: none !important;
 }
 
 .challengeContainer {
@@ -458,9 +458,9 @@ hr.challengeBreakline {
     z-index: 10;
 }
 
-/* #levellingStatisticsContainer {
-    border: 1px solid green;
-} */
+#levellingStatisticsContainer {
+    display: none;
+}
 
 .containerTitle {
     margin-top: -7px;
@@ -545,7 +545,34 @@ hr.challengeBreakline {
 
 /* char selects */
 
+#skeletonContainer {
+    display: flex;
+}
+
+#skeletonSubContainer {
+    display: flex;
+    margin-left: 50px;
+    gap: 20px;
+}
+
+#skeletonTest {
+    margin-top: 10px;
+    width: 15vw;
+    height: 65vh;
+    border-radius: 5px;
+    animation: example 2s ease-in infinite;
+}
+
+#skeletonTest2 {
+    margin-top: 10px;
+    width: 26vw;
+    height: 85vh;
+    border-radius: 5px;
+    animation: example 2s ease-in infinite;
+}
+
 #sideSelectionBar {
+    display: none;
     float: left;
     margin-left: 5px;
 }
@@ -648,7 +675,7 @@ hr.challengeBreakline {
 }
 
 #loadingContentContainer {
-    display: none;
+    display: none !important;
     text-align: center;
 }
 
@@ -1208,4 +1235,13 @@ hr.challengeBreakline {
     position:absolute;
     font-size: 13px;
     font-style: italic;
+}
+
+/* Animations */
+@keyframes example {
+    0%   {background-color: rgba(147, 147, 147, 0.3);}
+    10%  {background-color: rgba(190, 190, 190, 0.3);}
+    15%  {background-color: rgba(190, 190, 190, 0.3);}
+    30% {background-color: rgba(147, 147, 147, 0.3);}
+    100% {background-color: rgba(147, 147, 147, 0.3);}
 }

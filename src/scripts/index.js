@@ -1,14 +1,12 @@
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
 
-import axios from 'axios';
+import { MakeRequest } from './utils/MakeRequest.js';
 
 const log = console.log.bind(console),
       localStorage = window.localStorage,
       clientId = import.meta.env.CLIENT_ID,
       apiKey = import.meta.env.API_KEY;
-      log(apiKey);
-      log(import.meta.env.API_KEY);
 
 
 
@@ -32,10 +30,10 @@ async function CheckSession() {
 };
 
 
-// Generate state parameter
-function GenerateState(len) {
-    let result = ' ';
-    let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+// Generate a random string for state code
+async function GenerateRandomString(len) {
+    let result = ' ',
+        characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     for (let i = 0; i < len; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     };
@@ -47,25 +45,25 @@ function GenerateState(len) {
 window.addEventListener('DOMContentLoaded', () => {
 
     // Check for server availability
-    log(apiKey);
-    axios.get('https://www.bungie.net/Platform/Destiny2/Manifest/DestinyInventoryItemDefinition/4289226715/', {headers: {"X-API-Key": apiKey}})
+    MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', { headers: { 'X-API-Key': apiKey } }, {scriptOrigin: 'index', avoidCache: false})
     .catch((error) => {
-        if (error.response) {
-
-            console.error(error.response);
-            if (error.response.status === 503) {
-                document.getElementById('serverDeadContainer').style.display = 'block';
-            };
+        console.error(error);
+        if (!response.data.Response.systems.Destiny2.enabled) {
+            document.getElementById('serverDeadContainer').style.display = 'block';
+            document.getElementById('websiteAlphaNotice').style.display = 'none';
+            return;
         };
+
+        document.getElementById('websiteAlphaNotice').style.display = 'block';
     });
 
     // Put version number in navbar
     document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
 
     // Listen for authorize button click
-    document.getElementById('btnAuthorize').addEventListener('click', () => {
+    document.getElementById('btnAuthorize').addEventListener('click', async () => {
 
-        const stateCode = GenerateState(128);
+        const stateCode = await GenerateRandomString(128);
         localStorage.setItem('stateCode', stateCode);
         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
     });

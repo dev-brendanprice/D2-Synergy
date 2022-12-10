@@ -76,7 +76,7 @@ var ValidateManifest = async () => {
 
         loadContent.innerHTML = 'Sorry this is taking so long, We are nearly there...';
         setTimeout(() => {
-            loadContent.innerHTML = 'Again, really sorry for the long wait. Try logging out, logging back in, and restarting it all eh?'
+            loadContent.innerHTML = 'Really sorry for the long wait. Try logging out, logging back in, and restarting it all eh?'
         }, 15_000);
     }, 15_000);
 
@@ -94,7 +94,7 @@ var ValidateManifest = async () => {
 
     // Remove timeout, just in the case overlapping instructions
     clearTimeout(newLoadContentTimeout);
-    log('ValidateManifest END')
+    log('ValidateManifest END');
 };
 
 

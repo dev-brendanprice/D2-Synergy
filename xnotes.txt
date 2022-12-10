@@ -1,0 +1,31 @@
+
+// Bounty Subheading
+bountiesAmountField
+completedBountiesAmountField
+expiredBountiesAmountField
+
+
+// Bounty items
+bountyItems
+
+
+// Challenge Subheading
+challengesAmountField
+completedChallengesAmountField
+outstandingChallengesAmountField
+
+
+// Challenge Items
+seasonalChallengeItems
+
+
+// Levelling statistics
+artifactXpToNextPowerBonus
+artifactXpToNextUnlock
+artifactStatsArtifactBonus
+
+seasonPassXpToNextRank
+seasonPassXpToMaxRank
+seasonPassRankLevel
+seasonPassFireteamBonus
+seasonPassXpBonus
