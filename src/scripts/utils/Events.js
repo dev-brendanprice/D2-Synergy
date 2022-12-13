@@ -1,20 +1,327 @@
 import { 
     charBounties,
     MainEntryPoint, 
-    eventFilters } from '../user.js';
+    eventFilters,
+    itemDisplaySize } from '../user.js';
 import { 
     CacheAuditItem, 
-    CacheReturnItem } from './ModuleScript.js';
+    CacheReturnItem,
+    Logout } from './ModuleScript.js';
 import { LoadCharacter } from './LoadCharacter.js';
 
 
 // Utilities
-const log = console.log.bind(console);
-
-// Shhh
+const log = console.log.bind(console),
+      localStorage = window.localStorage;
 var secretCount = 0;
 
+
+// Event listener wrapper
+export const AddListener = function (elementName, event, callback, selectorType) {
+
+    if (elementName === 'window') {
+        window.addEventListener(event, callback);
+        return;
+    };
+
+    switch (selectorType) {
+
+        case 'class' || 'CLASS':
+            document.getElementsByClassName(`${elementName}`).addEventListener(event, callback);
+
+        default:
+            document.getElementById(`${elementName}`).addEventListener(event, callback);
+    };
+};
+
+
 export async function AddEventListeners() {
+
+    // Logout button
+    AddListener('navBarLogoutIcon', 'click', function () {
+        Logout();
+    });
+
+
+    // Settings button
+    AddListener('navBarSettingsIcon', 'click', function () {
+        log('bruh');
+        document.getElementById('userMainContainer').style.display = 'none';
+        document.getElementById('settingsContainer').style.display = 'block';
+    });
+
+
+    // Character buttons
+    for (let i=0; i <= 2; i++) {
+        AddListener(`charContainer${i}`, 'click', () => {
+            LoadCharacter(i);
+        });
+    };
+
+
+    // Title button (secret setting activation)
+    AddListener('navBarTitle', 'click', function () {
+        secretCount++;
+        if (secretCount >= 7) {
+            document.getElementById('secretIconCheckboxContainer').style.display = 'block';
+            CacheAuditItem('isSecretOn', true);
+        };
+    });
+
+
+    // Refresh on tab focus checkbox
+    AddListener('checkboxRefreshWhenFocused', 'click', function () {
+
+        if (this.checked) {
+            CacheAuditItem('isRefreshOnFocusToggled', true);
+            return;
+        };
+
+        // Uncheck = clear localStorage value
+        CacheAuditItem('isRefreshOnFocusToggled', false);
+    });
+
+
+    // Refresh on interval checkbox
+    let refreshOnInterval;
+    AddListener('checkboxRefreshOnInterval', 'change', function () {
+
+        if (this.checked) {
+
+            CacheAuditItem('isRefreshOnIntervalToggled', true);
+            refreshOnInterval = setInterval(() => {
+
+                // true = passive refresh
+                MainEntryPoint(true)
+                .catch((error) => {
+                    console.error(error);
+                });
+            }, 120_000);
+
+            document.getElementById('loadingIcon').style.display = 'none';
+            document.getElementById('loadingText').style.marginTop = '-65px';
+            return;
+        };
+
+        // Uncheck = clear interval and localStorage value
+        CacheAuditItem('isRefreshOnIntervalToggled', false);
+        clearInterval(refreshOnInterval);
+    });
+
+
+    // Refresh on focus text click
+    AddListener('textRefreshWhenFocused', 'click', function () {
+
+        let checkbox = document.getElementById('checkboxRefreshWhenFocused');
+        checkbox.checked = !checkbox.checked;
+
+        if (checkbox.checked) {
+            CacheAuditItem('isRefreshOnFocusToggled', true);
+            return;
+        };
+
+        // Uncheck = clear localStorage value
+        CacheAuditItem('isRefreshOnFocusToggled', false);
+    });
+
+
+    // Close button click
+    AddListener('settingsMenuButton', 'click', function () {
+        
+        CacheReturnItem('defaultContentView')
+        .then((defaultContentView) => {
+            log(defaultContentView);
+        });
+    });
+
+
+    // Refresh on interval text click
+    AddListener('textRefreshOnInterval', 'click', function () {
+
+        let checkbox = document.getElementById('checkboxRefreshOnInterval');
+        checkbox.checked = !checkbox.checked;
+        
+        if (checkbox.checked) {
+
+            CacheAuditItem('isRefreshOnIntervalToggled', true);
+            refreshOnInterval = setInterval(() => {
+
+                // true = passive refresh
+                MainEntryPoint(true)
+                .catch((error) => {
+                    console.error(error);
+                });
+            }, 120_000);
+
+            document.getElementById('loadingIcon').style.display = 'none';
+            document.getElementById('loadingText').style.marginTop = '-65px';
+            return;
+        };
+
+        // Uncheck = clear interval and localStorage value
+        CacheAuditItem('isRefreshOnIntervalToggled', false);
+        clearInterval(refreshOnInterval);
+    });
+
+
+    // Dropdown selection
+    AddListener('defaultViewDropdown', 'change', function () {
+
+        const contentViewsThatINeedToChange = [
+            'bountiesContainer', 
+            'seasonalChallengesContainer',
+            'statisticsContainer'
+        ];
+        
+        // Turn off all other views, that is not the chosen ones
+        contentViewsThatINeedToChange.forEach(elementID => {
+
+            if (elementID !== this.value) {
+                document.getElementById(elementID).style.display = 'none';
+                return;
+            };
+
+            document.getElementById(elementID).style.display = 'block';
+        });
+
+        // Save the chosen item to cache and change the current view to the chosen one
+        CacheAuditItem('defaultContentView', this.value);
+        document.getElementById(this.value).style.display = 'block';
+    });
+
+
+    // Item size slider
+    AddListener('itemSizeSlider', 'change', function () {
+        CacheAuditItem('itemDisplaySize', parseInt(this.value));
+        document.getElementById('itemSizeField').innerHTML = `${this.value}px`;
+        document.getElementById('settingsBountyImage').style.width = `${this.value}px`;
+    });
+
+
+    // Item size reset button
+    AddListener('resetItemSize', 'click', function () {
+        CacheAuditItem('itemDisplaySize', 55);
+        document.getElementById('itemSizeSlider').value = 55;
+        document.getElementById('itemSizeField').innerHTML = '55px';
+        document.getElementById('settingsBountyImage').style.width = '55px';
+    });
+
+    
+    // Refresh on tab focus
+    AddListener('window', 'focus', function () {
+        
+        let boolean = JSON.parse(localStorage.getItem('userCache')).isRefreshOnFocusToggled;
+        if (boolean) {
+            MainEntryPoint(true)
+            .catch((error) => {
+                console.error(error);
+            });
+        };
+    });
+
+
+    // Secret setting checkbox
+    AddListener('checkboxToggleSecretIcons', 'change', function () {
+            
+        if (this.checked) {
+            CacheAuditItem('isSecretOn', true);
+            return;
+        };
+
+        // Uncheck = clear localStorage value
+        CacheAuditItem('isSecretOn', false);
+    });
+
+
+    // Secret setting text click
+    AddListener('textToggleSecretIcons', 'click', function () {
+            
+        let checkbox = document.getElementById('checkboxToggleSecretIcons');
+        checkbox.checked = !checkbox.checked;
+
+        if (checkbox.checked) {
+            CacheAuditItem('isSecretOn', true);
+            return;
+        };
+
+        // Uncheck = clear localStorage value
+        CacheAuditItem('isSecretOn', false);
+    });
+};
+
+
+// Configure defaults/Loads data from localStorage
+export async function BuildWorkspace() {
+    
+    // Push cache results for itemDisplaySize to variables
+    await CacheReturnItem('itemDisplaySize')
+    .then((result) => {
+        itemDisplaySize = result;
+    })
+    .catch((error) => {
+        CacheAuditItem('itemDisplaySize', 55);
+        itemDisplaySize = 55;
+    });
+
+    // Get state of secret setting
+    CacheReturnItem('isSecretOn')
+    .then((result) => {
+        if (result) {
+            document.getElementById('secretIconCheckboxContainer').style.display = 'block';
+        };
+    });
+
+    // Slider section values
+    rangeSlider.value = itemDisplaySize;
+    rangeValueField.innerHTML = `${itemDisplaySize}px`;
+    bountyImage.style.width = `${itemDisplaySize}px`;
+
+    // Set checkboxes to chosen state, from localStorage (userCache)
+    document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
+    document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
+
+
+    // Push cache results for defaultContenteView to variabGles
+    await CacheReturnItem('defaultContentView')
+    .then((result) => {
+
+        const contentViewsThatINeedToChange = [
+            'bountiesContainer', 
+            'seasonalChallengesContainer',
+            'statisticsContainer'
+        ];
+
+        // Set default view if there is none saved already
+        if (!result) {
+            CacheAuditItem('defaultContentView', 'bountiesContainer');
+            document.getElementById(`bountiesContainer`).style.display = 'block';
+            document.getElementById('defaultViewDropdown').value = 'bountiesContainer';
+            return;
+        };
+        
+        // Filter out the content view that is not the default or the saved one
+        contentViewsThatINeedToChange
+        .forEach(value => {
+
+            if (value !== result) {
+                document.getElementById(value).style.display = 'none';
+                return;
+            };
+
+            document.getElementById(value).style.display = 'block';
+            document.getElementById('defaultViewDropdown').value = value;
+        });
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+};
+
+
+
+export async function AddEventListenersDeprecated() {
+
     log('AddEventListeners START');
     // Add listeners for buttons
     for (let a = 0; a <= 2; a++) {
@@ -137,39 +444,6 @@ export async function AddEventListeners() {
         };
     });
 
-    // Settings and back button
-    const userMainContainer = document.getElementById('userMainContainer'),
-        settingsContainer = document.getElementById('settingsContainer');
-
-    // User clicks settings button on main page
-    document.getElementById('navBarSettingsContainer').addEventListener('click', () => {
-
-        userMainContainer.style.display = 'none';
-        settingsContainer.style.display = 'block';
-    });
-
-    // User clicks the back button in settings menu
-    document.getElementById('backButtonContainer').addEventListener('click', () => {
-
-        userMainContainer.style.display = 'block';
-        settingsContainer.style.display = 'none';
-    });
-
-    // -- Mobile navbar buttons --
-    // User clicks settings button on main page
-    document.getElementById('settingsButtonMobile').addEventListener('click', () => {
-
-        userMainContainer.style.display = 'none';
-        settingsContainer.style.display = 'block';
-    });
-
-    // User clicks the back button in settings menu
-    document.getElementById('backButtonContainer').addEventListener('click', () => {
-
-        userMainContainer.style.display = 'block';
-        settingsContainer.style.display = 'none';
-    });
-    
 
     // Settings toggles input listeners
     document.getElementById('checkboxRefreshWhenFocused').addEventListener('change', function () {

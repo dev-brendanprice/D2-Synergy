@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { clear } from 'idb-keyval';
 
 const log = console.log.bind(console);
 
@@ -31,7 +30,7 @@ export const MakeRequest = function (url, config, utils) {
                     default:
                         localStorage.clear();
                         sessionStorage.clear();
-                        clear();
+                        indexedDB.deleteDatabase('keyval-store');
                         window.location.href = 'index.html';
                 };
             };

@@ -20,7 +20,7 @@
 
         <div id="navBarTitleContainer">
             <div id="navBarTitle">D2 Synergy</div>
-            <a id="navBarVersion" href="https://github.com/brendanprice2003/D2-Synergy/issues" target="_blank"></a>
+            <a id="navBarVersion" href="https://github.com/brendanprice2003/D2-Synergy/releases" target="_blank"></a>
         </div>
 
         <div id="middleNavBarItems">
@@ -59,16 +59,21 @@
         </div>
     </div>
 
-    <div id="skeletonContainer">
-        <div id="skeletonTest"></div>
-        <div id="skeletonSubContainer">
-            <div id="skeletonTest2"></div>
-            <div id="skeletonTest2"></div>
-            <div id="skeletonTest2"></div>
-        </div>
-    </div>
-
     <div id="userMainContainer">
+
+        <div id="skeletonContainer">
+            <div id="skeletonCell"></div>
+            <div id="skeletonSubContainer">
+                <div id="skeletonCell2"></div>
+                <div id="skeletonCell2"></div>
+                <div id="skeletonCell2"></div>
+                <div id="skeletonCell2"></div>
+                <div id="skeletonCell2"></div>
+                <div id="skeletonCell2"></div>
+                <div id="skeletonCell2"></div>
+                <div id="skeletonCell2"></div>
+            </div>
+        </div>
 
         <!-- Side bar that contains the nav section, characters and xp breakdown -->
         <div id="sideSelectionBar">
@@ -626,7 +631,7 @@
             </div>
             <!-- [ END OF CONTAINERS FOR EACH VIEW (BOUNTIES, SCHALLS AND STATISITCS) ] -->
 
-            <div id="levellingStatisticsContainer">
+            <div id="statisticsContainer">
 
                 <div class="levellingContainerTitle">Levelling Statistics</div>
                 <div id="currentSeasonNameField">Season of Plunder</div>
@@ -710,68 +715,69 @@
     </div>
 
     <div id="settingsContainer">
-        <div id="backButtonContainer">
-			<img id="backButtonImg" src="ico/back_arrow.png">
-			<div id="backButtonText">
-				Go Back
-			</div>
-		</div>
-
         <div id="settingsContent">
             <h1>Settings</h1>
+            <div id="settingsMenuButtonContainer">
+                <div id="settingsMenuButton">Close</div>
+            </div>
             <hr class="horizontalRuler">
 
-            <div class="settingSectionHeader">General</div>
+            <div class="settingSection">
+                <div class="settingSectionHeader">General</div>
 
-            <!-- Refresh when tab is focused -->
-            <div id="checkBox">
-                <input type="checkbox" class="checkBox" id="checkboxRefreshWhenFocused" checked>
-            </div>
-            <div class="settingText">Refresh data when browser tab is back in focus</div>
-
-            <br>
-
-            <!-- Refresh at interval -->
-            <div id="checkBox">
-                <input type="checkbox" class="checkBox" id="checkboxRefreshOnInterval">
-            </div>
-            <div class="settingText">Refresh data at 2 minute intervals</div>
-
-            <br>
-            <div class="settingSectionHeader" id="itemBorderSizeHeading">Item/Border Size</div>
-
-            <!-- Item size in px -->
-            <div id="rangeSliderContainer">
-                <div id="itemSizeText">Item Size</div>
-                <input id="itemSizeSlider" type="range" min="40" max="70" value="55">
-                <div id="itemSizeField"></div>
-                <div id="resetItemSize">Reset</div>
+                <!-- Refresh when tab is focused -->
+                <div>
+                    <div id="checkBox">
+                        <input type="checkbox" class="checkBox" id="checkboxRefreshWhenFocused" checked>
+                    </div>
+                    <div class="settingText" id="textRefreshWhenFocused">Refresh data when browser tab is back in focus</div>
+                </div>
+    
+                <!-- Refresh at interval -->
+                <div>
+                    <div id="checkBox">
+                        <input type="checkbox" class="checkBox" id="checkboxRefreshOnInterval">
+                    </div>
+                    <div class="settingText" id="textRefreshOnInterval">Refresh data at 2 minute intervals</div>
+                </div>
             </div>
 
-            <div class="settingText" id="sliderNoticeText">Note: The default size has the best clarity, keeping all screen sizes in mind.</div>
-            <div class="settingText" id="sliderPreviewText">Preview:</div>
-            <img id="settingsBountyImage" src="./images/bounty_image.png">
+            <div class="settingSection">
+                <div class="settingSectionHeader">Item/Border Size</div>
 
-            <br>
-            <div class="settingSectionHeader" id="defaultDisplayHeading">Default Display</div>
+                <!-- Item size in px -->
+                <div id="rangeSliderContainer">
+                    <div id="itemSizeText">Item Size</div>
+                    <input id="itemSizeSlider" type="range" min="40" max="70" value="55">
+                    <div id="itemSizeField"></div>
+                    <div id="resetItemSize">Reset</div>
+                </div>
 
-            <!-- Dropdown menu for default views -->
-            <form action="#">
-                <select name="Views" id="defaultViewDropdown">
-                  <option value="bountiesContainer">Bounties</option>
-                  <option value="seasonalChallengesContainer">Seasonal Challenges</option>
-                </select>
-            </form>
-            <div class="settingText" id="sliderNoticeText">This is the the display that is going to be shown when you load/refresh.</div>
+                <div class="settingText" id="sliderPreviewText">Preview:</div>
+                <img id="settingsBountyImage" src="./images/bounty_image.png">
+            </div>
 
-            <div id="secretIconCheckboxContainer">
+            <div class="settingSection">
+                <div class="settingSectionHeader">Default Page</div>
+
+                <!-- Dropdown menu for default views -->
+                <form action="#">
+                    <select name="Views" id="defaultViewDropdown">
+                        <option value="bountiesContainer">Bounties</option>
+                        <option value="seasonalChallengesContainer">Seasonal Challenges</option>
+                        <option value="statisticsContainer">Statistics</option>
+                    </select>
+                </form>
+                <div class="settingText" id="sliderNoticeText">Default page that is shown when you load/refresh.</div>
+            </div>
+
+            <div id="secretIconCheckboxContainer" class="settingSection">
                 <!-- Checkbox that swaps out synergy text names for my scribbles instead -->
-                <br>
-                <div class="settingSectionHeader" id="defaultDisplayHeading">SECRET</div>
+                <div class="settingSectionHeader">SECRET</div>
                 <div id="checkBox">
                     <input type="checkbox" class="checkBox" id="checkboxToggleSecretIcons">
                 </div>
-                <div class="settingText">Use my super-duper high quality icons >:)</div>
+                <div class="settingText" id="textToggleSecretIcons">Use my super-duper high quality icons >:)</div>
             </div>
         </div>
     </div>

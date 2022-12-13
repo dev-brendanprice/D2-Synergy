@@ -10,7 +10,6 @@ import {
     StartLoad,
     StopLoad,
     RedirUser,
-    Logout,
     LoadPrimaryCharacter,
     CacheAuditItem,
     CacheReturnItem,
@@ -28,7 +27,7 @@ import {
     SeasonalCategory,
     LocationSpecifics,
     DescriptorSpecifics } from './utils/SynergyDefinitions.js';
-import { AddEventListeners } from './utils/Events.js';
+import { AddEventListeners, BuildWorkspace } from './utils/Events.js';
 import { MakeRequest } from './utils/MakeRequest.js';
 
 
@@ -41,21 +40,12 @@ StartLoad();
 // Put version number in navbar
 document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
 
-// Adding these event listeners before the Events.js file is loaded, to avoid the blocking code
-// Add click even listener to logout button
-document.getElementById('navBarLogoutContainer').addEventListener('click', () => {
-    Logout();
-});
-document.getElementById('logoutButtonMobile').addEventListener('click', () => {
-    Logout();
-});
-
 // Utilities
 const urlParams = new URLSearchParams(window.location.search),
     sessionStorage = window.sessionStorage,
     localStorage = window.localStorage,
-    log = console.log.bind(console),
-    startTime = new Date();
+    log = console.log.bind(console);
+var startTime = new Date();
 
 
 // Defintion objects
@@ -76,7 +66,6 @@ let destinyMembershipId,
 
 
 export let ProfileProgressions;
-
 export var CurrentSeasonHash;
 
 // Object holds all bounties, by vendor, that are to be excluded from permutations
@@ -109,8 +98,8 @@ export var eventFilters = {
 // Authorization information
 export const homeUrl = import.meta.env.HOME_URL,
              axiosHeaders = {
-                 ApiKey: import.meta.env.API_KEY,
-                 Authorization: import.meta.env.AUTH
+                ApiKey: import.meta.env.API_KEY,
+                Authorization: import.meta.env.AUTH
              },
              clientId = import.meta.env.CLIENT_ID;
 
@@ -125,68 +114,6 @@ export let itemDisplaySize;
 let rangeSlider = document.getElementById('itemSizeSlider'),
     rangeValueField = document.getElementById('itemSizeField'),
     bountyImage = document.getElementById('settingsBountyImage');
-
-// Push cache results for itemDisplaySize to variables
-await CacheReturnItem('itemDisplaySize')
-    .then((result) => {
-        itemDisplaySize = result;
-    })
-    .catch((error) => {
-        CacheAuditItem('itemDisplaySize', 55);
-        itemDisplaySize = 55;
-    });
-
-// Get state of secret setting
-CacheReturnItem('isSecretOn')
-.then((result) => {
-    if (result) {
-        document.getElementById('secretIconCheckboxContainer').style.display = 'block';
-    };
-});
-
-// Slider section values
-rangeSlider.value = itemDisplaySize;
-rangeValueField.innerHTML = `${itemDisplaySize}px`;
-bountyImage.style.width = `${itemDisplaySize}px`;
-
-// Set checkboxes to chosen state, from localStorage (userCache)
-document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
-document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
-
-
-// Push cache results for defaultContenteView to variables
-await CacheReturnItem('defaultContentView')
-    .then((result) => {
-
-        const contentViewsThatINeedToChange = [
-            'bountiesContainer', 
-            'seasonalChallengesContainer'
-        ];
-
-        // Set default view if there is none saved already
-        if (!result) {
-            CacheAuditItem('defaultContentView', 'bountiesContainer');
-            document.getElementById(`bountiesContainer`).style.display = 'block';
-            document.getElementById('defaultViewDropdown').value = 'bountiesContainer';
-            return;
-        };
-        
-        // Filter out the content view that is not the default or the saved one
-        contentViewsThatINeedToChange
-        .forEach(value => {
-
-            if (value !== result) {
-                document.getElementById(value).style.display = 'none';
-                return;
-            };
-
-            document.getElementById(value).style.display = 'block';
-            document.getElementById('defaultViewDropdown').value = value;
-        });
-    })
-    .catch((error) => {
-        console.error(error);
-    });
 
 
 // Collate all definition arrays into one array
@@ -488,14 +415,6 @@ export async function FetchBungieUserDetails() {
 
 
 
-// Load seasonal challenges, sort via completion amount, and push to HTML
-// export async function LoadSeasonalChallenges() {
-
-    
-// };
-
-
-
 // Anonymous function for main
 // @boolean {isPassiveReload}
 export async function MainEntryPoint(isPassiveReload) {
@@ -552,15 +471,24 @@ export async function MainEntryPoint(isPassiveReload) {
 
 // Run main after DOM content has loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // MainEntryPoint()
+
+    // Test server availability
+    // MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: false})
+    //     .then((response) => {
+    //         log(response);
+    //     })
     //     .catch((error) => {
     //         console.error(error);
     //     });
 
-    MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: false})
-        .then((response) => {
-            log(response);
-        })
+    // Build workspace -- default fields etc.
+    BuildWorkspace()
+        .catch((error) => {
+            console.error(error);
+        });
+
+    // Run main
+    MainEntryPoint()
         .catch((error) => {
             console.error(error);
         });

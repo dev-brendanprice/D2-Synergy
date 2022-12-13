@@ -296,7 +296,7 @@ html, body {
 /* Scrollbar */
 ::-webkit-scrollbar { /* Width */
     width: 7px;
-}
+}s
 ::-webkit-scrollbar-track { /* Track */
     background: none;
 }
@@ -319,6 +319,7 @@ hr.horizontalRuler {
     margin-top: 10px;
     margin-bottom: 10px;
     height: 1px;
+    width: 100%;
 	border: none;
 	background-color: #adadad;
 }

@@ -13,37 +13,64 @@ body {
 }
 
 #userMainContainer {
-    /* display: none !important; */
+    display: none !important;
     position: absolute;
     margin-top: 60px;
     z-index: 0;
 }
 
 #settingsContainer {
-    position: absolute;
-    display: none;
+    display: block !important;
+    margin: auto;
     height: 200px;
+    width: 50vw;
     color: white;
+    user-select: none;
+}
+
+#settingsMenuButtonContainer {
+    display: flex;
+    margin-top: -35px;
+    margin-bottom: 10px;
+    float: right;
+    gap: 10px;
+}
+
+#settingsMenuButton {
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: rgb(58, 58, 58);
+    border: 1px solid rgb(119, 119, 119);
+    cursor: pointer;
+}
+
+#settingsMenuButton:hover {
+    background-color: rgb(52, 52, 52);
+}
+
+#settingsMenuButton:active {
+    background-color: rgb(46, 46, 46);
 }
 
 #settingsContent {
-    margin-top: 100px;
-    margin-left: 20px;
+    display: block;
     font-size: 24px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.settingSection {
+    padding: 12px;
+    margin-top: 15px;
+    width: 100%;
+    background-color: rgb(52, 52, 52);
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .settingSectionHeader {
     font-size: 20px;
     font-weight: 600;
-}
-
-#itemBorderSizeHeading {
-    margin-top: 30px;
-}
-
-#defaultDisplayHeading {
-    margin-top: 30px;
 }
 
 .propertySubheadings {
@@ -70,9 +97,8 @@ body {
 }
 
 #backButtonContainer {
-    position: absolute;
-	margin-top: 60px;
-    margin-left: 20px;
+	/* margin-top: 60px;
+    margin-left: 20px; */
 	width: 125px;
 	height: 28px;
 	cursor: pointer;
@@ -183,9 +209,14 @@ body {
     display: inline-flex;
 }
 
+.checkBox {
+    cursor: pointer;
+}
+
 .settingText {
     display: inline-flex;
     font-size: 16px;
+    /* border: 1px blue solid; */
 }
 
 #secretIconCheckboxContainer {
@@ -228,15 +259,19 @@ body {
     padding-bottom: 2px;
     padding-left: 8px;
     padding-right: 8px;
+    background-color: rgb(58, 58, 58);
+    border: 1px solid rgb(119, 119, 119);
     font-size: 16px;
-    border: 1px solid gray;
     border-radius: 2px;
     cursor: pointer;
-    background-color: rgb(49, 49, 49);
 }
 
 #resetItemSize:hover {
-    background-color: rgb(84, 84, 84);
+    background-color: rgb(52, 52, 52);
+}
+
+#resetItemSize:active {
+    background-color: rgb(46, 46, 46);
 }
 
 #sliderNoticeText {
@@ -547,15 +582,17 @@ hr.challengeBreakline {
 
 #skeletonContainer {
     display: flex;
+    margin-top: -55px;
 }
 
 #skeletonSubContainer {
     display: flex;
     margin-left: 50px;
-    gap: 20px;
+    flex-direction: column;
+    align-content: space-around;
 }
 
-#skeletonTest {
+#skeletonCell {
     margin-top: 10px;
     width: 15vw;
     height: 65vh;
@@ -563,10 +600,10 @@ hr.challengeBreakline {
     animation: example 2s ease-in infinite;
 }
 
-#skeletonTest2 {
+#skeletonCell2 {
     margin-top: 10px;
-    width: 26vw;
-    height: 85vh;
+    width: 80vw;
+    height: 10vh;
     border-radius: 5px;
     animation: example 2s ease-in infinite;
 }

@@ -750,6 +750,9 @@ export async function LoadPrimaryCharacter(characters) {
         else {
             await LoadCharacter(data, characters);
         };
+    })
+    .catch((error) => {
+        console.error(error);
     });
 
 };
