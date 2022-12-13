@@ -11,8 +11,6 @@ import {
     StopLoad,
     RedirUser,
     LoadPrimaryCharacter,
-    CacheAuditItem,
-    CacheReturnItem,
     parsePropertyNameIntoWord } from './utils/ModuleScript.js';
 import {
     CurrentlyAddedVendors,
@@ -111,9 +109,6 @@ axios.defaults.headers.common = {
 
 // Assign element fields for user settings
 export let itemDisplaySize;
-let rangeSlider = document.getElementById('itemSizeSlider'),
-    rangeValueField = document.getElementById('itemSizeField'),
-    bountyImage = document.getElementById('settingsBountyImage');
 
 
 // Collate all definition arrays into one array
@@ -473,13 +468,13 @@ export async function MainEntryPoint(isPassiveReload) {
 document.addEventListener('DOMContentLoaded', () => {
 
     // Test server availability
-    MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: false})
-        .then((response) => {
-            log(response);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+    // MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: false})
+    //     .then((response) => {
+    //         log(response);
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //     });
 
     // Build workspace -- default fields etc.
     BuildWorkspace()

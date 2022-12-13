@@ -224,20 +224,20 @@ body {
 }
 
 #rangeSliderContainer {
-    display: inline-block;
+    display: flex;
     margin-bottom: 20px;
 }
 
 #itemSizeText {
     position: absolute;
-    display: inline-block;
+    /* display: inline-block; */
     margin-top: 5px;
     font-size: 16px;
 }
 
 #itemSizeSlider {
     position: absolute;
-    display: inline-flex;
+    /* display: inline-flex; */
     margin-top: 9px;
     margin-left: 75px;
     width: 300px;
@@ -245,7 +245,7 @@ body {
 
 #itemSizeField {
     position: absolute;
-    display: inline-block;
+    /* display: inline-block; */
     margin-top: 5px;
     margin-left: 385px;
     font-size: 16px;

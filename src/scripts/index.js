@@ -67,6 +67,10 @@ window.addEventListener('DOMContentLoaded', () => {
     // Listen for authorize button click
     document.getElementById('btnAuthorize').addEventListener('click', () => {
 
+        const stateCode = GenerateRandomString(128);
+        localStorage.setItem('stateCode', stateCode);
+        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
+
         // Check for server availability
         MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', { headers: { 'X-API-Key': apiKey } }, {scriptOrigin: 'index', avoidCache: false})
         .then((response) => {
@@ -78,7 +82,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
             };
 
-            // Throw an error, if else
+            // Else throw error
             throw new Error('Servers are down!');
 
         })

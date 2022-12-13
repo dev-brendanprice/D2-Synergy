@@ -116,6 +116,14 @@ body {
 	cursor: pointer;
 }
 
+#btnAuthorize:hover {
+    background-color: #c13d40;
+}
+
+#btnAuthorize:active {
+    background-color: #b03638;
+}
+
 #iconsContainer {
     display: flex;
     margin-top: 30px;

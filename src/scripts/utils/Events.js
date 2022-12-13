@@ -252,6 +252,10 @@ export async function AddEventListeners() {
 
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
+
+    let rangeSlider = document.getElementById('itemSizeSlider'),
+        rangeValueField = document.getElementById('itemSizeField'),
+        bountyImage = document.getElementById('settingsBountyImage');
     
     // Push cache results for itemDisplaySize to variables
     await CacheReturnItem('itemDisplaySize')
