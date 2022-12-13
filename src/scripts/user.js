@@ -473,13 +473,13 @@ export async function MainEntryPoint(isPassiveReload) {
 document.addEventListener('DOMContentLoaded', () => {
 
     // Test server availability
-    // MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: false})
-    //     .then((response) => {
-    //         log(response);
-    //     })
-    //     .catch((error) => {
-    //         console.error(error);
-    //     });
+    MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: false})
+        .then((response) => {
+            log(response);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
     // Build workspace -- default fields etc.
     BuildWorkspace()
