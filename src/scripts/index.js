@@ -46,29 +46,54 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Check for server availability
     MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', { headers: { 'X-API-Key': apiKey } }, {scriptOrigin: 'index', avoidCache: false})
-    .catch((error) => {
-        console.error(error);
-        if (!response.data.Response.systems.Destiny2.enabled) {
-            document.getElementById('serverDeadContainer').style.display = 'block';
-            document.getElementById('websiteAlphaNotice').style.display = 'none';
-            return;
-        };
+        .catch((error) => {
 
-        document.getElementById('websiteAlphaNotice').style.display = 'block';
-    });
+            console.error(error);
+            if (!response.data.Response.systems.Destiny2.enabled) {
+                document.getElementById('serverDeadContainer').style.display = 'block';
+                document.getElementById('websiteAlphaNotice').style.display = 'none';
+                return;
+            };
+
+            document.getElementById('websiteAlphaNotice').style.display = 'block';
+        });
 
     // Put version number in navbar
     document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
 
-    // Listen for authorize button click
-    document.getElementById('btnAuthorize').addEventListener('click', async () => {
-
-        const stateCode = await GenerateRandomString(128);
-        localStorage.setItem('stateCode', stateCode);
-        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
-    });
-
     // Check for a pre-existing session
     CheckSession();
+
+    // Listen for authorize button click
+    document.getElementById('btnAuthorize').addEventListener('click', () => {
+
+        // Check for server availability
+        MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', { headers: { 'X-API-Key': apiKey } }, {scriptOrigin: 'index', avoidCache: false})
+        .then((response) => {
+            
+            // Do main stuff
+            if (response.status === 200) {
+                const stateCode = GenerateRandomString(128);
+                localStorage.setItem('stateCode', stateCode);
+                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
+            };
+
+            // Throw an error, if else
+            throw new Error('Servers are down!');
+
+        })
+        .catch((error) => {
+
+            // Do error stuff
+            console.error(error);
+            if (!response.data.Response.systems.Destiny2.enabled) {
+                document.getElementById('serverDeadContainer').style.display = 'block';
+                document.getElementById('websiteAlphaNotice').style.display = 'none';
+                return;
+            };
+
+            document.getElementById('websiteAlphaNotice').style.display = 'block';
+        });
+    });
 });
 
