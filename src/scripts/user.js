@@ -108,7 +108,12 @@ axios.defaults.headers.common = {
 
 
 // Assign element fields for user settings
-export let itemDisplaySize;
+export let itemDisplay = {
+    itemDisplaySize: 55, // Default
+    UpdateItemSize: function(size) {
+        this.itemDisplaySize;
+    }
+};
 
 
 // Collate all definition arrays into one array

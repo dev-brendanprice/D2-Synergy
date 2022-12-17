@@ -7,7 +7,7 @@ import {
     petraYields,
     ActivityMode } from "./SynergyDefinitions.js";
 import {
-    itemDisplaySize,
+    itemDisplay,
     eventFilters,
     charBounties,
     excludedBountiesByVendor,
@@ -137,7 +137,7 @@ export async function MakeBountyElement(param) {
     item.className = `bounty`;
     item.id = `bounty_${param.hash}`;
     item.src = `https://www.bungie.net${param.displayProperties.icon}`;
-    item.style.width = `${itemDisplaySize}px`;
+    item.style.width = `${itemDisplay.itemDisplaySize}px`;
     document.querySelector('#bountyItems').appendChild(item);
 
     // Create overlay element

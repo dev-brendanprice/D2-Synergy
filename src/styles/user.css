@@ -13,14 +13,14 @@ body {
 }
 
 #userMainContainer {
-    display: none !important;
+    display: block;
     position: absolute;
     margin-top: 60px;
     z-index: 0;
 }
 
 #settingsContainer {
-    display: block !important;
+    display: none;
     margin: auto;
     height: 200px;
     width: 50vw;
@@ -373,7 +373,7 @@ h2 {
 }
 
 #bountiesContainer {
-    display: none !important;
+    display: none;
 }
 
 #seasonChallengeControlGridContainer {
@@ -423,7 +423,7 @@ h2 {
 }
 
 #seasonalChallengesContainer {
-    display: none !important;
+    display: none;
 }
 
 .challengeContainer {

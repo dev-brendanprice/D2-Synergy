@@ -2,7 +2,7 @@ import {
     charBounties,
     MainEntryPoint, 
     eventFilters,
-    itemDisplaySize } from '../user.js';
+    itemDisplay } from '../user.js';
 import { 
     CacheAuditItem, 
     CacheReturnItem,
@@ -220,6 +220,14 @@ export async function AddEventListeners() {
     });
 
 
+    // Bounties tab click
+    AddListener('navBarBountiesButton', 'click', function () {
+        document.getElementById('statisticsContainer').style.display = 'none';
+        document.getElementById('seasonalChallengesContainer').style.display = 'none';
+        document.getElementById('bountiesContainer').style.display = 'block';
+    });
+
+
     // Secret setting checkbox
     AddListener('checkboxToggleSecretIcons', 'change', function () {
             
@@ -260,11 +268,11 @@ export async function BuildWorkspace() {
     // Push cache results for itemDisplaySize to variables
     await CacheReturnItem('itemDisplaySize')
     .then((result) => {
-        itemDisplaySize = result;
+        itemDisplay.UpdateItemSize(result);
     })
     .catch((error) => {
         CacheAuditItem('itemDisplaySize', 55);
-        itemDisplaySize = 55;
+        itemDisplay.UpdateItemSize(55);
     });
 
     // Get state of secret setting
@@ -276,9 +284,9 @@ export async function BuildWorkspace() {
     });
 
     // Slider section values
-    rangeSlider.value = itemDisplaySize;
-    rangeValueField.innerHTML = `${itemDisplaySize}px`;
-    bountyImage.style.width = `${itemDisplaySize}px`;
+    rangeSlider.value = itemDisplay.itemDisplaySize;
+    rangeValueField.innerHTML = `${itemDisplay.itemDisplaySize}px`;
+    bountyImage.style.width = `${itemDisplay.itemDisplaySize}px`;
 
     // Set checkboxes to chosen state, from localStorage (userCache)
     document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');

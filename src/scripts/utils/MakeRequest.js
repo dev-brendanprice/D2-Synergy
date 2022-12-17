@@ -15,9 +15,13 @@ export const MakeRequest = function (url, config, utils) {
 
         // API down, Servers down, or other error
         function CheckForErrorStatus(response, promise) {
+            
+            if (response.data.Response) {
+                document.getElementById('websiteAlphaNotice').style.display = 'none';
+            }
 
             // Clear localStorage, sessionStorage, idb and redirect user to index.html
-            if (response.response.data.ErrorCode === 5 || response.response.data.ErrorStatus === 'SystemDisabled') {
+            else if (response.response.data.ErrorCode === 5 || response.response.data.ErrorStatus === 'SystemDisabled') {
 
                 // Check for script origin
                 switch (utils.scriptOrigin) {
