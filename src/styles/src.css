@@ -128,14 +128,13 @@ body {
     width: 40px;
     filter: invert(80%);
     user-select: none;
+    cursor: pointer;
 }
 .bottomNavBarIcons:hover {
     filter: invert(100%);
-    cursor: pointer;
 }
 .bottomNavBarIcons:active {
     filter: invert(80%);
-    cursor: pointer;
 }
 
 #navBarBountiesButton:hover {

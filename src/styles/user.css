@@ -8,6 +8,11 @@
     --blurFilterAmount: 3px;
 }
 
+#contextMenuSettingsMobile {
+    margin-top: 3px;
+    width: 28px;
+}
+
 #userMainContainer {
     display: block;
     /* position: absolute; */
@@ -76,7 +81,7 @@
     filter: invert(22%) sepia(0%) saturate(1%) hue-rotate(7deg) brightness(80%) contrast(83%);
 }
 
-#bruh {
+#settingsFooter {
     position: absolute;
     left: 0;
     right: 0;
@@ -330,8 +335,8 @@ h2 {
     margin-top: 10px;
     margin-bottom: 50px;
     margin-left: -5px;
-    cursor: pointer;
     user-select: none;
+    cursor: pointer;
 }
 
 #settingsBackButtonContainer:active > #settingsBackArrow {

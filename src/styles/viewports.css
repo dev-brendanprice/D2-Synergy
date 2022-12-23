@@ -206,16 +206,17 @@
     #heading {
         margin-bottom: 20px;
     }
-}
 
-
-@media screen and (max-width: 480px) {
     #bottomMiddleNavBarItems {
         gap: 15%;
     }
     
     .bottomNavBarIcons {
         width: 30px;
+    }
+
+    #contextMenuSettingsMobile {
+        width: 25px;
     }
 }
 

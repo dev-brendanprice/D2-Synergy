@@ -55,7 +55,7 @@
         <img class="bottomNavBarIcons" src="./ico/pursuits.svg">
         <img class="bottomNavBarIcons" src="./ico/meditations.svg">
         <img class="bottomNavBarIcons" src="./ico/vault.svg" style="margin-top: 3px;">
-        <img class="bottomNavBarIcons" src="./ico/menu_stack.svg" style="margin-top: 3px;width: 25px;">
+        <img class="bottomNavBarIcons" id="contextMenuSettingsMobile" src="./ico/menu_stack.svg">
     </div>
     
     <div id="loadBarContainer">
@@ -67,24 +67,6 @@
     </div>
 
     <div id="userMainContainer">
-
-        <div id="skeletonContainer">
-            <div id="one">
-                <div id="skeletonCellLeft"></div>
-                <div id="skeletonSubContainer">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-            <div id="two">
-                <div id="skeletonSubContainer">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-        </div>
 
         <div id="settingsContainerMobile">
             <div id="settingsBackButtonContainer">
@@ -113,11 +95,29 @@
                 </div>
             </div>
             
-            <div id="bruh">
+            <div id="settingsFooter">
                 <div style="margin-bottom: 5px;">Version: 0.4.2</div>
                 <div>
                     <img id="githubIcon" src="./ico/github.png">
                     <img id="twitterIcon" src="./ico/twitter.png">
+                </div>
+            </div>
+        </div>
+
+        <div id="skeletonContainer">
+            <div id="one">
+                <div id="skeletonCellLeft"></div>
+                <div id="skeletonSubContainer">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div id="two">
+                <div id="skeletonSubContainer">
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
             </div>
         </div>
@@ -209,9 +209,9 @@
             </div>
 
         </div>
-    
+
         <div id="contentDisplay">
-            
+
             <!-- [ CONTAINERS FOR EACH VIEW (BOUNTIES, SCHALLS AND STATISITCS) ] -->
             <div id="bountiesContainer">
 
@@ -676,7 +676,6 @@
                 </div>
 
             </div>
-            <!-- [ END OF CONTAINERS FOR EACH VIEW (BOUNTIES, SCHALLS AND STATISITCS) ] -->
 
             <div id="statisticsContainer">
 
@@ -751,6 +750,7 @@
                 </div>
     
             </div>
+            <!-- [ END OF CONTAINERS FOR EACH VIEW (BOUNTIES, SCHALLS AND STATISITCS) ] -->
 
         </div>
 

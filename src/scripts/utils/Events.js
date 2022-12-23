@@ -45,8 +45,24 @@ export async function AddEventListeners() {
 
     // Settings button
     AddListener('navBarSettingsIcon', 'click', function () {
-        // document.getElementById('userMainContainer').style.display = 'none';
-        document.getElementById('settingsContainerMobile').style.display = 'block';
+
+        let skeletonContainer = document.getElementById('skeletonContainer'),
+            settingsContainer = document.getElementById('settingsContainerMobile');
+
+        if (skeletonContainer.style.display === 'none') {
+            settingsContainer.style.display = 'none';
+            skeletonContainer.style.display = 'flex';
+            return;
+        };
+
+        settingsContainer.style.display = 'block';
+        skeletonContainer.style.display = 'none';
+    });
+
+
+    AddListener('settingsBackButtonContainer', 'click', function () {
+        document.getElementById('skeletonContainer').style.display = 'flex';
+        document.getElementById('settingsContainerMobile').style.display = 'none';
     });
 
 
@@ -330,8 +346,8 @@ export async function BuildWorkspace() {
 };
 
 
-
-export async function AddEventListenersDeprecated() {
+// DEPRECATED
+async function AddEventListenersDeprecated() {
 
     log('AddEventListeners START');
     // Add listeners for buttons
