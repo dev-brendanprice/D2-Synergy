@@ -92,6 +92,12 @@
     user-select: none;
 }
 
+#settingsFooterVersionContainer {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto;
+}
+
 .settingSection {
     padding: 12px;
     margin-top: 15px;
@@ -249,7 +255,6 @@
 .settingText {
     display: inline-flex;
     font-size: 16px;
-    /* border: 1px blue solid; */
 }
 
 #secretIconCheckboxContainer {
