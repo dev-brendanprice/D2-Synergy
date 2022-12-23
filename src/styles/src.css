@@ -26,7 +26,7 @@ body {
     height: 2px;
     width: 100vw;
     background-color: rgba(237, 77, 77, 0.8);
-    box-shadow: 0px 0px 10px 1px rgb(237, 77, 77);
+    box-shadow: 0px 0px 10px 1px #ED4D4D;
     z-index: 99; /* Keep box shadow on top of navbar */
 }
 
@@ -58,7 +58,7 @@ body {
 #navBarVersion {
     display: inline-block;
     font-size: 15px;
-    color: rgb(203,116,116);
+    color: #677474;
     text-decoration: none;
     user-select: none;
 }
@@ -100,7 +100,7 @@ body {
     margin-top: 3px;
     margin-right: 180px;
     gap: 40px;
-    color: rgb(191, 191, 191);
+    color: #BFBFBF;
     font-size: 18px;
     user-select: none;
     align-items: center;
@@ -114,8 +114,8 @@ body {
     width: 100vw;
     gap: 15%;
     justify-content: center;
-    background-color: rgb(30, 30, 30);
-    color: rgb(193, 193, 193);
+    background-color: #1E1E1E;
+    color: #C1C1C1;
 }
 
 .fubar {
@@ -319,7 +319,7 @@ body {
     background: none;
 }
 ::-webkit-scrollbar-thumb { /* Handle */
-    background: rgb(116, 116, 116); 
+    background: #747474; 
     border-radius: 12px;
 }
 ::-webkit-scrollbar-thumb:hover { /* Handle on hover */

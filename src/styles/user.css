@@ -41,17 +41,17 @@
     padding: 5px;
     box-sizing: border-box;
     font-size: 16px;
-    background-color: rgb(58, 58, 58);
-    border: 1px solid rgb(119, 119, 119);
+    background-color: #3A3A3A;
+    border: 1px solid #777777;
     cursor: pointer;
 }
 
 #settingsMenuButton:hover {
-    background-color: rgb(52, 52, 52);
+    background-color: #343434;
 }
 
 #settingsMenuButton:active {
-    background-color: rgb(46, 46, 46);
+    background-color: #2E2E2E;
 }
 
 #settingsContent {
@@ -86,7 +86,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    color: rgb(100, 100, 100);
+    color: #646464;
     font-size: 13px;
     text-align: center;
     user-select: none;
@@ -102,7 +102,7 @@
     padding: 12px;
     margin-top: 15px;
     width: 100%;
-    background-color: rgb(52, 52, 52);
+    background-color: #343434;
     border-radius: 5px;
     box-sizing: border-box;
 }
@@ -165,7 +165,7 @@
     padding-bottom: 7px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     border-radius: 5px;
-    border: 1px solid rgb(154, 92, 21);
+    border: 1px solid #9A5C15;
     background-color: rgba(255, 143, 15, 0.681);
     user-select: none;
 }
@@ -209,9 +209,9 @@
     left: 0;
     right: 0;
     text-align: center;
-    border: 1px solid rgb(156, 156, 156);
+    border: 1px solid #9C9C9C;
     border-radius: 5px;
-    background-color: rgb(66,66,66);
+    background-color: #424242;
     color: white;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     z-index: 100; /* Make sure this is always on top */
@@ -233,14 +233,14 @@
     padding-left: 6px;
     padding-right: 6px;
     bottom: 0;
-    background-color: rgb(41, 41, 41);
+    background-color: #292929;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
 }
 
 #availableVendorPopupClose:hover {
-    background-color: rgb(91, 91, 91);
+    background-color: #5B5B5B;
     transition: all 0.1s ease-in-out;
 }
 
@@ -297,19 +297,19 @@
     padding-bottom: 2px;
     padding-left: 8px;
     padding-right: 8px;
-    background-color: rgb(58, 58, 58);
-    border: 1px solid rgb(119, 119, 119);
+    background-color: #3A3A3A;
+    border: 1px solid #777777;
     font-size: 16px;
     border-radius: 2px;
     cursor: pointer;
 }
 
 #resetItemSize:hover {
-    background-color: rgb(52, 52, 52);
+    background-color: #343434;
 }
 
 #resetItemSize:active {
-    background-color: rgb(46, 46, 46);
+    background-color: #2E2E2E;
 }
 
 #sliderNoticeText {
@@ -349,7 +349,7 @@ h2 {
 }
 
 #settingsBackButtonContainer:active > #settingsBackArrowSubtext {
-    color: rgb(255, 255, 255);
+    color: #FFFFFF;
 }
 
 #settingsBackArrow {
@@ -361,7 +361,7 @@ h2 {
 #settingsBackArrowSubtext {
     margin-top: 3.5px;
     font-size: 14px;
-    color: rgb(172, 172, 172);
+    color: #ACACAC;
 }
 
 #settingsContainerMobile {
@@ -400,7 +400,7 @@ h2 {
     margin-top: 3px;
     margin-left: 10px;
     font-size: 12px;
-    color: rgb(150, 150, 150);
+    color: #969696;
 }
 
 #settingCategory:active {
@@ -411,8 +411,8 @@ h2 {
 #settingBottomCategories {
     padding: 8px;
     margin-top: 10px;
-    background-color: rgb(58, 58, 58);
-    border: 1px solid rgb(140, 140, 140);
+    background-color: #3A3A3A;
+    border: 1px solid #8C8C8C;
     cursor: pointer;
     user-select: none;
     text-decoration: none;
@@ -420,11 +420,11 @@ h2 {
 }
 
 #settingBottomCategories:hover {
-    background-color: rgb(100, 100, 100);
+    background-color: #646464;
 }
 
 #settingBottomCategories:active {
-    background-color: rgb(58, 58, 58);
+    background-color: #3A3A3A;
 }
 
 #settingCategoriesMobile2 {
@@ -521,7 +521,7 @@ h2 {
     display: inline-block;
     padding: 3px;
     padding-top: 8px;
-    border: 1px solid rgb(140, 140, 140);
+    border: 1px solid #8C8C8C;
     border-radius: 2px;
     background-color: rgba(60, 60, 60, 0.461);
     user-select: none;
@@ -564,9 +564,9 @@ h2 {
 
 .challengeContainer {
     width: 100%;
-    border: 1px solid rgb(140, 140, 140);
+    border: 1px solid #8C8C8C;
     border-radius: 2px;
-    background-color:rgba(60, 60, 60, 0.461);
+    background-color: rgba(60, 60, 60, 0.461);
     color: white;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
 }
@@ -677,7 +677,7 @@ hr.challengeBreakline {
 #noItemsTooltip {
     display: none;
     padding-top: 25px;
-    color: rgb(118, 118, 118);
+    color: #767676;
     font-size: 15px;
     font-style: italic;
 
@@ -691,7 +691,7 @@ hr.challengeBreakline {
 #categories > div {
     padding-top: 7px;
     padding-bottom: 7px;
-    color: rgb(205, 203, 203);
+    color: #CDCBCB;
     letter-spacing: 1px;
 
     cursor: pointer;
@@ -786,7 +786,6 @@ hr.challengeBreakline {
     color: white;
     font-weight: 0;
     letter-spacing: 1.3px;
-
     font-size: 18px;
 }
 
@@ -794,8 +793,8 @@ hr.challengeBreakline {
     position: absolute;
     margin-left: 54px;
     margin-top: 25px;
-    color: rgba(255, 234, 0, 0.755);
-
+    color: #ffea00;
+    opacity: 0.7;
     font-size: 15px;
 }
 
@@ -821,8 +820,7 @@ hr.challengeBreakline {
     display: inline-block;
     padding-bottom: 7px;
     text-align: left;
-    color: rgb(205, 203, 203);
-
+    color: #CDCBCB;
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -831,8 +829,7 @@ hr.challengeBreakline {
     display: inline-block;
     margin-top: 16px;
     text-align: left;
-    color: rgb(205, 203, 203);
-
+    color: #CDCBCB;
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -850,11 +847,10 @@ hr.challengeBreakline {
     padding: 3px;
     left: 95px;
     width: 90px;
-    color: rgb(205, 203, 203);
-
+    color: #CDCBCB;
     font-size: 11px;
-    background-color: rgb(49, 49, 49);
-    border: 1px solid rgb(88, 88, 88);
+    background-color: #313131;
+    border: 1px solid #585858;
     border-radius: 3px;
 }
 
@@ -875,8 +871,7 @@ hr.challengeBreakline {
     display: inline-block;
     padding-top: 3px;
     padding-bottom: 3px;
-    color: rgb(205, 203, 203);
-
+    color: #CDCBCB;
 }
 
 #netStatsContainer {
@@ -886,8 +881,7 @@ hr.challengeBreakline {
 #netStatsContainer > div {
     padding-top: 3px;
     padding-bottom: 3px;
-    color: rgb(205, 203, 203);
-
+    color: #CDCBCB;
 }
 
 .statsCheckmark {
@@ -905,7 +899,7 @@ hr.challengeBreakline {
 
 .netStatBuffHeading {
     display: inline-block;
-    color: rgb(141, 219, 255) !important;
+    color: #8DDBFF !important;
     font-style: italic;
     text-decoration: underline;
     user-select: none;
@@ -929,7 +923,7 @@ hr.challengeBreakline {
     width: 45px;
     text-align: center;
     font-variant-numeric: normal;
-    background-color: rgb(26, 26, 30);
+    background-color: #1A1A1E;
     border-radius: 3px;
 }
 
@@ -969,8 +963,8 @@ hr.challengeBreakline {
     padding-left: 10px;
     padding-right: 10px;
     margin: 0 auto;
-    background-color: rgb(27, 27, 27);
-    border: 1px solid rgb(100, 100, 100);
+    background-color: #1B1B1B;
+    border: 1px solid #646464;
     border-radius: 5px;
     justify-content: left;
     text-align: left;
@@ -983,8 +977,8 @@ hr.challengeBreakline {
     padding-left: 10px;
     padding-right: 10px;
     margin: 0 auto;
-    background-color: rgb(27, 27, 27);
-    border: 1px solid rgb(100, 100, 100);
+    background-color: #1B1B1B;
+    border: 1px solid #646464;
     border-radius: 5px;
     justify-content: left;
     text-align: left;
@@ -1059,10 +1053,9 @@ hr.challengeBreakline {
     padding-left: 4px;
     padding-right: 4px;
     width: fit-content;
-    background-color: rgb(70, 70, 70);
-    border: 1px solid rgb(100, 100, 100);
+    background-color: #464646;
+    border: 1px solid #646464;
     border-radius: 3px;
-
     font-size: 15px;
     font-variant-numeric: tabular-nums;
 }
@@ -1088,10 +1081,9 @@ hr.challengeBreakline {
     padding-left: 4px;
     padding-right: 4px;
     width: fit-content;
-    background-color: rgb(70, 70, 70);
-    border: 1px solid rgb(100, 100, 100);
+    background-color: #464646;
+    border: 1px solid #646464;
     border-radius: 3px;
-
     font-size: 15px;
     font-variant-numeric: tabular-nums;
 }
@@ -1104,10 +1096,9 @@ hr.challengeBreakline {
     padding-left: 4px;
     padding-right: 4px;
     width: fit-content;
-    background-color: rgb(70, 70, 70);
-    border: 1px solid rgb(100, 100, 100);
+    background-color: #464646;
+    border: 1px solid #646464;
     border-radius: 3px;
-
     font-size: 15px;
     font-variant-numeric: tabular-nums;
 }
@@ -1136,15 +1127,13 @@ hr.challengeBreakline {
 #levellingContentDisplay > div {
     padding-top: 7px;
     padding-bottom: 3px;
-    color: rgb(205, 203, 203);
-
+    color: hsl(0, 2%, 80%);
 }
 
 #levellingStatsDisplay > div {
     padding-top: 7px;
     padding-bottom: 3px;
-    color: rgb(205, 203, 203);
-
+    color: #CDCBCB;
 }
 
 #statsTableLayoutContainer {
@@ -1158,12 +1147,11 @@ hr.challengeBreakline {
     border: #555 1px solid;
     border-radius: 5px;
     color: white;
-
 }
 
 .containerMetricNumber {
     display: inline-block;
-    color: rgb(141, 219, 255);
+    color: #8DDBFF;
 }
 
 /* Seasonal artifact statistic container */
@@ -1177,7 +1165,6 @@ hr.challengeBreakline {
     width: 100%;
     height: 100%;
     z-index: -1;
-
     filter: brightness(50%) blur(var(--blurFilterAmount));
 }
 #artifactStatsContentContainer {
@@ -1238,7 +1225,7 @@ hr.challengeBreakline {
     margin-left: 3px;
     font-size: 20px;
     font-weight: 600;
-    color: rgb(141, 219, 255);
+    color: #8DDBFF;
     z-index: 10;
 }
 #artifactStatsNoArtifactIsPresent {
@@ -1272,7 +1259,7 @@ hr.challengeBreakline {
     right: 0;
     width: 100px;
     height: 150px;
-    background-color: rgb(87, 87, 87);
+    background-color: #575757;
 }
 
 
@@ -1288,7 +1275,6 @@ hr.challengeBreakline {
     width: 100%;
     height: 100%;
     z-index: -1;
-
     filter: brightness(50%) blur(var(--blurFilterAmount));
 }
 #seasonPassContentContainer {
@@ -1335,7 +1321,7 @@ hr.challengeBreakline {
 }
 #seasonPassFireteamBonus {
     margin-top: 10px;
-    color: rgb(141, 219, 255);
+    color: #8DDBFF;
 }
 #seasonPassFireteamBonusSuffix { 
     margin-top: -18px;
@@ -1348,7 +1334,7 @@ hr.challengeBreakline {
 }
 #seasonPassXpBonus {
     margin-top: 10px;
-    color: rgb(141, 219, 255);
+    color: #8DDBFF;
 }
 #seasonPassXpBonusSuffix { 
     margin-top: -18px;
@@ -1368,7 +1354,6 @@ hr.challengeBreakline {
     width: 100%;
     height: 100%;
     z-index: -1;
-
     filter: brightness(50%) blur(var(--blurFilterAmount));
 }
 #brightEngramContentContainer {
@@ -1423,9 +1408,9 @@ hr.challengeBreakline {
 
 /* Animations */
 @keyframes example {
-    0%   {background-color: rgba(147, 147, 147, 0.3);}
-    10%  {background-color: rgba(190, 190, 190, 0.3);}
-    15%  {background-color: rgba(190, 190, 190, 0.3);}
+    0% {background-color: rgba(147, 147, 147, 0.3);}
+    10% {background-color: rgba(190, 190, 190, 0.3);}
+    15% {background-color: rgba(190, 190, 190, 0.3);}
     30% {background-color: rgba(147, 147, 147, 0.3);}
     100% {background-color: rgba(147, 147, 147, 0.3);}
 }
