@@ -51,11 +51,8 @@ window.addEventListener('DOMContentLoaded', () => {
             console.error(error);
             if (!response.data.Response.systems.Destiny2.enabled) {
                 document.getElementById('serverDeadContainer').style.display = 'block';
-                document.getElementById('websiteAlphaNotice').style.display = 'none';
                 return;
             };
-
-            document.getElementById('websiteAlphaNotice').style.display = 'block';
         });
 
     // Put version number in navbar
@@ -92,11 +89,8 @@ window.addEventListener('DOMContentLoaded', () => {
             console.error(error);
             if (!response.data.Response.systems.Destiny2.enabled) {
                 document.getElementById('serverDeadContainer').style.display = 'block';
-                document.getElementById('websiteAlphaNotice').style.display = 'none';
                 return;
             };
-
-            document.getElementById('websiteAlphaNotice').style.display = 'block';
         });
     });
 });

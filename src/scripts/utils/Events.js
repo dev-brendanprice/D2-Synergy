@@ -45,9 +45,8 @@ export async function AddEventListeners() {
 
     // Settings button
     AddListener('navBarSettingsIcon', 'click', function () {
-        log('bruh');
-        document.getElementById('userMainContainer').style.display = 'none';
-        document.getElementById('settingsContainer').style.display = 'block';
+        // document.getElementById('userMainContainer').style.display = 'none';
+        document.getElementById('settingsContainerMobile').style.display = 'block';
     });
 
 

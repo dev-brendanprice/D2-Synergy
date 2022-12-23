@@ -4,10 +4,6 @@
  * Style for the landing page of the website
  */
 
-body {
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-}
-
 #indexMainContainer {
     margin: 0 auto;
     margin-top: 60px;
@@ -21,45 +17,33 @@ body {
 	justify-content: center;
 }
 
-#serverDeadContainer {
-    display: none;
+.indexNotice {
     margin: 0 auto;
     margin-top: 15px;
     padding-top: 5px;
     padding-bottom: 15px;
     padding-left: 10px;
-    width: 775px;
-    border: 1px rgb(255, 15, 15) solid;
-    background-color: rgba(255, 69, 69, 0.787);
+    padding-right: 10px;
+    width: 765px;
     border-radius: 3px;
     color: white;
 }
 
+#serverDeadContainer {
+    display: none;
+    border: 1px rgb(255, 15, 15) solid;
+    background-color: rgba(255, 69, 69, 0.787);
+}
+
 #websiteAlphaNotice {
-    margin: 0 auto;
-    margin-top: 15px;
-    padding-top: 5px;
-    padding-bottom: 15px;
-    padding-left: 10px;
-    width: 775px;
     border: 1px rgb(255, 175, 15) solid;
     background-color: rgba(255, 143, 15, 0.681);
-    border-radius: 3px;
-    color: white;
 }
 
 #websiteNotice {
     display: none;
-    margin: 0 auto;
-    margin-top: 15px;
-    padding-top: 5px;
-    padding-bottom: 15px;
-    padding-left: 10px;
-    width: 775px;
     border: 1px rgb(255, 15, 15) solid;
     background-color: rgba(255, 69, 69, 0.787);
-    border-radius: 3px;
-    color: white;
 }
 
 #errorHeading {
@@ -110,7 +94,7 @@ body {
     background-color: #e44749;
 	font-weight: 600;
     font-size: 15px;
-	border: 0px solid black;
+	border: 1px solid #ffadb0;
 	border-radius: 5px;
 	cursor: pointer;
 }

@@ -267,11 +267,11 @@ export async function MakeBountyElement(param) {
 // Start loading sequence
 export function StartLoad() {
 
-    // Add loading bar
-    document.getElementById('slider').style.display = 'block';
+    // // Add loading bar
+    // document.getElementById('slider').style.display = 'block';
 
-    // Add load content
-    document.getElementById('loadingContentContainer').style.display = 'block';
+    // // Add load content
+    // document.getElementById('loadingContentContainer').style.display = 'block';
 };
 
 
@@ -279,11 +279,11 @@ export function StartLoad() {
 // Stop loading sequence
 export function StopLoad() {
 
-    // Remove loading bar
-    document.getElementById('slider').style.display = 'none';
+    // // Remove loading bar
+    // document.getElementById('slider').style.display = 'none';
 
-    // Use mobile layout for content
-    document.getElementById('loadingContentContainer').style.display = 'none';
+    // // Use mobile layout for content
+    // document.getElementById('loadingContentContainer').style.display = 'none';
 };
 
 

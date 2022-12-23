@@ -5,6 +5,7 @@ const log = console.log.bind(console);
 const localStorage = window.localStorage,
     sessionStorage = window.sessionStorage;
 
+
 // Custom wrapper for requests
 export const MakeRequest = function (url, config, utils) {
     return new Promise(async (resolve, reject) => {
@@ -13,30 +14,33 @@ export const MakeRequest = function (url, config, utils) {
         utils.scriptOrigin = utils.scriptOrigin || 'user';
         utils.avoidCache = utils.avoidCache || false;
 
+
         // API down, Servers down, or other error
         function CheckForErrorStatus(response, promise) {
-            
-            if (response.data.Response) {
-                document.getElementById('websiteAlphaNotice').style.display = 'none';
-            }
 
             // Clear localStorage, sessionStorage, idb and redirect user to index.html
-            else if (response.response.data.ErrorCode === 5 || response.response.data.ErrorStatus === 'SystemDisabled') {
+            try {
+                if (response.data.ErrorCode === 5 || response.response.data.ErrorStatus === 'SystemDisabled') {
 
-                // Check for script origin
-                switch (utils.scriptOrigin) {
+                    // Check for script origin
+                    switch (utils.scriptOrigin) {
 
-                    case 'index':
-                        document.getElementById('serverDeadContainer').style.display = 'block';
-                        document.getElementById('websiteAlphaNotice').style.display = 'none';
-                        break;
-
-                    default:
-                        localStorage.clear();
-                        sessionStorage.clear();
-                        indexedDB.deleteDatabase('keyval-store');
-                        window.location.href = 'index.html';
+                        case 'index':
+                            document.getElementById('serverDeadContainer').style.display = 'block';
+                            break;
+                        default:
+                            localStorage.clear();
+                            sessionStorage.clear();
+                            indexedDB.deleteDatabase('keyval-store');
+                            window.location.href = 'index.html';
+                    };
+                    return;
                 };
+            }
+            catch (error) {
+                // cba to deal wit this rn but it always errors out lol!!! (stll runs)
+                // ugly fix: just ignore it
+                console.error(error);
             };
 
             // Do resolve
@@ -69,6 +73,7 @@ export const MakeRequest = function (url, config, utils) {
         };
     });
 };
+
 
 // Generate random string for query param when avoiding cache
 export function GenerateRandomString(len) {

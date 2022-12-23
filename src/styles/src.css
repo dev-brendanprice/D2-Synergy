@@ -4,7 +4,8 @@
  * Global style for all HTML pages
  */
 
-html, body {
+body {
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     background-color: #22272e;
 }
 
@@ -18,8 +19,8 @@ html, body {
 
 
 /* Navbar */
-#navBarTopColorBar {
-    position: absolute;
+#topColorBar {
+    position: fixed;
     top: 0;
     left: 0;
     height: 2px;
@@ -30,12 +31,12 @@ html, body {
 }
 
 #navBarContainer {
-    position: absolute;
+    position: fixed;
     display: inline-flex;
     top: 2px;
     left: 0;
     height: 45px;
-    width: 100vw;
+    width: 100%;
     background-color: #202020;
     justify-content: space-between;
     align-items: center;
@@ -97,11 +98,44 @@ html, body {
 #middleNavBarItems {
     display: flex;
     margin-top: 3px;
-    margin-right: 200px;
+    margin-right: 180px;
     gap: 40px;
     color: rgb(191, 191, 191);
     font-size: 18px;
     user-select: none;
+    align-items: center;
+}
+
+#bottomMiddleNavBarItems {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    gap: 15%;
+    justify-content: center;
+    background-color: rgb(30, 30, 30);
+    color: rgb(193, 193, 193);
+}
+
+.fubar {
+    margin-top: 14px;
+    font-size: 20px;
+}
+
+.bottomNavBarIcons {
+    padding: 5px;
+    width: 40px;
+    filter: invert(80%);
+    user-select: none;
+}
+.bottomNavBarIcons:hover {
+    filter: invert(100%);
+    cursor: pointer;
+}
+.bottomNavBarIcons:active {
+    filter: invert(80%);
+    cursor: pointer;
 }
 
 #navBarBountiesButton:hover {
@@ -122,12 +156,6 @@ html, body {
 #rightNavBarItems {
     display: flex;
     margin-right: 15px;
-    /* margin-top: -25px;
-    margin-right: 15px;
-    right: 0;
-    justify-content: right;
-    align-items: right;
-    text-align: right; */
     gap: 20px;
 }
 
@@ -203,24 +231,15 @@ html, body {
 
 /* Loadbar */
 #loadBarContainer {
-    display: inline-block;
-    position: static;
-    margin-top: 58px;
+    display: none;
+    position: absolute;
+    margin-top: 37px;
 }
 #slider{
     position: absolute;
-    margin-top: -21px;
     margin-left: -10px;
     width: 103vw;
     height: 3px;
-    overflow-x: hidden;
-}
-.line{
-    position: absolute;
-    width: 103vw;
-    height: 5px;
-    background: #4a8df8;
-    opacity: 0.4;
     overflow-x: hidden;
 }
 .subline{

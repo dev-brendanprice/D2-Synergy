@@ -19,11 +19,11 @@
 
 <body>
 
-    <div id="navBarTopColorBar"></div>
+    <div id="topColorBar"></div>
     <div id="navBarContainer">
         <div id="navBarTitleContainer">
             <div id="navBarTitle">D2 Synergy</div>
-            <a id="navBarVersion" href="https://github.com/brendanprice2003/D2-Synergy/issues" target="_blank"></a>
+            <a id="navBarVersion" href="https://github.com/brendanprice2003/D2-Synergy/releases" target="_blank"></a>
         </div>
     </div>
     
@@ -36,7 +36,7 @@
         <div id="iconsContainer">
             <a href="" onclick="window.open('https://twitter.com/_devbrendan', '_blank');"><img id="twitterIcon" src="./ico/twitter.png"></a>
             <a href="" onclick="window.open('https://github.com/brendanprice2003/D2-Synergy', '_blank');"><img id="githubIcon" src="./ico/github.png"></a>
-            <a href="" onclick="window.open('https://ko-fi.com/brendanprice2003', '_blank');"><img id="kofiIcon" src="./ico/kofi.png"></a>
+            <!-- <a href="" onclick="window.open('https://ko-fi.com/brendanprice2003', '_blank');"><img id="kofiIcon" src="./ico/kofi.png"></a> -->
         </div>
     </div>
 
@@ -60,14 +60,10 @@
     </div>
 
     <script type="module" src="scripts/index.js"></script>
-    <script defer data-domain="d2synergy.com" src="https://plausible.io/js/script.js"></script>
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMBD0LKPWR"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-ZMBD0LKPWR');
+        window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());gtag('config', 'G-ZMBD0LKPWR');
     </script>
 </body>

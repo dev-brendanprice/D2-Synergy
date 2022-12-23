@@ -15,6 +15,12 @@
     }
 }
 
+@media screen and (max-width: 1320px) {
+    #skeletonCellLeft {
+        width: 15vw;
+    }
+}
+
 @media screen and (max-width: 1175px) {
     #seasonPass {
         margin-left: 0px;
@@ -27,6 +33,12 @@
     }
 }
 
+@media screen and (max-width: 1100px) {
+    #skeletonCellLeft {
+        display: none;
+    }
+}
+
 
 @media screen and (max-width: 1090px) {
     #characterDisplay {
@@ -35,7 +47,44 @@
 }
 
 
-/* New layout at this point */
+@media screen and (max-width: 950px) {
+    #navBarTitleContainer {
+        margin-left: -19px;
+        width: 200px;
+    }
+
+    #navBarTitle {
+        margin-top: 2px;
+        font-size: 26px;
+    }
+
+    #navBarVersion {
+        display: none;
+    }
+
+    #middleNavBarItems {
+        margin-right: unset;
+        margin-right: 50px;
+    }
+
+    #rightNavBarItems {
+        margin-top: 3px;
+        margin-right: 12px;
+    }
+}
+
+
+@media screen and (max-width: 815px) {
+    #indexMainContainer {
+        width: 745px;
+    }
+
+    .indexNotice {
+        width: 730px !important;
+    }
+}
+
+
 @media screen and (max-width: 757px) {
     .classBg {
         width: 75%;
@@ -94,11 +143,84 @@
     }
 
     .indexNotice {
-        width: 88% !important;
+        width: 87% !important;
     }
 }
 
-@media screen and (min-width: 480px) {
+
+@media screen and (max-width: 645px) {
+    #middleNavBarItems {
+        display: none;
+    }
+
+    #bottomMiddleNavBarItems {
+        display: flex;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    #navBarTitle {
+        display: none;
+    }
+
+    #rightNavBarItems {
+        display: none;
+    }
+
+    #navBarContainer {
+        background-color: transparent !important;
+    }
+
+    #settingsContainerMobile {
+        width: 95vw;
+        border: unset;
+    }
+
+    #settingsBackButtonContainer {
+        margin-top: -10px;
+    }
+
+    #skeletonContainer {
+        margin-top: -30px;
+        margin-left: 0px;
+    }
+
+    #skeletonSubContainer > div {
+        width: 90vw;
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    .indexNotice {
+        width: 85% !important;
+    }
+
+    #btnAuthorize {
+        margin-top: 10px;
+        padding: 15px;
+        padding-top: 13px;
+        padding-bottom: 13px;
+    }
+
+    #heading {
+        margin-bottom: 20px;
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    #bottomMiddleNavBarItems {
+        gap: 15%;
+    }
+    
+    .bottomNavBarIcons {
+        width: 30px;
+    }
+}
+
+
+/* @media screen and (min-width: 480px) {
     #elementsToShowIfTheViewportIsBigEnough {
         display: block;
     }
@@ -116,4 +238,4 @@
     #elementsToShowIfTheViewportIsSmallEnough {
         display: block;
     }
-}
+} */

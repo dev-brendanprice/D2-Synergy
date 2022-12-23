@@ -15,7 +15,7 @@
 
 <body>
     
-    <div id="navBarTopColorBar"></div>
+    <div id="topColorBar"></div>
     <div id="navBarContainer">
 
         <div id="navBarTitleContainer">
@@ -34,7 +34,7 @@
             <img class="navBarIcons" id="navBarLogoutIcon" src="./ico/logout.svg">
         </div>
 
-        <div style="display: none;">
+        <!-- <div style="display: none;">
             <div id="elementsToShowIfTheViewportIsBigEnough">
                 <div id="navBarSettingsContainer">
                     <div id="navBarSettings">Settings</div>
@@ -48,7 +48,14 @@
                 <img id="logoutButtonMobile" src="./ico/logout.svg">
                 <img id="settingsButtonMobile" src="./ico/settings.svg">
             </div>
-        </div>
+        </div> -->
+    </div>
+
+    <div id="bottomMiddleNavBarItems">
+        <img class="bottomNavBarIcons" src="./ico/pursuits.svg">
+        <img class="bottomNavBarIcons" src="./ico/meditations.svg">
+        <img class="bottomNavBarIcons" src="./ico/vault.svg" style="margin-top: 3px;">
+        <img class="bottomNavBarIcons" src="./ico/menu_stack.svg" style="margin-top: 3px;width: 25px;">
     </div>
     
     <div id="loadBarContainer">
@@ -62,16 +69,56 @@
     <div id="userMainContainer">
 
         <div id="skeletonContainer">
-            <div id="skeletonCell"></div>
-            <div id="skeletonSubContainer">
-                <div id="skeletonCell2"></div>
-                <div id="skeletonCell2"></div>
-                <div id="skeletonCell2"></div>
-                <div id="skeletonCell2"></div>
-                <div id="skeletonCell2"></div>
-                <div id="skeletonCell2"></div>
-                <div id="skeletonCell2"></div>
-                <div id="skeletonCell2"></div>
+            <div id="one">
+                <div id="skeletonCellLeft"></div>
+                <div id="skeletonSubContainer">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div id="two">
+                <div id="skeletonSubContainer">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="settingsContainerMobile">
+            <div id="settingsBackButtonContainer">
+                <img id="settingsBackArrow" src="./ico/arrow_right.svg">
+                <div id="settingsBackArrowSubtext">Go Back</div>
+            </div>
+            <h1>Settings</h1>
+            <div id="settingCategoriesMobile">
+                <div id="settingCategory">
+                    <div>General</div>
+                    <div id="categorySubtext">Defaults & Functionality</div>
+                    <img id="categorySelectArrow" src="./ico/arrow_right.svg">
+                </div>
+                <div id="settingCategory">
+                    <div>Accessibility</div>
+                    <div id="categorySubtext">Images, Text Sizes & Colors</div>
+                    <img id="categorySelectArrow" src="./ico/arrow_right.svg">
+                </div>
+                <div id="settingCategory">
+                    <div style="color: rgb(245, 83, 74);">Logout</div>
+                    <img id="categorySelectArrow" src="./ico/arrow_right.svg">
+                </div>
+                <div style="display: flex;gap: 10px;">
+                    <a id="settingBottomCategories" href="https://github.com/brendanprice2003/D2-Synergy/wiki" target="_blank">Help</a>
+                    <!-- <div id="settingBottomCategories">Clear Cache</div> -->
+                </div>
+            </div>
+            
+            <div id="bruh">
+                <div style="margin-bottom: 5px;">Version: 0.4.2</div>
+                <div>
+                    <img id="githubIcon" src="./ico/github.png">
+                    <img id="twitterIcon" src="./ico/twitter.png">
+                </div>
             </div>
         </div>
 
@@ -785,13 +832,10 @@
     <div id="overlays"></div>
 
     <script type="module" src="scripts/user.js"></script>
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMBD0LKPWR"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-ZMBD0LKPWR');
+        window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());gtag('config', 'G-ZMBD0LKPWR');
     </script>
 </body>
