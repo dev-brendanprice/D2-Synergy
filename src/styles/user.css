@@ -757,7 +757,7 @@ hr.challengeBreakline {
     margin-top: 10px;
     margin-left: 10px;
     width: 80vw;
-    height: 28vh;
+    height: 20vh;
     border-radius: 5px;
     animation: example 2s ease-in infinite;
 }
