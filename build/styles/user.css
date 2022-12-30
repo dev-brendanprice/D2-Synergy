@@ -1,1 +1,1431 @@
-:root{--blurFilterAmount: 3px}#mainContainer{position:absolute;margin-top:60px;margin-left:auto;margin-right:auto;left:0;right:0;z-index:0}#SettingsContainer{position:absolute;display:none;height:200px;color:#fff}h2{padding-bottom:0px;text-transform:uppercase;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:15px;font-weight:bold;letter-spacing:.5px}#contentDisplay{display:none;margin-left:30px;float:left;width:65%}#subTitleContainer{display:flex;margin-left:10px}#userClan{margin-top:4px;color:#e8e6e3;font-weight:600;font-size:20px;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#displayName{color:#e8e6e3;font-weight:600;font-size:28px;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#entryDataOverlay{display:none;position:absolute;width:50px;z-index:10}#subTitle{margin-left:10px;margin-top:10px;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:20px;text-transform:uppercase}#charDisplayTitle{margin-top:13px;user-select:none;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none}#charDisplayTitle_Pre{display:inline-block;margin-left:28px;color:#fff;font-weight:bold;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:18px;user-select:none}#charDisplayTitle_Character{display:none;color:#fff;font-style:italic;font-weight:0;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:16px;letter-spacing:1px}#synergyContainer{display:none;margin-top:13px;margin-left:28px}#loadoutsContainer{display:none;margin-top:13px;margin-left:28px}#pursuitsContainer{display:none;margin-top:13px;margin-left:28px}#progressionContainer{display:none;margin-top:13px;margin-left:28px}#bountyDisplayContainer{color:#fff}.containerTitle{display:inline-block;padding-bottom:0px;text-transform:uppercase;color:#fff;font-size:16px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";letter-spacing:.5px}.bountiesContainerTitle{margin-top:-7px;margin-bottom:-12px;text-transform:uppercase;font-size:23px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";letter-spacing:1px}.subheadingFields{display:inline-block;padding-right:3px;font-size:15px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";letter-spacing:.5px}#bountiesFieldSubText{display:inline-block;font-size:15px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"}.levellingContainerTitle{margin-top:36px;margin-bottom:7px;text-transform:uppercase;color:#fff;font-size:23px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";letter-spacing:1px}#currentSeasonNameField{display:inline-block;color:#fff;font-size:15px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"}#noItemsTooltip{display:none;padding-top:25px;color:#767676;font-size:15px;font-style:italic;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#categories{display:none;margin-top:3px}#categories>div{padding-top:7px;padding-bottom:7px;color:#cdcbcb;letter-spacing:1px;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;cursor:pointer;user-select:none;transition:.25s}#cgDefaultLoadouts{display:none}#cgDefaultLoadouts:hover{color:#fff;transition:.25s}#cgPursuits:hover{color:#fff;transition:.25s}#questDisplayContainer{margin-top:15px}#sideSelectionBar{margin-top:15px;margin-left:15px;width:auto;float:left}#charactersContainer{display:none}#charactersContainer>div{display:none;cursor:pointer;user-select:none;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none}.classBg{width:220px}.classType{position:absolute;margin-left:43px;margin-top:5px;color:#fff;font-weight:0;letter-spacing:1.3px;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:18px}.classLight{position:absolute;margin-left:54px;margin-top:25px;color:#ffea00c1;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:15px}.lightIcon{position:absolute;margin-left:45px;margin-top:28px;width:8px}#statsContainer{display:none;margin-top:50px;width:75%}#statsTitle{display:inline-block;padding-bottom:7px;text-align:left;color:#cdcbcb;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-weight:bold;letter-spacing:1px}#baseStatsTitle{display:inline-block;margin-top:16px;text-align:left;color:#cdcbcb;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-weight:bold;letter-spacing:1px}#statsTitleQuery{display:inline-block;margin-left:8px;width:14px;filter:invert(48%) sepia(13%) saturate(3207%);cursor:pointer}#queryDiv{position:absolute;display:none;padding:3px;left:95px;width:90px;color:#cdcbcb;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:11px;background-color:#313131;border:1px solid rgb(88,88,88);border-radius:3px}#loadingContentContainer{display:none;margin-top:60px;text-align:center}#filterContentContainer{display:none}#baseStatsContainer{margin-top:10px}#baseStatsContainer>div{display:inline-block;padding-top:3px;padding-bottom:3px;color:#cdcbcb;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#netStatsContainer{margin-top:10px}#netStatsContainer>div{padding-top:3px;padding-bottom:3px;color:#cdcbcb;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}.statsCheckmark{display:inline-block;margin-right:5px;width:13px;filter:invert(82%) sepia(20%) saturate(1304%) hue-rotate(78deg) brightness(85%) contrast(90%)}.statsCross{display:none;margin-right:5px;width:13px}.netStatBuffHeading{display:inline-block;text-decoration:underline;color:#8ddbff!important;font-style:italic;cursor:pointer}.popupArrow{position:absolute;display:inline-block;margin-top:-17px;width:12px;filter:invert(10%);transform:rotate(90deg)}.percentagePopup{position:absolute;display:inline-block;margin-top:-25px;margin-left:8px;padding:5px;width:45px;text-align:center;font-variant-numeric:normal;background-color:#1a1a1e;border-radius:3px}#sharedWisdomPopupContainer{position:absolute;display:none;margin-top:20px;margin-left:5px}#ghostModPopupContainer{position:absolute;display:none;margin-top:20px;margin-left:5px}#BonusXpPopupContainer{position:absolute;display:none;margin-top:20px;margin-left:5px}.netXpHeading{display:inline-block;margin-top:10px}#totalNetXpField{display:inline-block}#btnSynergyView{display:none;margin-top:12px;padding:4px;padding-left:7px;padding-right:7px;width:fit-content;color:#cb7474;border:1px #677474 solid;border-radius:6px;cursor:pointer;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;user-select:none;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;transition:.25s}#btnSynergyView:hover{color:#ffdede;border-color:#ffdede;transition:all .25s}#levellingContentDisplay>div{padding-top:7px;padding-bottom:3px;color:#cdcbcb;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#levellingStatsDisplay>div{padding-top:7px;padding-bottom:3px;color:#cdcbcb;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#statsTableLayoutContainer{margin-top:20px}#statsTableLayoutContainer>div{width:350px;height:150px;padding:2px;border:#555 1px solid;border-radius:5px;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}.containerMetricNumber{display:inline-block;color:#8ddbff}#artifactStats{display:inline-block;text-align:center}#artifactStatsBg{background-image:url(../images/artifact_background.jpg);background-size:cover;width:100%;height:100%;z-index:-1;filter:brightness(50%) blur(var(--blurFilterAmount))}#artifactStatsContentContainer{position:absolute;text-align:left;margin-top:-140px;margin-left:15px}#artifactStatsFirstContainer{margin-top:10px;font-size:22px}#artifactStatsSecondContainer{margin-top:15px;font-size:22px}#artifactStatsSuffix{display:inline-block;font-size:18px}.artifactStatsSuffixBottom{font-size:18px;margin-top:-4px}#artifactStatsThirdMetricContainer{position:absolute;margin-top:-120px;margin-left:230px;text-align:center}#artifactStatsMetricSeasonPassLevel{font-size:35px;font-weight:600}#artifactStatsMetricRankTitle{font-weight:600}#artifactStatsMetricFireteamBonus{margin-top:10px}#artifactStatsMetricFireteamBonusSuffix{margin-top:-18px}#artifactStatsArtifactImage{position:absolute;margin-top:5px;width:80px;border:1px grey dashed;z-index:-0}#artifactStatsArtifactImage:hover{filter:blur(3px);-webkit-filter:blur(3px)}#artifactStatsArtifactBonus{position:absolute;margin-top:64px;margin-left:3px;font-size:20px;font-weight:600;color:#8ddbff;z-index:10}#artifactStatsNoArtifactIsPresent{position:absolute;display:none;margin-top:-80px;margin-left:13px;color:#fff;font-size:15px;font-style:italic}#seasonPass{display:inline-block;margin-left:20px;text-align:center}#seasonPassBg{background-image:url(../images/seasonal_background.jpg);background-size:cover;width:100%;height:100%;z-index:-1;filter:brightness(50%) blur(var(--blurFilterAmount))}#seasonPassContentContainer{position:absolute;text-align:left;margin-top:-140px;margin-left:15px}#seasonPassFirstContainer{margin-top:13px;font-size:22px}#seasonPassSecondContainer{margin-top:30px;font-size:22px}#seasonPassSuffix{display:inline-block;font-size:18px}#seasonPassSuffixBottom{position:absolute;font-size:18px;margin-top:-3px}#seasonPassThirdMetricContainer{position:absolute;margin-top:-130px;margin-left:190px;text-align:center}#seasonPassRankLevel{margin-left:50px;font-size:35px;font-weight:600}#seasonPassRankTitle{margin-left:50px;font-weight:600}#seasonPassFireteamBonusContainer{display:inline-block;margin-right:5px}#seasonPassFireteamBonus{margin-top:10px;color:#8ddbff}#seasonPassFireteamBonusSuffix{margin-top:-18px;font-weight:600}#seasonPassXpBonusContainer{position:absolute;display:inline-block;margin-left:5px}#seasonPassXpBonus{margin-top:10px;color:#8ddbff}#seasonPassXpBonusSuffix{margin-top:-18px;font-weight:600}#brightEngram{display:inline-block;margin-left:20px;text-align:center}#brightEngramBg{background-image:url(../images/eververse.png);background-size:cover;width:100%;height:100%;z-index:-1;filter:brightness(50%) blur(var(--blurFilterAmount))}#brightEngramContentContainer{position:absolute;text-align:left;margin-top:-140px;margin-left:15px}#brightEngramFirstContainer{margin-top:15px;font-size:22px}#brightEngramSuffix{display:inline-block;font-size:18px}#brightEngramSecondContainer{margin-top:40px;font-size:22px}#brightEngramEngramImageLeft{position:absolute;margin-top:-140px;margin-left:35px;width:45px;z-index:1}#brightEngramEngramImageMiddle{position:absolute;margin-top:-140px;margin-left:50px;width:100px;z-index:2}#brightEngramEngramImageRight{position:absolute;margin-top:-140px;margin-left:120px;width:45px;z-index:1}#brightEngramSuffixBottom{position:absolute;font-size:18px;margin-top:-3px}
+/**
+ * #.# user.html Style
+ *
+ * Style for user.html, does not contain media queries
+ */
+
+:root {
+    --blurFilterAmount: 3px;
+}
+
+#contextMenuSettingsMobile {
+    margin-top: 3px;
+    width: 28px;
+}
+
+#userMainContainer {
+    display: block;
+    /* position: absolute; */
+    margin-top: 60px;
+    z-index: 0;
+}
+
+#settingsContainer {
+    display: none;
+    margin: auto;
+    height: 200px;
+    width: 50vw;
+    color: white;
+    
+}
+
+#settingsMenuButtonContainer {
+    display: flex;
+    margin-top: -35px;
+    margin-bottom: 10px;
+    float: right;
+    gap: 10px;
+}
+
+#settingsMenuButton {
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #3A3A3A;
+    border: 1px solid #777777;
+    cursor: pointer;
+}
+
+#settingsMenuButton:hover {
+    background-color: #343434;
+}
+
+#settingsMenuButton:active {
+    background-color: #2E2E2E;
+}
+
+#settingsContent {
+    display: block;
+    font-size: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#githubIcon {
+    width: 23px;
+    filter: invert(22%) sepia(0%) saturate(1%) hue-rotate(7deg) brightness(97%) contrast(83%);
+    cursor: pointer;
+}
+
+#twitterIcon {
+    margin-left: 10px;
+    width: 28px;
+    filter: invert(22%) sepia(0%) saturate(1%) hue-rotate(7deg) brightness(40%) contrast(83%);
+    cursor: pointer;
+}
+
+#githubIcon:hover {
+    filter: invert(22%) sepia(0%) saturate(1%) hue-rotate(7deg) brightness(160%) contrast(83%);
+}
+
+#twitterIcon:hover {
+    filter: invert(22%) sepia(0%) saturate(1%) hue-rotate(7deg) brightness(80%) contrast(83%);
+}
+
+.propertySubheadings {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.propertyNames {
+    display: inline-block;
+    font-size: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.propertySecretIcon {
+    display: none;
+    width: 40px;
+}
+
+#settingsBountyImage {
+    margin-top: 10px;
+    width: 55px;
+    border: 1px solid gray;
+}
+
+#backButtonContainer {
+	width: 125px;
+	height: 28px;
+	cursor: pointer;
+}
+
+#backButtonImg {
+	display: inline-block;
+	width: 20px;
+	filter: invert(1) brightness(1);
+}
+
+#backButtonText {
+	position: absolute;
+	display: inline-block;
+	margin-top: 1px;
+	margin-left: 10px;
+	font-size: 16px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	color: white;
+}
+
+#availableVendorStatus {
+    margin-top: 12px;
+    padding: 5px;
+    padding-bottom: 7px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius: 5px;
+    border: 1px solid #9A5C15;
+    background-color: rgba(255, 143, 15, 0.681);
+    
+}
+
+#availableVendorNoteText {
+    display: inline-block;
+    font-weight: 600;
+}
+
+#availableVendorSeeHerePrompt {
+    display: inline-block;
+    font-style: italic;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#availableVendorPopupCanvas {
+    position: fixed;
+    display: none;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(66, 66, 66, 0.5);
+    z-index: 99; /* Make sure this is always on top, but below availableVendorPopup */
+}
+
+#availableVendorPopup {
+    position: absolute;
+    display: none;
+    width: 500px;
+    height: auto;
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    border: 1px solid #9C9C9C;
+    border-radius: 5px;
+    background-color: #424242;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    z-index: 100; /* Make sure this is always on top */
+}
+
+#availableVendorContainer {
+    text-align: left;
+}
+
+#availableVendorContentTitle {
+    margin-bottom: 3px;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+#availableVendorPopupClose {
+    margin-bottom: 10px;
+    padding: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    bottom: 0;
+    background-color: #292929;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+#availableVendorPopupClose:hover {
+    background-color: #5B5B5B;
+    transition: all 0.1s ease-in-out;
+}
+
+.settingText {
+    display: inline-flex;
+    font-size: 16px;
+}
+
+#rangeSliderContainer {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+#itemSizeText {
+    position: absolute;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+#itemSizeSlider {
+    position: absolute;
+    margin-top: 9px;
+    margin-left: 75px;
+    width: 300px;
+}
+
+#itemSizeField {
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 385px;
+    font-size: 16px;
+}
+
+#resetItemSize {
+    position: absolute;
+    margin-top: 4px;
+    margin-left: 428px;
+    padding-top: 1px;
+    padding-bottom: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    background-color: #3A3A3A;
+    border: 1px solid #777777;
+    font-size: 16px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+#resetItemSize:hover {
+    background-color: #343434;
+}
+
+#resetItemSize:active {
+    background-color: #2E2E2E;
+}
+
+#sliderNoticeText {
+    display: block;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+#sliderPreviewText {
+    display: block; 
+    margin-top: 3px; 
+    margin-bottom: 5px; 
+    font-size: 19px; 
+    font-weight: 600;
+}
+
+#settingsBackButtonContainer {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 50px;
+    margin-left: -5px;
+    cursor: pointer;
+}
+
+#settingsBackArrowSubtext:hover {
+    color: #FFFFFF;
+}
+
+#settingsBackButtonContainer:hover > #settingsBackArrow {
+    filter: invert(100%);
+}
+
+#settingsBackButtonContainer:active > #settingsBackArrow {
+    filter: invert(70%);
+}
+
+#settingsBackButtonContainer:active > #settingsBackArrowSubtext {
+    color: #ACACAC;
+}
+
+#settingsBackArrow {
+    width: fit-content;
+    filter: invert(70%);
+    transform: rotate(180deg);
+}
+
+#settingsBackArrowSubtext {
+    margin-top: 3.5px;
+    font-size: 14px;
+    color: #ACACAC;
+}
+
+#settingsGrid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+}
+
+#settingsContainerMobile {
+    position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 25vw;
+    height: 92vh;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    color: white;
+}
+
+#settingsInlineContainerMobile {
+    width: 40vw;
+    height: 92vh;
+    border-right: 1px solid gray;
+    color: white;
+}
+
+#settingsFooter {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: #646464;
+    font-size: 13px;
+    text-align: center;
+}
+
+#settingsFooterVersionContainer {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.settingsAccentColorButton {
+    height: 20px;
+    width: 50px;
+    border-radius: 3px;
+    border: 1px solid #515151;
+    cursor: pointer
+}
+
+.settingSection {
+    display: flex;
+    padding-top: -10px;
+    padding-bottom: 10px;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    flex-direction: column;
+}
+
+.settingRange {
+    flex-grow: 1;
+    accent-color: #ff7070;
+    cursor: pointer;
+}
+
+.generalButton {
+    padding: 10px;
+    border-radius: 5px;
+    width: fit-content;
+    color: white;
+    border: 1px solid rgb(150, 150, 150);
+    cursor: pointer;
+}
+
+/* .settingSectionHeader {
+    font-size: 20px;
+    font-weight: 600;
+} */
+
+#categorySelectArrow {
+    position: absolute;
+    margin-top: -4px;
+    right: 0;
+    filter: invert(100%);
+}
+
+.settingCategory {
+    position: relative;
+    display: flex;
+    margin-top: -5px;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-top: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 12px;
+    cursor: pointer;
+    
+}
+
+.settingCategory:hover {
+    border-radius: 3px;
+    background-color: rgba(90, 90, 90, 0.464);
+}
+
+.settingCategory:active {
+    border-radius: 3px;
+    background-color: rgba(90, 90, 90, 0.464);
+}
+
+#categorySubtext {
+    margin-top: 3px;
+    margin-left: 10px;
+    font-size: 12px;
+    color: #969696;
+}
+
+#settingBottomCategories {
+    padding: 8px;
+    margin-top: 10px;
+    background-color: #3A3A3A;
+    border: 1px solid #8C8C8C;
+    cursor: pointer;
+    
+    text-decoration: none;
+    color: white;
+}
+
+#settingBottomCategories:hover {
+    background-color: #646464;
+}
+
+#settingBottomCategories:active {
+    background-color: #3A3A3A;
+}
+
+/* #settingCategoriesMobile {
+    position: relative;
+    border: 1px solid red;
+} */
+
+#contentDisplay {
+    display: none;
+    padding-left: 25px;
+    padding-right: 25px;
+    overflow: hidden;
+    color: white;
+}
+
+#subTitleContainer {
+    display: flex;
+    margin-left: 10px;
+}
+
+#userClan {
+    margin-top: 4px;
+    color: #e8e6e3;
+    font-weight: 600;
+    font-size: 20px;
+
+}
+
+#displayName {
+    color: #e8e6e3;
+    font-weight: 600;
+    font-size: 28px;
+
+}
+
+#entryDataOverlay {
+    display: none;
+    position: absolute;
+    width: 50px;
+    z-index: 10;
+}
+
+#subTitle {
+    margin-left: 10px;
+    margin-top: 10px;
+    color: white;
+
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+
+/* user select */
+
+#charDisplayTitle {
+    margin-top: 13px;
+}
+
+#charDisplayTitle_Pre {
+    display: inline-block;
+    margin-left: 28px;
+    color: white;
+    font-weight: bold;
+
+    font-size: 18px;
+    
+}
+
+#charDisplayTitle_Character {
+    display: none;
+    color: white;
+    font-style: italic;
+    font-weight: 0;
+
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+#bountiesContainer {
+    display: none;
+}
+
+#seasonChallengeControlGridContainer {
+    display: inline-flex;
+    width: 100%;
+}
+
+.seasonalChallengePageArrow {
+    display: inline-block;
+    padding: 3px;
+    padding-top: 8px;
+    border: 1px solid #8C8C8C;
+    border-radius: 2px;
+    background-color: rgba(60, 60, 60, 0.461);
+    
+    cursor: pointer;
+    text-align: center;
+}
+
+.seasonalChallengePageArrowImage {
+    margin-top: 90px; 
+    width: 20px; 
+    filter: invert(100%);
+}
+
+#previousSeasonalChallengeArrow {
+    transform: rotate(90deg);
+}
+
+#nextSeasonalChallengeArrow {
+    transform: rotate(-90deg);
+}
+
+#previousSeasonalChallengePageButton {
+    margin-right: 10px;
+}
+
+#nextSeasonalChallengePageButton {
+    margin-left: 10px;
+}
+
+.chunkPage {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+}
+
+#seasonalChallengesContainer {
+    display: none;
+}
+
+.challengeContainer {
+    width: 100%;
+    border: 1px solid #8C8C8C;
+    border-radius: 2px;
+    background-color: rgba(60, 60, 60, 0.461);
+    color: white;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+}
+
+.challengeIcon {
+    padding: 8px;
+    width: 40px;
+}
+
+.challengeName {
+    position: absolute;
+    margin-top: -45px;
+    margin-left: 55px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+hr.challengeBreakline {
+    padding: none;
+    margin: auto;
+    width: 95%;
+    height: 1px;
+    border: none;
+    border-radius: 1px;
+    background-color: #7e8891;
+}
+
+.challengeDescription {
+    margin-top: 3px;
+    margin-left: 8px;
+    margin-bottom: 10px;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* number of lines to show */
+            line-clamp: 1; 
+    -webkit-box-orient: vertical;
+}
+
+.challengeProgressContainer {
+    width: 100%;
+    height: 8px;
+}
+
+.challengeProgressTrack {
+    margin-bottom: -8px;
+    width: 100%;
+    height: 100%;
+    background-color: #aaaaaa75;
+    z-index: 1;
+}
+
+.challengeProgressPercentBar {
+    width: 0%;
+    height: 100%;
+    background-color: white;
+    z-index: 10;
+}
+
+#levellingStatisticsContainer {
+    display: none;
+}
+
+.containerTitle {
+    margin-top: -7px;
+    margin-bottom: -12px;
+    text-transform: uppercase;
+    font-size: 23px;
+    font-weight: 600;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    letter-spacing: 1px;
+}
+
+.subheadingFields {
+    display: inline-block;
+    padding-right: 3px;
+    font-size: 15px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+}
+
+#bountiesFieldSubText {
+    display: inline-block;
+    font-size: 15px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+}
+
+.levellingContainerTitle {
+    margin-top: 36px;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+    color: white;
+    font-size: 23px;
+    font-weight: 600;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    letter-spacing: 1px;
+}
+
+#currentSeasonNameField {
+    display: inline-block;
+    color: white;
+    font-size: 15px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+}
+
+#noItemsTooltip {
+    display: none;
+    padding-top: 25px;
+    color: #767676;
+    font-size: 15px;
+    font-style: italic;
+
+}
+
+#categories {
+    display: none;
+    margin-top: 3px;
+}
+
+#categories > div {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    color: #CDCBCB;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+    
+    transition: 0.25s;
+}
+
+
+#cgSeasonalChalls:hover {
+    color: white;
+    transition: 0.25s;
+}
+
+#cgBounties:hover {
+    color: white;
+    transition: 0.25s;
+}
+
+#questDisplayContainer {
+    margin-top: 15px;
+}
+
+/* char selects */
+
+#one {
+    display: flex;
+}
+
+#two {
+    display: none;
+}
+
+#skeletonCell {
+    margin-top: 10px;
+    width: 15vw;
+    height: 65vh;
+    border-radius: 5px;
+    animation: example 2s ease-in infinite;
+}
+
+#skeletonSubContainer > div {
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 80vw;
+    height: 28vh;
+    border-radius: 5px;
+    animation: example 2s ease-in infinite;
+}
+
+#skeletonContainer {
+    display: none; /* flex */
+    margin-top: 50px;
+    justify-content: center;
+}
+
+#skeletonCellLeft {
+    margin-top: 10px;
+    width: 15vw;
+    height: 65vh;
+    border-radius: 5px;
+    animation: example 2s ease-in infinite;
+}
+
+#sideSelectionBar {
+    display: none;
+    float: left;
+    margin-left: 5px;
+}
+
+#charactersContainer {
+    display: none;
+}
+
+#charactersContainer > div {
+    display: none;
+    cursor: pointer;
+}
+
+.classBg {
+    width: 220px;
+}
+
+.classType {
+    position: absolute;
+    margin-left: 43px;
+    margin-top: 5px;
+    color: white;
+    font-weight: 0;
+    letter-spacing: 1.3px;
+    font-size: 18px;
+}
+
+.classLight {
+    position: absolute;
+    margin-left: 54px;
+    margin-top: 25px;
+    color: #ffea00;
+    opacity: 0.7;
+    font-size: 15px;
+}
+
+.lightIcon {
+    position: absolute;
+    margin-left: 45px;
+    margin-top: 28px;
+    width: 8px;
+}
+
+#statsContainer {
+    margin-top: 50px;
+    width: 75%;
+}
+
+#seasonalStatsContainer {
+    display: none;
+    margin-top: 50px;
+    width: 75%;
+}
+
+#statsTitle {
+    display: inline-block;
+    padding-bottom: 7px;
+    text-align: left;
+    color: #CDCBCB;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#baseStatsTitle {
+    display: inline-block;
+    margin-top: 16px;
+    text-align: left;
+    color: #CDCBCB;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#statsTitleQuery {
+    display: inline-block;
+    margin-left: 8px;
+    width: 14px;
+    filter: invert(48%) sepia(13%) saturate(3207%);
+}
+
+#queryDiv {
+    position: absolute;
+    display: none;
+    padding: 3px;
+    left: 95px;
+    width: 90px;
+    color: #CDCBCB;
+    font-size: 11px;
+    background-color: #313131;
+    border: 1px solid #585858;
+    border-radius: 3px;
+}
+
+#loadingContentContainer {
+    display: none !important;
+    text-align: center;
+}
+
+#filterContentContainer {
+    display: none;
+}
+
+#baseStatsContainer {
+    margin-top: 10px;
+}
+
+#baseStatsContainer > div {
+    display: inline-block;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: #CDCBCB;
+}
+
+#netStatsContainer {
+    margin-top: 10px;
+}
+
+#netStatsContainer > div {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: #CDCBCB;
+}
+
+.statsCheckmark {
+    display: inline-block;
+    margin-right: 5px;
+    width: 13px;
+    filter: invert(82%) sepia(20%) saturate(1304%) hue-rotate(78deg) brightness(85%) contrast(90%);
+}
+
+.statsCross {
+    display: none;
+    margin-right: 5px;
+    width: 13px;
+}
+
+.netStatBuffHeading {
+    display: inline-block;
+    color: #8DDBFF !important;
+    font-style: italic;
+    text-decoration: underline;
+    
+}
+
+.popupArrow {
+    position: absolute;
+    display: inline-block;
+    margin-top: -17px;
+    width: 12px;
+    filter: invert(10%);
+    transform: rotate(90deg);
+}
+
+.percentagePopup {
+    position: absolute;
+    display: inline-block;
+    margin-top: -25px;
+    margin-left: 8px;
+    padding: 5px;
+    width: 45px;
+    text-align: center;
+    font-variant-numeric: normal;
+    background-color: #1A1A1E;
+    border-radius: 3px;
+}
+
+#sharedWisdomPopupContainer {
+    position: absolute;
+    display: none;
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+#ghostModPopupContainer {
+    position: absolute;
+    display: none;
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+#BonusXpPopupContainer {
+    position: absolute;
+    display: none;
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+.netXpHeading {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+#totalNetXpField {
+    display: inline-block;
+}
+
+.propertyStatisticContainer {
+    display: table;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0 auto;
+    background-color: #1B1B1B;
+    border: 1px solid #646464;
+    border-radius: 5px;
+    justify-content: left;
+    text-align: left;
+}
+
+.propertyStatisticContainerForDestinations {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0 auto;
+    background-color: #1B1B1B;
+    border: 1px solid #646464;
+    border-radius: 5px;
+    justify-content: left;
+    text-align: left;
+}
+
+.propertyStatisticContainerForDestinations > div {
+    padding-bottom: 5px;
+}
+
+.propertySubContainer {
+    display: inline-block;
+    padding: 5px;
+    margin: 0 auto;
+}
+
+.propertySubContainer2 {
+    display: inline-block;
+    padding: 5px;
+    margin: 0 auto;
+    width: 120px;
+    text-align: center;
+    justify-content: center;
+}
+
+#synergiesContainer {
+    display: flex;
+    margin-top: 15px;
+    height: 100%;
+}
+
+#middleGroup {
+    margin-left: 15px;
+    height: 10%;
+}
+
+#leftGroup {
+    height: 100%;
+}
+
+#rightGroup {
+    margin-left: 15px;
+    width: fit-content;
+    height: 100%;
+}
+
+.propertyTextName {
+    margin-bottom: 5px;
+    font-size: 16px;
+
+}
+
+.weaponTypeContainer {
+    display: inline-block;
+    margin: auto;
+    margin-right: 5px;
+    text-align: center;
+    justify-content: center;
+}
+
+.weaponTypeIcon {
+    display: block;
+    margin-bottom: 5px;
+    width: 50px;
+    filter: invert(100%);
+}
+
+.weaponTypePercentageField {
+    display: block;
+    margin: 0 auto;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: fit-content;
+    background-color: #464646;
+    border: 1px solid #646464;
+    border-radius: 3px;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+}
+
+.elementalSubContainer {
+    display: inline-block;
+    margin: auto;
+    margin-right: 5px;
+    text-align: center;
+    justify-content: center;
+}
+
+.elementalIcon {
+    margin-bottom: 5px;
+    width: 40px;
+}
+
+.elementalPercentageField {
+    display: block;
+    margin: 0 auto;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: fit-content;
+    background-color: #464646;
+    border: 1px solid #646464;
+    border-radius: 3px;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+}
+
+.ammoPercentageField {
+    display: block;
+    margin: 0 auto;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    width: fit-content;
+    background-color: #464646;
+    border: 1px solid #646464;
+    border-radius: 3px;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+}
+
+.ammoSubContainer  {
+    display: inline-block;
+    margin: auto;
+    margin-right: 5px;
+    text-align: center;
+    justify-content: center;
+}
+
+.ammoSubContainer > div {
+    position: relative;
+    left: 49%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.ammoIcon {
+    margin-bottom: 5px;
+    width: 40px;
+}
+
+#levellingContentDisplay > div {
+    padding-top: 7px;
+    padding-bottom: 3px;
+    color: hsl(0, 2%, 80%);
+}
+
+#levellingStatsDisplay > div {
+    padding-top: 7px;
+    padding-bottom: 3px;
+    color: #CDCBCB;
+}
+
+#statsTableLayoutContainer {
+    display: inline-block;
+    margin-top: 8px;
+}
+#statsTableLayoutContainer > div {
+    width: 350px;
+    height: 150px;
+    padding: 2px;
+    border: #555 1px solid;
+    border-radius: 5px;
+    color: white;
+}
+
+.containerMetricNumber {
+    display: inline-block;
+    color: #8DDBFF;
+}
+
+/* Seasonal artifact statistic container */
+#artifactStats {
+    /* display: inline-block; */
+    text-align: center;
+}
+#artifactStatsBg {
+    background-image: url('../static/images/artifact_background.jpg');
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: brightness(50%) blur(var(--blurFilterAmount));
+}
+#artifactStatsContentContainer {
+    position: absolute;
+    text-align: left;
+    margin-top: -140px;
+    margin-left: 15px;
+}
+#artifactStatsFirstContainer {
+    margin-top: 13px;
+    font-size: 22px;
+}
+#artifactStatsSecondContainer {
+    margin-top: 8px;
+    font-size: 22px;
+}
+#artifactStatsSuffix {
+    display: inline-block;
+    font-size: 18px;
+}
+.artifactStatsSuffixBottom {
+    font-size: 18px;
+    margin-top: -4px;
+}
+#artifactStatsThirdMetricContainer {
+    position: absolute;
+    margin-top: -120px;
+    margin-left: 230px;
+    text-align: center;
+}
+#artifactStatsMetricSeasonPassLevel {
+    font-size: 35px;
+    font-weight: 600;
+}
+#artifactStatsMetricRankTitle {
+    font-weight: 600;
+}
+#artifactStatsMetricFireteamBonus {
+    margin-top: 10px;
+}
+#artifactStatsMetricFireteamBonusSuffix { 
+    margin-top: -18px;
+}
+#artifactStatsArtifactImage {
+    position: absolute;
+    margin-top: 5px;
+    width: 80px;
+    border: 1px grey dashed;
+    z-index: -0;
+}
+#artifactStatsArtifactImage:hover {
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+}
+#artifactStatsArtifactBonus {
+    position: absolute;
+    margin-top: 64px;
+    margin-left: 3px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #8DDBFF;
+    z-index: 10;
+}
+#artifactStatsNoArtifactIsPresent {
+    position: absolute;
+    display: none;
+    margin-top: -80px;
+    margin-left: 13px;
+    color: white;
+    font-size: 15px;
+    font-style: italic;
+}
+
+#burgerStackIcon {
+    display: none;
+    margin-top: 3px;
+    margin-right: 3px;
+    padding: 5px;
+    width: 30px;
+    float: right;
+    cursor: pointer;
+}
+
+#burgerStackIcon:hover {
+    background-color: rgba(123, 123, 123, 0.42);
+}
+
+#burgerMenuDropdown {
+    /* display: none; */
+    position: absolute;
+    margin-top: 45px;
+    right: 0;
+    width: 100px;
+    height: 150px;
+    background-color: #575757;
+}
+
+
+/* Season pass statistic container */
+#seasonPass {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+}
+#seasonPassBg {
+    background-image: url('../static/images/seasonal_background.jpg');
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: brightness(50%) blur(var(--blurFilterAmount));
+}
+#seasonPassContentContainer {
+    position: absolute;
+    text-align: left;
+    margin-top: -140px;
+    margin-left: 15px;
+}
+#seasonPassFirstContainer {
+    margin-top: 13px;
+    font-size: 22px;
+}
+#seasonPassSecondContainer {
+    margin-top: 30px;
+    font-size: 22px;
+}
+#seasonPassSuffix {
+    display: inline-block;
+    font-size: 18px;
+}
+#seasonPassSuffixBottom {
+    position: absolute;
+    font-size: 18px;
+    margin-top: -3px;
+}
+#seasonPassThirdMetricContainer {
+    position: absolute;
+    margin-top: -130px;
+    margin-left: 190px;
+    text-align: center;
+}
+#seasonPassRankLevel {
+    margin-left: 50px;
+    font-size: 35px;
+    font-weight: 600;
+}
+#seasonPassRankTitle {
+    margin-left: 50px;
+    font-weight: 600;
+}
+#seasonPassFireteamBonusContainer {
+    display: inline-block;
+    margin-right: 5px;
+}
+#seasonPassFireteamBonus {
+    margin-top: 10px;
+    color: #8DDBFF;
+}
+#seasonPassFireteamBonusSuffix { 
+    margin-top: -18px;
+    font-weight: 600;
+}
+#seasonPassXpBonusContainer {
+    position: absolute;
+    display: inline-block;
+    margin-left: 5px;
+}
+#seasonPassXpBonus {
+    margin-top: 10px;
+    color: #8DDBFF;
+}
+#seasonPassXpBonusSuffix { 
+    margin-top: -18px;
+    font-weight: 600;
+}
+
+
+/* Bright engram statistic container */
+#brightEngram {
+    display: none;
+    margin-left: 20px;
+    text-align: center;
+}
+#brightEngramBg {
+    background-image: url('../static/images/eververse.png');
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: brightness(50%) blur(var(--blurFilterAmount));
+}
+#brightEngramContentContainer {
+    position: absolute;
+    text-align: left;
+    margin-top: -140px;
+    margin-left: 15px;
+}
+#brightEngramFirstContainer {
+    margin-top: 15px;
+    font-size: 22px;
+}
+#brightEngramSuffix {
+    display: inline-block;
+    font-size: 18px;
+}
+#brightEngramSecondContainer {
+    margin-top: 40px;
+    font-size: 22px;
+}
+#brightEngramEngramImageLeft {
+    position: absolute;
+    margin-top: -140px;
+    margin-left: 35px;
+    width: 45px;
+    z-index: 1;
+}
+#brightEngramEngramImageMiddle {
+    position: absolute;
+    margin-top: -140px;
+    margin-left: 50px;
+    width: 100px;
+    z-index: 2;
+}
+#brightEngramEngramImageRight {
+    position: absolute;
+    margin-top: -140px;
+    margin-left: 120px;
+    width: 45px;
+    z-index: 1;
+}
+#brightEngramSuffixBottom {
+    position: absolute;
+    font-size: 18px;
+    margin-top: -3px;
+}
+#brightEngranTooltip {
+    position:absolute;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Animations */
+@keyframes example {
+    0% {background-color: rgba(147, 147, 147, 0.3);}
+    10% {background-color: rgba(190, 190, 190, 0.3);}
+    15% {background-color: rgba(190, 190, 190, 0.3);}
+    30% {background-color: rgba(147, 147, 147, 0.3);}
+    100% {background-color: rgba(147, 147, 147, 0.3);}
+}

@@ -1,1 +1,174 @@
-.itemContainer{position:relative;display:none;width:210px;height:260px;background-color:#000000a3;backdrop-filter:blur(6px);border:1px solid rgba(87,87,87,.66);z-index:10}.itemContainerComplete{position:relative;display:none;width:210px;height:260px;background-color:#000000a3;backdrop-filter:blur(6px);border:1px solid rgba(87,87,87,.66)}.itemContainerComplete::after{position:absolute;content:"";height:30%;width:100%;top:0;left:0;background:linear-gradient(rgb(182,137,67) 0%,transparent 100%);z-index:-10}#items>div{user-select:none;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none}#bountyItems{margin-top:20px}.bounty{margin-left:2px;margin-right:2px;width:55px;border:1px solid rgba(200,200,200,.749);border-radius:1px;z-index:1}.expire{position:absolute;margin-left:-59px;margin-right:2px;width:26px;z-index:2;pointer-events:none}.complete{position:absolute;margin-top:31px;margin-left:-28px;margin-right:2px;width:26px;z-index:2;pointer-events:none}#itemTitle{padding-top:13px;padding-left:10px;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-weight:bold}#itemType{padding-left:12px;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-style:italic;font-size:11px}#itemDesc{padding-left:10px;padding-right:1em;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:13px}#itemPrg{margin-left:0;margin-right:0;padding-left:10px;width:90%}.itemPrgCounter{display:inline-block;position:absolute;bottom:0;right:0;padding-right:10px;text-align:right;color:#c8c8c8bf;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:11px}.itemPrgDesc{display:inline-block;position:absolute;bottom:0;padding-top:10px;padding-left:10px;width:80%;text-align:left;color:#c8c8c8bf;font-family:Verdana,Geneva,Tahoma,sans-serif,monospace;font-size:11px}.greyOut{opacity:50%}.filter{display:inline-block;width:fit-content;cursor:pointer;background-color:#000000a3;border:1px solid rgb(41,41,41);border-radius:15px}#btnHideFilters{margin-top:10px;margin-left:2px;padding:3px;width:fit-content;color:#cdcbcb;border:1px rgb(205,203,203) solid;border-radius:4px;cursor:pointer;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:10px;user-select:none;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;transition:.25s}#btnHideFilters:hover{color:#fff;border-color:#fff;transition:.25s}.propName{padding:6px;padding-top:3px;padding-bottom:3px;color:#8a8a8a;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:12px}
+/**
+ * #.# Seperate item style
+ *
+ * Every reference of an item in the DOM, will use this style script to apply style
+ */
+
+.itemContainer {
+    position: relative;
+    display: none;
+    width: 210px;
+    height: 260px;
+    background-color: rgba(0, 0, 0, 0.639);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(87, 87, 87, 0.66);
+    z-index: 10;
+    box-shadow: 2px 2px 2px #3F3F3F;
+}
+
+.itemContainerComplete {
+    position: relative;
+    display: none;
+    width: 210px;
+    height: 260px;
+    background-color: rgba(0, 0, 0, 0.639);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(87, 87, 87, 0.66);
+}
+
+.itemContainerComplete::after {
+    position: absolute;
+    content: "";
+    height: 30%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(rgb(182,137,67) 0%, transparent 100%);
+    z-index: -10;
+}
+
+#bountyItems {
+    margin-top: 20px;
+}
+
+#challengeItems {
+    margin-top: 20px;
+}
+
+.bounty {
+    margin-left: 2px;
+    margin-right: 2px;
+    width: 55px;
+    border: 1px solid rgba(200, 200, 200, 0.749);
+    border-radius: 1px;
+    z-index: 1;
+    mix-blend-mode: multiply;
+}
+
+.expire {
+    position: absolute;
+    margin-left: -59px;
+    width: 26px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.complete {
+    position: absolute;
+    margin-top: 31px;
+    margin-left: -28px;
+    margin-right: 2px;
+    width: 26px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+#itemTitle {
+    padding-top: 13px;
+    padding-left: 10px;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-weight: bold;
+}
+
+#itemType {
+    padding-left: 12px;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-style: italic;
+    font-size: 11px;
+}
+
+#itemDesc {
+    padding-left: 10px;
+    padding-right: 1em;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 13px;
+}
+
+#itemPrg {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    width: 90%;
+}
+
+.itemPrgCounter {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-right: 10px;
+    text-align: right;
+    color: #c8c8c8;
+    opacity: 0.7;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 11px;
+}
+
+.itemPrgDesc {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    padding-top: 10px;
+    padding-left: 10px;
+    width: 80%;
+    text-align: left;
+    color: #c8c8c8;
+    opacity: 0.7;
+    font-family: Verdana, Geneva, Tahoma, sans-serif, monospace;
+    font-size: 11px;
+}
+
+.greyOut {
+    opacity: 50%;
+}
+
+.filter {
+    display: inline-block;
+    width: fit-content;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.639);
+    border: 1px solid #292929;
+    border-radius: 15px;
+}
+
+#btnHideFilters {
+    display: none !important;
+    margin-top: 10px;
+    margin-left: 2px;
+    padding: 3px;
+    width: fit-content;
+    color: #CDCBCB;
+    border: 1px #CDCBCB solid;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 10px;
+    transition: 0.25s;
+}
+#btnHideFilters:hover {
+    color: white;
+    border-color: white;
+    transition: 0.25s;
+}
+
+.propName {
+    padding: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: #8A8A8A;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 12px;
+}

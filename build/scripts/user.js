@@ -1,1 +1,532 @@
-import*as j from"../_snowpack/env.js";console.log("%cD2 SYNERGY","font-weight: bold;font-size: 40px;color: white;"),console.log("// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.");import k from"../_snowpack/pkg/axios.js";import{ValidateManifest as ie,ReturnEntry as L}from"./utils/ValidateManifest.js";import{VerifyState as re,ParseChar as le,StartLoad as ce,StopLoad as de,MakeBountyElement as pe,RedirUser as F,InsertSeperators as T,ParseBounties as me,PushToDOM as he,SortByGroup as ue,SortByType as ye,SortBountiesByType as fe,CalcXpYield as ge,ReturnSeasonProgressionStats as Ie,ReturnSeasonPassLevel as we,LoadPrimaryCharacter as ke,CacheAuditItem as Q,AddNumberToElementInner as o,CreateFilters as Te}from"./utils/ModuleScript.js";import{itemTypeKeys as Z,vendorKeys as ee,baseYields as be,petraYields as Pe}from"./utils/SynergyDefinitions.js";import{bountyPropCount as Be,PushProps as Ee}from"./utils/MatchProps.js";import{AddEventListeners as Se}from"./utils/Events.js";re();var _e=new URLSearchParams(window.location.search),E=window.sessionStorage,l=window.localStorage,S=console.log.bind(console),ve=new Date,R={},i={},te={},se={},K={},b={},U={},V={},Ce={},_,N,f,v=j.HOME_URL,$={ApiKey:j.API_KEY,Authorization:j.AUTH},Ae=j.CLIENT_ID;document.getElementById("navBarVersion").innerHTML=`${j.version}`,i.homeUrl=v,k.defaults.headers.common={"X-API-Key":`${$.ApiKey}`},i.charBounties=[],i.characters={},i.filterDivs={},i.bools={},i.ints={},i.objs={},i.objs.currView=document.getElementById("pursuitsContainer"),i.bools.characterLoadToggled=!1,i.bools.filterToggled=!1,Q("refreshInterval",5*6e4),ce();var Oe=async r=>{let n={},s={},t={},m={headers:{Authorization:`Basic ${$.Authorization}`,"Content-Type":"application/x-www-form-urlencoded"}};await k.post("https://www.bungie.net/platform/app/oauth/token/",`grant_type=authorization_code&code=${r}`,m).then(d=>{let c=d.data;t.membership_id=c.membership_id,t.token_type=c.token_type,t.authorization_code=r,n.inception=Math.round(new Date().getTime()/1e3),n.expires_in=c.expires_in,n.value=c.access_token,s.inception=Math.round(new Date().getTime()/1e3),s.expires_in=c.refresh_expires_in,s.value=c.refresh_token,l.setItem("accessToken",JSON.stringify(n)),l.setItem("components",JSON.stringify(t)),l.setItem("refreshToken",JSON.stringify(s)),S("-> Authorized with Bungie.net!")}).catch(d=>{d.response.data.error_description=="AuthorizationCodeInvalid"||d.response.data.error_description=="AuthorizationCodeStale"?window.location.href=`https://www.bungie.net/en/oauth/authorize?&client_id=${Ae}&response_type=code`:console.error(d)})},Y=async r=>{let n=JSON.parse(l.getItem("accessToken")),s=JSON.parse(l.getItem("refreshToken")),t=JSON.parse(l.getItem("components")),m={},d={},c={},C={headers:{Authorization:`Basic ${$.Authorization}`,"Content-Type":"application/x-www-form-urlencoded"}};var A=["value","inception","expires_in","membership_id","token_type","authorization_code"],O=["membership_id","token_type","authorization_code"],P=["inception","expires_in","value"];Object.keys(s).forEach(a=>{A.includes(a)||(delete s[a],l.setItem("refreshToken",JSON.stringify(s)))}),Object.keys(n).forEach(a=>{A.includes(a)||(delete n[a],l.setItem("accessToken",JSON.stringify(n)))}),Object.keys(t).forEach(a=>{A.includes(a)||(delete t[a],l.setItem("components",JSON.stringify(t)))}),Object.keys(P).forEach(a=>{Object.keys(s).includes(P[a])||F(v,"rsToken=true"),Object.keys(n).includes(P[a])||F(v,"acToken=true")}),Object.keys(O).forEach(a=>{Object.keys(t).includes(O[a])||F(v,"comps=true")});let w=n.inception+n.expires_in<=Math.round(new Date().getTime()/1e3)-1,g=s.inception+s.expires_in<=Math.round(new Date().getTime()/1e3)-1;(w||g)&&(delete k.defaults.headers.common["X-API-Key"],document.getElementById("loadingText").innerHTML="Refreshing Tokens",S(w?"-> Access token expired..":"-> Refresh token expired.."),await k.post("https://www.bungie.net/Platform/App/OAuth/token/",`grant_type=refresh_token&refresh_token=${s.value}`,C).then(a=>{let p=a.data;c.membership_id=p.membership_id,c.token_type=p.token_type,c.authorization_code=t.authorization_code,d.inception=Math.round(new Date().getTime()/1e3),d.expires_in=p.expires_in,d.value=p.access_token,m.inception=Math.round(new Date().getTime()/1e3),m.expires_in=p.refresh_expires_in,m.value=p.refresh_token,l.setItem("accessToken",JSON.stringify(d)),l.setItem("components",JSON.stringify(c)),l.setItem("refreshToken",JSON.stringify(m))}),S(w?"-> Access Token Refreshed!":"-> Refresh Token Refreshed!")),r&&S("-> Tokens Validated!")},xe=async()=>{let r=JSON.parse(l.getItem("refreshToken")),n=JSON.parse(l.getItem("accessToken")),s=JSON.parse(l.getItem("components")),t=_e.get("code");window.history.pushState({},document.title,window.location.pathname);try{t&&(!s||!n||!r)?await Oe(t):!t&&(!s||!n||!r)?window.location.href=v:!t||t&&(s||n||r)?await Y():!t&&(s||n||r)?await Y():window.location.href=v}catch(m){console.error(m)}},De=async()=>{let r=JSON.parse(l.getItem("components")),n={headers:{Authorization:`Bearer ${JSON.parse(l.getItem("accessToken")).value}`,"X-API-Key":`${$.ApiKey}`}};if(document.getElementById("loadingText").innerHTML="Fetching User Details",N=E.getItem("membershipType"),_=JSON.parse(E.getItem("destinyMembershipId")),b=JSON.parse(E.getItem("destinyUserProfile")),!N||!_||!b){let s=await k.get(`https://www.bungie.net/Platform/Destiny2/1/Profile/${r.membership_id}/LinkedProfiles/?getAllMemberships=true`,n);_=s.data.Response.profiles[0].membershipId,N=s.data.Response.profiles[0].membershipType,b=(await k.get(`https://www.bungie.net/Platform/Destiny2/${N}/Profile/${_}/?components=200`,n)).data.Response,E.setItem("membershipType",N),E.setItem("destinyMembershipId",JSON.stringify(_)),E.setItem("destinyUserProfile",JSON.stringify(b))}if(N&&_&&b){f=b.characters.data;for(let s in f){let t=f[s];document.getElementById(`classBg${t.classType}`).src=`https://www.bungie.net${t.emblemBackgroundPath}`,document.getElementById(`classType${t.classType}`).innerHTML=`${le(t.classType)}`,document.getElementById(`classLight${t.classType}`).innerHTML=`${t.light}`}i.characters=f,document.getElementById("charactersContainer").style.display="inline-block",document.getElementById("categories").style.display="block",document.getElementById("statsContainer").style.display="block"}},Le=async(r,n)=>{if(!i.characterLoadToggled){document.getElementById("loadingText").innerHTML="Indexing Character",await Y(!1);let s=E.getItem("membershipType"),t,m,d,c,C={},A=0,O,P,w,g=[],a={},p,J;i.characterLoadToggled=!0,Q("lastChar",r),document.getElementById("loadingContentContainer").style.display="block",document.getElementById("contentDisplay").style.display="none",document.getElementById("noItemsTooltip").style.display="none",document.getElementById("bountyItems").innerHTML="",document.getElementById("overlays").innerHTML="",document.getElementById("filters").innerHTML="";for(let e in f)f[e].classType!==r?document.getElementById(`charContainer${f[e].classType}`).classList.add("elBlur"):f[e].classType===r&&document.getElementById(`charContainer${f[e].classType}`).classList.remove("elBlur"),document.getElementById(`charContainer${f[e].classType}`).style.display="block";for(let e in b.characters.data){let y=b.characters.data[e];y.classType===r&&(p=y.characterId)}if(!R.resCharacterInventories||n){let e={headers:{Authorization:`Bearer ${JSON.parse(l.getItem("accessToken")).value}`,"X-API-Key":`${$.ApiKey}`}},y=await k.get(`https://www.bungie.net/Platform/Destiny2/${s}/Profile/${_}/?components=100,104,201,202,205,300,301,305`,e),h=y.data.Response;m=h.characterInventories.data,w=h.profile.data.currentSeasonHash,t=h.characterProgressions.data[p].progressions,d=h.itemComponents.objectives.data,O=h.characterEquipment.data[p].items,c=h.profileProgression.data,J=h.itemComponents.sockets.data,R.resCharacterInventories=y}else if(R.resCharacterInventories){let e=R.resCharacterInventories.data.Response;m=e.characterInventories.data,w=e.profile.data.currentSeasonHash,t=e.characterProgressions.data[p].progressions,d=e.itemComponents.objectives.data,O=e.characterEquipment.data[p].items,c=e.profileProgression.data,J=e.itemComponents.sockets.data}let oe=m[p].items,M=0,B={};ee.forEach(e=>{B[e]=[]});let W=me(oe,d,{definitions:V,objectiveDefinitions:K});g=W[0],M=W[1],Object.keys(g).forEach(e=>{let y=g[e].objectives.objectiveHashes;g[e].objectiveDefinitions=[];for(let h of y)g[e].objectiveDefinitions.push(K[h])}),B=ue(g,{bountyArr:B,vendorKeys:ee,itemTypeKeys:Z}),B=ye(B,{SortBountiesByType:fe}),he(B,{MakeBountyElement:pe,amountOfBounties:M}),i.charBounties=g;let X=ge(B,{itemTypeKeys:Z,baseYields:be,petraYields:Pe}),I=0;O.forEach(e=>{if(e.bucketHash===4023194814){let y=J[e.itemInstanceId].sockets;Object.keys(y).forEach(h=>{let D=y[h].plugHash;D===1820053069?I=2:D===1820053068?I=3:D===1820053071?I=5:D===1820053070?I=8:D===1820053065?I=10:D===1820053064&&(I=12)})}}),a=t[U[w].seasonPassProgressionHash],C=se[U[w].seasonPassHash],P=t[C.prestigeProgressionHash],A=await we(a,P);let ne=te[C.rewardProgressionHash].rewardItems,H={};ne.forEach(e=>{H[e.rewardedAtProgressionLevel]||(H[e.rewardedAtProgressionLevel]=[]),H[e.rewardedAtProgressionLevel].push(e.itemHash)});let u=await Ie(a,P,H,V),z=u[3]+12;o("XpToNextEngram",T(u[0])),o("totalBrightEngramsEarned",T(u[1])),o("seasonPassFireteamBonus",`${u[2]}%`),o("seasonPassXpBonus",`${z}%`),o("bonusXpValue",`${z}%`),o("sharedWisdomValue",`${u[2]}%`),o("ghostModValue",`${I}%`);let ae=X*((z+u[2]+I)/100+1);o("totalNetXpField",`${T(ae)}`),o("seasonPassRankLevel",A),o("seasonPassXpToNextRank",T(u[4])),o("seasonPassXpToMaxRank",T(u[5]));let q=0,G=0;for(let e of i.charBounties)e.isComplete&&G++,e.isExpired&&q++;o("expiredBountiesAmountField",q),o("completedBountiesAmountField",G),o("currentSeasonNameField",C.displayProperties.name),I||(document.getElementById("ghostModCheckmark").style.display="none",document.getElementById("ghostModCross").style.display="inline-block"),u[2]||(document.getElementById("sharedWisdomCheckmark").style.display="none",document.getElementById("sharedWisdomCross").style.display="inline-block"),u[3]||(document.getElementById("bonusXpCheckmark").style.display="none",document.getElementById("bonusXpCross").style.display="inline-block");let x;c.seasonalArtifact?(x=c.seasonalArtifact,o("artifactStatsArtifactBonus",`+${x.powerBonus}`),o("artifactXpToNextUnlock",T(x.pointProgression.nextLevelAt-x.pointProgression.progressToNextLevel)),o("artifactXpToNextPowerBonus",T(x.powerBonusProgression.nextLevelAt-x.powerBonusProgression.progressToNextLevel))):c.seasonalArtifact||(document.getElementById("artifactStatsFirstContainer").style.display="none",document.getElementById("artifactStatsSecondContainer").style.display="none",document.getElementById("artifactStatsThirdMetricContainer").style.display="none",document.getElementById("artifactStatsNoArtifactIsPresent").style.display="block"),M===0?(document.getElementById("noItemsTooltip").innerHTML="You don't have bounties on this character. How dare you. (-(-_(-_-)_-)-)",document.getElementById("noItemsTooltip").style.display="inline-block",o("totalXpField",0),o("totalSpLevelsField",0),o("bountiesAmountField",0)):M>0&&(o("bountiesAmountField",`${M}`),o("totalXpField",T(X)),o("totalSpLevelsField",X/1e5)),await Ee(),await Te("charBounties",Be),i.characterLoadToggled=!1,de(),i.objs.currView.style.display="block",document.getElementById("contentDisplay").style.display="inline-block"}};(async()=>{await xe(),k.defaults.headers.common={"X-API-Key":`${$.ApiKey}`},await ie(),await De(),U=await L("DestinySeasonDefinition"),se=await L("DestinySeasonPassDefinition"),te=await L("DestinyProgressionDefinition"),K=await L("DestinyObjectiveDefinition"),V=await L("DestinyInventoryItemDefinition"),Ce=await L("DestinyPlugSetDefinition"),await ke(i.characters),await Se(),S(`-> OAuth Flow Complete! [Elapsed: ${new Date-ve}ms]`)})().catch(r=>{console.error(r)});export{Le as LoadCharacter,i as userStruct,v as homeUrl};
+import * as __SNOWPACK_ENV__ from '../_snowpack/env.js';
+
+console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
+console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
+
+// Import modules
+import axios from '../_snowpack/pkg/axios.js';
+import { ValidateManifest, ReturnEntry } from './modules/ValidateManifest.js';
+import {
+    VerifyState,
+    ParseChar,
+    StartLoad,
+    StopLoad,
+    RedirUser,
+    LoadPrimaryCharacter,
+    parsePropertyNameIntoWord,
+    CacheAuditItem } from './modules/ModuleScript.js';
+import {
+    CurrentlyAddedVendors,
+    ActivityMode,
+    Destination,
+    DamageType,
+    AmmoType,
+    ItemCategory,
+    KillType,
+    EnemyType,
+    EnemyModifiers,
+    SeasonalCategory,
+    LocationSpecifics,
+    DescriptorSpecifics } from './modules/SynergyDefinitions.js';
+import { AddEventListeners, BuildWorkspace } from './modules/Events.js';
+
+
+// Validate state parameter
+VerifyState();
+
+// Start load sequence
+StartLoad();
+
+// Utilities
+const urlParams = new URLSearchParams(window.location.search),
+    sessionStorage = window.sessionStorage,
+    localStorage = window.localStorage,
+    log = console.log.bind(console);
+var startTime = new Date();
+
+
+// Defintion objects
+export let progressionDefinitions = {},
+        presentationNodeDefinitions = {},
+        seasonPassDefinitions = {},
+        objectiveDefinitions = {},
+        destinyUserProfile = {},
+        seasonDefinitions = {},
+        recordDefinitions = {},
+        vendorDefinitions = {},
+        itemDefinitions = {};
+
+// User data
+let destinyMembershipId,
+    membershipType,
+    characters;
+
+
+export var ProfileProgressions;
+export var CurrentSeasonHash;
+
+// Object holds all bounties, by vendor, that are to be excluded from permutations
+export var excludedBountiesByVendor = {};
+
+
+// Declare global vars and exports
+export var charBounties = [];
+
+// Currently selected view page
+export var contentView = { 
+    currentView: {},
+    UpdateView: function(element) {
+        this.currentView = element;
+    }
+};
+
+// Deprecated for now
+export var eventBooleans = {
+    areFiltersToggled: false, // Default
+    ReverseBoolean: function(bool) {
+        bool = !bool;
+        return bool;
+    }
+};
+export var eventFilters = {
+    filterDivs: {},
+    grayedOutBounties: [],
+    UpdateFilters: function(value) {
+        this.filterDivs = value;
+    }
+};
+
+// Item display size global
+export var itemDisplay = {
+    itemDisplaySize: 55, // Default
+    UpdateItemSize: function(size) {
+
+        // Update global & cache
+        this.itemDisplaySize = size;
+        CacheAuditItem('itemDisplaySize', size);
+
+        // Update dom content
+        document.getElementById('accessibilityImageDemo').style.width = `${size}px`;
+    }
+};
+
+// Accent color global
+export var accentColor = {
+    currentAccentColor: '#ED4D4D', // Default
+    UpdateAccentColor: function(color) {
+
+        // Update global & cache
+        this.currentAccentColor = color;
+        CacheAuditItem('accentColor', color);
+
+        // Update dom content
+        document.getElementById('topColorBar').style.backgroundColor = color;
+        document.getElementById('topColorBar').style.boxShadow = `0px 0px 10px 1px ${color}`;
+        // Range sliders
+        for (let element of document.getElementsByClassName('settingRange')) {
+            element.style.accentColor = color;
+        };
+        // Checkboxes
+        for (let element of document.getElementsByClassName('settingCheckbox')) {
+            element.style.accentColor = color;
+        };
+    }
+};
+
+// Font size global
+// export var fontSize = {
+//     currentFontSize: 
+// };
+
+// Authorization information
+export const homeUrl = __SNOWPACK_ENV__.HOME_URL,
+             axiosHeaders = {
+                ApiKey: __SNOWPACK_ENV__.API_KEY,
+                Authorization: __SNOWPACK_ENV__.AUTH
+             },
+             clientId = __SNOWPACK_ENV__.CLIENT_ID;
+
+// Set default axios header
+axios.defaults.headers.common = {
+    "X-API-Key": `${axiosHeaders.ApiKey}`
+};
+
+
+// Collate all definition arrays into one array
+export var allProgressionProperties = [];
+allProgressionProperties.push(
+    ...Destination,
+    ...ActivityMode,
+    ...DamageType,
+    ...ItemCategory,
+    ...AmmoType,
+    ...KillType,
+    ...EnemyType,
+    ...EnemyModifiers,
+    ...SeasonalCategory,
+    ...LocationSpecifics,
+    ...DescriptorSpecifics);
+
+// Parse properties into words that can be matched to item descriptors
+allProgressionProperties = allProgressionProperties.map(property => parsePropertyNameIntoWord(property));
+
+
+
+// Main OAuth flow mechanism
+export async function OAuthFlow() {
+
+    log('OAuthFlow START');
+
+    let rsToken = JSON.parse(localStorage.getItem('refreshToken')),
+        acToken = JSON.parse(localStorage.getItem('accessToken')),
+        comps = JSON.parse(localStorage.getItem('components')),
+        authCode = urlParams.get('code'); // ONLY place where authCode is to be fetched from
+
+        // Remove state and auth code from url
+        window.history.pushState({}, document.title, window.location.pathname);
+
+    // Wrap in try.except for error catching
+    try {
+        // If user has no localStorage items and the code is incorrect
+        if (authCode && (!comps || !acToken || !rsToken)) {
+            await BungieOAuth(authCode);
+        }
+        // User has no credentials, fired before other conditions
+        else if (!authCode && (!comps || !acToken || !rsToken)) {
+            window.location.href = homeUrl;
+        }
+
+        // If user has authorized beforehand, but came back through empty param URL
+        // If user has code and localStorage components
+        else if (!authCode || authCode && (comps || acToken || rsToken)) {
+            await CheckComponents();
+        }
+
+        // When user comes back with localStorage components but without param URL
+        else if (!authCode && (comps || acToken || rsToken)) {
+            await CheckComponents();
+        }
+
+        // Otherwise, redirect the user back to the 'Authorize' page
+        else {
+            window.location.href = homeUrl;
+        };
+    } catch (error) {
+        console.error(error); // display error page, with error and options for user
+    };
+    log('OAuthFlow END');
+    log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
+};
+
+
+
+// Authorize with Bungie.net
+// @string {authCode}
+export async function BungieOAuth (authCode) {
+
+    let AccessToken = {},
+        RefreshToken = {},
+        components = {},
+        AuthConfig = {
+            headers: {
+                Authorization: `Basic ${axiosHeaders.Authorization}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        };
+        log(axiosHeaders.Authorization);
+
+    // Authorize user and get credentials (first time sign-on (usually))
+    await axios.post('https://www.bungie.net/platform/app/oauth/token', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
+        .then(res => {
+            let data = res.data;
+
+            log(res);
+
+            components['membership_id'] = data['membership_id'];
+            components['token_type'] = data['token_type'];
+            components['authorization_code'] = authCode;
+
+            AccessToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
+            AccessToken['expires_in'] = data['expires_in'];
+            AccessToken['value'] = data['access_token'];
+
+            RefreshToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
+            RefreshToken['expires_in'] = data['refresh_expires_in'];
+            RefreshToken['value'] = data['refresh_token'];
+
+            localStorage.setItem('accessToken', JSON.stringify(AccessToken));
+            localStorage.setItem('components', JSON.stringify(components));
+            localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
+
+            log('-> Authorized with Bungie.net!');
+        })
+        .catch(err => {
+            if (err.response.data['error_description'] == 'AuthorizationCodeInvalid' || err.response.data['error_description'] == 'AuthorizationCodeStale') {
+                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
+            }
+            else {
+                console.error(err);
+            };
+        });
+};
+
+
+
+// Check tokens for expiration
+export async function CheckComponents () {
+    
+    let acToken = JSON.parse(localStorage.getItem('accessToken')),
+        rsToken = JSON.parse(localStorage.getItem('refreshToken')),
+        comps = JSON.parse(localStorage.getItem('components')),
+        RefreshToken = {},
+        AccessToken = {},
+        components = {},
+        AuthConfig = {
+            headers: {
+                Authorization: `Basic ${axiosHeaders.Authorization}`,
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        };
+
+
+    // Remove invalid localStorage items & Redirect if items are missing
+    var keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'],
+        cKeys = ['membership_id', 'token_type', 'authorization_code'],
+        tokenKeys = ['inception', 'expires_in', 'value'];
+
+
+    Object.keys(rsToken).forEach(item => {
+        if (!keyNames.includes(item)) delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken))
+    });
+    Object.keys(acToken).forEach(item => {
+        if (!keyNames.includes(item)) delete acToken[item], localStorage.setItem('accessToken', JSON.stringify(acToken));
+    });
+    Object.keys(comps).forEach(item => {
+        if (!keyNames.includes(item)) delete comps[item], localStorage.setItem('components', JSON.stringify(comps));
+    });
+
+    Object.keys(tokenKeys).forEach(item => {
+        if (!Object.keys(rsToken).includes(tokenKeys[item])) RedirUser(homeUrl, 'rsToken=true');
+        if (!Object.keys(acToken).includes(tokenKeys[item])) RedirUser(homeUrl, 'acToken=true');
+    });
+    Object.keys(cKeys).forEach(item => {
+        if (!Object.keys(comps).includes(cKeys[item])) RedirUser(homeUrl, 'comps=true');
+    });
+
+
+
+    // Check if either tokens have expired
+    let isAcTokenExpired = (acToken.inception + acToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1,
+        isRsTokenExpired = (rsToken.inception + rsToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
+    if (isAcTokenExpired || isRsTokenExpired) {
+
+        // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
+        delete axios.defaults.headers.common['X-API-Key'];
+
+        // Change load content
+        document.getElementById('loadingText').innerHTML = 'Refreshing Tokens';
+
+        // If either tokens have expired
+        isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
+        await axios.post('https://www.bungie.net/Platform/App/OAuth/token/', `grant_type=refresh_token&refresh_token=${rsToken.value}`, AuthConfig)
+            .then(res => {
+                let data = res.data;
+
+                components["membership_id"] = data["membership_id"];
+                components["token_type"] = data["token_type"];
+                components["authorization_code"] = comps["authorization_code"];
+
+                AccessToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
+                AccessToken['expires_in'] = data['expires_in'];
+                AccessToken['value'] = data['access_token'];
+
+                RefreshToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
+                RefreshToken['expires_in'] = data['refresh_expires_in'];
+                RefreshToken['value'] = data['refresh_token'];
+
+                localStorage.setItem('accessToken', JSON.stringify(AccessToken));
+                localStorage.setItem('components', JSON.stringify(components));
+                localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
+            });
+        isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
+    };
+    log('-> Tokens Validated!');
+};
+
+
+
+// Fetch bungie user data
+export async function FetchBungieUserDetails() {
+
+    log('FetchBungieUserDetails START');
+
+    // Change load content
+    document.getElementById('loadingText').innerHTML = 'Fetching Profile Data';
+    await CheckComponents();
+
+    let components = JSON.parse(localStorage.getItem('components')),
+        axiosConfig = {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,
+                "X-API-Key": `${axiosHeaders.ApiKey}`
+            }
+        };
+        log(JSON.parse(localStorage.getItem('accessToken')).value);
+        
+
+    // Variables to check/store
+    membershipType = sessionStorage.getItem('membershipType'),
+    destinyMembershipId = JSON.parse(sessionStorage.getItem('destinyMembershipId')),
+    destinyUserProfile = JSON.parse(sessionStorage.getItem('destinyUserProfile'));
+
+    // Compare each variable that represents cached data
+    if (!membershipType || !membershipType) {
+
+        // GetBungieNetUserById (uses 254 as membershipType)
+        await axios.get(`https://www.bungie.net/Platform/Destiny2/254/Profile/${components.membership_id}/LinkedProfiles/?getAllMemberships=true`, axiosConfig)
+            .then(response => {
+
+                // Store in memory again
+                destinyMembershipId = response.data.Response.profiles[0].membershipId;
+                membershipType = response.data.Response.profiles[0].membershipType;
+
+                // Cache in sessionStorage
+                sessionStorage.setItem('membershipType', membershipType);
+                sessionStorage.setItem('destinyMembershipId', JSON.stringify(destinyMembershipId));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    // Check if destinyUserProfile is cached
+    // If it is not cached then this means it is the first time the user has accessed this page
+    // Otherwise, it is a refresh and we go to the else
+    if (!destinyUserProfile) {
+
+        // GetProfile (uses membershipType & destinyMembershipId)
+        await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900`, axiosConfig)
+        .then(response => {
+                
+                // Store in memory again
+                log(response)
+                destinyUserProfile = response.data.Response;
+
+                // Parse data from destinyUserProfile
+                CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
+                ProfileProgressions = destinyUserProfile.profileProgression.data;
+
+                // Cache in sessionStorage
+                sessionStorage.setItem('destinyUserProfile', JSON.stringify(destinyUserProfile));
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+    else {
+        // Parse data from destinyUserProfile
+        CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
+        ProfileProgressions = destinyUserProfile.profileProgression.data;
+    };
+    log(CurrentSeasonHash);
+    // Load characters from cache
+    if (membershipType && destinyMembershipId && destinyUserProfile) {
+
+        // Loop over characters
+        characters = destinyUserProfile.characters.data;
+        for (let item in characters) {
+            let char = characters[item];
+            document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
+            document.getElementById(`classType${char.classType}`).innerHTML = `${ParseChar(char.classType)}`;
+            document.getElementById(`classLight${char.classType}`).innerHTML = `${char.light}`;
+        };
+
+        // Change DOM content
+        document.getElementById('charactersContainer').style.display = 'inline-block';
+        document.getElementById('categories').style.display = 'block';
+        // document.getElementById('statsContainer').style.display = 'block';
+    };
+    log('FetchBungieUserDetails END');
+};
+
+
+
+// Anonymous function for main
+// @boolean {isPassiveReload}
+export async function MainEntryPoint(isPassiveReload) {
+
+    // Check for passive reload
+    if (isPassiveReload) {
+        startTime = new Date();
+        StartLoad();
+        log(`-> Passive Reload Started..`);
+    };
+
+    // OAuth Flow
+    await OAuthFlow();
+
+    // Add default headers back, in case OAuthFlow needed a refresh
+    axios.defaults.headers.common = { "X-API-Key": `${axiosHeaders.ApiKey}` };
+
+    // Fetch bungie user details
+    await FetchBungieUserDetails();
+
+    // Validate and fetch manifest
+    await ValidateManifest();
+
+    // Assign defintions to their global counterparts
+    progressionDefinitions = await ReturnEntry('DestinyProgressionDefinition');
+    seasonPassDefinitions = await ReturnEntry('DestinySeasonPassDefinition');
+    objectiveDefinitions = await ReturnEntry('DestinyObjectiveDefinition');
+    seasonDefinitions = await ReturnEntry('DestinySeasonDefinition');
+    itemDefinitions = await ReturnEntry('DestinyInventoryItemDefinition');
+    recordDefinitions = await ReturnEntry('DestinyRecordDefinition');
+    presentationNodeDefinitions = await ReturnEntry('DestinyPresentationNodeDefinition');
+
+    // Load first char on profile/last loaded char
+    log(characters);
+    await LoadPrimaryCharacter(characters);
+
+    // Load seasonal challenges
+    // await LoadSeasonalChallenges();
+
+    // Check for passive reload
+    if (isPassiveReload) {
+        StopLoad();
+        log(`-> Passive Reload Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
+    }
+    else if (!isPassiveReload) {
+        // Don't add the event listeners again when passive reloading
+        await AddEventListeners();
+    };
+
+    // Log currently support vendors
+    console.table('Supported Vendors:', CurrentlyAddedVendors);
+};
+
+
+
+// Run main after DOM content has loaded
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Test server availability
+    // MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: false})
+    //     .then((response) => {
+    //         log(response);
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //     });
+
+    // Build workspace -- default fields etc.
+    BuildWorkspace()
+        .catch((error) => {
+            console.error(error);
+        });
+
+    // Run main
+    MainEntryPoint()
+        .catch((error) => {
+            console.error(error);
+        });
+});

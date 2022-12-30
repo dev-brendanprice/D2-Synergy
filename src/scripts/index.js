@@ -1,7 +1,7 @@
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
-console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
+console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
 
-import { MakeRequest } from './utils/MakeRequest.js';
+import { MakeRequest } from './modules/MakeRequest.js';
 
 const log = console.log.bind(console),
       localStorage = window.localStorage,
@@ -13,14 +13,16 @@ const log = console.log.bind(console),
 // Check localStorage to determine if user has signed in already
 async function CheckSession() {
 
-    var acToken = JSON.parse(localStorage.getItem('accessToken')),
+    const acToken = JSON.parse(localStorage.getItem('accessToken')),
         rsToken = JSON.parse(localStorage.getItem('refreshToken')),
         comps = JSON.parse(localStorage.getItem('components')),
         urlParam = new URLSearchParams(window.location.search);
 
 
     // Indicates if localStorage is missing an item(s)
-    urlParam.get('rsToken') || urlParam.get('acToken') || urlParam.get('comps') ? localStorage.clear() : null;
+    if (!(urlParam.get('rsToken') && urlParam.get('acToken') && urlParam.get('comps'))) {
+        localStorage.clear();
+    };
 
     // Redirect user through if localStorage has items
     if (acToken && rsToken && comps) {
@@ -44,54 +46,28 @@ async function GenerateRandomString(len) {
 // Main
 window.addEventListener('DOMContentLoaded', () => {
 
-    // Check for server availability
-    MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', { headers: { 'X-API-Key': apiKey } }, {scriptOrigin: 'index', avoidCache: false})
-        .catch((error) => {
-
-            console.error(error);
-            if (!response.data.Response.systems.Destiny2.enabled) {
-                document.getElementById('serverDeadContainer').style.display = 'block';
-                return;
-            };
-        });
+    const stateCode = GenerateRandomString(128);
 
     // Put version number in navbar
     document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
 
-    // Check for a pre-existing session
-    CheckSession();
+    // Check for server availability
+    log(apiKey);
+    MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
+    .then((response) => {
 
-    // Listen for authorize button click
-    document.getElementById('btnAuthorize').addEventListener('click', () => {
+        // Check for a pre-existing session
+        CheckSession();
+        
+        // Listen for authorize button click
+        document.getElementById('btnAuthorize').addEventListener('click', () => {
 
-        const stateCode = GenerateRandomString(128);
-        localStorage.setItem('stateCode', stateCode);
-        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
-
-        // Check for server availability
-        MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', { headers: { 'X-API-Key': apiKey } }, {scriptOrigin: 'index', avoidCache: false})
-        .then((response) => {
-            
-            // Do main stuff
-            if (response.status === 200) {
-                const stateCode = GenerateRandomString(128);
-                localStorage.setItem('stateCode', stateCode);
-                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
-            };
-
-            // Else throw error
-            throw new Error('Servers are down!');
-
-        })
-        .catch((error) => {
-
-            // Do error stuff
-            console.error(error);
-            if (!response.data.Response.systems.Destiny2.enabled) {
-                document.getElementById('serverDeadContainer').style.display = 'block';
-                return;
-            };
+            // Redirect user to Bungie.net on a clean slate
+            localStorage.setItem('stateCode', stateCode);
+            window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&fubar=${GenerateRandomString(128)}`;
         });
+    })
+    .catch((error) => {
+        console.error(error);
     });
 });
-

@@ -1,1 +1,140 @@
-#mainContainer{margin:0 auto;margin-top:60px;width:785px;border:1px #56606d solid;background-color:#3e454e;color:#fff;border-radius:3px;text-align:center;align-items:center;justify-content:center}#serverDeadContainer{display:none;margin:0 auto;margin-top:15px;padding-top:5px;padding-bottom:15px;padding-left:10px;width:775px;border:1px rgb(255,15,15) solid;background-color:#ff4545c9;border-radius:3px;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#websiteAlphaNotice{display:block;margin:0 auto;margin-top:15px;padding-top:5px;padding-bottom:15px;padding-left:10px;width:775px;border:1px rgb(255,175,15) solid;background-color:#ff8f0fae;border-radius:3px;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#websiteNotice{display:none;margin:0 auto;margin-top:15px;padding-top:5px;padding-bottom:15px;padding-left:10px;width:775px;border:1px rgb(255,15,15) solid;background-color:#ff4545c9;border-radius:3px;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#errorHeading{font-size:25px}#errorContent{margin-top:20px;font-size:17px}#hyperlink{display:inline-block;text-decoration:underline;cursor:pointer}#heading{margin-top:5px;color:#fff;font-family:"Josefin Sans",sans-serif;font-size:25px;font-weight:600}#subText{color:#fff;justify-content:end;font-family:"Roboto",sans-serif;font-size:15px;font-weight:400}#btnAuthorize{position:relative;margin-top:10px;padding:10px;padding-top:8px;padding-bottom:8px;width:auto;color:#222;background-color:#e44749;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-weight:600;font-size:15px;border:0px solid black;border-radius:5px;cursor:pointer}#iconsContainer{display:flex;margin-top:30px;padding-bottom:8px;width:auto;text-align:right;align-items:right;justify-content:right}#twitterIcon{margin-right:7px;margin-top:2px;width:25px;height:22px;cursor:pointer}#githubIcon{margin-right:10px;width:25px;height:auto;cursor:pointer}#kofiIcon{margin-right:10px;width:25px;height:auto;cursor:pointer}
+/**
+ * #.# Home (index) style
+ *
+ * Style for the landing page of the website
+ */
+
+#indexMainContainer {
+    margin: 0 auto;
+    margin-top: 60px;
+    width: 785px;
+    border: 1px #56606d solid;
+    background-color: #3e454e;
+    color: white;
+    border-radius: 3px;
+    text-align: center;
+	align-items: center;
+	justify-content: center;
+}
+
+.indexNotice {
+    margin: 0 auto;
+    margin-top: 15px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 765px;
+    border-radius: 3px;
+    color: white;
+}
+
+#serverDeadContainer {
+    display: none;
+    border: 1px rgb(255, 15, 15) solid;
+    background-color: rgba(255, 69, 69, 0.787);
+}
+
+#websiteAlphaNotice {
+    border: 1px rgb(255, 175, 15) solid;
+    background-color: rgba(255, 143, 15, 0.681);
+}
+
+#websiteNotice {
+    display: none;
+    border: 1px rgb(255, 15, 15) solid;
+    background-color: rgba(255, 69, 69, 0.787);
+}
+
+#errorHeading {
+    margin-top: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+#errorContent {
+    margin-top: 20px;
+    font-size: 17px;
+}
+
+#hyperlink {
+    display: inline-block;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#heading {
+    margin-top: 10px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+#subText {
+    padding-left: 35px;
+    padding-right: 35px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.25px;
+    text-align: center;
+}
+
+#btnAuthorize {
+    position: relative;
+    margin-top: 10px;
+    padding: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+	width: auto;
+    color: rgb(34, 34, 34);
+    background-color: #e44749;
+	font-weight: 600;
+    font-size: 15px;
+	border: 1px solid #ffadb0;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+#btnAuthorize:hover {
+    background-color: #c13d40;
+}
+
+#btnAuthorize:active {
+    background-color: #b03638;
+}
+
+#iconsContainer {
+    display: flex;
+    margin-top: 30px;
+    padding-bottom: 8px;
+    width: auto;
+    text-align: right;
+	align-items: right;
+	justify-content: right;
+}
+
+#twitterIcon {
+    margin-right: 7px;
+    margin-top: 2px;
+    width: 25px;
+    height: 22px;
+    cursor: pointer;
+}
+
+#githubIcon {
+    margin-right: 10px;
+    width: 25px;
+    height: auto;
+    cursor: pointer;
+}
+
+#kofiIcon {
+    margin-right: 10px;
+    width: 25px;
+    height: auto;
+    cursor: pointer;
+}

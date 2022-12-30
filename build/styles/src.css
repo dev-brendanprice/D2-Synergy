@@ -1,1 +1,400 @@
-html,body{background-color:#22272e}.elBlur{-webkit-filter:blur(1.5px);-moz-filter:blur(1.5px);-o-filter:blur(1.5px);-ms-filter:blur(1.5px);filter:blur(1.5px)}#navBarContainer{position:fixed;margin-left:-8px;top:0;height:45px;width:100vw;background-color:#202020;z-index:10}#navBarTitleContainer{position:absolute;margin-top:5px;margin-left:15px;left:0;color:#fff;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols}#navBarTitle{display:inline-block;font-size:30px}#navBarVersion{display:inline-block;font-size:15px;color:#cb7474}#navBarLogoutContainer{position:absolute;margin-top:12px;margin-right:12px;right:0;cursor:pointer}#navBarLogout{padding-left:8px;padding-right:8px;padding-top:1px;padding-bottom:1px;width:auto;border:1px solid gray;border-radius:4px;color:gray;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:15px;user-select:none;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;transition:.25s}#navBarLogout:hover{color:#fff;border-color:#fff;transition:.25s}#navBarSettingsContainer{display:none;position:absolute;margin-top:12px;margin-right:90px;right:0;cursor:pointer}#navBarSettings{padding-left:8px;padding-right:8px;padding-top:1px;padding-bottom:1px;width:auto;border:1px solid gray;border-radius:4px;color:gray;font-family:"Neue Haas Grotesk Display","Destiny Symbols",Segoe-MDL,sans-serif,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android Emoji",EmojiSymbols;font-size:15px;user-select:none;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;transition:.25s}#navBarSettings:hover{color:#fff;border-color:#fff;transition:.25s}#loadBarContainer{display:inline-block;position:fixed;margin-top:56px}#slider{position:absolute;margin-top:-21px;margin-left:-10px;width:103vw;height:3px;overflow-x:hidden}.line{position:absolute;width:103vw;height:5px;background:#4a8df8;opacity:.4;overflow-x:hidden}.subline{position:absolute;height:5px;background:#4a8df8;overflow-x:hidden}.inc{animation:increase 2s infinite}.dec{animation:decrease 2s .5s infinite}@keyframes increase{0%{left:-5%;width:5%}to{left:130%;width:100%}}@keyframes decrease{0%{left:-80%;width:80%}to{left:110%;width:10%}}.fade-in{animation-name:FadeIn;animation-duration:.1s;transition-timing-function:linear}@keyframes FadeIn{0%{opacity:0}to{opacity:1}}@-moz-keyframes FadeIn{0%{opacity:0}to{opacity:1}}@-webkit-keyframes FadeIn{0%{opacity:0}to{opacity:1}}@-o-keyframes FadeIn{0%{opacity:0}to{opacity:1}}@-ms-keyframes FadeIn{0%{opacity:0}to{opacity:1}}::-webkit-scrollbar{width:7px}::-webkit-scrollbar-track{background:none}::-webkit-scrollbar-thumb{background:rgb(116,116,116);border-radius:12px}::-webkit-scrollbar-thumb:hover{background:#555}::-webkit-scrollbar{display:none}hr.titleBreaker{display:absolute;opacity:20%;color:#555;border:1px solid grey;border-radius:20px}hr.half{width:100%;padding:none;border:none;height:2px;border-radius:2px;background-color:#7e8891}#loadingContentContainer{position:absolute;display:none;margin:auto;right:0;left:0;margin-top:50px}#loadingIcon{width:40px;filter:invert(70%);animation:loadingAnim .85s ease-in-out 0s infinite normal none}#loadingText{color:#000;filter:invert(70%);font-family:Verdana,Geneva,Tahoma,sans-serif,monospace;font-size:15px}@keyframes loadingAnim{50%{transform:translate(0px,-15px)}to{transform:translate(0px,0px)}}
+/**
+ * #.# Global style
+ *
+ * Global style for all HTML pages
+ */
+
+body {
+    user-select: none;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    background-color: #22272e;
+}
+
+.elBlur {
+    -webkit-filter: blur(1.5px) brightness(60%);
+    -moz-filter: blur(1.5px) brightness(60%);
+    -o-filter: blur(1.5px) brightness(60%);
+    -ms-filter: blur(1.5px) brightness(60%);
+    filter: blur(1.5px) brightness(60%);
+}
+
+/* Html tag customs */
+h1.settingsHeading {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+/* Navbar */
+#topColorBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 100vw;
+    background-color: rgba(237, 77, 77, 0.8);
+    box-shadow: 0px 0px 10px 1px #ED4D4D;
+    z-index: 99; /* Keep box shadow on top of navbar */
+}
+
+#navBarContainer {
+    position: fixed;
+    display: inline-flex;
+    top: 2px;
+    left: 0;
+    height: 45px;
+    width: 100%;
+    background-color: #202020;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+}
+
+#navBarTitleContainer {
+    margin-left: 15px;
+    top: 5px;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+#navBarTitle {
+    display: inline-block;
+    font-size: 30px;
+    
+}
+#navBarVersion {
+    display: inline-block;
+    font-size: 15px;
+    color: #677474;
+    text-decoration: none;
+    
+}
+
+
+/* Logout container */
+#navBarLogoutContainer {
+    position: absolute;
+    margin-top: 12px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+#navBarLogout {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    width: auto;
+    border: 1px solid gray;
+    border-radius: 4px;
+    color: gray;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 15px;
+    transition: 0.25s;
+}
+#navBarLogout:hover {
+    color: white;
+    border-color: white;
+    transition: 0.25s;
+}
+
+#middleNavBarItems {
+    display: flex;
+    margin-top: 3px;
+    margin-right: 180px;
+    gap: 40px;
+    color: #BFBFBF;
+    font-size: 18px;
+    
+    align-items: center;
+}
+
+#bottomMiddleNavBarItems {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    gap: 15%;
+    justify-content: center;
+    background-color: #1E1E1E;
+    color: #C1C1C1;
+}
+
+.fubar {
+    margin-top: 14px;
+    font-size: 20px;
+}
+
+.bottomNavBarIcons {
+    padding: 5px;
+    width: 40px;
+    filter: invert(80%);
+    
+    cursor: pointer;
+}
+.bottomNavBarIcons:hover {
+    filter: invert(100%);
+}
+.bottomNavBarIcons:active {
+    filter: invert(80%);
+}
+
+#navBarBountiesButton:hover {
+    color: white;
+    cursor: pointer;
+}
+
+#navBarChallengesButton:hover {
+    color: white;
+    cursor: pointer;
+}
+
+#navBarStatisticsButton:hover {
+    color: white;
+    cursor: pointer;
+}
+
+#rightNavBarItems {
+    display: flex;
+    margin-right: 15px;
+    gap: 20px;
+}
+
+.navBarIcons {
+    width: 28px;
+    filter: invert(65%);
+    cursor: pointer;
+    
+}
+
+#navBarSettingsIcon:hover {
+    filter: invert(100%);
+    -webkit-animation: rotating 2s linear infinite;
+    -moz-animation: rotating 2s linear infinite;
+    -ms-animation: rotating 2s linear infinite;
+    -o-animation: rotating 2s linear infinite;
+    animation: rotating 2s linear infinite;
+}
+
+#navBarLogoutIcon:hover {
+    filter: invert(40%) sepia(61%) saturate(2423%) hue-rotate(332deg) brightness(97%) contrast(92%);
+}
+
+/* Settings container */
+#navBarSettingsContainer {
+    position: absolute;
+    margin-top: 12px;
+    margin-right: 90px;
+    cursor: pointer;
+}
+#navBarSettings {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border: 1px solid gray;
+    border-radius: 4px;
+    color: gray;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 15px;
+    transition: 0.25s;
+}
+#navBarSettings:hover {
+    color: white;
+    border-color: white;
+    transition: 0.25s;
+}
+
+/* Logout button for mobile */
+#logoutButtonMobile {
+    padding: 5px;
+    padding-top: 8px;
+    float: right;
+    width: 30px;
+    filter: invert(50%);
+}
+
+/* Settings button for mobile */
+#settingsButtonMobile {
+    padding: 5px;
+    padding-top: 8px;
+    padding-right: 10px;
+    float: right;
+    width: 30px;
+    filter: invert(50%);
+}
+
+
+/* Loadbar */
+#loadBarContainer {
+    display: none;
+    position: absolute;
+    margin-top: 37px;
+}
+#slider{
+    position: absolute;
+    margin-left: -10px;
+    width: 103vw;
+    height: 3px;
+    overflow-x: hidden;
+}
+.subline{
+    position: absolute;
+    height: 5px;
+    background: #4a8df8;
+    overflow-x: hidden;
+}
+.inc{
+    animation: increase 2s infinite;
+}
+.dec{
+    animation: decrease 2s 0.5s infinite;
+}
+@keyframes increase {
+    from { left: -5%; width: 5%; }
+    to { left: 130%; width: 100%; }
+}
+@keyframes decrease {
+    from { left: -80%; width: 80%; }
+    to { left: 110%; width: 10%; }
+}
+
+
+/* Onload Animation */
+.fade-in {
+    animation-name: FadeIn;
+    animation-duration: 0.1s;
+    transition-timing-function: linear;
+}
+@keyframes FadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-moz-keyframes FadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes FadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-o-keyframes FadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@-ms-keyframes FadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+/* Scrollbar */
+::-webkit-scrollbar { /* Width */
+    width: 7px;
+}s
+::-webkit-scrollbar-track { /* Track */
+    background: none;
+}
+::-webkit-scrollbar-thumb { /* Handle */
+    background: #747474; 
+    border-radius: 12px;
+}
+::-webkit-scrollbar-thumb:hover { /* Handle on hover */
+    background: #555;
+}
+::-webkit-scrollbar { /* Temporary? */
+    display: none;
+}
+
+
+/* Underline styles */
+hr {
+    display: block;
+    height: 1px;
+    width: 100%;
+    border: 0;
+    border-top: 1px solid gray;
+}
+
+hr.horizontalRuler {
+    padding: 0;
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 1px;
+    width: 100%;
+	border: none;
+	background-color: #adadad;
+}
+
+/* Loading Indicator */
+#loadingContentContainer {
+    position: absolute;
+    display: none;
+    margin: auto;
+    right: 0;
+    left: 0;
+    margin-top: 50px;
+}
+
+#loadingIcon {
+    width: 40px;
+    filter: invert(70%);
+    animation: loadingAnim 0.85s ease-in-out 0s infinite normal none;
+}
+
+#loadingText {
+    color: black;
+    filter: invert(70%);
+    font-family: Verdana, Geneva, Tahoma, sans-serif, monospace;
+    font-size: 15px;
+}
+
+@keyframes loadingAnim {
+    0.0% {}
+
+    50% {
+        transform: translate(0px, -15px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
+@keyframes rotating {
+    from {
+      -ms-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -ms-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+}

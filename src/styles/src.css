@@ -5,6 +5,7 @@
  */
 
 body {
+    user-select: none;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     background-color: #22272e;
 }
@@ -15,6 +16,12 @@ body {
     -o-filter: blur(1.5px) brightness(60%);
     -ms-filter: blur(1.5px) brightness(60%);
     filter: blur(1.5px) brightness(60%);
+}
+
+/* Html tag customs */
+h1.settingsHeading {
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 
@@ -53,14 +60,14 @@ body {
 #navBarTitle {
     display: inline-block;
     font-size: 30px;
-    user-select: none;
+    
 }
 #navBarVersion {
     display: inline-block;
     font-size: 15px;
     color: #677474;
     text-decoration: none;
-    user-select: none;
+    
 }
 
 
@@ -82,11 +89,6 @@ body {
     color: gray;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 15px;
-    user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
     transition: 0.25s;
 }
 #navBarLogout:hover {
@@ -102,7 +104,7 @@ body {
     gap: 40px;
     color: #BFBFBF;
     font-size: 18px;
-    user-select: none;
+    
     align-items: center;
 }
 
@@ -127,7 +129,7 @@ body {
     padding: 5px;
     width: 40px;
     filter: invert(80%);
-    user-select: none;
+    
     cursor: pointer;
 }
 .bottomNavBarIcons:hover {
@@ -162,7 +164,7 @@ body {
     width: 28px;
     filter: invert(65%);
     cursor: pointer;
-    user-select: none;
+    
 }
 
 #navBarSettingsIcon:hover {
@@ -195,11 +197,6 @@ body {
     color: gray;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-size: 15px;
-    user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
     transition: 0.25s;
 }
 #navBarSettings:hover {
@@ -330,7 +327,15 @@ body {
 }
 
 
-/* Breakline styles */
+/* Underline styles */
+hr {
+    display: block;
+    height: 1px;
+    width: 100%;
+    border: 0;
+    border-top: 1px solid gray;
+}
+
 hr.horizontalRuler {
     padding: 0;
     margin: 0;

@@ -1,9 +1,9 @@
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
-console.log('// Welcome to D2Synergy, Please report any errors to @beru2003 on Twitter.');
+console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
 
 // Import modules
 import axios from 'axios';
-import { ValidateManifest, ReturnEntry } from './utils/ValidateManifest.js';
+import { ValidateManifest, ReturnEntry } from './modules/ValidateManifest.js';
 import {
     VerifyState,
     ParseChar,
@@ -11,7 +11,8 @@ import {
     StopLoad,
     RedirUser,
     LoadPrimaryCharacter,
-    parsePropertyNameIntoWord } from './utils/ModuleScript.js';
+    parsePropertyNameIntoWord,
+    CacheAuditItem } from './modules/ModuleScript.js';
 import {
     CurrentlyAddedVendors,
     ActivityMode,
@@ -24,9 +25,9 @@ import {
     EnemyModifiers,
     SeasonalCategory,
     LocationSpecifics,
-    DescriptorSpecifics } from './utils/SynergyDefinitions.js';
-import { AddEventListeners, BuildWorkspace } from './utils/Events.js';
-import { MakeRequest } from './utils/MakeRequest.js';
+    DescriptorSpecifics } from './modules/SynergyDefinitions.js';
+import { AddEventListeners, BuildWorkspace } from './modules/Events.js';
+import { MakeRequest } from './modules/MakeRequest.js';
 
 
 // Validate state parameter
@@ -34,9 +35,6 @@ VerifyState();
 
 // Start load sequence
 StartLoad();
-
-// Put version number in navbar
-document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
 
 // Utilities
 const urlParams = new URLSearchParams(window.location.search),
@@ -63,23 +61,27 @@ let destinyMembershipId,
     characters;
 
 
-export let ProfileProgressions;
+export var ProfileProgressions;
 export var CurrentSeasonHash;
 
 // Object holds all bounties, by vendor, that are to be excluded from permutations
-export let excludedBountiesByVendor = {};
+export var excludedBountiesByVendor = {};
 
 
 // Declare global vars and exports
 export var charBounties = [];
-export var contentView = { // Contains the element that is the currently selected content page
+
+// Currently selected view page
+export var contentView = { 
     currentView: {},
     UpdateView: function(element) {
         this.currentView = element;
     }
 };
+
+// Deprecated for now
 export var eventBooleans = {
-    areFiltersToggled: false,
+    areFiltersToggled: false, // Default
     ReverseBoolean: function(bool) {
         bool = !bool;
         return bool;
@@ -93,6 +95,44 @@ export var eventFilters = {
     }
 };
 
+// Item display size global
+export var itemDisplay = {
+    itemDisplaySize: 55, // Default
+    UpdateItemSize: function(size) {
+
+        // Update global & cache
+        this.itemDisplaySize = size;
+        CacheAuditItem('itemDisplaySize', size);
+
+        // Update dom content
+        document.getElementById('accessibilityImageDemo').style.width = `${size}px`;
+    }
+};
+
+// Accent color global
+export var accentColor = {
+    currentAccentColor: '#ED4D4D', // Default
+    UpdateAccentColor: function(color) {
+
+        // Update global & cache
+        this.currentAccentColor = color;
+        CacheAuditItem('accentColor', color);
+
+        // Update dom content
+        document.getElementById('topColorBar').style.backgroundColor = color;
+        document.getElementById('topColorBar').style.boxShadow = `0px 0px 10px 1px ${color}`;
+        // Range sliders
+        for (let element of document.getElementsByClassName('settingRange')) {
+            element.style.accentColor = color;
+        };
+        // Checkboxes
+        for (let element of document.getElementsByClassName('settingCheckbox')) {
+            element.style.accentColor = color;
+        };
+    }
+};
+
+
 // Authorization information
 export const homeUrl = import.meta.env.HOME_URL,
              axiosHeaders = {
@@ -104,15 +144,6 @@ export const homeUrl = import.meta.env.HOME_URL,
 // Set default axios header
 axios.defaults.headers.common = {
     "X-API-Key": `${axiosHeaders.ApiKey}`
-};
-
-
-// Assign element fields for user settings
-export let itemDisplay = {
-    itemDisplaySize: 55, // Default
-    UpdateItemSize: function(size) {
-        this.itemDisplaySize;
-    }
 };
 
 
@@ -448,6 +479,7 @@ export async function MainEntryPoint(isPassiveReload) {
     presentationNodeDefinitions = await ReturnEntry('DestinyPresentationNodeDefinition');
 
     // Load first char on profile/last loaded char
+    log(characters);
     await LoadPrimaryCharacter(characters);
 
     // Load seasonal challenges
@@ -473,23 +505,23 @@ export async function MainEntryPoint(isPassiveReload) {
 document.addEventListener('DOMContentLoaded', () => {
 
     // Test server availability
-    // MakeRequest('https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100', {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: false})
-    //     .then((response) => {
-    //         log(response);
-    //     })
-    //     .catch((error) => {
-    //         console.error(error);
-    //     });
+    MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: true})
+    .then((response) => {
+        log(response);
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 
     // Build workspace -- default fields etc.
     BuildWorkspace()
-        .catch((error) => {
-            console.error(error);
-        });
+    .catch((error) => {
+        console.error(error);
+    });
 
     // Run main
     MainEntryPoint()
-        .catch((error) => {
-            console.error(error);
-        });
+    .catch((error) => {
+        console.error(error);
+    });
 });
