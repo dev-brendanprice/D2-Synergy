@@ -41,6 +41,10 @@
     #skeletonCellLeft {
         display: none;
     }
+
+    #skeletonSubContainer {
+        margin-left: 0px;
+    }
 }
 
 
