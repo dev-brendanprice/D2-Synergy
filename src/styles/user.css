@@ -452,10 +452,18 @@
     background-color: #3A3A3A;
 }
 
-/* #settingCategoriesMobile {
-    position: relative;
-    border: 1px solid red;
-} */
+#settingsFooterVersionContainer {
+    display: flex;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-bottom: 10px;
+    flex-direction: column;
+    width: fit-content;
+    text-align: center;
+}
 
 #contentDisplay {
     display: none;
@@ -742,7 +750,7 @@ hr.challengeBreakline {
 
 #two {
     display: none;
-}
+} 
 
 #skeletonContainer {
     display: none; /* flex */

@@ -180,7 +180,10 @@
     }
 
     #settingsContainerMobile {
-        width: 95vw;
+        position: unset;
+        padding: unset;
+        margin: unset;
+        width: 100vw;
         border: unset;
     }
 
@@ -195,6 +198,13 @@
 
     #skeletonSubContainer > div {
         width: 90vw;
+    }
+
+    #settingsFooterVersionContainer {
+        bottom: 55px;
+        margin: auto;
+        left: 0;
+        right: 0;
     }
 }
 
