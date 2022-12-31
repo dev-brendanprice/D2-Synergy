@@ -190,13 +190,13 @@
         padding-right: 25px;
         margin: unset;
         width: 90vw;
-        border-left: unset;
-        border-right: unset;
+        border: unset;
+        border: unset;
     }
 
     #settingsInlineContainerMobile {
         display: none;
-        border-right: unset;
+        border: unset;
     }
 
     #settingsBackButtonContainer {
