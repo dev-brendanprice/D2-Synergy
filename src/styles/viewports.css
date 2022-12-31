@@ -54,6 +54,23 @@
     }
 }
 
+@media screen and (max-width: 1050px) {
+    #settingsContainerMobile {
+        position: unset;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin: unset;
+        width: 60vw;
+        border-left: 1px gray solid;
+        border-right: 1px gray solid;
+    }
+
+    #settingsInlineContainerMobile {
+        display: none;
+        border-right: unset;
+    }
+}
+
 
 @media screen and (max-width: 950px) {
     #navBarTitleContainer {
@@ -157,7 +174,7 @@
 
 
 @media screen and (max-width: 645px) {
-    #middleNavBarItems {
+    #navBarContainer {
         display: none;
     }
 
@@ -167,24 +184,19 @@
         border-top-right-radius: 8px;
     }
 
-    #navBarTitle {
-        display: none;
-    }
-
-    #rightNavBarItems {
-        display: none;
-    }
-
-    #navBarContainer {
-        background-color: transparent !important;
-    }
-
     #settingsContainerMobile {
         position: unset;
-        padding: unset;
+        padding-left: 15px;
+        padding-right: 25px;
         margin: unset;
-        width: 100vw;
-        border: unset;
+        width: 90vw;
+        border-left: unset;
+        border-right: unset;
+    }
+
+    #settingsInlineContainerMobile {
+        display: none;
+        border-right: unset;
     }
 
     #settingsBackButtonContainer {

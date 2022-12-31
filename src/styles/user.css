@@ -281,8 +281,7 @@
 
 #settingsBackButtonContainer {
     display: flex;
-    margin-top: 10px;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
     margin-left: -5px;
     cursor: pointer;
 }
@@ -379,6 +378,19 @@
     flex-grow: 1;
     accent-color: #ff7070;
     cursor: pointer;
+}
+
+#bottomMiddleNavBarItems {
+    display: none;
+    position: fixed;
+    bottom: 11px;
+    left: 0;
+    width: 100vw;
+    height: fit-content;
+    gap: 15%;
+    justify-content: center;
+    background-color: #1E1E1E;
+    color: #C1C1C1;
 }
 
 .generalButton {

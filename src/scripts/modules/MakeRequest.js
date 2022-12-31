@@ -13,7 +13,6 @@ export const MakeRequest = function (url, config, utils) {
         // Defaults (safe measure)
         utils.scriptOrigin = utils.scriptOrigin || 'user';
         utils.avoidCache = utils.avoidCache || false;
-        log(url);
 
         // API down, Servers down, or other error
         function CheckForErrorStatus(error, promise) {
@@ -23,7 +22,7 @@ export const MakeRequest = function (url, config, utils) {
                 
                 // Check for server down on index page
                 if (utils.scriptOrigin === 'index') {
-                    log(error);
+
                     document.getElementById('btnAuthorize').disabled = true;
                     document.getElementById('btnAuthorize').innerHTML = 'BNet API Unavailable';
                     document.getElementById('serverDeadContainer').style.display = 'block';

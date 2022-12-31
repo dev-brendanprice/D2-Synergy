@@ -740,6 +740,7 @@ export async function ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgr
 // Load first character on profile
 // @object {characters}
 export async function LoadPrimaryCharacter(characters) {
+    
     log(characters);
     CacheReturnItem('lastChar')
     .then(async (data) => {
