@@ -319,7 +319,7 @@ export async function CheckComponents () {
         delete axios.defaults.headers.common['X-API-Key'];
 
         // Change load content
-        document.getElementById('loadingText').innerHTML = 'Refreshing Tokens';
+        // document.getElementById('loadingText').innerHTML = 'Refreshing Tokens';
 
         // If either tokens have expired
         isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
@@ -356,7 +356,7 @@ export async function FetchBungieUserDetails() {
     log('FetchBungieUserDetails START');
 
     // Change load content
-    document.getElementById('loadingText').innerHTML = 'Fetching Profile Data';
+    // document.getElementById('loadingText').innerHTML = 'Fetching Profile Data';
     await CheckComponents();
 
     let components = JSON.parse(localStorage.getItem('components')),

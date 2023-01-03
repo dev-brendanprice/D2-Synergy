@@ -15,7 +15,6 @@
 
 #userMainContainer {
     display: block;
-    /* position: absolute; */
     margin-top: 60px;
     z-index: 0;
 }
@@ -279,10 +278,27 @@
     font-weight: 600;
 }
 
+#settingsBackButtonContainer, #settingsSubMenuBackButtonContainer {
+    padding: 5px;
+    padding-right: 10px;
+    width: fit-content;
+    background-color: rgb(70, 70, 70);
+    border-radius: 5px;
+}
+
 #settingsBackButtonContainer {
     display: flex;
+    margin-top: 10px;
     margin-bottom: 40px;
     margin-left: -5px;
+    cursor: pointer;
+}
+
+#settingsSubMenuBackButtonContainer {
+    display: none;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    margin-left: 10px;
     cursor: pointer;
 }
 
@@ -333,7 +349,7 @@
     color: white;
 }
 
-#settingsInlineContainerMobile {
+#settingsSubMenuContainer {
     width: 40vw;
     height: 92vh;
     border-right: 1px solid gray;

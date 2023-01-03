@@ -21,7 +21,7 @@ let currentSettingsMenu = 'generalSettingsContainer';
 
 
 // Event listener wrapper
-export const AddListener = function (elementName, event, callback, selectorType) {
+const AddListener = function (elementName, event, callback, selectorType) {
 
     if (elementName === 'window') {
         window.addEventListener(event, callback);
@@ -71,6 +71,13 @@ export async function AddEventListeners() {
     });
 
 
+    // Settings back button
+    AddListener('settingsSubMenuBackButtonContainer', 'click', function () {
+        document.getElementById('settingsSubMenuContainer').style.display = 'none';
+        document.getElementById('settingsContainerMobile').style.display = 'block';
+    });
+
+
     // Character buttons
     for (let i=0; i <= 2; i++) {
         AddListener(`charContainer${i}`, 'click', () => {
@@ -89,23 +96,16 @@ export async function AddEventListeners() {
     });
 
 
-    // Github settings button
-    AddListener('githubIcon', 'click', function () {
-        window.open('https://github.com/brendanprice2003/D2-Synergy', '_blank');
-    });
-
-
-    // Twitter settings button
-    AddListener('twitterIcon', 'click', function () {
-        window.open('https://twitter.com/_devbrendan', '_blank');
-    });
-
-
     // General settings button
     AddListener('GeneralSettingsButton', 'click', function () {
         document.getElementById(`${currentSettingsMenu}`).style.display = 'none';
         currentSettingsMenu = 'generalSettingsContainer';
         document.getElementById('generalSettingsContainer').style.display = 'block';
+
+        if (screen.width <= 1050) {
+            document.getElementById('settingsSubMenuContainer').style.display = 'block';
+            document.getElementById('settingsContainerMobile').style.display = 'none';
+        };
     });
 
 
@@ -114,6 +114,11 @@ export async function AddEventListeners() {
         document.getElementById(`${currentSettingsMenu}`).style.display = 'none';
         currentSettingsMenu = 'accessibilitySettingsContainer';
         document.getElementById('accessibilitySettingsContainer').style.display = 'block';
+
+        if (screen.width <= 1050) {
+            document.getElementById('settingsSubMenuContainer').style.display = 'block';
+            document.getElementById('settingsContainerMobile').style.display = 'none';
+        };
     });
 
 
@@ -122,6 +127,11 @@ export async function AddEventListeners() {
         document.getElementById(`${currentSettingsMenu}`).style.display = 'none';
         currentSettingsMenu = 'logoutSettingsContainer';
         document.getElementById('logoutSettingsContainer').style.display = 'block';
+
+        if (screen.width <= 1050) {
+            document.getElementById('settingsSubMenuContainer').style.display = 'block';
+            document.getElementById('settingsContainerMobile').style.display = 'none';
+        };
     });
 
 

@@ -65,9 +65,15 @@
         border-right: 1px gray solid;
     }
 
-    #settingsInlineContainerMobile {
+    #settingsSubMenuContainer {
         display: none;
-        border-right: unset;
+        width: 63vw;
+        border-left: 1px gray solid;
+        border-right: 1px gray solid;
+    }
+
+    #settingsSubMenuBackButtonContainer {
+        display: flex;
     }
 }
 
@@ -194,7 +200,7 @@
         border-right: unset;
     }
 
-    #settingsInlineContainerMobile {
+    #settingsSubMenuContainer {
         display: none;
         border-right: unset;
     }
@@ -249,24 +255,3 @@
         width: 25px;
     }
 }
-
-
-/* @media screen and (min-width: 480px) {
-    #elementsToShowIfTheViewportIsBigEnough {
-        display: block;
-    }
-
-    #elementsToShowIfTheViewportIsSmallEnough {
-        display: none;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    #elementsToShowIfTheViewportIsBigEnough {
-        display: none;
-    }
-
-    #elementsToShowIfTheViewportIsSmallEnough {
-        display: block;
-    }
-} */

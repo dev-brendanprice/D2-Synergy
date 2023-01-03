@@ -35,7 +35,7 @@ export async function LoadCharacter(classType, characters) {
         log('LoadPrimaryCharacter START');
 
         // Configure load sequence
-        document.getElementById('loadingText').innerHTML = 'Indexing Character';
+        // document.getElementById('loadingText').innerHTML = 'Indexing Character';
 
         // Toggle character load
         characterLoadToggled = true;
@@ -51,7 +51,6 @@ export async function LoadCharacter(classType, characters) {
 
 
         // Clear (emtpy fields that are going to change) DOM content
-        document.getElementById('loadingContentContainer').style.display = 'block';
         document.getElementById('noItemsTooltip').style.display = 'none';
         document.getElementById('bountyItems').innerHTML = '';
         document.getElementById('overlays').innerHTML = '';
