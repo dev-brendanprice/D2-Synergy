@@ -9,7 +9,7 @@ D2 Synergy is a powerful application that allows players to view progressional i
 
 ### Developer Guide
 
-See [`GUIDE.md`](https://github.com/brendanprice2003/D2-Synergy/wiki). (Still not done)
+See [`Wiki/Developer-Guide`](https://github.com/brendanprice2003/D2-Synergy/wiki/Developer-Guide). (Still not done)
 
 ### License
 
