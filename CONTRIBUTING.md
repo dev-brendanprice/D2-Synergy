@@ -1,4 +1,7 @@
 # Contributing
+```diff
+- MARKED AS DEPRECATED
+```
 **Contriubting helps the project progress a huge amount. Read on to learn about standards and information on contributing.**
 
 **Before continuing, ensure that you have configured a development environment. You can use [this wiki page](https://github.com/brendanprice2003/D2-Synergy/wiki/Developer-Guide) if you haven't.**
