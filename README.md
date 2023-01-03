@@ -7,13 +7,9 @@
 
 D2 Synergy is a powerful application that allows players to view progressional items and relationships between them, ensuring maximum XP gain, over time, is acquired.
 
-### Technical User Guide
+### Developer Guide
 
-See [`GUIDE.md`](https://github.com/brendanprice2003/D2-Synergy/wiki). (it's on the todo list)
-
-### Contributing
-
-See [`CONTRIBUTE.md`](https://github.com/brendanprice2003/D2-Synergy/blob/main/CONTRIBUTING.md) for more information.
+See [`GUIDE.md`](https://github.com/brendanprice2003/D2-Synergy/wiki). (Still not done)
 
 ### License
 
