@@ -410,6 +410,26 @@
     color: #C1C1C1;
 }
 
+.bottomNavBarIconContainer {
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+}
+
+.bottomNavBarIcons {
+    width: 32px;
+    filter: invert(80%);
+    cursor: pointer;
+}
+.bottomNavBarIcons:hover {
+    filter: invert(100%);
+}
+.bottomNavBarIcons:active {
+    filter: invert(80%);
+}
+
 .generalButton {
     padding: 10px;
     border-radius: 5px;
