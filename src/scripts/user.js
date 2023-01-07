@@ -291,7 +291,7 @@ export async function CheckComponents () {
 
 
     Object.keys(rsToken).forEach(item => {
-        if (!keyNames.includes(item)) delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken))
+        if (!keyNames.includes(item)) delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken));
     });
     Object.keys(acToken).forEach(item => {
         if (!keyNames.includes(item)) delete acToken[item], localStorage.setItem('accessToken', JSON.stringify(acToken));

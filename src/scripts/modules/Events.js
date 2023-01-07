@@ -23,19 +23,29 @@ let currentSettingsMenu = 'generalSettingsContainer';
 // Event listener wrapper
 const AddListener = function (elementName, event, callback, selectorType) {
 
-    if (elementName === 'window') {
-        window.addEventListener(event, callback);
-        return;
-    };
+    try {
 
-    if (selectorType === 'class' || selectorType === 'CLASS') {
-        for (let element of document.getElementsByClassName(`${elementName}`)) {
-            element.addEventListener(event, callback);
+        if (elementName === 'window') {
+            window.addEventListener(event, callback);
+            return;
         };
+
+        if (selectorType === 'class' || selectorType === 'CLASS') {
+            for (let element of document.getElementsByClassName(`${elementName}`)) {
+                element.addEventListener(event, callback);
+            };
+            return;
+        };
+
+        document.getElementById(`${elementName}`).addEventListener(event, callback);
+
+    }
+    catch (error) {
+        console.error(error);
+    }
+    finally {
         return;
     };
-
-    document.getElementById(`${elementName}`).addEventListener(event, callback);
 };
 
 
@@ -204,11 +214,16 @@ export async function AddEventListeners() {
 
     // Close button click
     AddListener('settingsMenuButton', 'click', function () {
-        
         CacheReturnItem('defaultContentView')
         .then((defaultContentView) => {
             log(defaultContentView);
         });
+    });
+
+
+    // Mobile settings context menu button
+    AddListener('contextMenuSettingsMobile', 'click', function() {
+        document.getElementById('settingsGrid').style.display = 'flex';
     });
 
 
@@ -303,9 +318,9 @@ export async function AddEventListeners() {
 
 
     // Accessibility font size range slider 
-    AddListener('accessibilityFontSizeSlider', 'input', function () {
-        itemDisplay.UpdateItemSize(this.value);
-    });
+    // AddListener('accessibilityFontSizeSlider', 'input', function () {
+    //     itemDisplay.UpdateItemSize(this.value);
+    // });
 
 
     // Custom color input
@@ -318,9 +333,8 @@ export async function AddEventListeners() {
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
 
-    let rangeSlider = document.getElementById('itemSizeSlider'),
-        rangeValueField = document.getElementById('itemSizeField'),
-        bountyImage = document.getElementById('settingsBountyImage');
+    let rangeSlider = document.getElementById('accessibilityImageSizeSlider'),
+        bountyImage = document.getElementById('accessibilityImageDemo');
 
     
     // Put version number in navbar and settings footer
@@ -357,7 +371,6 @@ export async function BuildWorkspace() {
 
     // Slider section values
     rangeSlider.value = itemDisplay.itemDisplaySize;
-    rangeValueField.innerHTML = `${itemDisplay.itemDisplaySize}px`;
     bountyImage.style.width = `${itemDisplay.itemDisplaySize}px`;
 
     // Set checkboxes to chosen state, from localStorage (userCache)

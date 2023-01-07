@@ -331,7 +331,7 @@
 }
 
 #settingsGrid {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 100vw;
@@ -419,11 +419,6 @@
     cursor: pointer;
 }
 
-/* .settingSectionHeader {
-    font-size: 20px;
-    font-weight: 600;
-} */
-
 #categorySelectArrow {
     position: absolute;
     margin-top: -4px;
@@ -442,7 +437,6 @@
     padding-right: 10px;
     padding-bottom: 12px;
     cursor: pointer;
-    
 }
 
 .settingCategory:hover {
@@ -468,7 +462,6 @@
     background-color: #3A3A3A;
     border: 1px solid #8C8C8C;
     cursor: pointer;
-    
     text-decoration: none;
     color: white;
 }
@@ -512,14 +505,12 @@
     color: #e8e6e3;
     font-weight: 600;
     font-size: 20px;
-
 }
 
 #displayName {
     color: #e8e6e3;
     font-weight: 600;
     font-size: 28px;
-
 }
 
 #entryDataOverlay {
@@ -538,9 +529,6 @@
     text-transform: uppercase;
 }
 
-
-/* user select */
-
 #charDisplayTitle {
     margin-top: 13px;
 }
@@ -550,9 +538,7 @@
     margin-left: 28px;
     color: white;
     font-weight: bold;
-
     font-size: 18px;
-    
 }
 
 #charDisplayTitle_Character {
@@ -565,7 +551,13 @@
     letter-spacing: 1px;
 }
 
-#bountiesContainer {
+#sideSelectionBar {
+    display: none;
+    float: left;
+    margin-left: 5px;
+}
+
+#bountiesContainer, #seasonalChallengesContainer, #statisticsContainer {
     display: none;
 }
 
@@ -613,10 +605,6 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr 1fr;
     gap: 10px;
-}
-
-#seasonalChallengesContainer {
-    display: none;
 }
 
 .challengeContainer {
@@ -771,8 +759,6 @@ hr.challengeBreakline {
     margin-top: 15px;
 }
 
-/* char selects */
-
 #one {
     display: flex;
 }
@@ -782,7 +768,7 @@ hr.challengeBreakline {
 } 
 
 #skeletonContainer {
-    display: none; /* flex */
+    display: flex; /* flex */
     margin-bottom: -50px;
     justify-content: center;
     height: 100%;
@@ -805,12 +791,6 @@ hr.challengeBreakline {
     height: 65vh;
     border-radius: 5px;
     animation: example 2s ease-in infinite;
-}
-
-#sideSelectionBar {
-    display: none;
-    float: left;
-    margin-left: 5px;
 }
 
 #charactersContainer {

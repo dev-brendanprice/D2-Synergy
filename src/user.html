@@ -36,12 +36,12 @@
     </div>
 
     <div id="bottomMiddleNavBarItems">
-        <img class="bottomNavBarIcons" src="./static/ico/pursuits.svg">
-        <img class="bottomNavBarIcons" src="./static/ico/meditations.svg">
-        <img class="bottomNavBarIcons" src="./static/ico/vault.svg" style="margin-top: 3px;">
+        <img class="bottomNavBarIcons" id="bountiesMenuMobile" src="./static/ico/pursuits.svg">
+        <img class="bottomNavBarIcons" id="seasonalMenuMobile" src="./static/ico/meditations.svg">
+        <img class="bottomNavBarIcons" id="statsMenuMobile" src="./static/ico/vault.svg" style="margin-top: 3px;">
         <img class="bottomNavBarIcons" id="contextMenuSettingsMobile" src="./static/ico/menu_stack.svg">
     </div>
-    
+
     <div id="loadBarContainer">
         <div id="slider">
             <div class="line"></div>
@@ -52,6 +52,7 @@
 
     <div id="userMainContainer">
 
+        <!-- Settings container -->
         <div id="settingsGrid">
             <div id="settingsContainerMobile">
                 <div id="settingsBackButtonContainer">
@@ -106,7 +107,7 @@
                                 <input type="checkbox" id="checkboxRefreshOnInterval" class="settingCheckbox" style="accent-color: #ff7070;cursor: pointer;">
                                 Refresh data at 2 minute intervals
                             </label>
-                            <label style="margin-top: 10px;width: fit-content;">
+                            <label id="defaultViewDropdown" style="margin-top: 10px;width: fit-content;">
                                 Default View
                                 <select>
                                     <option value="bountiesContainer">Bounties</option>
@@ -139,7 +140,7 @@
                             The default sizes are recommended as they give the best clarity for all screen sizes
                         </div>
                     </div>
-                    <hr>
+                    <!-- <hr>
                     <div class="settingSection">
                         <h2>Font Size</h2>
                         <label style="display: flex;">
@@ -147,7 +148,7 @@
                         </label>
                         <div id="accessibilityFontSizeReset" style="margin-top: 20px;cursor: pointer;width: fit-content;font-size: 15px;color: lightslategrey;">Reset</div>
 
-                    </div>
+                    </div> -->
                     <hr>
                     <div class="settingSection">
                         <h2>Item Size</h2>
@@ -195,6 +196,7 @@
             </div>
         </div>
 
+        <!-- Shows whilst loading -->
         <div id="skeletonContainer">
             <div id="one">
                 <div id="skeletonCellLeft"></div>
@@ -303,7 +305,6 @@
 
         <div id="contentDisplay">
 
-            <!-- [ CONTAINERS FOR EACH VIEW (BOUNTIES, SCHALLS AND STATISITCS) ] -->
             <div id="bountiesContainer">
 
                 <div class="levellingContainerTitle">Synergies</div>
@@ -841,10 +842,8 @@
                 </div>
     
             </div>
-            <!-- [ END OF CONTAINERS FOR EACH VIEW (BOUNTIES, SCHALLS AND STATISITCS) ] -->
 
         </div>
-
     </div>
 
     <div id="settingsContainer">
