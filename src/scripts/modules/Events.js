@@ -18,6 +18,11 @@ var secretCount = 0;
 
 // Menu variables
 let currentSettingsMenu = 'generalSettingsContainer';
+let containerNames = [
+    'bountiesContainer',
+    'seasonalChallengesContainer',
+    'statisticsContainer'
+];
 
 
 // Event listener wrapper
@@ -49,7 +54,41 @@ const AddListener = function (elementName, event, callback, selectorType) {
 };
 
 
+// Add all event listeners
 export async function AddEventListeners() {
+
+    // Bounties navbar control
+    AddListener('navBarBountiesButton', 'click', function () {
+        
+        let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
+        for (let container of containersToHide) {
+            document.getElementById(`${container}`).style.display = 'none';
+        };
+        document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
+    });
+
+
+    // Challenges navbar control
+    AddListener('navBarChallengesButton', 'click', function () {
+        
+        let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
+        for (let container of containersToHide) {
+            document.getElementById(`${container}`).style.display = 'none';
+        };
+        document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
+    });
+
+
+    // Statistics navbar control
+    AddListener('navBarStatisticsButton', 'click', function () {
+        
+        let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
+        for (let container of containersToHide) {
+            document.getElementById(`${container}`).style.display = 'none';
+        };
+        document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
+    });
+
 
     // Logout button
     AddListener('navBarLogoutIcon', 'click', function () {
@@ -60,17 +99,17 @@ export async function AddEventListeners() {
     // Settings button
     AddListener('navBarSettingsIcon', 'click', function () {
 
-        let skeletonContainer = document.getElementById('skeletonContainer'),
-            settingsContainer = document.getElementById('settingsGrid');
+        let containerThatDoesNotContainSettings = document.getElementById('subContainer'),
+            settingsGridContainer = document.getElementById('settingsGrid');
 
-        if (skeletonContainer.style.display === 'none') {
-            settingsContainer.style.display = 'none';
-            skeletonContainer.style.display = 'flex';
+        if (containerThatDoesNotContainSettings.style.display === 'none') {
+            settingsGridContainer.style.display = 'none';
+            containerThatDoesNotContainSettings.style.display = 'flex';
             return;
         };
 
-        settingsContainer.style.display = 'flex';
-        skeletonContainer.style.display = 'none';
+        settingsGridContainer.style.display = 'flex';
+        containerThatDoesNotContainSettings.style.display = 'none';
     });
 
 
@@ -112,7 +151,8 @@ export async function AddEventListeners() {
         currentSettingsMenu = 'generalSettingsContainer';
         document.getElementById('generalSettingsContainer').style.display = 'block';
 
-        if (screen.width <= 1050) {
+        if (window.innerWidth <= 1050) {
+            log('bruh')
             document.getElementById('settingsSubMenuContainer').style.display = 'block';
             document.getElementById('settingsContainerMobile').style.display = 'none';
         };
@@ -125,7 +165,7 @@ export async function AddEventListeners() {
         currentSettingsMenu = 'accessibilitySettingsContainer';
         document.getElementById('accessibilitySettingsContainer').style.display = 'block';
 
-        if (screen.width <= 1050) {
+        if (window.innerWidth <= 1050) {
             document.getElementById('settingsSubMenuContainer').style.display = 'block';
             document.getElementById('settingsContainerMobile').style.display = 'none';
         };
@@ -138,7 +178,7 @@ export async function AddEventListeners() {
         currentSettingsMenu = 'logoutSettingsContainer';
         document.getElementById('logoutSettingsContainer').style.display = 'block';
 
-        if (screen.width <= 1050) {
+        if (window.innerWidth <= 1050) {
             document.getElementById('settingsSubMenuContainer').style.display = 'block';
             document.getElementById('settingsContainerMobile').style.display = 'none';
         };
@@ -212,15 +252,6 @@ export async function AddEventListeners() {
     });
 
 
-    // Close button click
-    AddListener('settingsMenuButton', 'click', function () {
-        CacheReturnItem('defaultContentView')
-        .then((defaultContentView) => {
-            log(defaultContentView);
-        });
-    });
-
-
     // Mobile settings context menu button
     AddListener('contextMenuSettingsMobile', 'click', function() {
         document.getElementById('settingsGrid').style.display = 'flex';
@@ -229,7 +260,7 @@ export async function AddEventListeners() {
 
     // Dropdown selection
     AddListener('defaultViewDropdown', 'change', function () {
-
+        log(this.value);
         const contentViewsThatINeedToChange = [
             'bountiesContainer', 
             'seasonalChallengesContainer',
@@ -258,23 +289,6 @@ export async function AddEventListeners() {
         accentColor.UpdateAccentColor(this.getAttribute('data-color'));
     }, 'class');
 
-
-    // Item size slider
-    AddListener('itemSizeSlider', 'change', function () {
-        CacheAuditItem('itemDisplaySize', parseInt(this.value));
-        document.getElementById('itemSizeField').innerHTML = `${this.value}px`;
-        document.getElementById('settingsBountyImage').style.width = `${this.value}px`;
-    });
-
-
-    // Item size reset button
-    AddListener('resetItemSize', 'click', function () {
-        CacheAuditItem('itemDisplaySize', 55);
-        document.getElementById('itemSizeSlider').value = 55;
-        document.getElementById('itemSizeField').innerHTML = '55px';
-        document.getElementById('settingsBountyImage').style.width = '55px';
-    });
-
     
     // Refresh on tab focus
     AddListener('window', 'focus', function () {
@@ -286,14 +300,6 @@ export async function AddEventListeners() {
                 console.error(error);
             });
         };
-    });
-
-
-    // Bounties tab click
-    AddListener('navBarBountiesButton', 'click', function () {
-        document.getElementById('statisticsContainer').style.display = 'none';
-        document.getElementById('seasonalChallengesContainer').style.display = 'none';
-        document.getElementById('bountiesContainer').style.display = 'block';
     });
 
 
@@ -332,6 +338,11 @@ export async function AddEventListeners() {
 
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
+
+    // let fubar = document.querySelector(':root');
+    // let variable = (getComputedStyle(fubar).getPropertyValue('--fontSize')).split('px')[0];
+    // let bru = variable * 1.4;
+    // document.getElementById('fontSizeTest').style.fontSize = `${bru}px`;
 
     let rangeSlider = document.getElementById('accessibilityImageSizeSlider'),
         bountyImage = document.getElementById('accessibilityImageDemo');
@@ -382,12 +393,6 @@ export async function BuildWorkspace() {
     await CacheReturnItem('defaultContentView')
     .then((result) => {
 
-        const contentViewsThatINeedToChange = [
-            'bountiesContainer', 
-            'seasonalChallengesContainer',
-            'statisticsContainer'
-        ];
-
         // Set default view if there is none saved already
         if (!result) {
             CacheAuditItem('defaultContentView', 'bountiesContainer');
@@ -395,11 +400,11 @@ export async function BuildWorkspace() {
             document.getElementById('defaultViewDropdown').value = 'bountiesContainer';
             return;
         };
+        log(result);
         
         // Filter out the content view that is not the default or the saved one
-        contentViewsThatINeedToChange
-        .forEach(value => {
-
+        containerNames.forEach(value => {
+            log(value);
             if (value !== result) {
                 document.getElementById(value).style.display = 'none';
                 return;
