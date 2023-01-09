@@ -104,7 +104,7 @@ export async function AddEventListeners() {
 
         if (containerThatDoesNotContainSettings.style.display === 'none') {
             settingsGridContainer.style.display = 'none';
-            containerThatDoesNotContainSettings.style.display = 'flex';
+            containerThatDoesNotContainSettings.style.display = 'block';
             return;
         };
 
@@ -115,7 +115,7 @@ export async function AddEventListeners() {
 
     // Settings back button
     AddListener('settingsBackButtonContainer', 'click', function () {
-        document.getElementById('skeletonContainer').style.display = 'flex';
+        document.getElementById('subContainer').style.display = 'block';
         document.getElementById('settingsGrid').style.display = 'none';
     });
 

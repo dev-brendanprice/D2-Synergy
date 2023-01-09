@@ -20,5 +20,6 @@ module.exports = {
     API_KEY: process.env.API_KEY,
     AUTH: process.env.AUTH,
     HOME_URL: process.env.HOME_URL
-  }
+  },
+  plugins: ['@snowpack/plugin-postcss']
 };
