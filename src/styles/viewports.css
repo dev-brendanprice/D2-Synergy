@@ -21,10 +21,6 @@
     }
 }
 
-@media screen and (max-width: 1075px) {
-    
-}
-
 @media screen and (max-width: 1175px) {
     #seasonPass {
         margin-left: 0px;
@@ -180,6 +176,10 @@
 
 
 @media screen and (max-width: 645px) {
+    hr {
+        display: none;
+    }
+
     #navBarContainer {
         display: none;
     }
@@ -188,6 +188,10 @@
         display: flex;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
+    }
+
+    #settingsGrid {
+        justify-content: unset;
     }
 
     #settingsContainerMobile {
@@ -202,6 +206,12 @@
 
     #settingsSubMenuContainer {
         display: none;
+        position: unset;
+        padding: unset;
+        margin: unset;
+        margin-top: -20px;
+        width: 90vw;
+        border-left: unset;
         border-right: unset;
     }
 
@@ -219,8 +229,8 @@
     }
 
     #settingsFooterVersionContainer {
-        bottom: 55px;
         margin: auto;
+        bottom: 70px;
         left: 0;
         right: 0;
     }

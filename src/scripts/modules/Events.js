@@ -152,7 +152,6 @@ export async function AddEventListeners() {
         document.getElementById('generalSettingsContainer').style.display = 'block';
 
         if (window.innerWidth <= 1050) {
-            log('bruh')
             document.getElementById('settingsSubMenuContainer').style.display = 'block';
             document.getElementById('settingsContainerMobile').style.display = 'none';
         };
@@ -255,6 +254,7 @@ export async function AddEventListeners() {
     // Mobile settings context menu button
     AddListener('contextMenuSettingsMobile', 'click', function() {
         document.getElementById('settingsGrid').style.display = 'flex';
+        document.getElementById('subContainer').style.display = 'none';
     });
 
 
