@@ -324,9 +324,11 @@ export async function AddEventListeners() {
 
 
     // Accessibility font size range slider 
-    // AddListener('accessibilityFontSizeSlider', 'input', function () {
-    //     itemDisplay.UpdateItemSize(this.value);
-    // });
+    AddListener('accessibilityFontSizeSlider', 'input', function () {
+        // Change font size multiplier CSS variable
+        let root = document.querySelector(':root');
+        root.style.setProperty('--fontSizeMultiplier', `1.${this.value}`);
+    });
 
 
     // Custom color input
@@ -339,14 +341,11 @@ export async function AddEventListeners() {
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
 
-    // let fubar = document.querySelector(':root');
-    // let variable = (getComputedStyle(fubar).getPropertyValue('--fontSize')).split('px')[0];
-    // let bru = variable * 1.4;
-    // document.getElementById('fontSizeTest').style.fontSize = `${bru}px`;
-
     let rangeSlider = document.getElementById('accessibilityImageSizeSlider'),
         bountyImage = document.getElementById('accessibilityImageDemo');
 
+    // Scroll to top of page
+    window.scrollTo(0, 0);
     
     // Put version number in navbar and settings footer
     document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;

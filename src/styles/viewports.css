@@ -177,7 +177,18 @@
 
 @media screen and (max-width: 645px) {
     hr {
+        margin-left: -10px;
+        left: 0;
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    #bottomDivider {
         display: none;
+    }
+
+    #userMainContainer {
+        padding-bottom: 350px;
     }
 
     #navBarContainer {
@@ -254,7 +265,7 @@
     }
 
     #bottomMiddleNavBarItems {
-        gap: 15%;
+        gap: 12%;
     }
     
     .bottomNavBarIcons {
@@ -263,5 +274,19 @@
 
     #contextMenuSettingsMobile {
         width: 25px;
+    }
+}
+
+
+@media screen and (max-width: 400px) {
+    #bottomMiddleNavBarItems {
+        gap: 10%;
+    }
+}
+
+
+@media screen and (max-width: 350px) {
+    #bottomMiddleNavBarItems {
+        gap: 8%;
     }
 }

@@ -182,9 +182,12 @@
 
 #settingsSubMenuBackButtonContainer {
     display: none;
+    position: sticky;
+    top: 15px;
     margin-top: 10px;
     margin-bottom: 30px;
     margin-left: 10px;
+    box-shadow: 2px 2px 12px #1e1e1e;
     cursor: pointer;
 }
 
@@ -293,9 +296,14 @@
 }
 
 .settingRange {
+    width: 330px;
     flex-grow: 1;
     accent-color: #ff7070;
     cursor: pointer;
+}
+
+.settingCheckbox {
+    accent-color: #ff7070;cursor: pointer;
 }
 
 #bottomMiddleNavBarItems {
@@ -309,6 +317,7 @@
     justify-content: center;
     background-color: #1E1E1E;
     color: #C1C1C1;
+    z-index: 10;
 }
 
 .bottomNavBarIconContainer {

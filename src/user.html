@@ -121,11 +121,11 @@
                         <h2>General Options</h2>
                         <div style="display: flex;flex-direction: column;gap: 5px;">
                             <label class="labelContainer">
-                                <input type="checkbox" id="checkboxRefreshWhenFocused" class="settingCheckbox" style="accent-color: #ff7070;cursor: pointer;">
+                                <input type="checkbox" id="checkboxRefreshWhenFocused" class="settingCheckbox">
                                 Refresh data when browser tab is back in focus
                             </label>
                             <label class="labelContainer">
-                                <input type="checkbox" id="checkboxRefreshOnInterval" class="settingCheckbox" style="accent-color: #ff7070;cursor: pointer;">
+                                <input type="checkbox" id="checkboxRefreshOnInterval" class="settingCheckbox">
                                 Refresh data at 2 minute intervals
                             </label>
                             <label class="labelContainer" style="margin-top: 10px;">
@@ -143,7 +143,7 @@
                         <div class="settingSection">
                             <h2>Secret</h2>
                             <label class="labelContainer">
-                                <input type="checkbox" id="checkboxUseSecretIcons" class="settingCheckbox" style="accent-color: #ff7070;cursor: pointer;">
+                                <input type="checkbox" id="checkboxUseSecretIcons" class="settingCheckbox">
                                 Use my super-duper high quality icons >:)
                             </label>
                         </div>
@@ -164,22 +164,30 @@
                     <hr>
                     <div class="settingSection">
                         <h2>Font Size</h2>
-                        <label class="labelContainer" style="display: flex;">
-                            <div style="margin-top: 4px;">Aa</div>&nbsp;<input type="range" id="accessibilityFontSizeSlider" class="settingRange" min="1" max="5" value="10">&nbsp;<div style="font-size: 22px;">Aa</div>
+                        <label class="labelContainer">
+                            <input type="range" id="accessibilityFontSizeSlider" class="settingRange" min="0" max="3" value="0">
+                            <div style="display: flex;gap: 280px;">
+                                <div style="margin-top: 4px;">Aa</div>
+                                <div style="font-size: 22px;">Aa</div>
+                            </div>
                         </label>
                         <div class="settingsResetUIButton" id="accessibilityFontSizeReset">Reset</div>
-
                     </div>
                     <hr>
                     <div class="settingSection">
                         <h2>Item Size</h2>
-                        <label class="labelContainer" style="display: flex;">
-                            <div style="margin-top: 4px;">45px</div>&nbsp;<input type="range" id="accessibilityImageSizeSlider" class="settingRange" min="45" max="65" value="55">&nbsp;<div style="margin-top: 4px;">65px</div>
+                        <label class="labelContainer">
+                            <input type="range" id="accessibilityImageSizeSlider" class="settingRange" min="45" max="65" value="55">
+                            <div style="display: flex;gap: 260px;">
+                                <div style="margin-top: 4px;">45px</div>
+                                <div style="margin-top: 4px;">65px</div>
+                            </div>
                         </label>
-                        <div style="margin-top: 10px;font-weight: 600;font-size: var(--fontSizeContent);">Item Preview</div>
-                        <img id="accessibilityImageDemo" src="./static/images/bounty_image.png" style="margin-top: 5px;width: 55px;">
-                        <div class="settingsResetUIButton" id="accessibilityImageDemoReset">Reset</div>
-
+                        <div style="margin-top: 20px;">
+                            <div style="font-weight: 600;font-size: var(--fontSizeContent);">Item Preview</div>
+                            <img id="accessibilityImageDemo" src="./static/images/bounty_image.png" style="position: absolute;margin-top: 10px;width: 55px;z-index: 9;">
+                            <div class="settingsResetUIButton" id="accessibilityImageDemoReset" style="margin-top: 90px;">Reset</div>
+                        </div>
                     </div>
                     <hr>
                     <div class="settingSection">
@@ -199,7 +207,7 @@
                         </div>
                         <div class="settingsResetUIButton" id="accessibilityAccentColorReset">Reset</div>
                     </div>
-                    <hr>
+                    <hr id="bottomDivider">
                 </div>
 
                 <div id="logoutSettingsContainer" style="display: none;">
