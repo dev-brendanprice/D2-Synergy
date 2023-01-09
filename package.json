@@ -18,9 +18,13 @@
   "author": "brendanprice2003",
   "license": "ISC",
   "dependencies": {
+    "@csstools/postcss-sass": "^5.0.1",
+    "@snowpack/plugin-postcss": "^1.4.3",
     "axios": "^1.1.2",
     "dotenv": "^16.0.2",
     "idb-keyval": "^6.2.0",
+    "postcss-cli": "^10.1.0",
+    "postcss-scss": "^4.0.6",
     "snowpack": "^3.8.8"
   },
   "repository": {
