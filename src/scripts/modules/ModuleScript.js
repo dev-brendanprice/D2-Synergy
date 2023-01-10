@@ -264,26 +264,29 @@ export async function MakeBountyElement(param) {
 
 
 
-// Start loading sequence
-export function StartLoad() {
+// Add loading bar and text to animate
+// @boolean {passiveLoad}
+export function StartLoad(passiveLoad) {
 
-    // Add loading bar
-    document.getElementById('slider').style.display = 'block';
-
-    // Add load content
-    // document.getElementById('loadingContentContainer').style.display = 'block';
+    if (passiveLoad) {
+        document.getElementById('loadBarContainer').style.display = 'flex';
+        return;
+    };
 };
 
 
 
-// Stop loading sequence
-export function StopLoad() {
+// Remove loading bar and text to animate
+// @boolean {passiveLoad}
+export function StopLoad(passiveLoad) {
+    
+    if (passiveLoad) {
+        document.getElementById('loadBarContainer').style.display = 'none';
+        return;
+    };
 
-    // Remove loading bar
-    document.getElementById('slider').style.display = 'none';
-
-    // Use mobile layout for content
-    // document.getElementById('loadingContentContainer').style.display = 'none';
+    document.getElementById('skeletonContainer').style.display = 'none';
+    document.getElementById('contentDisplay').style.display = 'block';
 };
 
 

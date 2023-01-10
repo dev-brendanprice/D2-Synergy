@@ -335,6 +335,34 @@ export async function AddEventListeners() {
     AddListener('settingCustomColorInput', 'input', function () {
         accentColor.UpdateAccentColor(this.value);
     });
+
+
+    // Mobile navbar bounties button
+    AddListener('bountiesMenuMobile', 'click', function() {
+        let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
+        for (let container of containersToHide) {
+            document.getElementById(`${container}`).style.display = 'none';
+        };
+        document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
+    });
+
+    // Mobile navbar challenges button
+    AddListener('seasonalMenuMobile', 'click', function() {
+        let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
+        for (let container of containersToHide) {
+            document.getElementById(`${container}`).style.display = 'none';
+        };
+        document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
+    });
+
+    // Mobile navbar statistics button
+    AddListener('statsMenuMobile', 'click', function() {
+        let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
+        for (let container of containersToHide) {
+            document.getElementById(`${container}`).style.display = 'none';
+        };
+        document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
+    });
 };
 
 

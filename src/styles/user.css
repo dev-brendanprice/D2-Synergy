@@ -177,6 +177,7 @@
     margin-top: 10px;
     margin-bottom: 40px;
     margin-left: -5px;
+    box-shadow: 2px 2px 12px #1e1e1e;
     cursor: pointer;
 }
 
@@ -228,6 +229,13 @@
 }
 
 .labelContainer {
+    display: flex;
+    gap: 5px;
+    width: fit-content;
+    font-size: var(--fontSizeContent);
+}
+
+.labelRangeContainer {
     width: fit-content;
     font-size: var(--fontSizeContent);
 }
@@ -303,7 +311,12 @@
 }
 
 .settingCheckbox {
-    accent-color: #ff7070;cursor: pointer;
+    accent-color: #ff7070;
+    cursor: pointer;
+}
+
+.checkboxLabel {
+    margin-top: 2px;
 }
 
 #bottomMiddleNavBarItems {
@@ -422,7 +435,7 @@
 }
 
 #contentDisplay {
-    display: block;
+    display: none;
     padding-left: 25px;
     padding-right: 25px;
     overflow: hidden;

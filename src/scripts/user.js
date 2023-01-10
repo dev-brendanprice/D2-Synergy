@@ -33,7 +33,7 @@ import { MakeRequest } from './modules/MakeRequest.js';
 // Validate state parameter
 VerifyState();
 
-// Start load sequence
+// dev
 StartLoad();
 
 // Utilities
@@ -121,6 +121,9 @@ export var accentColor = {
         // Update dom content
         document.getElementById('topColorBar').style.backgroundColor = color;
         document.getElementById('topColorBar').style.boxShadow = `0px 0px 10px 1px ${color}`;
+        // document.getElementsByClassName('subline')[0].style.background = color;
+        // document.getElementsByClassName('subline')[0].style.boxShadow = `0px 0px 10px 1px ${color}`;
+        
         // Range sliders
         for (let element of document.getElementsByClassName('settingRange')) {
             element.style.accentColor = color;

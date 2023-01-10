@@ -139,12 +139,6 @@
         font-size: 18px;
     }
 
-    #bountiesContainer {
-        margin-top: 50px;
-        margin-left: -14px;
-        width: 90vw;
-    }
-
     #satisticsLayoutContainer {
         text-align: center;
     }
@@ -181,6 +175,10 @@
         left: 0;
         width: 100vw;
         overflow: hidden;
+    }
+
+    #contentDisplay {
+        margin-top: -30px;
     }
 
     #bottomDivider {

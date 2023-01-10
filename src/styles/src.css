@@ -228,20 +228,22 @@ h2 {
 #loadBarContainer {
     display: none;
     position: absolute;
-    margin-top: 37px;
+    top: 0px;
 }
 #slider{
     position: absolute;
     margin-left: -10px;
     width: 103vw;
-    height: 3px;
+    height: 2px;
     overflow-x: hidden;
 }
 .subline{
     position: absolute;
-    height: 5px;
-    background: #4a8df8;
+    height: 2px;
+    background: #22272E;
     overflow-x: hidden;
+    border-radius: 3px;
+    z-index: 100;
 }
 .inc{
     animation: increase 2s infinite;
