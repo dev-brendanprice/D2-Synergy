@@ -271,7 +271,14 @@
     width: 40vw;
     height: 92vh;
     border-right: 1px solid gray;
+    overflow-y: scroll;
     color: white;
+}
+
+#accessibilityImageDemo {
+    margin-top: 10px;
+    width: 55px;
+    z-index: 9;
 }
 
 #settingsFooter {
@@ -325,8 +332,8 @@
     bottom: 0;
     left: 0;
     width: 100vw;
-    height: fit-content;
-    gap: 15%;
+    height: 48px;
+    /* gap: 15%; */
     justify-content: center;
     background-color: #1E1E1E;
     color: #C1C1C1;
@@ -436,10 +443,98 @@
 
 #contentDisplay {
     display: none;
-    padding-left: 25px;
-    padding-right: 25px;
+    margin: 0 auto;
+    width: 90vw;
     overflow: hidden;
     color: white;
+}
+
+#mobileCharacterSelect {
+    padding-bottom: 45px;
+    margin: 0 auto;
+    width: fit-content;
+    filter: brightness(80%);
+}
+
+#mobileCharacterEmblem {
+    display: block;
+    margin: 0 auto;
+    margin-top: -35px;
+    width: 90vw;
+    border-radius: 1px;
+}
+
+#mobileCharacterInfoContainer {
+    position: absolute;
+    display: flex;
+    margin-top: -60px;
+    margin-left: 30px;
+    gap: 98%;
+}
+
+#mobileCharacterSubInfoContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+    color: white;
+}
+
+#mobileCharacterTypeField {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+#mobileCharacterPowerLevelField {
+    margin-top: 2px;
+    margin-left: 2px;
+    font-size: 18px;
+    font-weight: 600;
+    color: yellow;
+}
+
+/* ######### */
+
+#defaultCharacterSelect {
+    margin-top: 100px;
+    padding-bottom: 45px;
+    width: fit-content;
+    filter: brightness(80%);
+}
+
+#characterEmblem {
+    display: block;
+    margin: 0 auto;
+    margin-top: -35px;
+    width: 250px;
+    border-radius: 1px;
+}
+
+#characterInfoContainer {
+    position: absolute;
+    display: flex;
+    margin-top: -60px;
+    margin-left: 30px;
+    gap: 98%;
+}
+
+#characterSubInfoContainer {
+    display: flex;
+    margin-top: 15px;
+    margin-left: 20px;
+    flex-direction: column;
+    color: white;
+}
+
+#characterTypeField {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#characterPowerLevelField {
+    margin-left: 2px;
+    font-size: 15px;
+    font-weight: 600;
+    color: yellow;
 }
 
 #subTitleContainer {

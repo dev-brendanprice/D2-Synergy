@@ -25,6 +25,13 @@ let containerNames = [
 ];
 
 
+// Reverse settings menu display when navbar controls clicked
+const ToggleSettingsMenu = function () {
+    document.getElementById('subContainer').style.display = 'block';
+    document.getElementById('settingsGrid').style.display = 'none';
+};
+
+
 // Event listener wrapper
 const AddListener = function (elementName, event, callback, selectorType) {
 
@@ -59,6 +66,8 @@ export async function AddEventListeners() {
 
     // Bounties navbar control
     AddListener('navBarBountiesButton', 'click', function () {
+
+        ToggleSettingsMenu();
         
         let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
         for (let container of containersToHide) {
@@ -70,6 +79,8 @@ export async function AddEventListeners() {
 
     // Challenges navbar control
     AddListener('navBarChallengesButton', 'click', function () {
+
+        ToggleSettingsMenu();
         
         let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
         for (let container of containersToHide) {
@@ -81,6 +92,8 @@ export async function AddEventListeners() {
 
     // Statistics navbar control
     AddListener('navBarStatisticsButton', 'click', function () {
+
+        ToggleSettingsMenu();
         
         let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
         for (let container of containersToHide) {
@@ -339,6 +352,9 @@ export async function AddEventListeners() {
 
     // Mobile navbar bounties button
     AddListener('bountiesMenuMobile', 'click', function() {
+
+        ToggleSettingsMenu();
+
         let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
         for (let container of containersToHide) {
             document.getElementById(`${container}`).style.display = 'none';
@@ -348,6 +364,9 @@ export async function AddEventListeners() {
 
     // Mobile navbar challenges button
     AddListener('seasonalMenuMobile', 'click', function() {
+
+        ToggleSettingsMenu();
+
         let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
         for (let container of containersToHide) {
             document.getElementById(`${container}`).style.display = 'none';
@@ -357,6 +376,9 @@ export async function AddEventListeners() {
 
     // Mobile navbar statistics button
     AddListener('statsMenuMobile', 'click', function() {
+
+        ToggleSettingsMenu();
+        
         let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
         for (let container of containersToHide) {
             document.getElementById(`${container}`).style.display = 'none';
