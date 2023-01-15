@@ -20,7 +20,7 @@ async function CheckSession() {
 
 
     // Indicates if localStorage is missing an item(s)
-    if (!(urlParam.get('rsToken') && urlParam.get('acToken') && urlParam.get('comps'))) {
+    if (!(rsToken && acToken && comps)) {
         localStorage.clear();
     };
 
@@ -44,9 +44,10 @@ async function GenerateRandomString(len) {
 
 
 // Main
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', function () {
 
     const stateCode = GenerateRandomString(128);
+    log(clientId, stateCode);
 
     // Put version number in navbar
     document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;

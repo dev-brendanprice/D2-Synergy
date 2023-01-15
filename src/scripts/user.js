@@ -194,12 +194,6 @@ export async function OAuthFlow() {
             window.location.href = homeUrl;
         }
 
-        // If user has authorized beforehand, but came back through empty param URL
-        // If user has code and localStorage components
-        else if (!authCode || authCode && (comps || acToken || rsToken)) {
-            await CheckComponents();
-        }
-
         // When user comes back with localStorage components but without param URL
         else if (!authCode && (comps || acToken || rsToken)) {
             await CheckComponents();
@@ -212,7 +206,6 @@ export async function OAuthFlow() {
     } catch (error) {
         console.error(error); // display error page, with error and options for user
     };
-    log('OAuthFlow END');
     log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
 };
 
