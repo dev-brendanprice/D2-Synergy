@@ -65,21 +65,9 @@ var FixTables = async () => {
 
 
 // Check manifest version
-var ValidateManifest = async () => {
+export var ValidateManifest = async () => {
 
     log('ValidateManifest START')
-    // Change load content
-    // let loadContent = document.getElementById('loadingText');
-    // loadContent.innerHTML = 'Downloading New Manifest';
-
-    // Add timeout function for long(er) waits :/
-    // let newLoadContentTimeout = setTimeout(() => {
-
-    //     loadContent.innerHTML = 'Sorry this is taking so long, We are nearly there...';
-    //     setTimeout(() => {
-    //         loadContent.innerHTML = 'Really sorry for the long wait. Try logging out, logging back in, and restarting it all eh?'
-    //     }, 15_000);
-    // }, 15_000);
 
     // Fetch manifest
     let localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
@@ -94,14 +82,13 @@ var ValidateManifest = async () => {
     };
 
     // Remove timeout, just in the case overlapping instructions
-    // clearTimeout(newLoadContentTimeout);
     log('ValidateManifest END');
 };
 
 
 
 // Return passed component
-var ReturnEntry = async (entry) => {
+export var ReturnEntry = async (entry) => {
 
     let res = await get(entry);
     if (!res) {
@@ -111,7 +98,3 @@ var ReturnEntry = async (entry) => {
 
     return res;
 };
-
-
-
-export { ValidateManifest, ReturnEntry };

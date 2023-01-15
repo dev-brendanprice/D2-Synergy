@@ -329,12 +329,15 @@
 #bottomMiddleNavBarItems {
     display: none;
     position: fixed;
+    padding-bottom: 15px;
     bottom: 0;
     left: 0;
     width: 100vw;
-    height: 48px;
-    /* gap: 15%; */
+    height: fit-content;
+    gap: 12.5%;
     justify-content: center;
+    text-align: center;
+    align-items: center;
     background-color: #1E1E1E;
     color: #C1C1C1;
     z-index: 10;
@@ -450,46 +453,21 @@
 }
 
 #mobileCharacterSelect {
-    padding-bottom: 45px;
+    display: none;
     margin: 0 auto;
-    width: fit-content;
+    margin-top: -35px;
+    padding-bottom: 60px;
+    width: 90vw;
     filter: brightness(80%);
 }
 
 #mobileCharacterEmblem {
-    display: block;
-    margin: 0 auto;
-    margin-top: -35px;
-    width: 90vw;
+    width: 100%;
     border-radius: 1px;
 }
 
 #mobileCharacterInfoContainer {
-    position: absolute;
     display: flex;
-    margin-top: -60px;
-    margin-left: 30px;
-    gap: 98%;
-}
-
-#mobileCharacterSubInfoContainer {
-    display: flex;
-    flex-direction: column;
-    margin-left: 40px;
-    color: white;
-}
-
-#mobileCharacterTypeField {
-    font-size: 25px;
-    font-weight: 600;
-}
-
-#mobileCharacterPowerLevelField {
-    margin-top: 2px;
-    margin-left: 2px;
-    font-size: 18px;
-    font-weight: 600;
-    color: yellow;
 }
 
 /* ######### */
@@ -510,7 +488,6 @@
 }
 
 #characterInfoContainer {
-    position: absolute;
     display: flex;
     margin-top: -60px;
     margin-left: 30px;

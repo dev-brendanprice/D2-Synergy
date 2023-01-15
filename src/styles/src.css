@@ -82,17 +82,17 @@ h2 {
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
 }
+
 #navBarTitle {
     display: inline-block;
     font-size: 30px;
-    
 }
+
 #navBarVersion {
     display: inline-block;
     font-size: 15px;
     color: #677474;
     text-decoration: none;
-    
 }
 
 

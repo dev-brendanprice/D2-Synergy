@@ -199,8 +199,6 @@
 
     #bottomMiddleNavBarItems {
         display: flex;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
     }
 
     #settingsGrid {
@@ -249,7 +247,7 @@
     }
 
     #mobileCharacterSelect {
-        display: block;
+        display: grid;
     }
 
     #defaultCharacterSelect {
@@ -297,6 +295,6 @@
 
 @media screen and (max-width: 350px) {
     #bottomMiddleNavBarItems {
-        gap: 8%;
+        gap: 5%;
     }
 }
