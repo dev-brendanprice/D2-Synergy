@@ -372,16 +372,68 @@
                     
                     <div id="dropdownsContainer">
 
-                        <div style="display: flex;gap: 8px;cursor: pointer;padding-top: 5px;padding-bottom: 5px;">
-                            <div style="color: gray;font-size: 14px;">Yield</div>
-                            <hr class="dropdownLine">
-                            <img src="./static/ico/arrow_down.svg" class="dropdownArrow">
+                        <div>
+                            <div id="dropdownYield" style="display: flex;gap: 8px;cursor: pointer;padding-top: 5px;padding-bottom: 5px;">
+                                <div style="color: gray;font-size: 14px;">Yield</div>
+                                <hr class="dropdownLine">
+                                <img src="./static/ico/arrow_down.svg" class="dropdownArrow" id="arrowYield">
+                            </div>
+                            <div id="yieldDropdownContainer">
+                                <div id="dropdownContainer">
+                                    <div style="margin-bottom: 10px;padding-top: 10px;">
+                                        <div>Raw XP:</div>
+                                        <div style="color: rgb(150, 192, 192);" id="rawXpYieldField">000,000,000</div>
+                                    </div>
+                                    <div>
+                                        <div>Artifact Levels:</div>
+                                        <div style="color: rgb(150, 192, 192);" id="artifactLevelsField">0000</div>
+                                    </div>
+                                    <div>
+                                        <div>Season Pass Levels:</div>
+                                        <div style="color: rgb(150, 192, 192);" id="SeasonPassLevelsField">000</div>
+                                    </div>
+                                    <div style="display: flex;gap: 5px;font-size: 12px;padding-top: 25px;padding-bottom: 10px;word-wrap: normal;">
+                                        <div>With Buffs</div>
+                                        <hr class="dropdownSubline">
+                                    </div>
+                                    <div style="margin-bottom: 10px;padding-top: 10px;">
+                                        <div>XP:</div>
+                                        <div style="color: rgb(150, 192, 192);" id="rawXpYieldWithModField">000,000,000</div>
+                                    </div>
+                                    <div>
+                                        <div>Artifact Levels:</div>
+                                        <div style="color: rgb(150, 192, 192);" id="artifactLevelsWithModField">0000</div>
+                                    </div>
+                                    <div>
+                                        <div>Season Pass Levels:</div>
+                                        <div style="color: rgb(150, 192, 192);" id="SeasonPassLevelsWithModField">000</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div style="display: flex;gap: 8px;cursor: pointer;padding-top: 5px;padding-bottom: 5px;">
-                            <div style="color: gray;font-size: 14px;">Modifiers</div>
-                            <hr class="dropdownLine">
-                            <img src="./static/ico/arrow_down.svg" class="dropdownArrow">
+                        <div>
+                            <div id="dropdownModifiers" style="display: flex;gap: 8px;cursor: pointer;padding-top: 5px;padding-bottom: 5px;">
+                                <div style="color: gray;font-size: 14px;">Modifiers</div>
+                                <hr class="dropdownLine">
+                                <img src="./static/ico/arrow_down.svg" class="dropdownArrow" id="arrowModifiers">
+                            </div>
+                            <div id="modifiersDropdownContainer">
+                                <div id="dropdownContainer">
+                                    <div style="padding-top: 10px;">
+                                        <img src="./static/ico/checkmark.svg" style="width: 13px;">
+                                        <div>Shared Wisdom</div>
+                                    </div>
+                                    <div>
+                                        <img src="./static/ico/checkmark.svg" style="width: 13px;">
+                                        <div>Well Rested</div>
+                                    </div>
+                                    <div>
+                                        <img src="./static/ico/checkmark.svg" style="width: 13px;">
+                                        <div>Ghost Mods</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -392,12 +444,12 @@
                     <div id="bountiesContainer">
                         <div class="contentHeading">Bounties</div>
                         <div id="contentSubHeadingContainer">
-                            <div style="display: flex;">
+                            <div style="display: flex;gap: 5px;">
                                 <div>18</div>
                                 <div>Bounties</div>
                             </div>
-                            <div>-</div>
-                            <div style="display: flex;">
+                            <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
+                            <div style="display: flex;gap: 5px;">
                                 <div>4</div>
                                 <div>Completed</div>
                             </div>

@@ -61,6 +61,49 @@ const AddListener = function (elementName, event, callback, selectorType) {
 };
 
 
+// Dropdown event wrapper
+const AddDropdownEvent = function (dropwdownContent, dropdownArrow, dropdownBoolean) {
+
+    if (!dropdownBoolean.isElementBeingDroppedDown) {
+
+        dropdownBoolean.toggleBoolean();
+        let dropdownContentState = getComputedStyle(dropwdownContent);
+
+        // If dropdown is closed, open, else close
+        if (dropdownContentState.display === 'none') {
+    
+            // Rotate arrow
+            dropdownArrow.style.transform = 'rotate(0deg)';
+    
+            // Add class to animate dropdown
+            dropwdownContent.style.display = 'block';
+            dropwdownContent.className = 'pre';
+            window.setTimeout(() => {
+                dropwdownContent.className += ' pro';
+                dropdownBoolean.toggleBoolean();
+            }, 50);
+        }
+        else if (dropdownContentState.display === 'block') {
+    
+            // Rotate arrow
+            dropdownArrow.style.transform = 'rotate(90deg)';
+    
+            // Add class to animate closing dropdown
+            dropwdownContent.className = 'pre2';
+            window.setTimeout(() => {
+                dropwdownContent.className += ' pro2';
+    
+                // Close dropdown after animation, calculate time to wait
+                window.setTimeout(() => {
+                    dropwdownContent.style.display = 'none';
+                    dropdownBoolean.toggleBoolean();
+                }, 200);
+            }, 50);
+        };
+    };
+};
+
+
 // Add all event listeners
 export async function AddEventListeners() {
 
@@ -388,6 +431,41 @@ export async function AddEventListeners() {
         };
         document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
     });
+
+    // Dropdown selection for yields
+    AddListener('dropdownYield', 'click', function () {
+
+        // This boolean is an attempt to block on subsequent clicks whilst the dropdown is being toggled
+        var dropdownBoolean = {
+            isElementBeingDroppedDown: false,
+            toggleBoolean: function () {
+                this.isElementBeingDroppedDown = !this.isElementBeingDroppedDown;
+            }
+        };
+
+        let dropdownContent = document.getElementById('yieldDropdownContainer'),
+            arrow = document.getElementById('arrowYield');
+
+        AddDropdownEvent(dropdownContent, arrow, dropdownBoolean);
+    });
+
+    // Dropdown selecton for modifiers
+    AddListener('dropdownModifiers', 'click', function () {
+
+        // This boolean is an attempt to block on subsequent clicks whilst the dropdown is being toggled
+        var dropdownBoolean = {
+            isElementBeingDroppedDown: false,
+            toggleBoolean: function () {
+                this.isElementBeingDroppedDown = !this.isElementBeingDroppedDown;
+            }
+        };
+
+        let dropdownContent = document.getElementById('modifiersDropdownContainer'),
+            arrow = document.getElementById('arrowModifiers');
+
+        AddDropdownEvent(dropdownContent, arrow, dropdownBoolean);
+    });
+
 };
 
 

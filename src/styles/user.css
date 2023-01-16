@@ -447,7 +447,9 @@
 
 #contentSubHeadingContainer {
     display: flex;
-    gap: 15px;
+    gap: 10px;
+    font-size: 14px;
+    color: rgb(106, 106, 106);
 }
 
 #contentDisplay {
@@ -516,6 +518,46 @@
     width: 12px;
     filter: invert(100%) brightness(50%);
     transform: rotate(90deg);
+}
+
+#dropdownContainer > div {
+    display: flex;
+    gap: 5px;
+}
+
+#yieldDropdownContainer {
+    display: none;
+    padding-left: 10px;
+    height: 210px;
+    clip-path: inset(0px 0px 0px 0px);
+    color: gray;
+}
+
+#modifiersDropdownContainer {
+    display: none;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    height: fit-content;
+    clip-path: inset(0px 0px 0px 0px);
+    color: gray;
+}
+
+.pre {
+    max-height: 0px;
+}
+
+.pro {
+    max-height: 210px;
+    transition: max-height 0.20s ease-in-out;
+}
+
+.pre2 {
+    max-height: 210px;
+}
+
+.pro2 {
+    max-height: 0px;
+    transition: max-height 0.20s ease-in-out;
 }
 
 #characterEmblem {
@@ -700,6 +742,17 @@ hr.dropdownLine {
     height: 2px;
     width: 100%;
     border: none;
+    border-radius: 5px;
+    background-color: #64696d;
+}
+
+hr.dropdownSubline {
+    display: block;
+    margin-right: 20px;
+    height: 1px;
+    width: 65%;
+    border: none;
+    border-radius: 5px;
     background-color: #64696d;
 }
 
