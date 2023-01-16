@@ -15,8 +15,7 @@ async function CheckSession() {
 
     const acToken = JSON.parse(localStorage.getItem('accessToken')),
         rsToken = JSON.parse(localStorage.getItem('refreshToken')),
-        comps = JSON.parse(localStorage.getItem('components')),
-        urlParam = new URLSearchParams(window.location.search);
+        comps = JSON.parse(localStorage.getItem('components'));
 
 
     // Indicates if localStorage is missing an item(s)
@@ -33,6 +32,7 @@ async function CheckSession() {
 
 
 // Generate a random string for state code
+// @int {len}
 async function GenerateRandomString(len) {
     let result = ' ',
         characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -47,12 +47,11 @@ async function GenerateRandomString(len) {
 window.addEventListener('DOMContentLoaded', function () {
 
     const stateCode = GenerateRandomString(128);
-    log(clientId, stateCode);
 
     // Put version number in navbar
     document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
 
-    // Check for server availability
+    // Check for server availability, then allow auth, else do wrapper error
     log(apiKey);
     MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
     .then((response) => {

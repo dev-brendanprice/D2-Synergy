@@ -168,6 +168,31 @@ allProgressionProperties.push(
 // Parse properties into words that can be matched to item descriptors
 allProgressionProperties = allProgressionProperties.map(property => parsePropertyNameIntoWord(property));
 
+// Register service worker to load definitions (non blocking)
+const registerDefinitionsServiceWorker = async function () {
+
+    if ("serviceWorker" in navigator) {
+        try {
+            const swRegistration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+
+            log('Service worker installing');
+            if (swRegistration.waiting) {
+                log('Service worker installed');
+            }
+            else if (swRegistration.active) {
+
+                log('Service worker active');
+
+                // dev
+                swRegistration.active.postMessage('fubar');
+
+            };
+        } catch (error) {
+            console.error(`Service worker registration failed with ${error}`);
+        };
+    };
+};
+
 
 
 // Main OAuth flow mechanism
@@ -508,6 +533,9 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch((error) => {
         console.error(error);
     });
+
+    // Build definitions using service worker
+    registerDefinitionsServiceWorker();
 
     // Build workspace -- default fields etc.
     BuildWorkspace()

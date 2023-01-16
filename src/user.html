@@ -57,7 +57,7 @@
         </div>
         <div class="bottomNavBarIconContainer" id="contextMenuSettingsMobile">
             <img class="bottomNavBarIcons" src="./static/ico/more_dots.svg">
-            <div>More</div>
+            <div style="padding-bottom: 4px;">More</div>
         </div>
     </div>
 
@@ -336,588 +336,620 @@
 
             </div>
 
-            <div id="characterSelectContainer">
+            <div id="containerThatHasTheSideSelectionAndContentDisplay">
 
-                <div id="mobileCharacterSelect">
-                    <img id="mobileCharacterEmblem" src="static/images/demo.jpg">
-                    <div id="mobileCharacterInfoContainer">
-                        <div id="mobileCharacterSubInfoContainer">
-                            <div id="mobileCharacterTypeField">Warlock</div>
-                            <div style="display: flex;gap: 3px;">
-                                <img src="static/ico/power.svg" style="width: 18px;padding: 0;">
-                                <div id="mobileCharacterPowerLevelField">9999</div>
-                            </div>
-                        </div>
-                        <img src="static/ico/arrow_down.svg" style="width: 5%;filter: invert(100%);">
-                    </div>
-                </div>
-
-                <div id="defaultCharacterSelect">
-                    <img id="characterEmblem" src="static/images/demo.jpg">
-                    <div id="characterInfoContainer">
-                        <div id="characterSubInfoContainer">
-                            <div id="characterTypeField">Warlock</div>
-                            <div style="display: flex;gap: 3px;">
-                                <img src="static/ico/power.svg" style="width: 13px;padding: 0;">
-                                <div id="characterPowerLevelField">9999</div>
-                            </div>
-                        </div>
-                        <img src="static/ico/arrow_down.svg" style="margin-top: 16px;margin-left: -110px;width: 16px;filter: invert(100%);">
-                    </div>
-                </div>
-            </div>
-
-            <div id="contentDisplay">
-
-                <div id="bountiesContainer">
-                    <div class="contentHeading">Bounties</div>
-                </div>
-                <div id="seasonalChallengesContainer">
-                    <div class="contentHeading">Seasonal Challenges</div>
-                </div>
-                <div id="statisticsContainer">
-                    <div class="contentHeading">Statistics</div>
-                </div>
-
-                <!-- Old Content Displays (Deprecated and marked for deletion) -->
-                <div style="display: none;">
-                    <div id="bountiesContainer2">
-
-                        <div class="levellingContainerTitle">Synergies</div>
-                        <div id="bountiesFieldSubText"> 🛠️ In (heavy) Development 🚧</div>
-                        <hr class="horizontalRuler">
-        
-                        <div style="display: none;">
-                            <div>
-                                <div class="propertySubheadings">Destinations: </div><div class="propertyNames" id="ctgDestination" style="font-style: italic;">There are no (specific) relations for destinations.</div>
-                            </div>
-        
-                            <div>
-                                <div class="propertySubheadings">Activity Modes: </div><div class="propertyNames" id="ctgActivityMode" style="font-style: italic;">There are no (specific) relations for activities.</div>
-                            </div>
-        
-                            <div>
-                                <div class="propertySubheadings">Weapon Types: </div><div class="propertyNames" id="ctgItemCategory" style="font-style: italic;">There are no (specific) relations for weapon types.</div>
-                            </div>
-        
-                            <div>
-                                <div class="propertySubheadings">Kill Types: </div><div class="propertyNames" id="ctgKillType" style="font-style: italic;">There are no (specific) relations for kill types.</div>
-                            </div>
-        
-                            <div style="display: none;">
-                                <div class="propertySubheadings" style="color: gray;">Elemental Types: </div><div class="propertyNames" id="ctgDamageType" style="font-style:italic;color: gray;">There are no (specific) relations for element types.</div><br>
-                                <div class="propertySubheadings" style="color: gray;">Ammo Types: </div><div class="propertyNames" id="ctgAmmoType" style="font-style:italic;color: gray;">There are no (specific) relations for ammo types.</div>
-                            </div>
-                        </div>
-        
-                        <div id="synergiesContainer">
-        
-                            <div id="leftGroup">
-                                <div class="propertyStatisticContainerForDestinations">
-                                    <div class="propertySubContainer">
-                                        <div class="propertyTextName">EDZ</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/EDZ.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <div class="propertyTextName">Nessus</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Nessus.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <div class="propertyTextName">TangledShore</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/TangledShore.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <div class="propertyTextName">DreamingCity</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/DreamingCity.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <div class="propertyTextName">Moon</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Moon.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <div class="propertyTextName">Europa</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Europa.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div>
-                                        <div class="propertyTextName">Cosmodrome</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Cosmodrome.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div>
-                                        <div class="propertyTextName">Throneworld</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Throneworld.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                <div id="sideSelectionContainer">
+                    <div id="characterSelectContainer">
+    
+                        <div id="mobileCharacterSelect">
+                            <img id="mobileCharacterEmblem" src="static/images/demo.jpg">
+                            <div id="mobileCharacterInfoContainer">
+                                <div id="mobileCharacterSubInfoContainer">
+                                    <div id="mobileCharacterTypeField">Warlock</div>
+                                    <div style="display: flex;gap: 3px;">
+                                        <img src="static/ico/power.svg" style="width: 5%;padding: 0;">
+                                        <div id="mobileCharacterPowerLevelField">9999</div>
                                     </div>
                                 </div>
+                                <img src="static/ico/arrow_down.svg" id="mobileArrowDown">
+                            </div>
+                        </div>
         
-                                <div class="propertyStatisticContainer" style="display: inline-block !important;margin-top: 15px;">
-                                    <div class="propertySubContainer">
+                        <div id="defaultCharacterSelect">
+                            <img id="characterEmblem" src="static/images/demo.jpg">
+                            <div id="characterInfoContainer">
+                                <div id="characterSubInfoContainer">
+                                    <div id="characterTypeField">Warlock</div>
+                                    <div style="display: flex;gap: 3px;">
+                                        <img src="static/ico/power.svg" style="width: 13px;padding: 0;">
+                                        <div id="characterPowerLevelField">9999</div>
+                                    </div>
+                                </div>
+                                <img src="static/ico/arrow_down.svg" style="margin-top: 16px;margin-left: -110px;width: 16px;filter: invert(100%);">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="dropdownsContainer">
+
+                        <div style="display: flex;gap: 8px;cursor: pointer;padding-top: 5px;padding-bottom: 5px;">
+                            <div style="color: gray;font-size: 14px;">Yield</div>
+                            <hr class="dropdownLine">
+                            <img src="./static/ico/arrow_down.svg" class="dropdownArrow">
+                        </div>
+
+                        <div style="display: flex;gap: 8px;cursor: pointer;padding-top: 5px;padding-bottom: 5px;">
+                            <div style="color: gray;font-size: 14px;">Modifiers</div>
+                            <hr class="dropdownLine">
+                            <img src="./static/ico/arrow_down.svg" class="dropdownArrow">
+                        </div>
+
+                    </div>
+                </div>
+    
+                <div id="contentDisplay">
+    
+                    <div id="bountiesContainer">
+                        <div class="contentHeading">Bounties</div>
+                        <div id="contentSubHeadingContainer">
+                            <div style="display: flex;">
+                                <div>18</div>
+                                <div>Bounties</div>
+                            </div>
+                            <div>-</div>
+                            <div style="display: flex;">
+                                <div>4</div>
+                                <div>Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="seasonalChallengesContainer">
+                        <div class="contentHeading">Seasonal Challenges</div>
+                    </div>
+                    <div id="statisticsContainer">
+                        <div class="contentHeading">Statistics</div>
+                    </div>
+    
+                    <!-- Old Content Displays (Deprecated and marked for deletion) -->
+                    <div style="display: none;">
+                        <div id="bountiesContainer2">
+    
+                            <div class="levellingContainerTitle">Synergies</div>
+                            <div id="bountiesFieldSubText"> 🛠️ In (heavy) Development 🚧</div>
+                            <hr class="horizontalRuler">
+            
+                            <div style="display: none;">
+                                <div>
+                                    <div class="propertySubheadings">Destinations: </div><div class="propertyNames" id="ctgDestination" style="font-style: italic;">There are no (specific) relations for destinations.</div>
+                                </div>
+            
+                                <div>
+                                    <div class="propertySubheadings">Activity Modes: </div><div class="propertyNames" id="ctgActivityMode" style="font-style: italic;">There are no (specific) relations for activities.</div>
+                                </div>
+            
+                                <div>
+                                    <div class="propertySubheadings">Weapon Types: </div><div class="propertyNames" id="ctgItemCategory" style="font-style: italic;">There are no (specific) relations for weapon types.</div>
+                                </div>
+            
+                                <div>
+                                    <div class="propertySubheadings">Kill Types: </div><div class="propertyNames" id="ctgKillType" style="font-style: italic;">There are no (specific) relations for kill types.</div>
+                                </div>
+            
+                                <div style="display: none;">
+                                    <div class="propertySubheadings" style="color: gray;">Elemental Types: </div><div class="propertyNames" id="ctgDamageType" style="font-style:italic;color: gray;">There are no (specific) relations for element types.</div><br>
+                                    <div class="propertySubheadings" style="color: gray;">Ammo Types: </div><div class="propertyNames" id="ctgAmmoType" style="font-style:italic;color: gray;">There are no (specific) relations for ammo types.</div>
+                                </div>
+                            </div>
+            
+                            <div id="synergiesContainer">
+            
+                                <div id="leftGroup">
+                                    <div class="propertyStatisticContainerForDestinations">
+                                        <div class="propertySubContainer">
+                                            <div class="propertyTextName">EDZ</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/EDZ.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <div class="propertyTextName">Nessus</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Nessus.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <div class="propertyTextName">TangledShore</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/TangledShore.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <div class="propertyTextName">DreamingCity</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/DreamingCity.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <div class="propertyTextName">Moon</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Moon.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <div class="propertyTextName">Europa</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Europa.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div>
+                                            <div class="propertyTextName">Cosmodrome</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Cosmodrome.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div>
+                                            <div class="propertyTextName">Throneworld</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Throneworld.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="propertyStatisticContainer" style="display: inline-block !important;margin-top: 15px;">
+                                        <div class="propertySubContainer">
+                                            <img class="elementalIcon" src="./static/ico/arc_icon.png">
+                                            <div class="elementalPercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="elementalIcon" src="./static/ico/solar_icon.png">
+                                            <div class="elementalPercentageField" id="percentageSolar">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="elementalIcon" src="./static/ico/void_icon.png">
+                                            <div class="elementalPercentageField" id="percentageVoid">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="elementalIcon" src="./static/ico/stasis_icon.png">
+                                            <div class="elementalPercentageField" id="percentageStasis">0%</div>
+                                        </div>
+                                    </div>
+                
+                                    <div class="propertyStatisticContainer" style="display: inline-block;margin-top: 15px;">
+                                        <div class="propertySubContainer">
+                                            <img class="ammoIcon" src="./static/ico/primary_ammo_icon.svg">
+                                            <div class="ammoPercentageField" id="percentageKinetic">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="ammoIcon" src="./static/ico/special_ammo_icon.svg">
+                                            <div class="ammoPercentageField" id="percentageSpecial">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="ammoIcon" src="./static/ico/heavy_ammo_icon.svg">
+                                            <div class="ammoPercentageField" id="percentageHeavy">0%</div>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div id="middleGroup">
+                                    <div class="propertyStatisticContainer">
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/AutoRifle_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/PulseRifle_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/ScoutRifle_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/FusionRifle_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/Bow_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/Glaive_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/MachineGun_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/Shotgun_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/Sword_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/TraceRifle_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/HandCannon_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/GrenadeLauncherHeavy_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/GrenadeLauncherSpecial_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer">
+                                            <img class="weaponTypeIcon" src="./static/ico/destiny-icons/RocketLauncher_icon.svg">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="propertyStatisticContainer" style="margin-top: 15px;">
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">Melee</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Melee.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">Super</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Super.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">Grenade</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Grenade.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">Finisher</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Finisher.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">Precision</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Precision.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">ClassAbility</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/ClassAbility.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">CloseRange</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/CloseRange.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">RapidKills</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/RapidKills.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">NoReload</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/NoReload.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">GuardianKills</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/GuardianKills.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                        <div class="propertySubContainer2">
+                                            <div class="propertyTextName">InASingleLife</div>
+                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/InASingleLife.png">
+                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                                <div id="rightGroup">
+                                    <div class="propertyStatisticContainer">
+                                        <div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">NightmareHunt</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/NightmareHunt.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Gambit</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Gambit.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Strike</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Strike.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Nightfall</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Nightfall.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Crucible</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Crucible.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Mayhem</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Mayhem.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Control</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Control.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Breakthrough</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Breakthrough.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Countdown</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Countdown.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Elimination</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Elimination.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Doubles</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Doubles.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Supremacy</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Supremacy.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Rumble</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Rumble.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Survival</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Survival.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">IronBanner</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/IronBanner.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Dungeon</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Dungeon.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Story</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Story.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Trials</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Trials.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Explore</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Explore.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">DofE</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/DofE.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Raid</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Raid.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Clash</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Clash.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Momentum</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Momentum.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Scorched</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Scorched.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Lockdown</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Lockdown.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Showdown</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Showdown.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">EmpireHunt</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/EmpireHunt.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">Expedition</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/Expedition.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                            <div class="propertySubContainer2">
+                                                <div class="propertyTextName">KetchCrash</div>
+                                                <img class="propertySecretIcon" src="./static/ico/hq-icons/KetchCrash.png">
+                                                <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="containerTitle">Bounties</div><br>
+                            <div class="subheadingFields" id="bountiesAmountField"></div><div id="bountiesFieldSubText">total  · </div>
+                            <div class="subheadingFields" id="completedBountiesAmountField"></div><div id="bountiesFieldSubText">completed  · </div>
+                            <div class="subheadingFields" id="expiredBountiesAmountField"></div><div id="bountiesFieldSubText">expired</div>
+                            <hr class="horizontalRuler">
+            
+                            <div id="filterContentContainer">
+                                <div id="filters"></div>
+                                <div class="filter" id="removeFiltersID">
+                                    <div class="propName" style="color: orangered;">Clear Filters</div>
+                                </div>
+                            </div>
+                            <div id="btnHideFilters">Toggle Filters</div>
+                            <div id="noItemsTooltip"></div>
+                            <div id="bountyItems"></div>
+            
+                        </div>
+                        <div id="seasonalChallengesContainer2">
+            
+                            <div class="containerTitle">Seasonal Challenges</div><br>
+                            <div class="subheadingFields" id="challengesAmountField"></div><div id="bountiesFieldSubText">total  · </div>
+                            <div class="subheadingFields" id="completedChallengesAmountField"></div><div id="bountiesFieldSubText">completed  · </div>
+                            <div class="subheadingFields" id="outstandingChallengesAmountField"></div><div id="bountiesFieldSubText">outstanding</div>
+                            <hr class="horizontalRuler">
+            
+                            <div id="seasonChallengeControlGridContainer">
+                                <div class="seasonalChallengePageArrow" id="previousSeasonalChallengePageButton">
+                                    <img class="seasonalChallengePageArrowImage" id="previousSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
+                                </div>
+                
+                                <div id="seasonalChallengeItems"></div>
+                                
+                                <div class="seasonalChallengePageArrow" id="nextSeasonalChallengePageButton">
+                                    <img class="seasonalChallengePageArrowImage" id="nextSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
+                                </div>
+                            </div>
+            
+                            <div class="levellingContainerTitle">Synergies</div>
+                            <div id="bountiesFieldSubText"> 🛠️ In (heavy) Development 🚧</div>
+                            <hr class="horizontalRuler">
+            
+                            <div id="synergiesContainer">
+            
+                                <div>
+                                    <div class="elementalSubContainer">
                                         <img class="elementalIcon" src="./static/ico/arc_icon.png">
                                         <div class="elementalPercentageField" id="percentageArc">0%</div>
                                     </div>
-                                    <div class="propertySubContainer">
+                                    <div class="elementalSubContainer">
                                         <img class="elementalIcon" src="./static/ico/solar_icon.png">
                                         <div class="elementalPercentageField" id="percentageSolar">0%</div>
                                     </div>
-                                    <div class="propertySubContainer">
+                                    <div class="elementalSubContainer">
                                         <img class="elementalIcon" src="./static/ico/void_icon.png">
                                         <div class="elementalPercentageField" id="percentageVoid">0%</div>
                                     </div>
-                                    <div class="propertySubContainer">
+                                    <div class="elementalSubContainer">
                                         <img class="elementalIcon" src="./static/ico/stasis_icon.png">
                                         <div class="elementalPercentageField" id="percentageStasis">0%</div>
                                     </div>
                                 </div>
-            
-                                <div class="propertyStatisticContainer" style="display: inline-block;margin-top: 15px;">
-                                    <div class="propertySubContainer">
+                                
+                                <div>
+                                    <div class="ammoSubContainer">
                                         <img class="ammoIcon" src="./static/ico/primary_ammo_icon.svg">
                                         <div class="ammoPercentageField" id="percentageKinetic">0%</div>
                                     </div>
-                                    <div class="propertySubContainer">
+                                    <div class="ammoSubContainer">
                                         <img class="ammoIcon" src="./static/ico/special_ammo_icon.svg">
                                         <div class="ammoPercentageField" id="percentageSpecial">0%</div>
                                     </div>
-                                    <div class="propertySubContainer">
+                                    <div class="ammoSubContainer">
                                         <img class="ammoIcon" src="./static/ico/heavy_ammo_icon.svg">
                                         <div class="ammoPercentageField" id="percentageHeavy">0%</div>
                                     </div>
                                 </div>
-                            </div>
-        
-                            <div id="middleGroup">
-                                <div class="propertyStatisticContainer">
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/AutoRifle_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/PulseRifle_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/ScoutRifle_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/FusionRifle_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/Bow_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/Glaive_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/MachineGun_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/Shotgun_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/Sword_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/TraceRifle_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/HandCannon_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/GrenadeLauncherHeavy_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/GrenadeLauncherSpecial_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer">
-                                        <img class="weaponTypeIcon" src="./static/ico/destiny-icons/RocketLauncher_icon.svg">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                </div>
-        
-                                <div class="propertyStatisticContainer" style="margin-top: 15px;">
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">Melee</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Melee.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">Super</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Super.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">Grenade</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Grenade.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">Finisher</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Finisher.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">Precision</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/Precision.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">ClassAbility</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/ClassAbility.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">CloseRange</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/CloseRange.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">RapidKills</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/RapidKills.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">NoReload</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/NoReload.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">GuardianKills</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/GuardianKills.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                    <div class="propertySubContainer2">
-                                        <div class="propertyTextName">InASingleLife</div>
-                                        <img class="propertySecretIcon" src="./static/ico/hq-icons/InASingleLife.png">
-                                        <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                    </div>
-                                </div>
+            
                             </div>
             
-                            <div id="rightGroup">
-                                <div class="propertyStatisticContainer">
-                                    <div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">NightmareHunt</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/NightmareHunt.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                        </div>
+                        <div id="statisticsContainer2">
+            
+                            <div class="levellingContainerTitle">Levelling Statistics</div>
+                            <div id="currentSeasonNameField">Season of Plunder</div>
+                            <hr class="horizontalRuler">
+                
+                            <div id="statsTableLayoutContainer">
+                
+                                <div id="artifactStats">
+                                    <div id="artifactStatsBg"></div>
+                                    <div id="artifactStatsContentContainer">
+                                        <div class="containerTitle">ARTIFACT STATS</div>
+                                        <div id="artifactStatsFirstContainer">
+                                            <div class="containerMetricNumber" id="artifactXpToNextPowerBonus"></div><div id="artifactStatsSuffix"> XP</div><br>
+                                            <div class="artifactStatsSuffixBottom">to next power bonus</div>
                                         </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Gambit</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Gambit.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        <div id="artifactStatsSecondContainer">
+                                            <div class="containerMetricNumber" id="artifactXpToNextUnlock"></div><div id="artifactStatsSuffix"> XP</div><br>
+                                            <div class="artifactStatsSuffixBottom">to next artifact unlock</div>
                                         </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Strike</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Strike.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                    </div>
+                                    <div id="artifactStatsThirdMetricContainer">
+                                        <img id="artifactStatsArtifactImage" src="https://www.bungie.net/common/destiny2_content/icons/b1fe56d925a2ffc41d23e4c2ac5bdbb3.jpg">
+                                        <div id="artifactStatsArtifactBonus"></div>
+                                    </div>
+                                    <div id="artifactStatsNoArtifactIsPresent">No Artifact is present on this profile.</div>
+                                </div>
+                
+                
+                                <div id="seasonPass">
+                                    <div id="seasonPassBg"></div>
+                                    <div id="seasonPassContentContainer">
+                                        <div class="containerTitle">SEASON PASS</div>
+                                        <div id="seasonPassFirstContainer">
+                                            <div class="containerMetricNumber" id="seasonPassXpToNextRank"></div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to next rank</div>
                                         </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Nightfall</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Nightfall.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        <div id="seasonPassSecondContainer">
+                                            <div class="containerMetricNumber" id="seasonPassXpToMaxRank"></div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to rank 100</div>
                                         </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Crucible</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Crucible.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                    </div>
+                                    <div id="seasonPassThirdMetricContainer">
+                                        <div id="seasonPassRankLevel"></div>
+                                        <div id="seasonPassRankTitle">RANK</div>
+                                        <div id="seasonPassFireteamBonusContainer">
+                                            <div id="seasonPassFireteamBonus"></div><br><div id="seasonPassFireteamBonusSuffix">Shared<br>Wisdom</div>
                                         </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Mayhem</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Mayhem.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Control</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Control.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Breakthrough</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Breakthrough.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Countdown</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Countdown.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Elimination</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Elimination.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Doubles</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Doubles.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Supremacy</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Supremacy.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Rumble</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Rumble.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Survival</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Survival.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">IronBanner</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/IronBanner.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Dungeon</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Dungeon.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Story</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Story.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Trials</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Trials.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Explore</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Explore.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">DofE</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/DofE.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Raid</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Raid.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Clash</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Clash.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Momentum</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Momentum.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Scorched</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Scorched.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Lockdown</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Lockdown.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Showdown</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Showdown.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">EmpireHunt</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/EmpireHunt.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">Expedition</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/Expedition.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
-                                        </div>
-                                        <div class="propertySubContainer2">
-                                            <div class="propertyTextName">KetchCrash</div>
-                                            <img class="propertySecretIcon" src="./static/ico/hq-icons/KetchCrash.png">
-                                            <div class="weaponTypePercentageField" id="percentageArc">0%</div>
+                                        <div id="seasonPassXpBonusContainer">
+                                            <div id="seasonPassXpBonus"></div><br><div id="seasonPassXpBonusSuffix">Bonus XP</div>
                                         </div>
                                     </div>
                                 </div>
+                
+                
+                                <div id="brightEngram">
+                                    <div id="brightEngramBg"></div>
+                                    <div id="brightEngramContentContainer">
+                                        <div class="containerTitle">BRIGHT ENGRAMS</div>
+                                        <div id="brightEngramFirstContainer">
+                                            <div class="containerMetricNumber" id="XpToNextEngram"></div><div id="brightEngramSuffix"> XP</div><br><div id="brightEngramSuffixBottom">to next engram</div>
+                                        </div>
+                                        <div id="brightEngramSecondContainer">
+                                            <div class="containerMetricNumber" id="totalBrightEngramsEarned"></div><div id="brightEngramSuffix"> bright engrams earned</div>
+                                        </div>
+                                    </div>
+                                    <div id="brightEngranTooltip">Note: Engram statistics may be inaccurate</div>
+                                    <img id="brightEngramEngramImageLeft" src="./static/images/engram_outline.png">
+                                    <img id="brightEngramEngramImageMiddle" src="./static/images/engram_outline.png">
+                                    <img id="brightEngramEngramImageRight" src="./static/images/engram_outline.png">
+                                </div>
+                
                             </div>
+                
                         </div>
-        
-                        <div class="containerTitle">Bounties</div><br>
-                        <div class="subheadingFields" id="bountiesAmountField"></div><div id="bountiesFieldSubText">total  · </div>
-                        <div class="subheadingFields" id="completedBountiesAmountField"></div><div id="bountiesFieldSubText">completed  · </div>
-                        <div class="subheadingFields" id="expiredBountiesAmountField"></div><div id="bountiesFieldSubText">expired</div>
-                        <hr class="horizontalRuler">
-        
-                        <div id="filterContentContainer">
-                            <div id="filters"></div>
-                            <div class="filter" id="removeFiltersID">
-                                <div class="propName" style="color: orangered;">Clear Filters</div>
-                            </div>
-                        </div>
-                        <div id="btnHideFilters">Toggle Filters</div>
-                        <div id="noItemsTooltip"></div>
-                        <div id="bountyItems"></div>
-        
                     </div>
-                    <div id="seasonalChallengesContainer2">
-        
-                        <div class="containerTitle">Seasonal Challenges</div><br>
-                        <div class="subheadingFields" id="challengesAmountField"></div><div id="bountiesFieldSubText">total  · </div>
-                        <div class="subheadingFields" id="completedChallengesAmountField"></div><div id="bountiesFieldSubText">completed  · </div>
-                        <div class="subheadingFields" id="outstandingChallengesAmountField"></div><div id="bountiesFieldSubText">outstanding</div>
-                        <hr class="horizontalRuler">
-        
-                        <div id="seasonChallengeControlGridContainer">
-                            <div class="seasonalChallengePageArrow" id="previousSeasonalChallengePageButton">
-                                <img class="seasonalChallengePageArrowImage" id="previousSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
-                            </div>
-            
-                            <div id="seasonalChallengeItems"></div>
-                            
-                            <div class="seasonalChallengePageArrow" id="nextSeasonalChallengePageButton">
-                                <img class="seasonalChallengePageArrowImage" id="nextSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
-                            </div>
-                        </div>
-        
-                        <div class="levellingContainerTitle">Synergies</div>
-                        <div id="bountiesFieldSubText"> 🛠️ In (heavy) Development 🚧</div>
-                        <hr class="horizontalRuler">
-        
-                        <div id="synergiesContainer">
-        
-                            <div>
-                                <div class="elementalSubContainer">
-                                    <img class="elementalIcon" src="./static/ico/arc_icon.png">
-                                    <div class="elementalPercentageField" id="percentageArc">0%</div>
-                                </div>
-                                <div class="elementalSubContainer">
-                                    <img class="elementalIcon" src="./static/ico/solar_icon.png">
-                                    <div class="elementalPercentageField" id="percentageSolar">0%</div>
-                                </div>
-                                <div class="elementalSubContainer">
-                                    <img class="elementalIcon" src="./static/ico/void_icon.png">
-                                    <div class="elementalPercentageField" id="percentageVoid">0%</div>
-                                </div>
-                                <div class="elementalSubContainer">
-                                    <img class="elementalIcon" src="./static/ico/stasis_icon.png">
-                                    <div class="elementalPercentageField" id="percentageStasis">0%</div>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <div class="ammoSubContainer">
-                                    <img class="ammoIcon" src="./static/ico/primary_ammo_icon.svg">
-                                    <div class="ammoPercentageField" id="percentageKinetic">0%</div>
-                                </div>
-                                <div class="ammoSubContainer">
-                                    <img class="ammoIcon" src="./static/ico/special_ammo_icon.svg">
-                                    <div class="ammoPercentageField" id="percentageSpecial">0%</div>
-                                </div>
-                                <div class="ammoSubContainer">
-                                    <img class="ammoIcon" src="./static/ico/heavy_ammo_icon.svg">
-                                    <div class="ammoPercentageField" id="percentageHeavy">0%</div>
-                                </div>
-                            </div>
-        
-                        </div>
-        
-                    </div>
-                    <div id="statisticsContainer2">
-        
-                        <div class="levellingContainerTitle">Levelling Statistics</div>
-                        <div id="currentSeasonNameField">Season of Plunder</div>
-                        <hr class="horizontalRuler">
-            
-                        <div id="statsTableLayoutContainer">
-            
-                            <div id="artifactStats">
-                                <div id="artifactStatsBg"></div>
-                                <div id="artifactStatsContentContainer">
-                                    <div class="containerTitle">ARTIFACT STATS</div>
-                                    <div id="artifactStatsFirstContainer">
-                                        <div class="containerMetricNumber" id="artifactXpToNextPowerBonus"></div><div id="artifactStatsSuffix"> XP</div><br>
-                                        <div class="artifactStatsSuffixBottom">to next power bonus</div>
-                                    </div>
-                                    <div id="artifactStatsSecondContainer">
-                                        <div class="containerMetricNumber" id="artifactXpToNextUnlock"></div><div id="artifactStatsSuffix"> XP</div><br>
-                                        <div class="artifactStatsSuffixBottom">to next artifact unlock</div>
-                                    </div>
-                                </div>
-                                <div id="artifactStatsThirdMetricContainer">
-                                    <img id="artifactStatsArtifactImage" src="https://www.bungie.net/common/destiny2_content/icons/b1fe56d925a2ffc41d23e4c2ac5bdbb3.jpg">
-                                    <div id="artifactStatsArtifactBonus"></div>
-                                </div>
-                                <div id="artifactStatsNoArtifactIsPresent">No Artifact is present on this profile.</div>
-                            </div>
-            
-            
-                            <div id="seasonPass">
-                                <div id="seasonPassBg"></div>
-                                <div id="seasonPassContentContainer">
-                                    <div class="containerTitle">SEASON PASS</div>
-                                    <div id="seasonPassFirstContainer">
-                                        <div class="containerMetricNumber" id="seasonPassXpToNextRank"></div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to next rank</div>
-                                    </div>
-                                    <div id="seasonPassSecondContainer">
-                                        <div class="containerMetricNumber" id="seasonPassXpToMaxRank"></div><div id="seasonPassSuffix"> XP</div><br><div id="seasonPassSuffixBottom">to rank 100</div>
-                                    </div>
-                                </div>
-                                <div id="seasonPassThirdMetricContainer">
-                                    <div id="seasonPassRankLevel"></div>
-                                    <div id="seasonPassRankTitle">RANK</div>
-                                    <div id="seasonPassFireteamBonusContainer">
-                                        <div id="seasonPassFireteamBonus"></div><br><div id="seasonPassFireteamBonusSuffix">Shared<br>Wisdom</div>
-                                    </div>
-                                    <div id="seasonPassXpBonusContainer">
-                                        <div id="seasonPassXpBonus"></div><br><div id="seasonPassXpBonusSuffix">Bonus XP</div>
-                                    </div>
-                                </div>
-                            </div>
-            
-            
-                            <div id="brightEngram">
-                                <div id="brightEngramBg"></div>
-                                <div id="brightEngramContentContainer">
-                                    <div class="containerTitle">BRIGHT ENGRAMS</div>
-                                    <div id="brightEngramFirstContainer">
-                                        <div class="containerMetricNumber" id="XpToNextEngram"></div><div id="brightEngramSuffix"> XP</div><br><div id="brightEngramSuffixBottom">to next engram</div>
-                                    </div>
-                                    <div id="brightEngramSecondContainer">
-                                        <div class="containerMetricNumber" id="totalBrightEngramsEarned"></div><div id="brightEngramSuffix"> bright engrams earned</div>
-                                    </div>
-                                </div>
-                                <div id="brightEngranTooltip">Note: Engram statistics may be inaccurate</div>
-                                <img id="brightEngramEngramImageLeft" src="./static/images/engram_outline.png">
-                                <img id="brightEngramEngramImageMiddle" src="./static/images/engram_outline.png">
-                                <img id="brightEngramEngramImageRight" src="./static/images/engram_outline.png">
-                            </div>
-            
-                        </div>
-            
-                    </div>
+    
                 </div>
-
             </div>
         </div>
     </div>

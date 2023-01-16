@@ -185,6 +185,10 @@
         margin-top: -30px;
     }
 
+    #containerThatHasTheSideSelectionAndContentDisplay {
+        display: block;
+    }
+
     #bottomDivider {
         display: none;
     }

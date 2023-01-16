@@ -135,6 +135,9 @@ export async function AddEventListeners() {
 
     // Settings back button
     AddListener('settingsSubMenuBackButtonContainer', 'click', function () {
+
+        window.scrollTo(0, 0);
+        
         document.getElementById('settingsSubMenuContainer').style.display = 'none';
         document.getElementById('settingsContainerMobile').style.display = 'block';
     });
