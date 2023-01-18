@@ -286,8 +286,6 @@ export async function AddEventListeners() {
                 });
             }, 120_000);
 
-            document.getElementById('loadingIcon').style.display = 'none';
-            document.getElementById('loadingText').style.marginTop = '-65px';
             return;
         };
 

@@ -203,10 +203,6 @@
         display: none;
     }
 
-    #userMainContainer {
-        padding-bottom: 400px;
-    }
-
     #navBarContainer {
         display: none;
     }
@@ -233,6 +229,7 @@
         display: none;
         position: unset;
         padding: unset;
+        padding-bottom: 250px;
         margin: unset;
         margin-top: -20px;
         width: 90vw;

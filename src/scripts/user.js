@@ -41,7 +41,7 @@ const urlParams = new URLSearchParams(window.location.search),
     sessionStorage = window.sessionStorage,
     localStorage = window.localStorage,
     log = console.log.bind(console);
-var startTime = new Date();
+var startTime = new Date().getTime();
 
 
 // Defintion objects
@@ -121,8 +121,6 @@ export var accentColor = {
         // Update dom content
         document.getElementById('topColorBar').style.backgroundColor = color;
         document.getElementById('topColorBar').style.boxShadow = `0px 0px 10px 1px ${color}`;
-        // document.getElementsByClassName('subline')[0].style.background = color;
-        // document.getElementsByClassName('subline')[0].style.boxShadow = `0px 0px 10px 1px ${color}`;
         
         // Range sliders
         for (let element of document.getElementsByClassName('settingRange')) {
@@ -196,11 +194,10 @@ const registerDefinitionsServiceWorker = async function () {
 
 
 
-
 // Main OAuth flow mechanism
 export async function OAuthFlow() {
 
-    log('OAuthFlow START');
+    log('-> OAuthFlow Called');
 
     let rsToken = JSON.parse(localStorage.getItem('refreshToken')),
         acToken = JSON.parse(localStorage.getItem('accessToken')),
@@ -233,7 +230,7 @@ export async function OAuthFlow() {
     } catch (error) {
         console.error(error); // display error page, with error and options for user
     };
-    log(`-> OAuth Flow Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
+    log(`-> OAuth Flow Finished [Elapsed: ${new Date().getTime() - startTime}ms]`);
 };
 
 
@@ -256,8 +253,8 @@ export async function BungieOAuth (authCode) {
     // Authorize user and get credentials (first time sign-on (usually))
     await axios.post('https://www.bungie.net/platform/app/oauth/token', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
         .then(res => {
-            let data = res.data;
 
+            let data = res.data;
             log(res);
 
             components['membership_id'] = data['membership_id'];
@@ -276,7 +273,7 @@ export async function BungieOAuth (authCode) {
             localStorage.setItem('components', JSON.stringify(components));
             localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
 
-            log('-> Authorized with Bungie.net!');
+            log('-> Authorized with Bungie.net');
         })
         .catch(err => {
             if (err.response.data['error_description'] == 'AuthorizationCodeInvalid' || err.response.data['error_description'] == 'AuthorizationCodeStale') {
@@ -368,7 +365,7 @@ export async function CheckComponents () {
             });
         isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
     };
-    log('-> Tokens Validated!');
+    log(`-> Tokens Validated [${new Date().getTime() - startTime}ms]`);
 };
 
 
@@ -376,7 +373,7 @@ export async function CheckComponents () {
 // Fetch bungie user data
 export async function FetchBungieUserDetails() {
 
-    log('FetchBungieUserDetails START');
+    log('-> FetchBungieUserDetails Called');
 
     // Change load content
     // document.getElementById('loadingText').innerHTML = 'Fetching Profile Data';
@@ -462,9 +459,8 @@ export async function FetchBungieUserDetails() {
         // Change DOM content
         document.getElementById('charactersContainer').style.display = 'inline-block';
         document.getElementById('categories').style.display = 'block';
-        // document.getElementById('statsContainer').style.display = 'block';
     };
-    log('FetchBungieUserDetails END');
+    log(`-> FetchBungieUserDetails Finished [${new Date().getTime() - startTime}ms]`);
 };
 
 
@@ -475,8 +471,9 @@ export async function MainEntryPoint(isPassiveReload) {
 
     // Check for passive reload
     if (isPassiveReload) {
-        startTime = new Date();
+        startTime = new Date().getTime();
         StartLoad();
+        document.getElementById('loadBarContainer').style.display = 'block';
         log(`-> Passive Reload Started..`);
     };
 
@@ -511,15 +508,14 @@ export async function MainEntryPoint(isPassiveReload) {
     // Check for passive reload
     if (isPassiveReload) {
         StopLoad();
-        log(`-> Passive Reload Complete! [Elapsed: ${(new Date() - startTime)}ms]`);
-    }
-    else if (!isPassiveReload) {
-        // Don't add the event listeners again when passive reloading
-        await AddEventListeners();
+        document.getElementById('loadBarContainer').style.display = 'none';
+        log(`-> Passive Reload Finished [Elapsed: ${(new Date().getTime() - startTime)}ms]`);
+        return;
     };
 
-    // Log currently support vendors
-    console.table('Supported Vendors:', CurrentlyAddedVendors);
+    // Don't add the event listeners again when passive reloading
+    await AddEventListeners();
+    return;
 };
 
 

@@ -2,8 +2,8 @@
 const log = console.log.bind(console);
 
 self.addEventListener('message', function(event) {
+    
     var data = event.data;
-
     log(data);
 
     self.clients.matchAll().then(function(clients) {
@@ -11,5 +11,4 @@ self.addEventListener('message', function(event) {
             client.postMessage('balls');
         });
     });
-
 });
