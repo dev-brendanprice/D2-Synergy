@@ -171,27 +171,29 @@ allProgressionProperties = allProgressionProperties.map(property => parsePropert
 // Register service worker to load definitions (non blocking)
 const registerDefinitionsServiceWorker = async function () {
 
-    if ("serviceWorker" in navigator) {
-        try {
-            const swRegistration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+    // Check if service worker is supported
+    if ('serviceWorker' in navigator) {
+        const serviceWorker = await navigator.serviceWorker.register('./sw.js', { scope: './', type: 'module' });
 
-            log('Service worker installing');
-            if (swRegistration.waiting) {
-                log('Service worker installed');
-            }
-            else if (swRegistration.active) {
-
-                log('Service worker active');
-
-                // dev
-                swRegistration.active.postMessage('fubar');
-
-            };
-        } catch (error) {
-            console.error(`Service worker registration failed with ${error}`);
+        log('🥝 Installing Service Worker');
+        if (serviceWorker.active) {
+            log('🥝 Service Worker Active');
+    
+            serviceWorker.active.postMessage('🥝 HELLO FROM MAIN');
+    
+            // Listen for messages from service worker
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                log('🥝', event.data);
+            });
         };
+
+        return;
     };
+
+    // Else do conventional fetch
+    // -- something
 };
+
 
 
 
@@ -534,13 +536,16 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error(error);
     });
 
-    // Build definitions using service worker
-    registerDefinitionsServiceWorker();
-
     // Build workspace -- default fields etc.
     BuildWorkspace()
     .catch((error) => {
         console.error(error);
+    });
+
+    // Build definitions using service worker
+    registerDefinitionsServiceWorker()
+    .catch((error) => {
+        console.error(`🥝 Service Worker Error: ${error}`);
     });
 
     // Run main

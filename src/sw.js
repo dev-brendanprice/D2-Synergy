@@ -1,11 +1,15 @@
 
+const log = console.log.bind(console);
+
 self.addEventListener('message', function(event) {
     var data = event.data;
 
-    console.log("SW Received Message:");
-    console.log(data);
+    log(data);
 
-    self.userID = data.uid;
-    self.userToken = data.token;
+    self.clients.matchAll().then(function(clients) {
+        clients.forEach(function(client) {
+            client.postMessage('balls');
+        });
+    });
 
 });

@@ -285,8 +285,14 @@ export function StopLoad(passiveLoad) {
         return;
     };
 
-    document.getElementById('skeletonContainer').style.display = 'none';
-    document.getElementById('contentDisplay').style.display = 'block';
+    document.getElementById('skeletonLoadContainer').style.display = 'none';
+
+    // If mobile view (temp fix)
+    if (window.innerWidth <= 645) {
+        document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'block';
+        return;
+    };
+    document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'flex';
 };
 
 

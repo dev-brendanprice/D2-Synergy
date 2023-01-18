@@ -177,16 +177,26 @@
         overflow: hidden;
     }
 
+    #containerThatHasTheSideSelectionAndContentDisplay {
+        display: block;
+    }
+
     #settingsSubMenuContainer {
         overflow: unset;
     }
 
-    #contentDisplay {
-        margin-top: -30px;
+    #mobileCharacterSelect {
+        margin-bottom: -40px;
     }
 
-    #containerThatHasTheSideSelectionAndContentDisplay {
-        display: block;
+    #dropdownsContainer {
+        margin: 0 auto;
+        width: 90vw;
+    }
+
+    #contentDisplay {
+        margin-top: 15px;
+        padding-left: unset;
     }
 
     #bottomDivider {
@@ -234,7 +244,7 @@
         margin-top: -10px;
     }
 
-    #skeletonContainer {
+    #skeletonLoadContainer {
         margin-top: -30px;
         margin-left: 0px;
     }
