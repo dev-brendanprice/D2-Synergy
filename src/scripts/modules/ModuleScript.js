@@ -272,6 +272,8 @@ export function StartLoad(passiveLoad) {
         document.getElementById('loadBarContainer').style.display = 'flex';
         return;
     };
+
+    document.getElementById('skeletonLoadContainer').style.display = 'flex';
 };
 
 

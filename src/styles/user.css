@@ -236,7 +236,7 @@
 }
 
 .labelRangeContainer {
-    width: fit-content;
+    width: 90%;
     font-size: var(--fontSizeContent);
 }
 
@@ -311,7 +311,7 @@
 }
 
 .settingRange {
-    width: 330px;
+    width: 100%;
     flex-grow: 1;
     accent-color: #ff7070;
     cursor: pointer;
@@ -519,7 +519,7 @@
     transform: rotate(90deg);
 }
 
-#dropdownContainer > div {
+#dropdownContentContainer > div {
     display: flex;
     gap: 5px;
 }
@@ -743,6 +743,7 @@ hr.dropdownLine {
     border: none;
     border-radius: 5px;
     background-color: #64696d;
+    user-select: all;
 }
 
 hr.dropdownSubline {
@@ -753,6 +754,19 @@ hr.dropdownSubline {
     border: none;
     border-radius: 5px;
     background-color: #64696d;
+}
+
+.dropdownContainer {
+    display: flex;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.modifierCheckmarkIcon {
+    width: 13px;
+    filter: invert(100%) brightness(50%);
 }
 
 .challengeDescription {

@@ -178,7 +178,7 @@
     }
 
     #containerThatHasTheSideSelectionAndContentDisplay {
-        display: block;
+        display: none;
     }
 
     #settingsSubMenuContainer {
@@ -187,6 +187,10 @@
 
     #mobileCharacterSelect {
         margin-bottom: -40px;
+    }
+
+    .dropdownContainer {
+        gap: 15px;
     }
 
     #dropdownsContainer {
@@ -252,7 +256,8 @@
 
     #settingsFooterVersionContainer {
         margin: auto;
-        bottom: 70px;
+        bottom: 90px;
+        color: rgba(81, 81, 81, 0.3);
         left: 0;
         right: 0;
     }

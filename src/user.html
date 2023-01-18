@@ -166,9 +166,9 @@
                         <h2>Font Size</h2>
                         <label class="labelRangeContainer">
                             <input type="range" id="accessibilityFontSizeSlider" class="settingRange" min="0" max="2" value="0">
-                            <div style="display: flex;gap: 280px;">
-                                <div style="margin-top: 4px;">Aa</div>
-                                <div style="font-size: 22px;">Aa</div>
+                            <div>
+                                <div style="margin-top: 4px;float: left;">Aa</div>
+                                <div style="font-size: 22px;float: right;">Aa</div>
                             </div>
                         </label>
                         <div class="settingsResetUIButton" id="accessibilityFontSizeReset">Reset</div>
@@ -178,9 +178,9 @@
                         <h2>Item Size</h2>
                         <label class="labelRangeContainer">
                             <input type="range" id="accessibilityImageSizeSlider" class="settingRange" min="45" max="65" value="55">
-                            <div style="display: flex;gap: 260px;">
-                                <div style="margin-top: 4px;">45px</div>
-                                <div style="margin-top: 4px;">65px</div>
+                            <div>
+                                <div style="margin-top: 4px;float: left;">45px</div>
+                                <div style="margin-top: 4px;float: right;">65px</div>
                             </div>
                         </label>
                         <div style="margin-top: 20px;">
@@ -373,13 +373,13 @@
                     <div id="dropdownsContainer">
 
                         <div>
-                            <div id="dropdownYield" style="display: flex;gap: 8px;cursor: pointer;padding-top: 5px;padding-bottom: 5px;">
+                            <div id="dropdownYield" class="dropdownContainer">
                                 <div style="color: gray;font-size: 14px;">Yield</div>
                                 <hr class="dropdownLine">
                                 <img src="./static/ico/arrow_down.svg" class="dropdownArrow" id="arrowYield">
                             </div>
                             <div id="yieldDropdownContainer">
-                                <div id="dropdownContainer">
+                                <div id="dropdownContentContainer">
                                     <div style="margin-bottom: 10px;padding-top: 10px;">
                                         <div>Raw XP:</div>
                                         <div style="color: rgb(150, 192, 192);" id="rawXpYieldField">000,000,000</div>
@@ -413,23 +413,23 @@
                         </div>
 
                         <div>
-                            <div id="dropdownModifiers" style="display: flex;gap: 8px;cursor: pointer;padding-top: 5px;padding-bottom: 5px;">
+                            <div id="dropdownModifiers" class="dropdownContainer">
                                 <div style="color: gray;font-size: 14px;">Modifiers</div>
                                 <hr class="dropdownLine">
                                 <img src="./static/ico/arrow_down.svg" class="dropdownArrow" id="arrowModifiers">
                             </div>
                             <div id="modifiersDropdownContainer">
-                                <div id="dropdownContainer">
+                                <div id="dropdownContentContainer">
                                     <div style="padding-top: 10px;">
-                                        <img src="./static/ico/checkmark.svg" style="width: 13px;filter: invert(100%) brightness(50%)">
+                                        <img class="modifierCheckmarkIcon" id="sharedWisdomCheckmarkIcon" src="./static/ico/checkmark.svg">
                                         <div>Shared Wisdom</div>
                                     </div>
                                     <div>
-                                        <img src="./static/ico/checkmark.svg" style="width: 13px;filter: invert(100%) brightness(50%)">
+                                        <img class="modifierCheckmarkIcon" id="wellRestedCheckmarkIcon" src="./static/ico/checkmark.svg">
                                         <div>Well Rested</div>
                                     </div>
                                     <div>
-                                        <img src="./static/ico/checkmark.svg" style="width: 13px;filter: invert(100%) brightness(50%)">
+                                        <img class="modifierCheckmarkIcon" id="ghostModsCheckmarkIcon" src="./static/ico/checkmark.svg">
                                         <div>Ghost Mods</div>
                                     </div>
                                 </div>
