@@ -196,11 +196,11 @@ export async function AddEventListeners() {
 
     // Title button (secret setting activation)
     AddListener('navBarTitle', 'click', function () {
-        secretCount++;
-        if (secretCount >= 7) {
-            document.getElementById('settingsSecretContainer').style.display = 'block';
-            CacheAuditItem('isSecretOn', true);
-        };
+        // secretCount++;
+        // if (secretCount >= 7) {
+        //     document.getElementById('settingsSecretContainer').style.display = 'block';
+        //     CacheAuditItem('isSecretOn', true);
+        // };
     });
 
 
@@ -462,6 +462,35 @@ export async function AddEventListeners() {
             arrow = document.getElementById('arrowModifiers');
 
         AddDropdownEvent(dropdownContent, arrow, dropdownBoolean);
+    });
+
+    let currentlyShowingChunkIndex = 0;
+    // Show next chunk of seasonal challenges
+    AddListener('nextSeasonalChallengePageButton', 'click', function () {
+
+        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
+        if (currentlyShowingChunkIndex === 12) {
+            currentlyShowingChunkIndex = 0;
+        }
+        else {
+            currentlyShowingChunkIndex++;
+        };
+        log(`currentlyShowingChunkIndex: ${currentlyShowingChunkIndex}`);
+        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
+    });
+
+    // Show previous chunk of seasonal challenges
+    AddListener('previousSeasonalChallengePageButton', 'click', function () {
+
+        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
+        if (currentlyShowingChunkIndex === 0) {
+            currentlyShowingChunkIndex = 12;
+        }
+        else {
+            currentlyShowingChunkIndex--;
+        };
+        log(`currentlyShowingChunkIndex: ${currentlyShowingChunkIndex}`);
+        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
     });
 
 };

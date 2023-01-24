@@ -724,7 +724,7 @@ tr:nth-child(even) {
 }
 
 #seasonalChallengesContainer, #statisticsContainer {
-    padding-top: 20px;
+    display: none;
 }
 
 #seasonChallengeControlGridContainer {
@@ -757,6 +757,10 @@ tr:nth-child(even) {
     transform: rotate(-90deg);
 }
 
+#contentDisplayGridLayout {
+    display: flex;gap: 3px;
+}
+
 .chunkPage {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -770,8 +774,8 @@ tr:nth-child(even) {
 
 .contentDisplaySegment {
     padding: 15px;
-    height: 95vh;
-    width: 100%;
+    height: 90vh;
+    width: 95vw;
     border: solid 1px rgb(50, 50, 50);
     background-color: #3e4148;
     border-radius: 8px;

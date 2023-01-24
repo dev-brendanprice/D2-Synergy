@@ -144,6 +144,8 @@ export async function MakeBountyElement(param) {
     itemOverlay.className = `itemContainer`;
     itemOverlay.id = `item_${param.hash}`;
     itemOverlay.style.display = 'none';
+    itemOverlay.style.zIndex = '99';
+    itemOverlay.style.pointerEvents = 'none';
     document.querySelector('#overlays').appendChild(itemOverlay);
 
     // Prop content of item
@@ -251,8 +253,9 @@ export async function MakeBountyElement(param) {
     document.querySelector(`#bountyItems`).append(itemStatus);
 
     // Watch for mouse events
-    item.addEventListener('mousemove', (e) => {
-        itemOverlay.style.display = 'inline-block';
+    item.addEventListener('mousemove', function (e) {
+        itemOverlay.style.position = 'absolute';
+        itemOverlay.style.display = 'block';
         itemOverlay.style.left = `${e.pageX}px`;
         itemOverlay.style.top = `${e.pageY}px`;
     });
@@ -1513,7 +1516,7 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
     const totalXpBonusPercent = ((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) / 100) + 1; // Format to 1.x
     AddValueToElementInner('totalNetXpField', InsertSeperators(totalXpYield * totalXpBonusPercent));
 
-    const filterToMakeCheckmarkGreen = 'filter: invert(70%) sepia(96%) saturate(4644%) hue-rotate(84deg) brightness(126%) contrast(117%);';
+    const filterToMakeCheckmarkGreen = 'invert(70%) sepia(96%) saturate(4644%) hue-rotate(84deg) brightness(126%) contrast(117%)';
     // Check if ghost mods are slotted, turn off checkmark if not
     if (ghostModBonusXp) {
         document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;

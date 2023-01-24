@@ -15,6 +15,13 @@
     }
 }
 
+@media screen and (max-width: 1500px) {
+    .chunkPage {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 10px;
+    }
+}
+
 @media screen and (max-width: 1320px) {
     #skeletonCellLeft {
         width: 15vw;
@@ -43,10 +50,22 @@
     }
 }
 
-
 @media screen and (max-width: 1090px) {
     #characterDisplay {
         width: 55%;
+    }
+}
+
+@media screen and (max-width: 1070px) {
+    #contentDisplayGridLayout {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .contentDisplaySegment {
+        width: unset;
+        height: unset;
     }
 }
 
@@ -179,6 +198,15 @@
 
     #containerThatHasTheSideSelectionAndContentDisplay {
         display: none;
+    }
+    
+    #contentDisplayGridLayout {
+        margin-top: 10px;
+        margin-bottom: 100px;
+    }
+
+    hr.dropdownSubline {
+        margin-left: 5px;
     }
 
     #settingsSubMenuContainer {
