@@ -757,7 +757,7 @@ export async function LoadPrimaryCharacter(characters) {
     .then(async (data) => {
         if (!data) {
             CacheAuditItem('lastChar', characters[Object.keys(characters)[0]].classType);
-            await LoadCharacter(characters[Object.keys(characters)[0]].classType, characters);
+            await LoadCharacter(1, characters);
         }
         else {
             await LoadCharacter(data, characters);
@@ -816,7 +816,7 @@ export async function CacheReturnItem(key) {
 
 // Adds something to the targets' innerHTML
 // @string {target}, @string {content}
-export function AddNumberToElementInner(target, content) {
+export function AddValueToElementInner(target, content) {
 
     // Change target innerHTML
     document.getElementById(`${target}`).innerHTML = content;
@@ -1242,7 +1242,7 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
     };
 
 
-    // Create HTML elements for all challenges
+    // Create HTML elements for seasonal challenges
     for (const challengeHash in allSeasonalChallenges) {
 
         // Create HTML element for challenge
@@ -1447,26 +1447,22 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
     let totalXpYield = CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields);
 
     // Push subheading statistics
-    AddNumberToElementInner('expiredBountiesAmountField', amountOfExpiredBounties);
-    AddNumberToElementInner('completedBountiesAmountField', amountOfCompletedBounties);
+    AddValueToElementInner('bountiesExpiredField', amountOfExpiredBounties);
+    AddValueToElementInner('bountiesCompletedField', amountOfCompletedBounties);
 
     // Check if there are no bounties
     if (amountOfBounties === 0) {
 
         // Toggle no items tooltip
-        document.getElementById('noItemsTooltip').innerHTML = `You don't have bounties on this character. How dare you. (-(-_(-_-)_-)-)`;
+        document.getElementById('noItemsTooltip').innerHTML = `You don't have bounties on this character. How dare you.`;
         document.getElementById('noItemsTooltip').style.display = 'inline-block';
 
-        // Hide filters content
-        document.getElementById('btnHideFilters').style.display = 'none';
-        document.getElementById('filterContentContainer').style.display = 'none';
-
         // Make potential yeild stats 0 by default
-        AddNumberToElementInner('totalXpField', 0);
-        AddNumberToElementInner('totalSpLevelsField', 0);
+        AddValueToElementInner('totalXpField', 0);
+        AddValueToElementInner('totalSpLevelsField', 0);
 
         // Change subheading field to show amount of bounties
-        AddNumberToElementInner('bountiesAmountField', 0);
+        AddValueToElementInner('bountiesAmountField', 0);
     }
     else if (amountOfBounties > 0) {
 
@@ -1481,11 +1477,11 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
         };
 
         // Change subheading field to show amount of bounties
-        AddNumberToElementInner('bountiesAmountField', `${amountOfBounties}`);
+        AddValueToElementInner('bountiesTotalField', amountOfBounties);
 
         // Change potential yield stats since there are bounties present
-        AddNumberToElementInner('totalXpField', InsertSeperators(totalXpYield));
-        AddNumberToElementInner('totalSpLevelsField', totalXpYield / 100000);
+        AddValueToElementInner('totalXpField', InsertSeperators(totalXpYield));
+        AddValueToElementInner('totalSpLevelsField', totalXpYield / 100000);
     };
 
     // Load synergyDefinitions and match against bounties, if characterBounties is not empty
@@ -1502,48 +1498,34 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
     const seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack);
 
     // Season Pass innerHTML changes
-    AddNumberToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonPassProgressionStats.progressToNextLevel));
-    AddNumberToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonPassProgressionStats.xpToMaxSeasonPassRank));
-    AddNumberToElementInner('seasonPassFireteamBonus', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
-    AddNumberToElementInner('seasonPassRankLevel', seasonPassProgressionStats.seasonPassLevel);
-    AddNumberToElementInner('seasonPassXpBonus', `${seasonPassProgressionStats.bonusXpValue}%`); // +12 for bonus large xp modifier
+    AddValueToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonPassProgressionStats.progressToNextLevel));
+    AddValueToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonPassProgressionStats.xpToMaxSeasonPassRank));
+    AddValueToElementInner('seasonPassFireteamBonus', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
+    AddValueToElementInner('seasonPassRankLevel', seasonPassProgressionStats.seasonPassLevel);
+    AddValueToElementInner('seasonPassXpBonus', `${seasonPassProgressionStats.bonusXpValue}%`); // +12 for bonus large xp modifier
 
     // Pass in stats for the net breakdown section
-    AddNumberToElementInner('sharedWisdomValue', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
-    AddNumberToElementInner('ghostModValue', `${ghostModBonusXp}%`);
-    AddNumberToElementInner('bonusXpValue', `${seasonPassProgressionStats.bonusXpValue}%`);
+    AddValueToElementInner('sharedWisdomValue', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
+    AddValueToElementInner('ghostModValue', `${ghostModBonusXp}%`);
+    AddValueToElementInner('bonusXpValue', `${seasonPassProgressionStats.bonusXpValue}%`);
 
     // Add all the modifiers together, append 1 and times that value by the base total XP
     const totalXpBonusPercent = ((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) / 100) + 1; // Format to 1.x
-    AddNumberToElementInner('totalNetXpField', `${InsertSeperators(totalXpYield * totalXpBonusPercent)}`);
+    AddValueToElementInner('totalNetXpField', InsertSeperators(totalXpYield * totalXpBonusPercent));
 
+    const filterToMakeCheckmarkGreen = 'filter: invert(70%) sepia(96%) saturate(4644%) hue-rotate(84deg) brightness(126%) contrast(117%);';
     // Check if ghost mods are slotted, turn off checkmark if not
-    if (!ghostModBonusXp) {
-        document.getElementById('ghostModCheckmark').style.display = 'none';
-        document.getElementById('ghostModCross').style.display = 'inline-block';
-    }
-    else {
-        document.getElementById('ghostModCheckmark').style.display = 'inline-block';
-        document.getElementById('ghostModCross').style.display = 'none';
+    if (ghostModBonusXp) {
+        document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
     };
 
     // Check if shared wisdom is not equal to 0, turn off checkmark if not
-    if (!seasonPassProgressionStats.sharedWisdomBonusValue) {
-        document.getElementById('sharedWisdomCheckmark').style.display = 'none';
-        document.getElementById('sharedWisdomCross').style.display = 'inline-block';
-    }
-    else {
-        document.getElementById('sharedWisdomCheckmark').style.display = 'inline-block';
-        document.getElementById('sharedWisdomCross').style.display = 'none';
+    if (seasonPassProgressionStats.sharedWisdomBonusValue) {
+        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
     };
 
     // Check if bonus xp is not equal to 0, turn off checkmark if not
-    if (!seasonPassProgressionStats.bonusXpValue) {
-        document.getElementById('bonusXpCheckmark').style.display = 'none';
-        document.getElementById('bonusXpCross').style.display = 'inline-block';
-    }
-    else {
-        document.getElementById('bonusXpCheckmark').style.display = 'inline-block';
-        document.getElementById('bonusXpCross').style.display = 'none';
+    if (seasonPassProgressionStats.bonusXpValue) {
+        document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
     };
 };

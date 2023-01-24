@@ -302,6 +302,32 @@
     flex-direction: column;
 }
 
+#myTable {
+    width: 100%;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+}
+
+td, th {
+    text-align: left;
+    padding: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+th {
+    padding-bottom: 12px;
+}
+
+tr {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.468);
+}
+
+tr:nth-child(even) {
+    background-color: #6060606e;
+}
+
+
 .settingsAccentColorButton {
     height: 20px;
     width: 50px;
@@ -324,6 +350,10 @@
 
 .checkboxLabel {
     margin-top: 2px;
+}
+
+.dropdownNumber {
+    color: rgb(190, 255, 255);
 }
 
 #bottomMiddleNavBarItems {
@@ -449,7 +479,7 @@
     display: flex;
     gap: 10px;
     font-size: 14px;
-    color: rgb(106, 106, 106);
+    color: rgb(200, 200, 200);
 }
 
 #contentDisplay {
@@ -513,6 +543,36 @@
     filter: brightness(80%);
 }
 
+#dev {
+    display: flex;
+    margin-top: 15px;
+    padding: 0px 0px;
+    text-align: center;
+    height: 30px;
+    width: 100%;
+    background-color: black;
+    overflow-x: hidden;
+    background-image: url("../static/images/emblem2.jpg");
+    background-position: center;
+    background-size: contain;
+    color: white;
+}
+
+#dev2 {
+    display: flex;
+    margin-top: 5px;
+    padding: 0px 0px;
+    text-align: center;
+    height: 30px;
+    width: 100%;
+    background-color: black;
+    overflow-x: hidden;
+    background-image: url("../static/images/emblem3.jpg");
+    background-position: center;
+    background-size: contain;
+    color: white;
+}
+
 .dropdownArrow {
     width: 12px;
     filter: invert(100%) brightness(50%);
@@ -522,6 +582,10 @@
 #dropdownContentContainer > div {
     display: flex;
     gap: 5px;
+}
+
+#dropdownsContainer {
+    margin-top: -10px;
 }
 
 #yieldDropdownContainer {
@@ -567,10 +631,8 @@
 }
 
 #characterInfoContainer {
-    display: flex;
     margin-top: -60px;
     margin-left: 30px;
-    gap: 98%;
 }
 
 #characterSubInfoContainer {
@@ -653,8 +715,8 @@
     margin-left: 5px;
 }
 
-#bountiesContainer, #seasonalChallengesContainer, #statisticsContainer {
-    display: none;
+#seasonalChallengesContainer, #statisticsContainer {
+    padding-top: 20px;
 }
 
 #seasonChallengeControlGridContainer {
@@ -662,19 +724,19 @@
     width: 100%;
 }
 
-.seasonalChallengePageArrow {
-    display: inline-block;
-    padding: 3px;
-    padding-top: 8px;
+.seasonalChallengePageButton {
+    display: flex;
+    align-items: center;
+    padding-left: 3px;
+    padding-right: 3px;
     border: 1px solid #8C8C8C;
     border-radius: 2px;
     background-color: rgba(60, 60, 60, 0.461);
     cursor: pointer;
-    text-align: center;
 }
 
-.seasonalChallengePageArrowImage {
-    margin-top: 90px; 
+.seasonalChallengeButtonIcon {
+    /* margin-top: 90px; */
     width: 20px; 
     filter: invert(100%);
 }
@@ -687,28 +749,28 @@
     transform: rotate(-90deg);
 }
 
-#previousSeasonalChallengePageButton {
-    margin-right: 10px;
-}
-
-#nextSeasonalChallengePageButton {
-    margin-left: 10px;
-}
-
 .chunkPage {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
 }
 
 .challengeContainer {
-    width: 100%;
     border: 1px solid #8C8C8C;
-    border-radius: 2px;
     background-color: rgba(60, 60, 60, 0.461);
-    color: white;
     font-family: var(--SegoeUIFont);
+}
+
+.contentDisplaySegment {
+    padding: 15px;
+    height: 95vh;
+    width: 100%;
+    border: solid 1px rgb(50, 50, 50);
+    background-color: #3e4148;
+    border-radius: 8px;
+}
+
+.bountyIcon {
+    width: 55px;
 }
 
 .challengeIcon {
@@ -717,18 +779,22 @@
 }
 
 .challengeName {
-    position: absolute;
     margin-top: -45px;
     margin-left: 55px;
     text-transform: uppercase;
     font-weight: 600;
     font-size: 18px;
+    width: 275px;
     letter-spacing: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 hr.challengeBreakline {
     padding: none;
     margin: auto;
+    margin-top: 15px;
     width: 95%;
     height: 1px;
     border: none;

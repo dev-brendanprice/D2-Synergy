@@ -1,7 +1,7 @@
 import { 
     CacheAuditItem, 
     ReturnSeasonPassLevel,
-    AddNumberToElementInner,
+    AddValueToElementInner,
     InsertSeperators,
     GetProgressionalItems,
     StopLoad } from './ModuleScript';
@@ -150,7 +150,7 @@ export async function LoadCharacter(classType, characters) {
 
 
         // Push subheading statistics
-        AddNumberToElementInner('currentSeasonNameField', seasonPassInfo.displayProperties.name);
+        AddValueToElementInner('currentSeasonNameField', seasonPassInfo.displayProperties.name);
 
         // Get artifact info -- check if profile has artifact
         let artifact;
@@ -161,14 +161,14 @@ export async function LoadCharacter(classType, characters) {
             artifact = ProfileProgressions.seasonalArtifact;
 
             if (artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel !== 0) {
-                AddNumberToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
+                AddValueToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
             }
             else {
                 document.getElementById('artifactStatsSecondContainer').style.display = 'none';
             };
 
-            AddNumberToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
-            AddNumberToElementInner('artifactXpToNextPowerBonus', InsertSeperators(artifact.powerBonusProgression.nextLevelAt - artifact.powerBonusProgression.progressToNextLevel));
+            AddValueToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
+            AddValueToElementInner('artifactXpToNextPowerBonus', InsertSeperators(artifact.powerBonusProgression.nextLevelAt - artifact.powerBonusProgression.progressToNextLevel));
         }
         else if (!ProfileProgressions.seasonalArtifact) {
 

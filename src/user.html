@@ -342,7 +342,7 @@
                     <div id="characterSelectContainer">
     
                         <div id="mobileCharacterSelect">
-                            <img id="mobileCharacterEmblem" src="static/images/demo.jpg">
+                            <img id="mobileCharacterEmblem" src="static/images/emblem1.jpg">
                             <div id="mobileCharacterInfoContainer">
                                 <div id="mobileCharacterSubInfoContainer">
                                     <div id="mobileCharacterTypeField">Warlock</div>
@@ -356,16 +356,29 @@
                         </div>
         
                         <div id="defaultCharacterSelect">
-                            <img id="characterEmblem" src="static/images/demo.jpg">
-                            <div id="characterInfoContainer">
-                                <div id="characterSubInfoContainer">
-                                    <div id="characterTypeField">Warlock</div>
-                                    <div style="display: flex;gap: 3px;">
-                                        <img src="static/ico/power.svg" style="width: 13px;padding: 0;">
-                                        <div id="characterPowerLevelField">9999</div>
+                            <div>
+                                <img id="characterEmblem" src="static/images/emblem1.jpg">
+                                <div id="characterInfoContainer">
+                                    <div id="characterSubInfoContainer">
+                                        <div id="characterTypeField">Warlock</div>
+                                        <div style="display: flex;gap: 3px;">
+                                            <img src="static/ico/power.svg" style="width: 13px;padding: 0;">
+                                            <div id="characterPowerLevelField">9999</div>
+                                        </div>
                                     </div>
                                 </div>
-                                <img src="static/ico/arrow_down.svg" style="margin-top: 16px;margin-left: -110px;width: 16px;filter: invert(100%);">
+                            </div>
+                            <div id="dev">
+                                <img src="./static/images/1e2245842aa33a77fcbaeaa874e35f2a.png" style="margin-left: 5px;width:30px;filter: drop-shadow(5px 5px 10px #222);">
+                                <div style="margin-top: 3px;margin-left: 5px;font-size: 20px;">Titan</div>
+                                <img src="static/ico/power.svg" style="margin-left: 5px;width: 13px;padding: 0;">
+                                <div style="margin-top: 5px;margin-left: 5px;font-size: 17px;color: yellow;">9999</div>
+                            </div>
+                            <div id="dev2">
+                                <img src="./static/images/9fb5b76d329c851ea48c2a82abba7b44.png" style="margin-left: 5px;width:30px;filter: drop-shadow(5px 5px 10px #222);">
+                                <div style="margin-top: 3px;margin-left: 5px;font-size: 20px;">Hunter</div>
+                                <img src="static/ico/power.svg" style="margin-left: 5px;width: 13px;padding: 0;">
+                                <div style="margin-top: 5px;margin-left: 5px;font-size: 17px;color: yellow;">9999</div>
                             </div>
                         </div>
                     </div>
@@ -382,15 +395,15 @@
                                 <div id="dropdownContentContainer">
                                     <div style="margin-bottom: 10px;padding-top: 10px;">
                                         <div>Raw XP:</div>
-                                        <div style="color: rgb(150, 192, 192);" id="rawXpYieldField">000,000,000</div>
+                                        <div class="dropdownNumber"  id="rawXpYieldField">000,000,000</div>
                                     </div>
                                     <div>
                                         <div>Artifact Levels:</div>
-                                        <div style="color: rgb(150, 192, 192);" id="artifactLevelsField">0000</div>
+                                        <div class="dropdownNumber"  id="artifactLevelsField">0000</div>
                                     </div>
                                     <div>
                                         <div>Season Pass Levels:</div>
-                                        <div style="color: rgb(150, 192, 192);" id="SeasonPassLevelsField">000</div>
+                                        <div class="dropdownNumber" id="SeasonPassLevelsField">000</div>
                                     </div>
                                     <div style="display: flex;gap: 5px;font-size: 12px;padding-top: 25px;padding-bottom: 10px;word-wrap: normal;">
                                         <div>With Buffs</div>
@@ -398,15 +411,15 @@
                                     </div>
                                     <div style="margin-bottom: 10px;padding-top: 10px;">
                                         <div>XP:</div>
-                                        <div style="color: rgb(150, 192, 192);" id="rawXpYieldWithModField">000,000,000</div>
+                                        <div class="dropdownNumber"  id="rawXpYieldWithModField">000,000,000</div>
                                     </div>
                                     <div>
                                         <div>Artifact Levels:</div>
-                                        <div style="color: rgb(150, 192, 192);" id="artifactLevelsWithModField">0000</div>
+                                        <div class="dropdownNumber"  id="artifactLevelsWithModField">0000</div>
                                     </div>
                                     <div>
                                         <div>Season Pass Levels:</div>
-                                        <div style="color: rgb(150, 192, 192);" id="SeasonPassLevelsWithModField">000</div>
+                                        <div class="dropdownNumber"  id="SeasonPassLevelsWithModField">000</div>
                                     </div>
                                 </div>
                             </div>
@@ -420,13 +433,13 @@
                             </div>
                             <div id="modifiersDropdownContainer">
                                 <div id="dropdownContentContainer">
-                                    <div style="padding-top: 10px;">
-                                        <img class="modifierCheckmarkIcon" id="sharedWisdomCheckmarkIcon" src="./static/ico/checkmark.svg">
-                                        <div>Shared Wisdom</div>
+                                    <div style="margin-top: 10px;">
+                                        <img class="modifierCheckmarkIcon" id="seasonPassBonusCheckmarkIcon" src="./static/ico/checkmark.svg">
+                                        <div>Season Pass Bonus</div>
                                     </div>
                                     <div>
-                                        <img class="modifierCheckmarkIcon" id="wellRestedCheckmarkIcon" src="./static/ico/checkmark.svg">
-                                        <div>Well Rested</div>
+                                        <img class="modifierCheckmarkIcon" id="sharedWisdomCheckmarkIcon" src="./static/ico/checkmark.svg">
+                                        <div>Shared Wisdom</div>
                                     </div>
                                     <div>
                                         <img class="modifierCheckmarkIcon" id="ghostModsCheckmarkIcon" src="./static/ico/checkmark.svg">
@@ -441,28 +454,81 @@
     
                 <div id="contentDisplay">
     
-                    <div id="bountiesContainer">
-                        <div class="contentHeading">Bounties</div>
-                        <div id="contentSubHeadingContainer">
-                            <div style="display: flex;gap: 5px;">
-                                <div>18</div>
-                                <div>Bounties</div>
+                    <div style="display: flex;gap: 3px;">
+                        <div class="contentDisplaySegment">
+                            <table id="myTable">
+                                <tr>
+                                    <th>Relation</th>
+                                    <th>Item</th>
+                                    <th>Category</th>
+                                    <th>Key Words</th>
+                                </tr>
+                                <tr>
+                                    <td style="color: rgb(87, 194, 87);">80%</td>
+                                    <td>Auto Rifle</td>
+                                    <td>ItemType</td>
+                                    <td>ItemType</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: rgb(218, 64, 64);">50%</td>
+                                    <td>Dares of Eternity</td>
+                                    <td>ActivityMode</td>
+                                    <td>ItemType</td>
+                                </tr>
+                                <tr>
+                                    <td>Left</td>
+                                    <td>Middle</td>
+                                    <td>Right</td>
+                                    <td>ItemType</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="contentDisplaySegment">
+                            <div id="bountiesContainer">
+                                <div class="contentHeading">Bounties</div>
+                                <div id="contentSubHeadingContainer">
+                                    <div style="display: flex;gap: 5px;">
+                                        <div id="bountiesTotalField">18</div>
+                                        <div>Bounties</div>
+                                    </div>
+                                    <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
+                                    <div style="display: flex;gap: 5px;">
+                                        <div id="bountiesCompletedField">4</div>
+                                        <div>Completed</div>
+                                    </div>
+                                    <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
+                                    <div style="display: flex;gap: 5px;">
+                                        <div id="bountiesExpiredField">4</div>
+                                        <div>Expired</div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px;" id="bountyItems"></div>
                             </div>
-                            <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
-                            <div style="display: flex;gap: 5px;">
-                                <div>4</div>
-                                <div>Completed</div>
+                            <div id="seasonalChallengesContainer">
+                                <div class="contentHeading">Seasonal Challenges</div>
+
+                                <div style="display: flex;gap: 10px;margin-top: 15px;">
+                                    <div class="seasonalChallengePageButton" id="previousSeasonalChallengePageButton">
+                                        <img class="seasonalChallengeButtonIcon" id="previousSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
+                                    </div>
+    
+                                    <div id="seasonalChallengeItems"></div>
+                                    
+                                    <div class="seasonalChallengePageButton" id="nextSeasonalChallengePageButton">
+                                        <img class="seasonalChallengeButtonIcon" id="nextSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div id="statisticsContainer">
+                                <div class="contentHeading">Statistics</div>
                             </div>
                         </div>
-                    </div>
-                    <div id="seasonalChallengesContainer">
-                        <div class="contentHeading">Seasonal Challenges</div>
-                    </div>
-                    <div id="statisticsContainer">
-                        <div class="contentHeading">Statistics</div>
+
                     </div>
 
-                    <!-- Old Content Displays (Deprecated and marked for deletion) -->
+                    <!-- Old Content Displays (Deprecated) -->
                     <div style="display: none !important;">
                         <div id="bountiesContainer2">
 
@@ -872,14 +938,14 @@
                             <hr class="horizontalRuler">
 
                             <div id="seasonChallengeControlGridContainer">
-                                <div class="seasonalChallengePageArrow" id="previousSeasonalChallengePageButton">
-                                    <img class="seasonalChallengePageArrowImage" id="previousSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
+                                <div class="seasonalChallengePageButton" id="previousSeasonalChallengePageButton">
+                                    <img class="seasonalChallengeButtonIcon" id="previousSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
                                 </div>
 
-                                <div id="seasonalChallengeItems"></div>
+                                <!-- <div id="seasonalChallengeItems"></div> -->
                                 
-                                <div class="seasonalChallengePageArrow" id="nextSeasonalChallengePageButton">
-                                    <img class="seasonalChallengePageArrowImage" id="nextSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
+                                <div class="seasonalChallengePageButton" id="nextSeasonalChallengePageButton">
+                                    <img class="seasonalChallengeButtonIcon" id="nextSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
                                 </div>
                             </div>
 

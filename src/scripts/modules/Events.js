@@ -470,6 +470,14 @@ export async function AddEventListeners() {
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
 
+    // dev
+    const row = document.getElementById('myTable').insertRow(-1);
+    row.insertCell(0).innerHTML = '1';
+    row.insertCell(1).innerHTML = '2';
+    row.insertCell(2).innerHTML = '3';
+    row.insertCell(3).innerHTML = '4';
+
+
     let rangeSlider = document.getElementById('accessibilityImageSizeSlider'),
         bountyImage = document.getElementById('accessibilityImageDemo');
 
@@ -531,20 +539,38 @@ export async function BuildWorkspace() {
         log(result);
         
         // Filter out the content view that is not the default or the saved one
-        containerNames.forEach(value => {
-            log(value);
-            if (value !== result) {
-                document.getElementById(value).style.display = 'none';
-                return;
-            };
+        // containerNames.forEach(value => {
+        //     log(value);
+        //     if (value !== result) {
+        //         document.getElementById(value).style.display = 'none';
+        //         return;
+        //     };
 
-            document.getElementById(value).style.display = 'block';
-            document.getElementById('defaultViewDropdown').value = value;
-        });
+        //     document.getElementById(value).style.display = 'block';
+        //     document.getElementById('defaultViewDropdown').value = value;
+        // });
     })
     .catch((error) => {
         console.error(error);
     });
+
+    // Unfold Yield dropdown
+    let yieldDropdownContainer = document.getElementById('yieldDropdownContainer'),
+        yieldDropdownArrow = document.getElementById('arrowYield');
+
+    yieldDropdownContainer.style.display = 'block'
+    yieldDropdownContainer.className = 'pre';
+    yieldDropdownContainer.className += ' pro';
+    yieldDropdownArrow.style.transform = 'rotate(0deg)';
+
+    // Unfold Modifiers dropdown
+    let modifiersDropdownContainer = document.getElementById('modifiersDropdownContainer'),
+        modifiersDropdownArrow = document.getElementById('arrowModifiers');
+
+    modifiersDropdownContainer.style.display = 'block'
+    modifiersDropdownContainer.className = 'pre';
+    modifiersDropdownContainer.className += ' pro';
+    modifiersDropdownArrow.style.transform = 'rotate(0deg)';
 
 };
 
