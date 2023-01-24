@@ -323,6 +323,14 @@ tr {
     border-bottom: 1px solid rgba(128, 128, 128, 0.468);
 }
 
+td:first-child {
+    background-color: rgb(50, 50, 50);
+}
+
+th:first-child {
+    background-color: rgb(50, 50, 50);
+}
+
 tr:nth-child(even) {
     background-color: #6060606e;
 }
