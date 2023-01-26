@@ -757,6 +757,7 @@ export async function LoadPrimaryCharacter(characters) {
     
     CacheReturnItem('lastChar')
         .then(async (data) => {
+            
             log(data);
             if (data === undefined) {
                 let fallbackCharacter = characters[Object.keys(characters)[0]].classType;

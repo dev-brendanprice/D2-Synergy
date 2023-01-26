@@ -4,8 +4,10 @@ import {
     AddValueToElementInner,
     InsertSeperators,
     GetProgressionalItems,
-    StopLoad } from './ModuleScript';
+    StopLoad,
+    ParseChar } from './ModuleScript';
 import { 
+    itemDefinitions,
     destinyUserProfile, 
     CurrentSeasonHash,
     seasonDefinitions,
@@ -43,6 +45,7 @@ export async function LoadCharacter(classType, characters) {
             CharacterObjectives,
             CharacterEquipment,
             characterId,
+            primaryCharacter,
             ItemSockets;
 
 
@@ -56,30 +59,42 @@ export async function LoadCharacter(classType, characters) {
         document.getElementById('ctgItemCategory').innerHTML = 'There are no (specific) relations for weapon types.';
         document.getElementById('ctgKillType').innerHTML = 'There are no (specific) relations for kill types.';
 
-        // Set all percentage based fields back to zero
-        let classes = document.getElementsByClassName('propertyPercentageField');
-        for (const item of classes) {
-            item.innerHTML = '0%';
-        };
-
-        // Filter out other classes that are not classType
-        for (let char in characters) {
-            if (characters[char].classType !== classType) {
-                document.getElementById(`charContainer${characters[char].classType}`).classList.add('elBlur');
-            }
-            else if (characters[char].classType === classType) {
-                document.getElementById(`charContainer${characters[char].classType}`).classList.remove('elBlur');
-            };
-
-            document.getElementById(`charContainer${characters[char].classType}`).style.display = 'block';
-        };
-
-        // Get chosen character and save index
+        // Get chosen character via classType
         for (let entry in destinyUserProfile.characters.data) {
 
             let character = destinyUserProfile.characters.data[entry];
             if (character.classType === classType) {
                 characterId = character.characterId;
+                primaryCharacter = character;
+            };
+        };
+
+        // Do character selects
+        document.getElementById('topCharacterTypeField').innerHTML = ParseChar(primaryCharacter.classType);
+        document.getElementById('topCharacterSelectImg').src = `https://www.bungie.net${primaryCharacter.emblemBackgroundPath}`;
+        document.getElementById('topCharacterPowerLevelField').innerHTML = primaryCharacter.light;
+
+        let otherCharacters = Object.keys(characters).filter(v => v!==characterId),
+            characterSelectors = {middle: false, bottom: false};
+
+        for (let id of otherCharacters) {
+            
+            let char = characters[id],
+                emblemLargeBg = itemDefinitions[char.emblemHash].secondarySpecial;
+
+            if (!characterSelectors.middle) {
+                characterSelectors.middle = true;
+                document.getElementById('middleCharacterTypeField').innerHTML = ParseChar(char.classType);
+                document.getElementById('middleCharacterSlim').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+                document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${char.emblemPath}`;
+                document.getElementById('middleCharacterPowerLevelField').innerHTML = char.light;
+            }
+            else if (!characterSelectors.bottom) {
+                characterSelectors.bottom = true;
+                document.getElementById('bottomCharacterTypeField').innerHTML = ParseChar(char.classType);
+                document.getElementById('bottomCharacterSlim').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+                document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${char.emblemPath}`;
+                document.getElementById('bottomCharacterPowerLevelField').innerHTML = char.light;
             };
         };
 

@@ -356,29 +356,29 @@
                         </div>
         
                         <div id="defaultCharacterSelect">
-                            <div>
-                                <img id="characterEmblem" src="static/images/emblem1.jpg">
+                            <div class="characterSelectNormal">
+                                <img id="topCharacterSelectImg" src="static/images/emblem1.jpg">
                                 <div id="characterInfoContainer">
                                     <div id="characterSubInfoContainer">
-                                        <div id="characterTypeField">Warlock</div>
+                                        <div id="topCharacterTypeField">Warlock</div>
                                         <div style="display: flex;gap: 3px;">
                                             <img src="static/ico/power.svg" style="width: 13px;padding: 0;">
-                                            <div id="characterPowerLevelField">9999</div>
+                                            <div id="topCharacterPowerLevelField">----</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div id="dev">
-                                <img src="./static/images/1e2245842aa33a77fcbaeaa874e35f2a.png" style="margin-left: 5px;width:30px;filter: drop-shadow(5px 5px 10px #222);">
-                                <div style="margin-top: 3px;margin-left: 5px;font-size: 20px;">Titan</div>
+                            <div class="characterSelectSlim" id="middleCharacterSlim">
+                                <img src="./static/images/1e2245842aa33a77fcbaeaa874e35f2a.png" id="middleCharacterIconImg" style="margin-left: 5px;width:30px;">
+                                <div style="margin-top: 3px;margin-left: 5px;font-size: 20px;" id="middleCharacterTypeField">Titan</div>
                                 <img src="static/ico/power.svg" style="margin-left: 5px;width: 13px;padding: 0;">
-                                <div style="margin-top: 5px;margin-left: 5px;font-size: 17px;color: yellow;">9999</div>
+                                <div style="margin-top: 5px;margin-left: 5px;font-size: 17px;color: yellow;" id="middleCharacterPowerLevelField">9999</div>
                             </div>
-                            <div id="dev2">
-                                <img src="./static/images/9fb5b76d329c851ea48c2a82abba7b44.png" style="margin-left: 5px;width:30px;filter: drop-shadow(5px 5px 10px #222);">
-                                <div style="margin-top: 3px;margin-left: 5px;font-size: 20px;">Hunter</div>
+                            <div class="characterSelectSlim" id="bottomCharacterSlim" style="margin-top: 5px;">
+                                <img src="./static/images/9fb5b76d329c851ea48c2a82abba7b44.png" id="bottomCharacterIconImg" style="margin-left: 5px;width:30px;">
+                                <div style="margin-top: 3px;margin-left: 5px;font-size: 20px;" id="bottomCharacterTypeField">Hunter</div>
                                 <img src="static/ico/power.svg" style="margin-left: 5px;width: 13px;padding: 0;">
-                                <div style="margin-top: 5px;margin-left: 5px;font-size: 17px;color: yellow;">9999</div>
+                                <div style="margin-top: 5px;margin-left: 5px;font-size: 17px;color: yellow;" id="bottomCharacterPowerLevelField">9999</div>
                             </div>
                         </div>
                     </div>
@@ -436,17 +436,17 @@
                                     <div class="modifierContainer" style="margin-top: 5px;">
                                         <img class="modifierCheckmarkIcon" id="seasonPassBonusCheckmarkIcon" src="./static/ico/checkmark.svg">
                                         <div style="width: 160px;">Season Pass Bonus</div>
-                                        <div class="modifierValue" id="seasonPassBonusField">30%</div>
+                                        <div class="modifierValue" id="seasonPassBonusField">--</div>
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="sharedWisdomCheckmarkIcon" src="./static/ico/checkmark.svg">
                                         <div style="width: 160px;">Shared Wisdom</div>
-                                        <div class="modifierValue" id="sharedWisdomBonusField">30%</div>
+                                        <div class="modifierValue" id="sharedWisdomBonusField">--</div>
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="ghostModsCheckmarkIcon" src="./static/ico/checkmark.svg">
                                         <div style="width: 160px;">Ghost Mods</div>
-                                        <div class="modifierValue" id="ghostModBonusField">30%</div>
+                                        <div class="modifierValue" id="ghostModBonusField">--</div>
                                     </div>
                                 </div>
                             </div>
@@ -492,17 +492,17 @@
                                 <div class="contentHeading">Bounties</div>
                                 <div id="contentSubHeadingContainer">
                                     <div style="display: flex;gap: 5px;">
-                                        <div id="bountiesTotalField">18</div>
+                                        <div id="bountiesTotalField">0</div>
                                         <div>Bounties</div>
                                     </div>
                                     <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
                                     <div style="display: flex;gap: 5px;">
-                                        <div id="bountiesCompletedField">4</div>
+                                        <div id="bountiesCompletedField">0</div>
                                         <div>Completed</div>
                                     </div>
                                     <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
                                     <div style="display: flex;gap: 5px;">
-                                        <div id="bountiesExpiredField">4</div>
+                                        <div id="bountiesExpiredField">0</div>
                                         <div>Expired</div>
                                     </div>
                                 </div>

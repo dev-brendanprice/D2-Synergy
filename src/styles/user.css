@@ -551,34 +551,23 @@ tr:nth-child(even) {
     filter: brightness(80%);
 }
 
-#dev {
+.characterSelectNormal {
+    cursor: pointer;
+}
+
+.characterSelectSlim {
     display: flex;
     margin-top: 15px;
     padding: 0px 0px;
     text-align: center;
     height: 30px;
     width: 100%;
-    background-color: black;
+    /* background-color: black; */
     overflow-x: hidden;
-    background-image: url("../static/images/emblem2.jpg");
     background-position: center;
     background-size: contain;
     color: white;
-}
-
-#dev2 {
-    display: flex;
-    margin-top: 5px;
-    padding: 0px 0px;
-    text-align: center;
-    height: 30px;
-    width: 100%;
-    background-color: black;
-    overflow-x: hidden;
-    background-image: url("../static/images/emblem3.jpg");
-    background-position: center;
-    background-size: contain;
-    color: white;
+    cursor: pointer;
 }
 
 .dropdownArrow {
@@ -649,7 +638,7 @@ tr:nth-child(even) {
     filter: invert(100%) brightness(50%);
 }
 
-#characterEmblem {
+#topCharacterSelectImg {
     display: block;
     margin: 0 auto;
     width: 250px;
