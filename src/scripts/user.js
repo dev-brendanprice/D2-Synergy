@@ -329,7 +329,6 @@ export async function CheckComponents () {
     });
 
 
-
     // Check if either tokens have expired
     let isAcTokenExpired = (acToken.inception + acToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1,
         isRsTokenExpired = (rsToken.inception + rsToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
@@ -337,9 +336,6 @@ export async function CheckComponents () {
 
         // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
         delete axios.defaults.headers.common['X-API-Key'];
-
-        // Change load content
-        // document.getElementById('loadingText').innerHTML = 'Refreshing Tokens';
 
         // If either tokens have expired
         isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
@@ -375,8 +371,6 @@ export async function FetchBungieUserDetails() {
 
     log('-> FetchBungieUserDetails Called');
 
-    // Change load content
-    // document.getElementById('loadingText').innerHTML = 'Fetching Profile Data';
     await CheckComponents();
 
     let components = JSON.parse(localStorage.getItem('components')),
@@ -394,14 +388,14 @@ export async function FetchBungieUserDetails() {
     destinyMembershipId = JSON.parse(sessionStorage.getItem('destinyMembershipId')),
     destinyUserProfile = JSON.parse(sessionStorage.getItem('destinyUserProfile'));
 
-    // Compare each variable that represents cached data
+    // Check cached data
     if (!membershipType || !membershipType) {
 
         // GetBungieNetUserById (uses 254 as membershipType)
         await axios.get(`https://www.bungie.net/Platform/Destiny2/254/Profile/${components.membership_id}/LinkedProfiles/?getAllMemberships=true`, axiosConfig)
             .then(response => {
 
-                // Store in memory again
+                // Store response
                 destinyMembershipId = response.data.Response.profiles[0].membershipId;
                 membershipType = response.data.Response.profiles[0].membershipType;
 
@@ -414,36 +408,26 @@ export async function FetchBungieUserDetails() {
             });
     };
 
-    // Check if destinyUserProfile is cached
-    // If it is not cached then this means it is the first time the user has accessed this page
-    // Otherwise, it is a refresh and we go to the else
-    if (!destinyUserProfile) {
-
-        // GetProfile (uses membershipType & destinyMembershipId)
-        await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900`, axiosConfig)
+    // GetProfile
+    await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900`, axiosConfig)
         .then(response => {
                 
-                // Store in memory again
-                log(response)
-                destinyUserProfile = response.data.Response;
+            // Store in memory again
+            log(response)
+            destinyUserProfile = response.data.Response;
 
-                // Parse data from destinyUserProfile
-                CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
-                ProfileProgressions = destinyUserProfile.profileProgression.data;
+            // Parse data from destinyUserProfile
+            CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
+            ProfileProgressions = destinyUserProfile.profileProgression.data;
 
-                // Cache in sessionStorage
-                sessionStorage.setItem('destinyUserProfile', JSON.stringify(destinyUserProfile));
+            // Cache in sessionStorage
+            sessionStorage.setItem('destinyUserProfile', JSON.stringify(destinyUserProfile));
         })
         .catch((error) => {
             console.error(error);
         });
-    }
-    else {
-        // Parse data from destinyUserProfile
-        CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
-        ProfileProgressions = destinyUserProfile.profileProgression.data;
-    };
     log(CurrentSeasonHash);
+
     // Load characters from cache
     if (membershipType && destinyMembershipId && destinyUserProfile) {
 
@@ -501,9 +485,6 @@ export async function MainEntryPoint(isPassiveReload) {
     // Load first char on profile/last loaded char
     log(characters);
     await LoadPrimaryCharacter(characters);
-
-    // Load seasonal challenges
-    // await LoadSeasonalChallenges();
 
     // Check for passive reload
     if (isPassiveReload) {

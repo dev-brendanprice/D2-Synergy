@@ -348,41 +348,6 @@ hr.horizontalRuler {
 	background-color: #adadad;
 }
 
-/* Loading Indicator */
-#loadingContentContainer {
-    position: absolute;
-    display: none;
-    margin: auto;
-    right: 0;
-    left: 0;
-    margin-top: 50px;
-}
-
-#loadingIcon {
-    width: 40px;
-    filter: invert(70%);
-    animation: loadingAnim 0.85s ease-in-out 0s infinite normal none;
-}
-
-#loadingText {
-    color: black;
-    filter: invert(70%);
-    font-family: Verdana, Geneva, Tahoma, sans-serif, monospace;
-    font-size: 15px;
-}
-
-@keyframes loadingAnim {
-    0.0% {}
-
-    50% {
-        transform: translate(0px, -15px);
-    }
-
-    100% {
-        transform: translate(0px, 0px);
-    }
-}
-
 @keyframes rotating {
     from {
       -ms-transform: rotate(0deg);

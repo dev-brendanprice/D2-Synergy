@@ -755,21 +755,20 @@ export async function ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgr
 // @object {characters}
 export async function LoadPrimaryCharacter(characters) {
     
-    log(characters);
     CacheReturnItem('lastChar')
-    .then(async (data) => {
-        if (!data) {
-            CacheAuditItem('lastChar', characters[Object.keys(characters)[0]].classType);
-            await LoadCharacter(1, characters);
-        }
-        else {
+        .then(async (data) => {
+            log(data);
+            if (data === undefined) {
+                let fallbackCharacter = characters[Object.keys(characters)[0]].classType;
+                CacheAuditItem('lastChar', fallbackCharacter);
+                await LoadCharacter(fallbackCharacter, characters);
+                return;
+            };
             await LoadCharacter(data, characters);
-        };
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 };
 
 
@@ -1211,7 +1210,23 @@ export function stringMatchProgressionItem(progressionItem, options) {
 // Function to fetch all progressional items
 export async function GetProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp) {
 
-    // [ -- START OF SEASONAL CHALLENGES -- ]
+    // Call function to get progressions for season pass XP and bonus stats
+    const seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack);
+
+    // Season Pass innerHTML changes
+    // AddValueToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonPassProgressionStats.progressToNextLevel));
+    // AddValueToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonPassProgressionStats.xpToMaxSeasonPassRank));
+    // AddValueToElementInner('seasonPassFireteamBonus', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
+    // AddValueToElementInner('seasonPassRankLevel', seasonPassProgressionStats.seasonPassLevel);
+    // AddValueToElementInner('seasonPassXpBonus', `${seasonPassProgressionStats.bonusXpValue}%`); // +12 for bonus large xp modifier
+
+    // // Pass in stats for the net breakdown section
+    // AddValueToElementInner('sharedWisdomValue', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
+    // AddValueToElementInner('ghostModValue', `${ghostModBonusXp}%`);
+    // AddValueToElementInner('bonusXpValue', `${seasonPassProgressionStats.bonusXpValue}%`);
+
+
+    // [ -- SEASONAL CHALLENGES -- ]
     // Clear HTML fields
     document.getElementById('outstandingChallengesAmountField').innerHTML = '';
     document.getElementById('completedChallengesAmountField').innerHTML = '';
@@ -1393,7 +1408,7 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
 
 
 
-    // [ -- START OF BOUNTIES -- ]
+    // [ -- BOUNTIES -- ]
     // Iterate over CharacterInventories[characterId].items
     let charInventory = CharacterInventories[characterId].items, 
         amountOfBounties = 0;
@@ -1421,7 +1436,7 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
             characterBounties[bounty].objectiveDefinitions.push(objectiveDefinitions[objHash]);
         };
     });
-    log(characterBounties);
+    log(characterBounties, characterBounties.length);
 
     // Sort bounties by group (vanguard, gunsmith etc)
     bountyArr = SortByGroup(characterBounties, bountyArr, vendorKeys);
@@ -1448,6 +1463,8 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
 
     // Calculate XP yield from (active) bounties
     let totalXpYield = CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields);
+    const xpModifier = ((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) / 100) + 1; // Format to 1.x
+    log(xpModifier, seasonPassProgressionStats.bonusXpValue, seasonPassProgressionStats.sharedWisdomBonusValue, ghostModBonusXp);
 
     // Push subheading statistics
     AddValueToElementInner('bountiesExpiredField', amountOfExpiredBounties);
@@ -1460,75 +1477,58 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
         document.getElementById('noItemsTooltip').innerHTML = `You don't have bounties on this character. How dare you.`;
         document.getElementById('noItemsTooltip').style.display = 'inline-block';
 
-        // Make potential yeild stats 0 by default
-        AddValueToElementInner('totalXpField', 0);
-        AddValueToElementInner('totalSpLevelsField', 0);
+        // Set raw xp values to 0
+        AddValueToElementInner('rawXpField', 0);
+        AddValueToElementInner('artifactLevelsField', 0);
+        AddValueToElementInner('SeasonPassLevelsField', 0);
+        // Set modified xp values to 0
+        AddValueToElementInner('xpWithModField', 0);
+        AddValueToElementInner('artifactLevelsWithModField', 0);
+        AddValueToElementInner('SeasonPassLevelsWithModField', 0);
 
-        // Change subheading field to show amount of bounties
-        AddValueToElementInner('bountiesAmountField', 0);
     }
     else if (amountOfBounties > 0) {
 
-        // Set default style for toggle button filter and filter(s) container
-        document.getElementById('btnHideFilters').style.display = 'block';
-        document.getElementById('filterContentContainer').style.display = 'none';
-
-        // Hide toggle filters button if there is only one bounty
-        if (amountOfBounties === 1) {
-            document.getElementById('btnHideFilters').style.display = 'none';
-            document.getElementById('filterContentContainer').style.display = 'none';
-        };
-
-        // Change subheading field to show amount of bounties
-        AddValueToElementInner('bountiesTotalField', amountOfBounties);
-
-        // Change potential yield stats since there are bounties present
-        AddValueToElementInner('totalXpField', InsertSeperators(totalXpYield));
-        AddValueToElementInner('totalSpLevelsField', totalXpYield / 100000);
+        // Set raw xp values
+        AddValueToElementInner('rawXpField', InsertSeperators(totalXpYield));
+        AddValueToElementInner('artifactLevelsField', 0);
+        AddValueToElementInner('SeasonPassLevelsField', InsertSeperators(totalXpYield / 100_000));
+        // Set modified xp values
+        AddValueToElementInner('xpWithModField', InsertSeperators(totalXpYield * xpModifier));
+        AddValueToElementInner('artifactLevelsWithModField', 0);
+        AddValueToElementInner('SeasonPassLevelsWithModField', InsertSeperators((totalXpYield / 100_000) * xpModifier));
     };
-
-    // Load synergyDefinitions and match against bounties, if characterBounties is not empty
-    log(characterBounties.length);
-    // if (characterBounties.length !== 0) {
-    //     await PushProps();
-    //     await CreateFilters(characterBounties, bountyPropertiesCount);
-    // };
     // [ -- END OF BOUNTIES -- ]
 
 
-
-    // Call function to get progressions for season pass XP and bonus stats
-    const seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack);
-
-    // Season Pass innerHTML changes
-    AddValueToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonPassProgressionStats.progressToNextLevel));
-    AddValueToElementInner('seasonPassXpToMaxRank', InsertSeperators(seasonPassProgressionStats.xpToMaxSeasonPassRank));
-    AddValueToElementInner('seasonPassFireteamBonus', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
-    AddValueToElementInner('seasonPassRankLevel', seasonPassProgressionStats.seasonPassLevel);
-    AddValueToElementInner('seasonPassXpBonus', `${seasonPassProgressionStats.bonusXpValue}%`); // +12 for bonus large xp modifier
-
-    // Pass in stats for the net breakdown section
-    AddValueToElementInner('sharedWisdomValue', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
-    AddValueToElementInner('ghostModValue', `${ghostModBonusXp}%`);
-    AddValueToElementInner('bonusXpValue', `${seasonPassProgressionStats.bonusXpValue}%`);
-
-    // Add all the modifiers together, append 1 and times that value by the base total XP
-    const totalXpBonusPercent = ((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) / 100) + 1; // Format to 1.x
-    AddValueToElementInner('totalNetXpField', InsertSeperators(totalXpYield * totalXpBonusPercent));
-
-    const filterToMakeCheckmarkGreen = 'invert(70%) sepia(96%) saturate(4644%) hue-rotate(84deg) brightness(126%) contrast(117%)';
+    const filterToMakeCheckmarkGreen = 'invert(70%) sepia(96%) saturate(4644%) hue-rotate(84deg) brightness(126%) contrast(117%)',
+        filterToResetCheckmark = 'filter: invert(100%) brightness(50%);';
+        
     // Check if ghost mods are slotted, turn off checkmark if not
     if (ghostModBonusXp) {
         document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+        document.getElementById('ghostModBonusField').innerHTML = `+${ghostModBonusXp}%`;
+    }
+    else {
+        document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToResetCheckmark;
     };
 
     // Check if shared wisdom is not equal to 0, turn off checkmark if not
     if (seasonPassProgressionStats.sharedWisdomBonusValue) {
         document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+        document.getElementById('sharedWisdomBonusField').innerHTML = `+${seasonPassProgressionStats.sharedWisdomBonusValue}%`;
+    }
+    else {
+        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToResetCheckmark;
     };
 
     // Check if bonus xp is not equal to 0, turn off checkmark if not
     if (seasonPassProgressionStats.bonusXpValue) {
         document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+        document.getElementById('seasonPassBonusField').innerHTML = `+${seasonPassProgressionStats.bonusXpValue}%`;
+    }
+    else {
+        document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToResetCheckmark;
     };
+
 };

@@ -631,6 +631,24 @@ tr:nth-child(even) {
     transition: max-height 0.20s ease-in-out;
 }
 
+.modifierContainer {
+    margin-top: 4px;
+}
+
+.modifierValue {
+    margin-top: -3px;
+    padding: 2px;
+    background-color: #232323;
+    border: 1px solid rgb(65, 65, 65);
+    border-radius: 3px;
+}
+
+.modifierCheckmarkIcon {
+    margin-top: -5px;
+    width: 13px;
+    filter: invert(100%) brightness(50%);
+}
+
 #characterEmblem {
     display: block;
     margin: 0 auto;
@@ -840,11 +858,6 @@ hr.dropdownSubline {
     padding-bottom: 5px;
     gap: 8px;
     cursor: pointer;
-}
-
-.modifierCheckmarkIcon {
-    width: 13px;
-    filter: invert(100%) brightness(50%);
 }
 
 .challengeDescription {

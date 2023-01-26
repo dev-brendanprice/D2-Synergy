@@ -34,12 +34,8 @@ export async function LoadCharacter(classType, characters) {
 
         log('LoadPrimaryCharacter START');
 
-        // Configure load sequence
-        // document.getElementById('loadingText').innerHTML = 'Indexing Character';
-
         // Toggle character load
         characterLoadToggled = true;
-        CacheAuditItem('lastChar', classType);
 
         // Globals in this scope
         let CharacterProgressions,
@@ -96,7 +92,7 @@ export async function LoadCharacter(classType, characters) {
         characterRecords = destinyUserProfile.characterRecords.data[characterId].records;
         ItemSockets = destinyUserProfile.itemComponents.sockets.data;
 
-        // Ghost mod bonus Xp modifier variable
+        // Ghost experience mod bonus
         let ghostModBonusXp = 0;
 
         // Fetch equipped ghost mods
@@ -104,10 +100,10 @@ export async function LoadCharacter(classType, characters) {
             if (v.bucketHash === 4023194814) { // Ghost bucket hash
 
                 let itemPlugSet = ItemSockets[v.itemInstanceId].sockets;
-
                 Object.keys(itemPlugSet).forEach(v => {
 
                     let plugHash = itemPlugSet[v].plugHash;
+                    log(plugHash);
                     if (plugHash === 1820053069) { // Flickering Ligt - 2%
                         ghostModBonusXp = 2;
                     }
@@ -183,6 +179,7 @@ export async function LoadCharacter(classType, characters) {
         GetProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp);
 
         // Stop loading sequence
+        CacheAuditItem('lastChar', classType);
         characterLoadToggled = false;
         StopLoad();
     };

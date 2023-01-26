@@ -1,7 +1,5 @@
 import { 
-    charBounties,
     MainEntryPoint, 
-    eventFilters,
     itemDisplay,
     accentColor } from '../user.js';
 import { 
@@ -83,7 +81,7 @@ const AddDropdownEvent = function (dropwdownContent, dropdownArrow, dropdownBool
                 dropdownBoolean.toggleBoolean();
             }, 50);
         }
-        else if (dropdownContentState.display === 'block') {
+        else if (dropdownContentState.display !== 'none') {
     
             // Rotate arrow
             dropdownArrow.style.transform = 'rotate(90deg)';
@@ -596,7 +594,7 @@ export async function BuildWorkspace() {
     let modifiersDropdownContainer = document.getElementById('modifiersDropdownContainer'),
         modifiersDropdownArrow = document.getElementById('arrowModifiers');
 
-    modifiersDropdownContainer.style.display = 'block'
+    modifiersDropdownContainer.style.display = 'flex';
     modifiersDropdownContainer.className = 'pre';
     modifiersDropdownContainer.className += ' pro';
     modifiersDropdownArrow.style.transform = 'rotate(0deg)';
