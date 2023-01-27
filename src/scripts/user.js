@@ -45,7 +45,7 @@ var startTime = new Date().getTime();
 
 
 // Defintion objects
-export let progressionDefinitions = {},
+export var progressionDefinitions = {},
         presentationNodeDefinitions = {},
         seasonPassDefinitions = {},
         objectiveDefinitions = {},
@@ -501,7 +501,7 @@ export async function MainEntryPoint(isPassiveReload) {
 
 
 
-// Run main after DOM content has loaded
+// Run after DOM load
 document.addEventListener('DOMContentLoaded', () => {
 
     // Test server availability

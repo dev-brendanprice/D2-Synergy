@@ -52,23 +52,27 @@ export function RedirUser(url, param) {
 
 // Returns corresponding class name using classType
 // @int {classType}
-export function ParseChar(classType) {
+export function ParseChar(classType, isReverse = false) {
 
-    let returnCharString;
-    switch (classType) {
-        case 0:
-            returnCharString = 'Titan';
-            break;
-        case 1:
-            returnCharString = 'Hunter';
-            break;
-        case 2:
-            returnCharString = 'Warlock';
-            break;
-        default:
-            console.error('Could not parse character, parseChar() @function');
+    log(classType, isReverse);
+    if (classType === 0 || classType === 'Titan') {
+        if (!isReverse) {
+            return 'Titan';
+        };
+        return 0;
+    }
+    else if (classType === 1 || classType === 'Hunter') {
+        if (!isReverse) {
+            return 'Hunter';
+        };
+        return 1;
+    }
+    else if (classType === 2 || classType === 'Warlock') {
+        if (!isReverse) {
+            return 'Warlock';
+        };
+        return 2;
     };
-    return returnCharString;
 };
 
 

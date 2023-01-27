@@ -323,12 +323,14 @@ tr {
     border-bottom: 1px solid rgba(128, 128, 128, 0.468);
 }
 
-td:first-child {
+td:last-child {
     background-color: rgb(50, 50, 50);
+    text-align: center;
 }
 
-th:first-child {
+th:last-child {
     background-color: rgb(50, 50, 50);
+    text-align: center;
 }
 
 tr:nth-child(even) {
@@ -551,10 +553,6 @@ tr:nth-child(even) {
     filter: brightness(80%);
 }
 
-.characterSelectNormal {
-    cursor: pointer;
-}
-
 .characterSelectSlim {
     display: flex;
     margin-top: 15px;
@@ -574,6 +572,10 @@ tr:nth-child(even) {
     width: 12px;
     filter: invert(100%) brightness(50%);
     transform: rotate(90deg);
+}
+
+#dropdownContentContainer {
+    margin-top: 5px;
 }
 
 #dropdownContentContainer > div {

@@ -1,11 +1,14 @@
 import { 
     MainEntryPoint, 
     itemDisplay,
-    accentColor } from '../user.js';
+    accentColor,
+    destinyUserProfile,
+    itemDefinitions } from '../user.js';
 import { 
     CacheAuditItem, 
     CacheReturnItem,
-    Logout } from './ModuleScript.js';
+    Logout,
+    ParseChar } from './ModuleScript.js';
 import { LoadCharacter } from './LoadCharacter.js';
 
 
@@ -104,6 +107,47 @@ const AddDropdownEvent = function (dropwdownContent, dropdownArrow, dropdownBool
 
 // Add all event listeners
 export async function AddEventListeners() {
+
+    let characters = destinyUserProfile.characters.data;
+
+    // Character Selects
+    AddListener('middleCharacterContainer', 'click', async function () {
+
+        const typeField = document.getElementById('topCharacterTypeField').innerHTML,
+              powerLevelField = document.getElementById('topCharacterPowerLevelField').innerHTML;
+
+        let currentChar = await CacheReturnItem('currentChar');
+        let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
+
+        // Load character
+        let characterType = ParseChar(document.getElementById('middleCharacterTypeField').innerHTML, true);
+        LoadCharacter(characterType, characters);
+
+        // Replace with top selector elements
+        document.getElementById('middleCharacterTypeField').innerHTML = typeField;
+        document.getElementById('middleCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+        document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${currentChar.emblemPath}`;
+        document.getElementById('middleCharacterPowerLevelField').innerHTML = powerLevelField;
+    });
+
+    AddListener('bottomCharacterContainer', 'click', async function () {
+
+        const typeField = document.getElementById('topCharacterTypeField').innerHTML,
+              powerLevelField = document.getElementById('topCharacterPowerLevelField').innerHTML;
+
+        let currentChar = await CacheReturnItem('currentChar');
+        let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
+
+        // Load character
+        let characterType = ParseChar(document.getElementById('bottomCharacterTypeField').innerHTML, true);
+        LoadCharacter(characterType, characters);
+
+        // Replace with top selector elements
+        document.getElementById('bottomCharacterTypeField').innerHTML = typeField;
+        document.getElementById('bottomCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+        document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${currentChar.emblemPath}`;
+        document.getElementById('bottomCharacterPowerLevelField').innerHTML = powerLevelField;
+    });
 
     // Bounties navbar control
     AddListener('navBarBountiesButton', 'click', function () {

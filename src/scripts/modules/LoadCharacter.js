@@ -69,30 +69,30 @@ export async function LoadCharacter(classType, characters) {
             };
         };
 
+        // Save character to localStorage
+        CacheAuditItem('currentChar', primaryCharacter);
+
         // Do character selects
+        log(primaryCharacter.classType);
         document.getElementById('topCharacterTypeField').innerHTML = ParseChar(primaryCharacter.classType);
         document.getElementById('topCharacterSelectImg').src = `https://www.bungie.net${primaryCharacter.emblemBackgroundPath}`;
         document.getElementById('topCharacterPowerLevelField').innerHTML = primaryCharacter.light;
 
-        let otherCharacters = Object.keys(characters).filter(v => v!==characterId),
-            characterSelectors = {middle: false, bottom: false};
-
+        let otherCharacters = Object.keys(characters).filter(v => v!==characterId);
         for (let id of otherCharacters) {
             
             let char = characters[id],
                 emblemLargeBg = itemDefinitions[char.emblemHash].secondarySpecial;
 
-            if (!characterSelectors.middle) {
-                characterSelectors.middle = true;
+            if (!document.getElementById('middleCharacterTypeField').innerHTML) {
                 document.getElementById('middleCharacterTypeField').innerHTML = ParseChar(char.classType);
-                document.getElementById('middleCharacterSlim').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+                document.getElementById('middleCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
                 document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${char.emblemPath}`;
                 document.getElementById('middleCharacterPowerLevelField').innerHTML = char.light;
             }
-            else if (!characterSelectors.bottom) {
-                characterSelectors.bottom = true;
+            else if (!document.getElementById('bottomCharacterTypeField').innerHTML) {
                 document.getElementById('bottomCharacterTypeField').innerHTML = ParseChar(char.classType);
-                document.getElementById('bottomCharacterSlim').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+                document.getElementById('bottomCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
                 document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${char.emblemPath}`;
                 document.getElementById('bottomCharacterPowerLevelField').innerHTML = char.light;
             };
@@ -103,7 +103,6 @@ export async function LoadCharacter(classType, characters) {
         CharacterEquipment = destinyUserProfile.characterEquipment.data[characterId].items;
         CharacterObjectives = destinyUserProfile.itemComponents.objectives.data;
         CharacterInventories = destinyUserProfile.characterInventories.data;
-        // CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
         characterRecords = destinyUserProfile.characterRecords.data[characterId].records;
         ItemSockets = destinyUserProfile.itemComponents.sockets.data;
 
