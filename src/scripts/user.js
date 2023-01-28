@@ -33,7 +33,7 @@ import { MakeRequest } from './modules/MakeRequest.js';
 // Validate state parameter
 VerifyState();
 
-// dev
+// Start load animation
 StartLoad();
 
 // Utilities
@@ -278,10 +278,9 @@ export async function BungieOAuth (authCode) {
         .catch(err => {
             if (err.response.data['error_description'] == 'AuthorizationCodeInvalid' || err.response.data['error_description'] == 'AuthorizationCodeStale') {
                 window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
-            }
-            else {
-                console.error(err);
+                return;
             };
+            console.error(err);
         });
 };
 
@@ -341,8 +340,8 @@ export async function CheckComponents () {
         isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
         await axios.post('https://www.bungie.net/Platform/App/OAuth/token/', `grant_type=refresh_token&refresh_token=${rsToken.value}`, AuthConfig)
             .then(res => {
-                let data = res.data;
 
+                let data = res.data;
                 components["membership_id"] = data["membership_id"];
                 components["token_type"] = data["token_type"];
                 components["authorization_code"] = comps["authorization_code"];
@@ -358,6 +357,19 @@ export async function CheckComponents () {
                 localStorage.setItem('accessToken', JSON.stringify(AccessToken));
                 localStorage.setItem('components', JSON.stringify(components));
                 localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
+            })
+            .catch(err => {
+                console.error(err);
+                switch (err.response.data['error_description']) {
+                    case 'AuthorizationCodeInvalid':
+                    case 'AuthorizationCodeStale':
+                    case 'ProvidedTokenNotValidRefreshToken':
+                        // Restart OAuthFlow
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        indexedDB.deleteDatabase('keyval-store');
+                        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
+                };
             });
         isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
     };

@@ -53,6 +53,7 @@ var FixTables = async () => {
                 })
                 .catch((error) => {
                     console.error(error);
+                    // Retry request with random query to bypass cache
                     return axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(4)}=${GenerateRandomString(4)}`);
                 });
 
