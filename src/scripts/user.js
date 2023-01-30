@@ -2,7 +2,7 @@ console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
 
 // Import modules
-// import axios from 'axios';
+import axios from 'axios';
 import { ValidateManifest, ReturnEntry } from './modules/ValidateManifest.js';
 import {
     VerifyState,
