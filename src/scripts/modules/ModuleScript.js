@@ -50,7 +50,7 @@ export function RedirUser(url, param) {
 
 
 
-// Returns corresponding class name using classType
+// Returns corresponding class name string using classType or vice versa
 // @int {classType}
 export function ParseChar(classType, isReverse = false) {
 
@@ -514,9 +514,23 @@ export function SortBountiesByType(a, b) {
 
 // Calculate total XP gain from (active) bounties
 // @array {bountyArr}, @array {itemTypeKeys}, @object {baseYields}, @object {petraYields}
-export function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields) {
+export async function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields) {
 
-    let totalXP = 0;
+    var totalXP = 0;
+    var includeExpiredBounties = await CacheReturnItem('includeExpiredBounties');
+
+    // Self func
+    function DiffXP(bounty, bountyType) {
+        // Check if bounty is from Petra
+        if (bounty.inventory.stackUniqueLabel.includes('dreaming_city')) {
+            totalXP += petraYields[bountyType];
+            return;
+        };
+
+        // Else do normal calculation
+        totalXP += baseYields[bountyType];
+        return;
+    };
 
     // Loop through bounty categories
     for (let bountyCtg in bountyArr) {
@@ -526,39 +540,23 @@ export function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields) {
         if (group) {
 
             // Loop through bounties in category
-            group.forEach(bounty => {
-                log(bounty);
-                // Get bounty type
-                let bountyType = itemTypeKeys.filter(v => bounty.inventory.stackUniqueLabel.includes(v))[0];
+            group.forEach((bounty) => {
 
-                // Self function to differentiate between Petra and normal bounties
-                function diffXp () {
-                    // Check if bounty is from Petra, else do normal calculation
-                    if (bounty.inventory.stackUniqueLabel.includes('dreaming_city')) {
-                        totalXP += petraYields[bountyType];
-                    }
-                    else {
-                        totalXP += baseYields[bountyType];
-                    };
+                // Get bounty type
+                var bountyType = itemTypeKeys.filter(v => bounty.inventory.stackUniqueLabel.includes(v))[0];
+
+                // If true
+                if (includeExpiredBounties) {
+                    DiffXP(bounty, bountyType);
+                    return;
                 };
 
-                // Check if expired bounties are being counted
-                CacheReturnItem('includeExpiredBounties')
-                .then((boolean) => {
-                    log(boolean);
-                    // If true
-                    if (boolean) {
-                        // Check if bounty is from Petra
-                        diffXp();
-                        return;
-                    };
+                // If false
+                if (bounty.isComplete || !bounty.isExpired) {
+                    DiffXP(bounty, bountyType);
+                    return; 
+                };
 
-                    // If false
-                    // if (bounty.isExpired) {
-                    //     return;
-                    // };
-                });
-                
             });
         };
     };
@@ -860,6 +858,7 @@ export function AddValueToElementInner(target, content) {
 
 
 
+// DEPRECATED
 // Load heuristics and configure data
 // @array {charBounties}, @int {propCount}
 export async function CreateFilters(charBounties, propCount) {
@@ -1202,15 +1201,17 @@ export function CountProgressionItemProperties(charBounties, seasonalChallenges,
 
 
 
-// String match progression displayProperties
-// @string {searchString}
-export function stringMatchProgressionItem(progressionItem, options) {
+// String match progressions via displayProperties (pending for refactor and optimization)
+// @obj {progressionItem}
+export function stringMatchProgressionItem(progressionItem) {
 
     // Aliases for certain properties
-    let actMode = parsePropertyNameIntoWord(ActivityMode[29]);
+    let activityMode = parsePropertyNameIntoWord(ActivityMode[29]);
+
+    // Wildcard search
     const propertyAliases = {
         'Submachine Gun': 'SMG',
-        'Season Of The Seraph': `${actMode}`
+        'Season Of The Seraph': `${activityMode}`
     };
 
     // Loop through charBounties, seasonalChallenges' displayProperties -- Store items that match a property, and the property itself
@@ -1556,8 +1557,15 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
     };
 
     // Calculate XP yield from (active) bounties
-    let totalXpYield = CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields);
+    let totalXpYield = 0;
     let totalXpYieldWithModifiers = 0;
+    await CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields)
+    .then((xpYield) => {
+        totalXpYield = xpYield;
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 
     // 1.x
     // XP modifier, does not contain well rested bonus
