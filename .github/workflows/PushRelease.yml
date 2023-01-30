@@ -1,45 +1,41 @@
-
-# Makes new release when package.json version is changed
-
-name: PublishNewRelease
+name: 'Release'
 
 on:
   push:
-    branches: [ "main" ]
-
+    branches:
+      - "main"
   workflow_dispatch:
+    inputs:
+      semver:
+        description: 'Which version you want to increment? Use MAJOR, MINOR or PATCH'
+        required: true
+        default: 'PATCH'
+      label:
+        description: 'Add Labels. i.e final, alpha, rc'
+        required: true
+        default: ' Stable'
 
 jobs:
-  make-release:
-    runs-on: "ubuntu-latest"
+  release:
+    name: 'Release'
+    runs-on: 'ubuntu-latest'
+
     steps:
-    
-      - uses: actions/checkout@v2
-    
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18.x
-          
-    
-      - name: get-npm-version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.1.0
-          
-          
-      - name: Create Tag
-        uses: negz/create-tag@v1
-        with:
-          version: ${{ steps.package-version.outputs.current-version }}
-          message: ${{ steps.package-version.outputs.current-version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Checkout'
+        uses: actions/checkout@v2
 
-
-      - name: Publish Release
-        uses: "marvinpinto/action-automatic-releases@latest"
+      # ...
+      - name: '👷‍♂️ Build'
+        run: |
+          echo "BUILD COMPLETE 👍"
+      # ...
+      - name: '🧪 TEST'
+        run: |
+          echo "TESTS PASSED 🎉"
+      - uses: 'rui-costa/action-automatic-semver-releases@latest'
+        name: "Automatic Release Update"
         with:
-          repo_token: "${{ secrets.ACTION_CRON_JOB_SECRET }}"
-          title: "${{ steps.package-version.outputs.current-version }}"
-          prerelease: true
-          automatic_release_tag: "Alpha v${{ steps.package-version.outputs.current-version }}"
-
+          TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          SEMVER: '${{ github.event.inputs.semver }}'
+          LABEL: '${{ github.event.inputs.label }}'
+          NOTES: '${{ steps.gen-notes.outputs.notes }}'
