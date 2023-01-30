@@ -425,7 +425,7 @@ export async function FetchBungieUserDetails() {
         .then(response => {
                 
             // Store in memory again
-            log(response)
+            log(response);
             destinyUserProfile = response.data.Response;
 
             // Parse data from destinyUserProfile
@@ -438,24 +438,9 @@ export async function FetchBungieUserDetails() {
         .catch((error) => {
             console.error(error);
         });
-    log(CurrentSeasonHash);
-
-    // Load characters from cache
-    if (membershipType && destinyMembershipId && destinyUserProfile) {
-
-        // Loop over characters
-        characters = destinyUserProfile.characters.data;
-        for (let item in characters) {
-            let char = characters[item];
-            document.getElementById(`classBg${char.classType}`).src = `https://www.bungie.net${char.emblemBackgroundPath}`;
-            document.getElementById(`classType${char.classType}`).innerHTML = `${ParseChar(char.classType)}`;
-            document.getElementById(`classLight${char.classType}`).innerHTML = `${char.light}`;
-        };
-
-        // Change DOM content
-        document.getElementById('charactersContainer').style.display = 'inline-block';
-        document.getElementById('categories').style.display = 'block';
-    };
+        
+    characters = destinyUserProfile.characters.data;
+    log(`Current season hash: ${CurrentSeasonHash}`);
     log(`-> FetchBungieUserDetails Finished [${new Date().getTime() - startTime}ms]`);
 };
 
@@ -469,7 +454,8 @@ export async function MainEntryPoint(isPassiveReload) {
     if (isPassiveReload) {
         startTime = new Date().getTime();
         StartLoad();
-        document.getElementById('loadBarContainer').style.display = 'block';
+        document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'none';
+        // document.getElementById('loadBarContainer').style.display = 'block';
         log(`-> Passive Reload Started..`);
     };
 
@@ -501,7 +487,7 @@ export async function MainEntryPoint(isPassiveReload) {
     // Check for passive reload
     if (isPassiveReload) {
         StopLoad();
-        document.getElementById('loadBarContainer').style.display = 'none';
+        document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'flex';
         log(`-> Passive Reload Finished [Elapsed: ${(new Date().getTime() - startTime)}ms]`);
         return;
     };

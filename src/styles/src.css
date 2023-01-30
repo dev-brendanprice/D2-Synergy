@@ -12,6 +12,9 @@
     /* Deprecated */
     --blurFilterAmount:3px;
 
+    /* Colors */
+    --accentColor:#ED4D4D; /* Default */
+
     --fontSize:15px;
     --fontSizeMultiplier:1.0; /* Decimal place = % increase */
 

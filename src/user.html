@@ -229,7 +229,7 @@
 
         <div id="subContainer">
 
-            <!-- Side bar that contains the nav section, characters and xp breakdown -->
+           <!-- Deprecated -->
             <div id="sideSelectionBar">
 
                 <div id="charactersContainer">
@@ -336,6 +336,7 @@
                 </div>
             </div>
 
+            <!-- All main content -->
             <div id="containerThatHasTheSideSelectionAndContentDisplay">
 
                 <div id="sideSelectionContainer">
@@ -444,6 +445,11 @@
                                         <div class="modifierValue" id="sharedWisdomBonusField">--</div>
                                     </div>
                                     <div class="modifierContainer">
+                                        <img class="modifierCheckmarkIcon" id="wellRestedCheckmarkIcon" src="./static/ico/checkmark.svg">
+                                        <div style="width: 160px;">Well Rested</div>
+                                        <div class="modifierValue" id="wellRestedBonusField">--</div>
+                                    </div>
+                                    <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="ghostModsCheckmarkIcon" src="./static/ico/checkmark.svg">
                                         <div style="width: 160px;">Ghost Mods</div>
                                         <div class="modifierValue" id="ghostModBonusField">--</div>
@@ -452,39 +458,436 @@
                             </div>
                         </div>
 
+                        <div style="display: flex;margin-top: 10px;gap:5px;align-items: center;color: white;">
+                            <label class="switch">
+                                <input type="checkbox" id="checkboxIncludeExpiredBounties">
+                                <span class="slider round"></span>
+                            </label>
+                            <div style="padding-top:1px;">Include expired bounties in yield</div>
+                        </div>
+
+                        <div style="display: flex;margin-top: 15px;gap:5px;align-items: center;color: white;">
+                            <label class="switch">
+                                <input type="checkbox" id="sliderCheckbox">
+                                <span class="slider round"></span>
+                            </label>
+                            <div style="padding-top:1px;">Include challenges in table</div>
+                        </div>
+
                     </div>
                 </div>
     
                 <div id="contentDisplay">
     
                     <div id="contentDisplayGridLayout">
-                        <div class="contentDisplaySegment" style="overflow-y: scroll;">
-                            <table id="myTable">
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Category</th>
-                                    <th>Key Words</th>
-                                    <th>Relation</th>
-                                </tr>
-                                <tr>
-                                    <td>Auto Rifle</td>
-                                    <td>ItemType</td>
-                                    <td>ItemType</td>
-                                    <td style="color: rgb(87, 194, 87);">80%</td>
-                                </tr>
-                                <tr>
-                                    <td>Dares of Eternity</td>
-                                    <td>ActivityMode</td>
-                                    <td>ItemType</td>
-                                    <td style="color: rgb(218, 64, 64);">50%</td>
-                                </tr>
-                                <tr>
-                                    <td>leftouter</td>
-                                    <td>leftinner</td>
-                                    <td>rightinner</td>
-                                    <td>rightouter</td>
-                                </tr>
-                            </table>
+                        <div class="contentDisplaySegment">
+                            <div style="margin-top:15px;overflow-y: scroll;max-height: 80%;">
+                                <table id="myTable">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Category</th>
+                                        <th>Key Words</th>
+                                        <th>Relation</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Auto Rifle</td>
+                                        <td>ItemType</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(87, 194, 87);">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dares of Eternity</td>
+                                        <td>ActivityMode</td>
+                                        <td>ItemType</td>
+                                        <td style="color: rgb(218, 64, 64);">50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>leftouter</td>
+                                        <td>leftinner</td>
+                                        <td>rightinner</td>
+                                        <td>rightouter</td>
+                                    </tr>
+                                    
+                                </table>
+                            </div>
                         </div>
 
                         <div class="contentDisplaySegment">
@@ -497,6 +900,11 @@
                                     </div>
                                     <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
                                     <div style="display: flex;gap: 5px;">
+                                        <div id="bountiesOutstandingField">0</div>
+                                        <div>Outstanding</div>
+                                    </div>
+                                    <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
+                                    <div style="display: flex;gap: 5px;">
                                         <div id="bountiesCompletedField">0</div>
                                         <div>Completed</div>
                                     </div>
@@ -506,6 +914,7 @@
                                         <div>Expired</div>
                                     </div>
                                 </div>
+                                <div id="noBountiesTooltip">You don't have any bounties on this character.</div>
                                 <div style="margin-top: 15px;" id="bountyItems"></div>
                             </div>
                             <div id="seasonalChallengesContainer">

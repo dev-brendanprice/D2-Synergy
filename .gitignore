@@ -3,7 +3,6 @@
 /D2-Synergy.code-workspace
 /.vscode
 /out
-/xnotes.txt
 
 # Ignore environment variables
 /.env

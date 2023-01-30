@@ -118,6 +118,7 @@ export async function AddEventListeners() {
 
         let currentChar = await CacheReturnItem('currentChar');
         let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
+        let emblemPath = itemDefinitions[currentChar.emblemHash].secondaryOverlay;
 
         // Load character
         let characterType = ParseChar(document.getElementById('middleCharacterTypeField').innerHTML, true);
@@ -126,8 +127,22 @@ export async function AddEventListeners() {
         // Replace with top selector elements
         document.getElementById('middleCharacterTypeField').innerHTML = typeField;
         document.getElementById('middleCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
-        document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${currentChar.emblemPath}`;
+        document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
         document.getElementById('middleCharacterPowerLevelField').innerHTML = powerLevelField;
+    });
+
+    AddListener('checkboxIncludeExpiredBounties', 'change', function () {
+
+        // If checked, Store boolean and passive refresh
+        if (this.checked) {
+            CacheAuditItem('includeExpiredBounties', true);
+            MainEntryPoint(true);
+            return;
+        };
+
+        // If unchecked, Reverse boolean and passive refresh
+        CacheAuditItem('includeExpiredBounties', false);
+        MainEntryPoint(true);
     });
 
     AddListener('bottomCharacterContainer', 'click', async function () {
@@ -137,6 +152,7 @@ export async function AddEventListeners() {
 
         let currentChar = await CacheReturnItem('currentChar');
         let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
+        let emblemPath = itemDefinitions[currentChar.emblemHash].secondaryOverlay;
 
         // Load character
         let characterType = ParseChar(document.getElementById('bottomCharacterTypeField').innerHTML, true);
@@ -145,7 +161,7 @@ export async function AddEventListeners() {
         // Replace with top selector elements
         document.getElementById('bottomCharacterTypeField').innerHTML = typeField;
         document.getElementById('bottomCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
-        document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${currentChar.emblemPath}`;
+        document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
         document.getElementById('bottomCharacterPowerLevelField').innerHTML = powerLevelField;
     });
 
@@ -551,6 +567,7 @@ export async function BuildWorkspace() {
 
     let rangeSlider = document.getElementById('accessibilityImageSizeSlider'),
         bountyImage = document.getElementById('accessibilityImageDemo');
+    let accentColorResponse = '';
 
     // Scroll to top of page
     window.scrollTo(0, 0);
@@ -559,24 +576,47 @@ export async function BuildWorkspace() {
     document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
     document.getElementById('settingsFooterVersionField').innerHTML = `${import.meta.env.version}`;
 
+    // Slider section values
+    rangeSlider.value = itemDisplay.itemDisplaySize;
+    bountyImage.style.width = `${itemDisplay.itemDisplaySize}px`;
+
+    // Set checkboxes to chosen state, from localStorage (userCache)
+    document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
+    document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
+    document.getElementById('checkboxIncludeExpiredBounties').checked = await CacheReturnItem('includeExpiredBounties');
+
     // Configure accent color
-    await CacheReturnItem('accentColor')
+    CacheReturnItem('accentColor')
     .then((result) => {
-        accentColor.UpdateAccentColor(result);
-    })
-    .catch((error) => {
+
+        if (result) {
+            accentColor.UpdateAccentColor(result);
+            document.querySelector(':root').style.setProperty('--accentColor', result);
+            return;
+        };
+
         CacheAuditItem('accentColor', '#ED4D4D');
         accentColor.UpdateAccentColor('#ED4D4D');
+        document.querySelector(':root').style.setProperty('--accentColor', '#ED4D4D');
+    })
+    .catch((error) => {
+        console.error(error);
     });
     
     // Push cache results for itemDisplaySize to variables
-    await CacheReturnItem('itemDisplaySize')
+    CacheReturnItem('itemDisplaySize')
     .then((result) => {
-        itemDisplay.UpdateItemSize(result);
-    })
-    .catch((error) => {
+
+        if (result) {
+            itemDisplay.UpdateItemSize(result);
+            return;
+        };
+
         CacheAuditItem('itemDisplaySize', 55);
         itemDisplay.UpdateItemSize(55);
+    })
+    .catch((error) => {
+        console.error(error);
     });
 
     // Get state of secret setting
@@ -585,19 +625,13 @@ export async function BuildWorkspace() {
         if (result) {
             document.getElementById('settingsSecretContainer').style.display = 'block';
         };
+    })
+    .catch((error) => {
+        console.error(error);
     });
 
-    // Slider section values
-    rangeSlider.value = itemDisplay.itemDisplaySize;
-    bountyImage.style.width = `${itemDisplay.itemDisplaySize}px`;
-
-    // Set checkboxes to chosen state, from localStorage (userCache)
-    document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
-    document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
-
-
     // Push cache results for defaultContenteView to variabGles
-    await CacheReturnItem('defaultContentView')
+    CacheReturnItem('defaultContentView')
     .then((result) => {
 
         // Set default view if there is none saved already
@@ -605,21 +639,7 @@ export async function BuildWorkspace() {
             CacheAuditItem('defaultContentView', 'bountiesContainer');
             document.getElementById(`bountiesContainer`).style.display = 'block';
             document.getElementById('defaultViewDropdown').value = 'bountiesContainer';
-            return;
         };
-        log(result);
-        
-        // Filter out the content view that is not the default or the saved one
-        // containerNames.forEach(value => {
-        //     log(value);
-        //     if (value !== result) {
-        //         document.getElementById(value).style.display = 'none';
-        //         return;
-        //     };
-
-        //     document.getElementById(value).style.display = 'block';
-        //     document.getElementById('defaultViewDropdown').value = value;
-        // });
     })
     .catch((error) => {
         console.error(error);

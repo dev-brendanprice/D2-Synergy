@@ -34,7 +34,7 @@ export async function LoadCharacter(classType, characters) {
     log(characterLoadToggled, typeof characterLoadToggled);
     if (!characterLoadToggled) {
 
-        log('LoadPrimaryCharacter START');
+        log('-> LoadCharacter Called');
 
         // Toggle character load
         characterLoadToggled = true;
@@ -81,19 +81,20 @@ export async function LoadCharacter(classType, characters) {
         let otherCharacters = Object.keys(characters).filter(v => v!==characterId);
         for (let id of otherCharacters) {
             
-            let char = characters[id],
-                emblemLargeBg = itemDefinitions[char.emblemHash].secondarySpecial;
+            let char = characters[id];
+            let emblemLargeBg = itemDefinitions[char.emblemHash].secondarySpecial;
+            let emblemPath = itemDefinitions[char.emblemHash].secondaryOverlay;
 
             if (!document.getElementById('middleCharacterTypeField').innerHTML) {
                 document.getElementById('middleCharacterTypeField').innerHTML = ParseChar(char.classType);
                 document.getElementById('middleCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
-                document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${char.emblemPath}`;
+                document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
                 document.getElementById('middleCharacterPowerLevelField').innerHTML = char.light;
             }
             else if (!document.getElementById('bottomCharacterTypeField').innerHTML) {
                 document.getElementById('bottomCharacterTypeField').innerHTML = ParseChar(char.classType);
                 document.getElementById('bottomCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
-                document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${char.emblemPath}`;
+                document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
                 document.getElementById('bottomCharacterPowerLevelField').innerHTML = char.light;
             };
         };
@@ -141,7 +142,7 @@ export async function LoadCharacter(classType, characters) {
         });
 
         // Get season pass info
-        log(seasonDefinitions[CurrentSeasonHash], CurrentSeasonHash)
+        log(seasonDefinitions[CurrentSeasonHash], CurrentSeasonHash);
         seasonProgressionInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
         seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
         prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
@@ -190,12 +191,12 @@ export async function LoadCharacter(classType, characters) {
         };
 
         // Get all progressional items
-        GetProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp);
+        await GetProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp);
 
         // Stop loading sequence
         CacheAuditItem('lastChar', classType);
         characterLoadToggled = false;
         StopLoad();
     };
-    log('LoadPrimaryCharacter END');
+    log('-> LoadCharacter Done');
 };
