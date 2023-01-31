@@ -16,7 +16,8 @@ import {
     seasonDefinitions,
     recordDefinitions,
     presentationNodeDefinitions,
-    allProgressionProperties } from "../user.js";
+    allProgressionProperties, 
+    destinyUserProfile} from "../user.js";
 import { LoadCharacter } from './LoadCharacter.js';
 
 const log = console.log.bind(console),
@@ -81,7 +82,17 @@ export function ParseChar(classType, isReverse = false) {
 // weekNumber: 1-xx where 0 is the "Complete all seasonal challenges" record
 // Modular function, if weekNumber is passed, then it will only return challenges in that week, otherwise it will return all challenges
 // @int {seasonHash}, @object {recordDefinitions}, @object {DestinyPresentationNodeDefinition}, @int {weekNumber}
-export async function ReturnAllSeasonChallenges(seasonHash, seasonDefinitions, recordDefinitions, presentationNodeDefinitions, weekNumber) {
+export async function ParseSeasonalChallenges(seasonHash, seasonDefinitions, recordDefinitions, presentationNodeDefinitions, weekNumber) {
+
+    // Self function to add props onto a challenge
+    function addPropsToChallengeItem(seasonalChallenges) {
+        for (let challenge in seasonalChallenges) {
+            if (!seasonalChallenges[challenge].props) {
+                seasonalChallenges[challenge].props = [];
+            };
+            seasonalChallenges[challenge].props = stringMatchProgressionItem(seasonalChallenges[challenge]);
+        };
+    };
 
     // Get the presentation node hash for the weekly challenges node
     let seasonalChallengesNodeHash = presentationNodeDefinitions[seasonDefinitions[seasonHash].seasonalChallengesPresentationNodeHash].children.presentationNodes[0].presentationNodeHash,
@@ -98,8 +109,18 @@ export async function ReturnAllSeasonChallenges(seasonHash, seasonDefinitions, r
         // Loop through each challenge in that week and add it to the seasonalChallenges object
         for (let record in specifiedSeasonalChallengesInThatWeek) {
             let recordHash = specifiedSeasonalChallengesInThatWeek[record].recordHash;
+            let recordDescription = recordDefinitions[recordHash].displayProperties.description;
+
+            // Check if progressionDescriptor has string variables to replace
+            if (recordDescription.includes('{')) {
+                recordDefinitions[recordHash].displayProperties.description = replaceStringVariables(recordDescription);
+            };
             seasonalChallenges[recordHash] = recordDefinitions[recordHash];
         };
+
+        // Add props to each challenge
+        addPropsToChallengeItem(seasonalChallenges);
+        
         return seasonalChallenges;
     };
 
@@ -117,9 +138,19 @@ export async function ReturnAllSeasonChallenges(seasonHash, seasonDefinitions, r
         for (let fubar in weekPresentationNodeDefinition) {
             let recordHash = weekPresentationNodeDefinition[fubar].recordHash;
             let recordDefinition = recordDefinitions[recordHash];
+            let recordDescription = recordDefinitions[recordHash].displayProperties.description;
+
+            // Check if progressionDescriptor has string variables to replace
+            if (recordDescription.includes('{')) {
+                recordDefinitions[recordHash].displayProperties.description = replaceStringVariables(recordDescription);
+            };
             seasonalChallenges[recordHash] = recordDefinition;
         };
     };
+
+    // Add props to each challenge
+    addPropsToChallengeItem(seasonalChallenges);
+
     return seasonalChallenges;
 };
 
@@ -1201,49 +1232,104 @@ export function CountProgressionItemProperties(charBounties, seasonalChallenges,
 
 
 
+// Replace string variables
+// @str {string}
+export function replaceStringVariables(descriptor) {
+    
+    let variableId = (descriptor.split('{')[1].split('}')[0]).split(':')[1];
+    let indexOfVariable = [descriptor.indexOf(`{`), descriptor.indexOf('}')];
+    let variableSubString = descriptor.substring(indexOfVariable[0], indexOfVariable[1] + 1);
+
+    // Check the profile and character context for string variable
+    let variableValue;
+    let currentCharId;
+
+    CacheReturnItem('currentChar')
+    .then((char) => {
+        currentCharId = char.characterId;
+    });
+
+    if (destinyUserProfile.profileStringVariables.data.integerValuesByHash[variableId]) {
+        variableValue = destinyUserProfile.profileStringVariables.data.integerValuesByHash[variableId];
+    }
+    else {
+        variableValue = destinyUserProfile.characterStringVariables.data[currentCharId].integerValuesByHash[variableId];
+    };
+
+    // Replace the variable with the string value
+    log(descriptor.replace(variableSubString, variableValue));
+    return descriptor.replace(variableSubString, variableValue);
+};
+
+
+
 // String match progressions via displayProperties (pending for refactor and optimization)
 // @obj {progressionItem}
 export function stringMatchProgressionItem(progressionItem) {
 
-    // Aliases for certain properties
-    let activityMode = parsePropertyNameIntoWord(ActivityMode[29]);
-
-    // Wildcard search
+    // Wildcard searches for properties that have other naming conventions/aliases
     const propertyAliases = {
         'Submachine Gun': 'SMG',
-        'Season Of The Seraph': `${activityMode}`
+        'Season Of The Seraph': `${parsePropertyNameIntoWord(ActivityMode[29])}`
     };
 
-    // Loop through charBounties, seasonalChallenges' displayProperties -- Store items that match a property, and the property itself
+    // ProgressionItems' displayProperties
     let progressionDescriptor = progressionItem.displayProperties.description,
         matchedProperties = [];
+    
+    // Loop over allProgressionProperties to match against the item description
+    for (let property of allProgressionProperties) {
+        
+        // Find booleans
+        let isPropertyAlias = progressionDescriptor.includes(propertyAliases[property]);
+        let isPropertyMatch = progressionDescriptor.toLowerCase().includes(property.toLowerCase());
 
-    // Match properties to progression items' descriptions
-    allProgressionProperties.forEach(property => {
+        // Includes property, is alias of property
+        if (isPropertyAlias || isPropertyMatch) {
 
-        // If the description includes the property name, or the property name is an alias of the property
-        // For example, SMG is an alias of Submachine Gun
-        if (progressionDescriptor.toLowerCase().includes(property.toLowerCase()) || progressionDescriptor.includes(propertyAliases[property])) {
-
+            // If property is alias, change to *my* standard name
             if (propertyAliases[property]) {
                 property = propertyAliases[property];
             };
 
-            // If the property exists in matchedproperties, as a substring
+            // If property exists in matchedProperties
             if (!matchedProperties.some(matchedProperty => matchedProperty.includes(property))) {
                 matchedProperties.push(property);
             };
         };
-    });
+    };
 
-    // Return an array of matched properties
+    // String match the description against allProgressionProperties
+    // allProgressionProperties.forEach(property => {
+
+    //     // If the description includes the property name, or the property name is an alias of the property
+    //     // For example, SMG is an alias of Submachine Gun
+    //     if (progressionDescriptor.toLowerCase().includes(property.toLowerCase()) || progressionDescriptor.includes(propertyAliases[property])) {
+
+    //         if (propertyAliases[property]) {
+    //             property = propertyAliases[property];
+    //         };
+
+    //         // If the property exists in matchedProperties, as a substring
+    //         if (!matchedProperties.some(matchedProperty => matchedProperty.includes(property))) {
+    //             matchedProperties.push(property);
+    //         };
+    //     };
+    // });
+
+    // Return matched properties
     return matchedProperties;
 };
 
 
 
 // Function to fetch all progressional items
-export async function GetProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp) {
+export async function ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp) {
+
+    let returnObj = {
+        charBounties: [],
+        challenges: []
+    };
 
     // Call function to get progressions for season pass XP and bonus stats
     const seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack);
@@ -1263,7 +1349,6 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
 
     // [ -- SEASONAL CHALLENGES -- ]
     // Clear HTML fields
-    // 'invert(70%) sepia(96%) saturate(4644%) hue-rotate(84deg) brightness(126%) contrast(117%)'
     const filterToMakeCheckmarkGreen = 'invert(70%) sepia(96%) saturate(4644%) hue-rotate(84deg) brightness(126%) contrast(117%)',
           filterToResetCheckmark = 'invert(100%) brightness(50%)';
 
@@ -1278,7 +1363,8 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
     document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToResetCheckmark;
 
     // Get all seasonal challenges
-    let allSeasonalChallenges = await ReturnAllSeasonChallenges(2809059433, seasonDefinitions, recordDefinitions, presentationNodeDefinitions, null);
+    let allSeasonalChallenges = await ParseSeasonalChallenges(2809059433, seasonDefinitions, recordDefinitions, presentationNodeDefinitions, null);
+    returnObj.challenges = allSeasonalChallenges; // Add to return object
     log('Seasonal Challenges:', allSeasonalChallenges);
 
     // Parse seasonal challenges into corresponding objects
@@ -1469,7 +1555,12 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
     let parsedBountiesResponse = ParseBounties(charInventory, CharacterObjectives, itemDefinitions, objectiveDefinitions);
     let characterBounties = parsedBountiesResponse.charBounties;
     amountOfBounties = parsedBountiesResponse.amountOfBounties;
+    returnObj.charBounties = characterBounties; // Add bounties to return object
     log(amountOfBounties, characterBounties);
+
+    if (amountOfBounties < 20) {
+        document.getElementById('recommendationTooltip').style.display = 'block';
+    };
 
     // Translate objective hashes to objective strings
     Object.keys(characterBounties).forEach(bounty => {
@@ -1481,7 +1572,6 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
             characterBounties[bounty].objectiveDefinitions.push(objectiveDefinitions[objHash]);
         };
     });
-    log(characterBounties, characterBounties.length);
 
     // Sort bounties by group (vanguard, gunsmith etc)
     bountyArr = SortByGroup(characterBounties, bountyArr, vendorKeys);
@@ -1567,17 +1657,12 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
         console.error(err);
     });
 
-    // 1.x
+    // Format to 1.n
     // XP modifier, does not contain well rested bonus
     const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) * wellRestedBonus) / 100) + 1;
     log(xpModifier, wellRestedBonus);
     
     // Subtract the difference between current weekly progress to the end of the well rested bonus
-    // seasonPassProgressionStats.weeklyProgress = 0;
-    // totalXpYield = 287_599;
-    // ghostModBonusXp = 0;
-    // seasonPassProgressionStats.sharedWisdomBonusValue = 0;
-    // seasonPassProgressionStats.bonusXpValue = 0;
     if (((totalXpYield * xpModifier) * 2) > (500_000 - seasonPassProgressionStats.weeklyProgress)) {
 
         log('Well-Rested Surpassed');
@@ -1586,12 +1671,10 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
         const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp)) / 100) + 1;
 
         log([totalXpYield, xpModifier, (totalXpYield * xpModifier), (500_000 - seasonPassProgressionStats.weeklyProgress), (500_000 - seasonPassProgressionStats.weeklyProgress) / 2]);
+        log(`${totalXpYield} * ${xpModifier} + ((500_000 - ${seasonPassProgressionStats.weeklyProgress}) / 2)`);
 
         // Calculate XP yield where well rested bonus has no more overhead; will not be used on the overhead calculation
-        // totalXpYieldWithModifiers = totalXpYield + ((500_000 - seasonPassProgressionStats.weeklyProgress) / 2);
-        log(`${totalXpYield} * ${xpModifier} + ((500_000 - ${seasonPassProgressionStats.weeklyProgress}) / 2)`);
         totalXpYieldWithModifiers = (totalXpYield * xpModifier) + ((500_000 - seasonPassProgressionStats.weeklyProgress) / 2);
-
         log(totalXpYieldWithModifiers);
     }
     else {
@@ -1634,5 +1717,59 @@ export async function GetProgressionalItems(CharacterObjectives, CharacterInvent
     };
     // [ -- END OF BOUNTIES -- ]
 
-    log('-> GetProgressionalItems Done');
+    log('-> ParseProgressionalItems Done');
+    return returnObj;
+};
+
+
+
+// Function to find all the relations between progressional items
+export async function ParseProgressionalRelations(progressionalItems) {
+    
+    let bountyRelations = {},
+        challengeRelations = {};
+
+    // Loop through character bounties
+    for (let bounty of progressionalItems.charBounties) {
+        
+        // Loop through props and add to bountyRelations
+        bounty.props.forEach((prop) => {
+
+            // Check if prop exists in bountyRelations, if so add 1
+            if (bountyRelations[prop]) {
+                bountyRelations[prop]++;
+            }
+            else { // if not create it
+                bountyRelations[prop] = 1;
+            };
+
+        });
+    };
+
+    // Loop through challenges
+    // for (let v in progressionalItems.challenges) {
+        
+    //     let challenge = progressionalItems.challenges[v];
+    //     log(challenge);
+
+    //     challenge.props.forEach((prop) => {
+
+    //         // Check if props exists in challengeRelations, if so add 1
+    //         if (challengeRelations[prop]) {
+    //             challengeRelations[prop]++;
+    //         }
+    //         else { // if not create it
+    //             challengeRelations[prop] = 1;
+    //         };
+
+    //     });
+    // };
+    
+    // Remove keys' values that are not more than 1
+    bountyRelations = Object.fromEntries(Object.entries(bountyRelations).filter(([key, value]) => value > 1));
+
+    // Sort bountyRelations by value (highest to lowest)
+    bountyRelations = Object.entries(bountyRelations).sort((a,b) => b[1] - a[1]);
+
+    log(bountyRelations, challengeRelations);
 };

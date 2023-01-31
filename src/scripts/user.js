@@ -6,7 +6,6 @@ import axios from 'axios';
 import { ValidateManifest, ReturnEntry } from './modules/ValidateManifest.js';
 import {
     VerifyState,
-    ParseChar,
     StartLoad,
     StopLoad,
     RedirUser,
@@ -14,7 +13,6 @@ import {
     parsePropertyNameIntoWord,
     CacheAuditItem } from './modules/ModuleScript.js';
 import {
-    CurrentlyAddedVendors,
     ActivityMode,
     Destination,
     DamageType,
@@ -421,7 +419,7 @@ export async function FetchBungieUserDetails() {
     };
 
     // GetProfile
-    await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900`, axiosConfig)
+    await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900,1200`, axiosConfig)
         .then(response => {
                 
             // Store in memory again

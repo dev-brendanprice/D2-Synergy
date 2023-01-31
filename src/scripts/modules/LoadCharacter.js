@@ -3,7 +3,8 @@ import {
     ReturnSeasonPassLevel,
     AddValueToElementInner,
     InsertSeperators,
-    GetProgressionalItems,
+    ParseProgressionalItems,
+    ParseProgressionalRelations,
     StopLoad,
     ParseChar } from './ModuleScript';
 import { 
@@ -190,8 +191,11 @@ export async function LoadCharacter(classType, characters) {
             document.getElementById('artifactStatsNoArtifactIsPresent').style.display = 'block';
         };
 
-        // Get all progressional items
-        await GetProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp);
+        // Get progressional items
+        var progressionalItemsObj = await ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp);
+
+        // Get relations for progressional items
+        await ParseProgressionalRelations(progressionalItemsObj);
 
         // Stop loading sequence
         CacheAuditItem('lastChar', classType);
