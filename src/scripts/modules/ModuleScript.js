@@ -17,7 +17,7 @@ import {
     recordDefinitions,
     presentationNodeDefinitions,
     allProgressionProperties, 
-    destinyUserProfile} from "../user.js";
+    destinyUserProfile } from "../user.js";
 import { LoadCharacter } from './LoadCharacter.js';
 
 const log = console.log.bind(console),
@@ -400,6 +400,9 @@ export function ParseBounties(charInventory, charObjectives, itemDefinitions) {
                 item.progress.push(objective);
             };
 
+            // Replace string variables in item descriptor
+            item.displayProperties.description = replaceStringVariables(item.displayProperties.description);
+
             // Add isExpired property
             item.isExpired = new Date(bounty.expirationDate) < new Date();
 
@@ -408,7 +411,7 @@ export function ParseBounties(charInventory, charObjectives, itemDefinitions) {
 
             // Add item properties
             item.props = stringMatchProgressionItem(item);
-            log(item.displayProperties.description, item.props);
+            // log(item.displayProperties.description, item.props);
 
             // Add isComplete property
             let entriesAmount = item.progress.length, 
@@ -1003,27 +1006,35 @@ export function GenerateRandomString(len) {
 
 
 // Turn property name into a readable name (without the spaces)
-// @string {propertyName}
-export function parsePropertyNameIntoWord(propertyName) {
+// @string {propertyName}, @boolean {isReverse}
+export function parsePropertyNameIntoWord(propertyName, isReverse = false) {
 
-    let subStrings = propertyName.match(/[A-Z][a-z]+/g),
-        word = '';
+    if (isReverse) {
+        // Else, remove spaces (regex good - fight me)
+        return propertyName.replace(/\s/g, '');
+    };
 
-    if (!subStrings) {
+    // If no reverse, add spaces before capital letter
+    let wordsWithoutSpaces = propertyName.match(/[A-Z][a-z]+/g);
+    let string;
+
+    // Check for invalid input
+    if (!wordsWithoutSpaces) {
         return propertyName;
     };
 
-    for (const d in subStrings) {
+    // Manually add spaces
+    for (const d in wordsWithoutSpaces) {
         
-        if (!word) {
-            word += `${subStrings[d]}`;
+        if (!string) {
+            string += `${wordsWithoutSpaces[d]}`;
         }
         else {
-            word += ` ${subStrings[d]}`;
+            string += ` ${wordsWithoutSpaces[d]}`;
         };
     };
 
-    return word;
+    return string;
 };
 
 
@@ -1233,32 +1244,43 @@ export function CountProgressionItemProperties(charBounties, seasonalChallenges,
 
 
 // Replace string variables
-// @str {string}
+// @str {descriptor}
 export function replaceStringVariables(descriptor) {
-    
-    let variableId = (descriptor.split('{')[1].split('}')[0]).split(':')[1];
-    let indexOfVariable = [descriptor.indexOf(`{`), descriptor.indexOf('}')];
-    let variableSubString = descriptor.substring(indexOfVariable[0], indexOfVariable[1] + 1);
 
-    // Check the profile and character context for string variable
-    let variableValue;
-    let currentCharId;
-
-    CacheReturnItem('currentChar')
-    .then((char) => {
-        currentCharId = char.characterId;
-    });
-
-    if (destinyUserProfile.profileStringVariables.data.integerValuesByHash[variableId]) {
-        variableValue = destinyUserProfile.profileStringVariables.data.integerValuesByHash[variableId];
-    }
-    else {
-        variableValue = destinyUserProfile.characterStringVariables.data[currentCharId].integerValuesByHash[variableId];
+    // Find all indices of string variables
+    let indices = [];
+    for (let i=0; i<descriptor.length; i++) {
+        if (descriptor[i] === '{' || descriptor[i] === '}') {
+            indices.push(i);
+        };
     };
 
-    // Replace the variable with the string value
-    log(descriptor.replace(variableSubString, variableValue));
-    return descriptor.replace(variableSubString, variableValue);
+    // Ensure indices is in ascending order
+    indices.sort((a,b) => a-b);
+    
+    // Loop over indices with counted for loop
+    for (let i=0; i<indices.length; i++) {
+
+        // Get the string variable id
+        let variableId = descriptor.slice(indices[i+1], indices[i]).split(':')[1];
+        if (variableId) {
+            
+            // Check in profile and character contexts for string variables
+            let variableValue;
+            if (destinyUserProfile.profileStringVariables.data.integerValuesByHash[variableId]) {
+                variableValue = destinyUserProfile.profileStringVariables.data.integerValuesByHash[variableId];
+            }
+            else {
+                variableValue = destinyUserProfile.characterStringVariables.data[currentCharId].integerValuesByHash[variableId];
+            };
+
+            // Splice variable value back into string
+            let subString = descriptor.substring(indices[i-1], indices[i]+1, variableValue);
+            descriptor = descriptor.replace(subString, variableValue);
+        };
+    };
+
+    return descriptor;
 };
 
 
@@ -1299,25 +1321,6 @@ export function stringMatchProgressionItem(progressionItem) {
         };
     };
 
-    // String match the description against allProgressionProperties
-    // allProgressionProperties.forEach(property => {
-
-    //     // If the description includes the property name, or the property name is an alias of the property
-    //     // For example, SMG is an alias of Submachine Gun
-    //     if (progressionDescriptor.toLowerCase().includes(property.toLowerCase()) || progressionDescriptor.includes(propertyAliases[property])) {
-
-    //         if (propertyAliases[property]) {
-    //             property = propertyAliases[property];
-    //         };
-
-    //         // If the property exists in matchedProperties, as a substring
-    //         if (!matchedProperties.some(matchedProperty => matchedProperty.includes(property))) {
-    //             matchedProperties.push(property);
-    //         };
-    //     };
-    // });
-
-    // Return matched properties
     return matchedProperties;
 };
 
@@ -1727,14 +1730,18 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 export async function ParseProgressionalRelations(progressionalItems) {
     
     let bountyRelations = {},
-        challengeRelations = {};
+        challengeRelations = {},
+        allRelations = {};
+    
+    // Used to find percentage
+    let relationCount = 0;
 
     // Loop through character bounties
     for (let bounty of progressionalItems.charBounties) {
         
         // Loop through props and add to bountyRelations
         bounty.props.forEach((prop) => {
-
+            log(bounty);
             // Check if prop exists in bountyRelations, if so add 1
             if (bountyRelations[prop]) {
                 bountyRelations[prop]++;
@@ -1742,34 +1749,45 @@ export async function ParseProgressionalRelations(progressionalItems) {
             else { // if not create it
                 bountyRelations[prop] = 1;
             };
-
+            relationCount++;
         });
     };
+    log(bountyRelations);
 
     // Loop through challenges
-    // for (let v in progressionalItems.challenges) {
+    for (let index in progressionalItems.challenges) {
         
-    //     let challenge = progressionalItems.challenges[v];
-    //     log(challenge);
+        // Loop through challenge props
+        let challenge = progressionalItems.challenges[index];
+        challenge.props.forEach((prop) => {
 
-    //     challenge.props.forEach((prop) => {
-
-    //         // Check if props exists in challengeRelations, if so add 1
-    //         if (challengeRelations[prop]) {
-    //             challengeRelations[prop]++;
-    //         }
-    //         else { // if not create it
-    //             challengeRelations[prop] = 1;
-    //         };
-
-    //     });
-    // };
-    
+            // Check if props exists in challengeRelations, if so add 1
+            if (challengeRelations[prop]) {
+                challengeRelations[prop]++;
+            }
+            else { // if not create it
+                challengeRelations[prop] = 1;
+            };
+            relationCount++;
+        });
+    };
+    log(bountyRelations, challengeRelations);
     // Remove keys' values that are not more than 1
     bountyRelations = Object.fromEntries(Object.entries(bountyRelations).filter(([key, value]) => value > 1));
-
-    // Sort bountyRelations by value (highest to lowest)
-    bountyRelations = Object.entries(bountyRelations).sort((a,b) => b[1] - a[1]);
-
+    challengeRelations = Object.fromEntries(Object.entries(challengeRelations).filter(([key, value]) => value > 1));
     log(bountyRelations, challengeRelations);
+
+    // Merge relations
+    allRelations = {...bountyRelations, ...challengeRelations};
+
+    // Convert allRelations to percentages
+    allRelations = Object.entries(allRelations).map(([key, value]) => {
+        return [key, ((value / relationCount) * 1000)];
+    });
+
+    // Sort all references of relations in ascending order -- is needed??
+    // -- code
+
+    // Return all relations in the form of an object
+    return {bounties: bountyRelations, challenges: challengeRelations, all: allRelations};
 };

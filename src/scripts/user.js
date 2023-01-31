@@ -161,6 +161,21 @@ allProgressionProperties.push(
     ...LocationSpecifics,
     ...DescriptorSpecifics);
 
+// Progression properties and their corresponding key names
+export var progressionPropertyKeyValues = {
+    'Destination': Destination,
+    'ActivityMode': ActivityMode,
+    'DamageType': DamageType,
+    'ItemCategory': ItemCategory,
+    'AmmoType': AmmoType,
+    'KillType': KillType,
+    'EnemyType': EnemyType,
+    'EnemyModifiers': EnemyModifiers,
+    'SeasonalCategory': SeasonalCategory,
+    'LocationSpecifics': LocationSpecifics,
+    'DescriptorSpecifics': DescriptorSpecifics
+};
+
 // Parse properties into words that can be matched to item descriptors
 allProgressionProperties = allProgressionProperties.map(property => parsePropertyNameIntoWord(property));
 

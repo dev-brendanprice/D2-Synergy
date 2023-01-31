@@ -6,7 +6,8 @@ import {
     ParseProgressionalItems,
     ParseProgressionalRelations,
     StopLoad,
-    ParseChar } from './ModuleScript';
+    ParseChar,
+    parsePropertyNameIntoWord } from './ModuleScript';
 import { 
     itemDefinitions,
     destinyUserProfile, 
@@ -14,7 +15,8 @@ import {
     seasonDefinitions,
     seasonPassDefinitions,
     progressionDefinitions,
-    ProfileProgressions } from '../user.js';
+    ProfileProgressions,
+    progressionPropertyKeyValues } from '../user.js';
 
 const log = console.log.bind(console);
 
@@ -193,9 +195,28 @@ export async function LoadCharacter(classType, characters) {
 
         // Get progressional items
         var progressionalItemsObj = await ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp);
-
+        log(progressionalItemsObj);
         // Get relations for progressional items
-        await ParseProgressionalRelations(progressionalItemsObj);
+        var relations = await ParseProgressionalRelations(progressionalItemsObj);
+        log(relations);
+
+        // Append allRelations to table
+        for (let index in relations.all) {
+            
+            // Find the category that the relation corresponds to
+            let relation = relations.all[index];
+            let category;
+            for (let item in progressionPropertyKeyValues) {
+
+                // If relation is in category, store in category
+                if (progressionPropertyKeyValues[item].includes(parsePropertyNameIntoWord(relation[0]))) {
+                    category = item;
+                };
+            };
+
+            log(relation[0], category, relation);
+            // Stuff
+        };
 
         // Stop loading sequence
         CacheAuditItem('lastChar', classType);
