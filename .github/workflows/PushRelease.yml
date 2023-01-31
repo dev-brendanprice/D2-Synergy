@@ -26,6 +26,9 @@ jobs:
       - name: Release notes generator
         id: gen-notes
         uses: Decathlon/release-notes-generator-action@v3.1.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USE_MILESTONE_TITLE: "false"
 
       - uses: 'rui-costa/action-automatic-semver-releases@latest'
         name: "Automatic Release Update"
