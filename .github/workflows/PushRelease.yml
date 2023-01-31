@@ -22,15 +22,11 @@ jobs:
       - name: get-npm-version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@v1.1.0
+        
+      - name: Release notes generator
+        id: gen-notes
+        uses: Decathlon/release-notes-generator-action@v3.1.6
 
-      # ...
-      - name: '👷‍♂️ Build'
-        run: |
-          echo "BUILD COMPLETE 👍"
-      # ...
-      - name: '🧪 TEST'
-        run: |
-          echo "TESTS PASSED 🎉"
       - uses: 'rui-costa/action-automatic-semver-releases@latest'
         name: "Automatic Release Update"
         with:
