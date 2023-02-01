@@ -7,7 +7,8 @@ import {
     ParseProgressionalRelations,
     StopLoad,
     ParseChar,
-    parsePropertyNameIntoWord } from './ModuleScript';
+    parsePropertyNameIntoWord,
+    AddTableRow } from './ModuleScript';
 import { 
     itemDefinitions,
     destinyUserProfile, 
@@ -34,10 +35,13 @@ var seasonPassInfo = {},
 // @int {classType}, @boolean {isRefresh}
 export async function LoadCharacter(classType, characters) {
 
-    log(characterLoadToggled, typeof characterLoadToggled);
     if (!characterLoadToggled) {
 
         log('-> LoadCharacter Called');
+
+        // Change notification label content
+        document.getElementById('notificationTitle').innerHTML = 'Loading User Data';
+        document.getElementById('notificationMessage').innerHTML = 'Parsing user data..';
 
         // Toggle character load
         characterLoadToggled = true;
@@ -76,7 +80,6 @@ export async function LoadCharacter(classType, characters) {
         CacheAuditItem('currentChar', primaryCharacter);
 
         // Do character selects
-        log(primaryCharacter.classType);
         document.getElementById('topCharacterTypeField').innerHTML = ParseChar(primaryCharacter.classType);
         document.getElementById('topCharacterSelectImg').src = `https://www.bungie.net${primaryCharacter.emblemBackgroundPath}`;
         document.getElementById('topCharacterPowerLevelField').innerHTML = primaryCharacter.light;
@@ -121,7 +124,6 @@ export async function LoadCharacter(classType, characters) {
                 Object.keys(itemPlugSet).forEach(v => {
 
                     let plugHash = itemPlugSet[v].plugHash;
-                    log(plugHash);
                     if (plugHash === 1820053069) { // Flickering Ligt - 2%
                         ghostModBonusXp = 2;
                     }
@@ -168,7 +170,6 @@ export async function LoadCharacter(classType, characters) {
 
         // Get artifact info -- check if profile has artifact
         let artifact;
-        log(ProfileProgressions);
         if (ProfileProgressions.seasonalArtifact) {
 
             // Change corresponding HTML elements to display stats
@@ -195,10 +196,13 @@ export async function LoadCharacter(classType, characters) {
 
         // Get progressional items
         var progressionalItemsObj = await ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp);
-        log(progressionalItemsObj);
+
         // Get relations for progressional items
         var relations = await ParseProgressionalRelations(progressionalItemsObj);
-        log(relations);
+
+        let table = document.getElementById('myTable');
+        table.innerHTML = '';
+        table.innerHTML = '<tr><th>Item</th><th>Category</th><th>Relation</th></tr>';
 
         // Append allRelations to table
         for (let index in relations.all) {
@@ -209,13 +213,12 @@ export async function LoadCharacter(classType, characters) {
             for (let item in progressionPropertyKeyValues) {
 
                 // If relation is in category, store in category
-                if (progressionPropertyKeyValues[item].includes(parsePropertyNameIntoWord(relation[0]))) {
+                if (progressionPropertyKeyValues[item].includes(parsePropertyNameIntoWord(relation[0], true))) {
                     category = item;
                 };
             };
 
-            log(relation[0], category, relation);
-            // Stuff
+            AddTableRow(table, [relation[0], parsePropertyNameIntoWord(category), `${relation[1]}pts`]);
         };
 
         // Stop loading sequence

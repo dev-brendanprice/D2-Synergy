@@ -1,11 +1,14 @@
 import { 
     MainEntryPoint, 
     itemDisplay,
-    accentColor } from '../user.js';
+    accentColor,
+    destinyUserProfile,
+    itemDefinitions } from '../user.js';
 import { 
     CacheAuditItem, 
     CacheReturnItem,
-    Logout } from './ModuleScript.js';
+    Logout,
+    ParseChar } from './ModuleScript.js';
 import { LoadCharacter } from './LoadCharacter.js';
 
 
@@ -104,6 +107,64 @@ const AddDropdownEvent = function (dropwdownContent, dropdownArrow, dropdownBool
 
 // Add all event listeners
 export async function AddEventListeners() {
+
+    let characters = destinyUserProfile.characters.data;
+
+    // Top and Bottom character selects
+    AddListener('middleCharacterContainer', 'click', async function () {
+
+        const typeField = document.getElementById('topCharacterTypeField').innerHTML,
+              powerLevelField = document.getElementById('topCharacterPowerLevelField').innerHTML;
+
+        let currentChar = await CacheReturnItem('currentChar');
+        let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
+        let emblemPath = itemDefinitions[currentChar.emblemHash].secondaryOverlay;
+
+        // Load character
+        let characterType = ParseChar(document.getElementById('middleCharacterTypeField').innerHTML, true);
+        LoadCharacter(characterType, characters);
+
+        // Replace with top selector elements
+        document.getElementById('middleCharacterTypeField').innerHTML = typeField;
+        document.getElementById('middleCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+        document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
+        document.getElementById('middleCharacterPowerLevelField').innerHTML = powerLevelField;
+    });
+
+    AddListener('bottomCharacterContainer', 'click', async function () {
+
+        const typeField = document.getElementById('topCharacterTypeField').innerHTML,
+              powerLevelField = document.getElementById('topCharacterPowerLevelField').innerHTML;
+
+        let currentChar = await CacheReturnItem('currentChar');
+        let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
+        let emblemPath = itemDefinitions[currentChar.emblemHash].secondaryOverlay;
+
+        // Load character
+        let characterType = ParseChar(document.getElementById('bottomCharacterTypeField').innerHTML, true);
+        LoadCharacter(characterType, characters);
+
+        // Replace with top selector elements
+        document.getElementById('bottomCharacterTypeField').innerHTML = typeField;
+        document.getElementById('bottomCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+        document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
+        document.getElementById('bottomCharacterPowerLevelField').innerHTML = powerLevelField;
+    });
+
+    // Include expired bounties checkbox
+    AddListener('checkboxIncludeExpiredBounties', 'change', function () {
+
+        // If checked, Store boolean and passive refresh
+        if (this.checked) {
+            CacheAuditItem('includeExpiredBounties', true);
+            MainEntryPoint(true);
+            return;
+        };
+
+        // If unchecked, Reverse boolean and passive refresh
+        CacheAuditItem('includeExpiredBounties', false);
+        MainEntryPoint(true);
+    });
 
     // Bounties navbar control
     AddListener('navBarBountiesButton', 'click', function () {
@@ -473,7 +534,6 @@ export async function AddEventListeners() {
         else {
             currentlyShowingChunkIndex++;
         };
-        log(`currentlyShowingChunkIndex: ${currentlyShowingChunkIndex}`);
         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
     });
 
@@ -487,7 +547,6 @@ export async function AddEventListeners() {
         else {
             currentlyShowingChunkIndex--;
         };
-        log(`currentlyShowingChunkIndex: ${currentlyShowingChunkIndex}`);
         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
     });
 
@@ -496,14 +555,6 @@ export async function AddEventListeners() {
 
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
-
-    // dev
-    const row = document.getElementById('myTable').insertRow(-1);
-    row.insertCell(0).innerHTML = '1';
-    row.insertCell(1).innerHTML = '2';
-    row.insertCell(2).innerHTML = '3';
-    row.insertCell(3).innerHTML = '4';
-
 
     let rangeSlider = document.getElementById('accessibilityImageSizeSlider'),
         bountyImage = document.getElementById('accessibilityImageDemo');
@@ -550,7 +601,7 @@ export async function BuildWorkspace() {
     // Set checkboxes to chosen state, from localStorage (userCache)
     document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
     document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
-
+    document.getElementById('checkboxIncludeExpiredBounties').checked = await CacheReturnItem('includeExpiredBounties');
 
     // Push cache results for defaultContenteView to variabGles
     await CacheReturnItem('defaultContentView')
@@ -563,19 +614,10 @@ export async function BuildWorkspace() {
             document.getElementById('defaultViewDropdown').value = 'bountiesContainer';
             return;
         };
-        log(result);
-        
-        // Filter out the content view that is not the default or the saved one
-        // containerNames.forEach(value => {
-        //     log(value);
-        //     if (value !== result) {
-        //         document.getElementById(value).style.display = 'none';
-        //         return;
-        //     };
 
-        //     document.getElementById(value).style.display = 'block';
-        //     document.getElementById('defaultViewDropdown').value = value;
-        // });
+        // Set default view to result from cache
+        // document.getElementById(`${result}`).style.display = 'block';
+        // document.getElementById('defaultViewDropdown').value = result;
     })
     .catch((error) => {
         console.error(error);

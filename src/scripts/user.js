@@ -119,6 +119,8 @@ export var accentColor = {
         // Update dom content
         document.getElementById('topColorBar').style.backgroundColor = color;
         document.getElementById('topColorBar').style.boxShadow = `0px 0px 10px 1px ${color}`;
+        document.getElementById('notificationTopBgLine').style.backgroundColor = color;
+        document.getElementById('notificationTopBgLine').style.boxShadow = `0px 0px 10px 1px ${color}`;
         
         // Range sliders
         for (let element of document.getElementsByClassName('settingRange')) {
@@ -468,9 +470,12 @@ export async function MainEntryPoint(isPassiveReload) {
         startTime = new Date().getTime();
         StartLoad();
         document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'none';
-        // document.getElementById('loadBarContainer').style.display = 'block';
         log(`-> Passive Reload Started..`);
     };
+
+    // Change notification label content
+    document.getElementById('notificationTitle').innerHTML = 'Loading Bungie Data';
+    document.getElementById('notificationMessage').innerHTML = 'Waiting for Bungie.net..';
 
     // OAuth Flow
     await OAuthFlow();

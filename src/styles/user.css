@@ -314,6 +314,7 @@
 #myTable {
     width: 100%;
     font-family: arial, sans-serif;
+    user-select: text;
 }
 
 td, th {

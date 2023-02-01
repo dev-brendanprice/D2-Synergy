@@ -70,6 +70,10 @@ export var ValidateManifest = async () => {
 
     log('ValidateManifest START')
 
+    // Change notification label content
+    document.getElementById('notificationTitle').innerHTML = 'Loading Definitions';
+    document.getElementById('notificationMessage').innerHTML = 'Parsing definitions..';
+
     // Fetch manifest
     let localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
     

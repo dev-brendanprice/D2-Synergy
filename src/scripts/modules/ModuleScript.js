@@ -55,7 +55,6 @@ export function RedirUser(url, param) {
 // @int {classType}
 export function ParseChar(classType, isReverse = false) {
 
-    log(classType, isReverse);
     if (classType === 0 || classType === 'Titan') {
         if (!isReverse) {
             return 'Titan';
@@ -135,8 +134,8 @@ export async function ParseSeasonalChallenges(seasonHash, seasonDefinitions, rec
         let weekPresentationNodeDefinition = presentationNodeDefinitions[presentationNodeHash].children.records;
 
         // Loop through each challenge in that week and add it to the seasonalChallenges object
-        for (let fubar in weekPresentationNodeDefinition) {
-            let recordHash = weekPresentationNodeDefinition[fubar].recordHash;
+        for (let v in weekPresentationNodeDefinition) {
+            let recordHash = weekPresentationNodeDefinition[v].recordHash;
             let recordDefinition = recordDefinitions[recordHash];
             let recordDescription = recordDefinitions[recordHash].displayProperties.description;
 
@@ -311,6 +310,7 @@ export function StartLoad(passiveLoad) {
         return;
     };
 
+    document.getElementById('notificationContainer').style.display = 'block';
     document.getElementById('skeletonLoadContainer').style.display = 'flex';
 };
 
@@ -324,7 +324,8 @@ export function StopLoad(passiveLoad) {
         document.getElementById('loadBarContainer').style.display = 'none';
         return;
     };
-
+    
+    document.getElementById('notificationContainer').style.display = 'none';
     document.getElementById('skeletonLoadContainer').style.display = 'none';
 
     // If mobile view (temp fix)
@@ -406,12 +407,9 @@ export function ParseBounties(charInventory, charObjectives, itemDefinitions) {
             // Add isExpired property
             item.isExpired = new Date(bounty.expirationDate) < new Date();
 
-            // Add props (properties) array
+            // Add item properties (props)
             item.props = [];
-
-            // Add item properties
             item.props = stringMatchProgressionItem(item);
-            // log(item.displayProperties.description, item.props);
 
             // Add isComplete property
             let entriesAmount = item.progress.length, 
@@ -823,7 +821,6 @@ export async function LoadPrimaryCharacter(characters) {
     CacheReturnItem('lastChar')
         .then(async (data) => {
             
-            log(data);
             if (data === undefined) {
                 let fallbackCharacter = characters[Object.keys(characters)[0]].classType;
                 CacheAuditItem('lastChar', fallbackCharacter);
@@ -1009,28 +1006,28 @@ export function GenerateRandomString(len) {
 // @string {propertyName}, @boolean {isReverse}
 export function parsePropertyNameIntoWord(propertyName, isReverse = false) {
 
+    // Remove spaces (regex good - fight me)
     if (isReverse) {
-        // Else, remove spaces (regex good - fight me)
         return propertyName.replace(/\s/g, '');
     };
 
-    // If no reverse, add spaces before capital letter
+    // Otherwise add spaces before capital letters
     let wordsWithoutSpaces = propertyName.match(/[A-Z][a-z]+/g);
     let string;
 
-    // Check for invalid input
+    // Check for invalid input (no capitalized words without spaces)
     if (!wordsWithoutSpaces) {
         return propertyName;
     };
 
     // Manually add spaces
-    for (const d in wordsWithoutSpaces) {
-        
-        if (!string) {
-            string += `${wordsWithoutSpaces[d]}`;
+    for (const index in wordsWithoutSpaces) {
+
+        if (string === undefined) {
+            string = `${wordsWithoutSpaces[index]}`;
         }
-        else {
-            string += ` ${wordsWithoutSpaces[d]}`;
+        else if (string !== undefined) {
+            string = `${string} ${wordsWithoutSpaces[index]}`;
         };
     };
 
@@ -1559,7 +1556,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     let characterBounties = parsedBountiesResponse.charBounties;
     amountOfBounties = parsedBountiesResponse.amountOfBounties;
     returnObj.charBounties = characterBounties; // Add bounties to return object
-    log(amountOfBounties, characterBounties);
 
     if (amountOfBounties < 20) {
         document.getElementById('recommendationTooltip').style.display = 'block';
@@ -1663,7 +1659,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     // Format to 1.n
     // XP modifier, does not contain well rested bonus
     const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) * wellRestedBonus) / 100) + 1;
-    log(xpModifier, wellRestedBonus);
     
     // Subtract the difference between current weekly progress to the end of the well rested bonus
     if (((totalXpYield * xpModifier) * 2) > (500_000 - seasonPassProgressionStats.weeklyProgress)) {
@@ -1673,12 +1668,11 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         // Ignore well rested bonus
         const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp)) / 100) + 1;
 
-        log([totalXpYield, xpModifier, (totalXpYield * xpModifier), (500_000 - seasonPassProgressionStats.weeklyProgress), (500_000 - seasonPassProgressionStats.weeklyProgress) / 2]);
-        log(`${totalXpYield} * ${xpModifier} + ((500_000 - ${seasonPassProgressionStats.weeklyProgress}) / 2)`);
+        // log([totalXpYield, xpModifier, (totalXpYield * xpModifier), (500_000 - seasonPassProgressionStats.weeklyProgress), (500_000 - seasonPassProgressionStats.weeklyProgress) / 2]);
+        // log(`${totalXpYield} * ${xpModifier} + ((500_000 - ${seasonPassProgressionStats.weeklyProgress}) / 2)`);
 
         // Calculate XP yield where well rested bonus has no more overhead; will not be used on the overhead calculation
         totalXpYieldWithModifiers = (totalXpYield * xpModifier) + ((500_000 - seasonPassProgressionStats.weeklyProgress) / 2);
-        log(totalXpYieldWithModifiers);
     }
     else {
         log('well rested bonus not surpassed');
@@ -1709,6 +1703,9 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     }
     else if (amountOfBounties > 0) {
 
+        // Toggle no items tooltip
+        document.getElementById('noBountiesTooltip').style.display = 'none';
+
         // Set raw xp values
         AddValueToElementInner('rawXpField', InsertSeperators(totalXpYield));
         AddValueToElementInner('artifactLevelsField', 0);
@@ -1727,6 +1724,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
 
 // Function to find all the relations between progressional items
+// @obj {progressionalItems}
 export async function ParseProgressionalRelations(progressionalItems) {
     
     let bountyRelations = {},
@@ -1741,7 +1739,7 @@ export async function ParseProgressionalRelations(progressionalItems) {
         
         // Loop through props and add to bountyRelations
         bounty.props.forEach((prop) => {
-            log(bounty);
+
             // Check if prop exists in bountyRelations, if so add 1
             if (bountyRelations[prop]) {
                 bountyRelations[prop]++;
@@ -1752,7 +1750,6 @@ export async function ParseProgressionalRelations(progressionalItems) {
             relationCount++;
         });
     };
-    log(bountyRelations);
 
     // Loop through challenges
     for (let index in progressionalItems.challenges) {
@@ -1771,23 +1768,43 @@ export async function ParseProgressionalRelations(progressionalItems) {
             relationCount++;
         });
     };
-    log(bountyRelations, challengeRelations);
+
+    // Add relation count to table subheading
+    document.getElementById('relationsTotalField').innerHTML = relationCount;
+
     // Remove keys' values that are not more than 1
     bountyRelations = Object.fromEntries(Object.entries(bountyRelations).filter(([key, value]) => value > 1));
     challengeRelations = Object.fromEntries(Object.entries(challengeRelations).filter(([key, value]) => value > 1));
-    log(bountyRelations, challengeRelations);
+
 
     // Merge relations
     allRelations = {...bountyRelations, ...challengeRelations};
 
     // Convert allRelations to percentages
     allRelations = Object.entries(allRelations).map(([key, value]) => {
-        return [key, ((value / relationCount) * 1000)];
+        return [key, Math.trunc((value / relationCount) * 1000)];
     });
 
-    // Sort all references of relations in ascending order -- is needed??
-    // -- code
+    // Sort allRelations by percentage
+    allRelations.sort((a, b) => b[1] - a[1]);
+    log(allRelations);
 
     // Return all relations in the form of an object
     return {bounties: bountyRelations, challenges: challengeRelations, all: allRelations};
+};
+
+
+
+export function AddTableRow(table, data = ['', '', '']) {
+
+    // data param
+    // 0, Item Name / 1, Category / 2, Relation
+
+    // Insert new row using data parameter
+    const row = table.insertRow(-1);
+
+    // Insert data into cells
+    for (let i=0; i<data.length; i++) {
+        row.insertCell(i).innerHTML = data[i];
+    };
 };

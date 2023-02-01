@@ -136,11 +136,6 @@ h2 {
     align-items: center;
 }
 
-.fubar {
-    margin-top: 14px;
-    font-size: 20px;
-}
-
 #navBarBountiesButton:hover {
     color: white;
     cursor: pointer;
@@ -224,6 +219,296 @@ h2 {
     float: right;
     width: 30px;
     filter: invert(50%);
+}
+
+/* Notification */
+#notificationContainer {
+    position: absolute;
+    display: none;
+    bottom: 0;
+    right: 0;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    height: fit-content;
+    width: 300px;
+    background-color: #202020;
+    color: white;
+}
+
+#notificationContent {
+    display: flex;
+    padding: 10px;
+    border-radius: 2px;
+}
+
+#notificationTitle {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+#notificationMessage {
+    font-size: 15px;
+    font-style: italic;
+}
+
+#notificationTopBgLine {
+    width: 100%;
+    height: 2px;
+    background-color: red;
+    box-shadow: 0px 0px 10px 1px #ED4D4D;
+}
+
+.spinner {
+    position: absolute;
+    display: flex;
+    right: 0;
+    margin-top: 8px;
+    margin-right: 10px;
+    opacity: .5;
+    pointer-events: none;
+    transition: opacity .25s
+}
+
+.spinner,.spinner svg {
+    height: 48px;
+    width: 48px
+}
+
+.spinner.mini,.spinner.mini svg {
+    height: 24px;
+    width: 24px
+}
+
+.spinner {
+    fill: #fff
+}
+
+.spinner g .a {
+    animation: spinner_bits_a 3s linear infinite
+}
+
+.spinner g .b {
+    animation: spinner_bits_b 3s linear infinite
+}
+
+.spinner g .c {
+    animation: spinner_bits_c 3s linear infinite
+}
+
+.spinner g .d {
+    animation: spinner_bits_d 3s linear infinite
+}
+
+.spinner g .e {
+    animation: spinner_bits_e 3s linear infinite
+}
+
+.spinner g .f {
+    animation: spinner_bits_f 3s linear infinite
+}
+
+.spinner g:last-child .a {
+    animation: spinner_bits_a 1.5s linear infinite
+}
+
+.spinner g:last-child .b {
+    animation: spinner_bits_b 1.5s linear infinite
+}
+
+.spinner g:last-child .c {
+    animation: spinner_bits_c 1.5s linear infinite
+}
+
+.spinner g:last-child .d {
+    animation: spinner_bits_d 1.5s linear infinite
+}
+
+.spinner g:last-child .e {
+    animation: spinner_bits_e 1.5s linear infinite
+}
+
+.spinner g:last-child .f {
+    animation: spinner_bits_f 1.5s linear infinite
+}
+
+@keyframes spinner_bits_a {
+    0% {
+        opacity: 1
+    }
+
+    16.66667% {
+        opacity: 0
+    }
+
+    33.33333% {
+        opacity: 0
+    }
+
+    50% {
+        opacity: 0
+    }
+
+    66.66667% {
+        opacity: 0
+    }
+
+    83.33333% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes spinner_bits_b {
+    0% {
+        opacity: 0
+    }
+
+    16.66667% {
+        opacity: 1
+    }
+
+    33.33333% {
+        opacity: 0
+    }
+
+    50% {
+        opacity: 0
+    }
+
+    66.66667% {
+        opacity: 0
+    }
+
+    83.33333% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 0
+    }
+}
+
+@keyframes spinner_bits_c {
+    0% {
+        opacity: 0
+    }
+
+    16.66667% {
+        opacity: 0
+    }
+
+    33.33333% {
+        opacity: 1
+    }
+
+    50% {
+        opacity: 0
+    }
+
+    66.66667% {
+        opacity: 0
+    }
+
+    83.33333% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 0
+    }
+}
+
+@keyframes spinner_bits_d {
+    0% {
+        opacity: 0
+    }
+
+    16.66667% {
+        opacity: 0
+    }
+
+    33.33333% {
+        opacity: 0
+    }
+
+    50% {
+        opacity: 1
+    }
+
+    66.66667% {
+        opacity: 0
+    }
+
+    83.33333% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 0
+    }
+}
+
+@keyframes spinner_bits_e {
+    0% {
+        opacity: 0
+    }
+
+    16.66667% {
+        opacity: 0
+    }
+
+    33.33333% {
+        opacity: 0
+    }
+
+    50% {
+        opacity: 0
+    }
+
+    66.66667% {
+        opacity: 1
+    }
+
+    83.33333% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 0
+    }
+}
+
+@keyframes spinner_bits_f {
+    0% {
+        opacity: 0
+    }
+
+    16.66667% {
+        opacity: 0
+    }
+
+    33.33333% {
+        opacity: 0
+    }
+
+    50% {
+        opacity: 0
+    }
+
+    66.66667% {
+        opacity: 0
+    }
+
+    83.33333% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0
+    }
 }
 
 

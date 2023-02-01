@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
             // Redirect user to Bungie.net on a clean slate
             localStorage.setItem('stateCode', stateCode);
-            window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&fubar=${GenerateRandomString(128)}`;
+            window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&randomqueryparam=${GenerateRandomString(128)}`;
         });
     })
     .catch((error) => {
