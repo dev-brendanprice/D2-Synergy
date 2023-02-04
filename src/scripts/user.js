@@ -331,7 +331,7 @@ export async function BungieOAuth (authCode) {
 
             log('-> Authorized with Bungie.net');
         })
-        .catch(err => {
+        .catch(async (err) => {
 
             switch (err.response.data) {
                 case 'AuthorizationCodeInvalid':
