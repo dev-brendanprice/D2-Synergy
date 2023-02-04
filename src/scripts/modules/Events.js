@@ -3,7 +3,8 @@ import {
     itemDisplay,
     accentColor,
     destinyUserProfile,
-    itemDefinitions } from '../user.js';
+    itemDefinitions,
+    relationsTable } from '../user.js';
 import { 
     CacheAuditItem, 
     CacheReturnItem,
@@ -164,6 +165,23 @@ export async function AddEventListeners() {
         // If unchecked, Reverse boolean and passive refresh
         CacheAuditItem('includeExpiredBounties', false);
         MainEntryPoint(true);
+    });
+
+    // Include seasonal challenges in table
+    AddListener('checkboxIncludeSeasonalChallengesInTable', 'change', function () {
+
+        // If checked, Store boolean and passive refresh
+        if (this.checked) {
+            CacheAuditItem('includeSeasonalChallengesInTable', true);
+            MainEntryPoint(true);
+            return;
+        };
+
+        // If unchecked, Reverse boolean and passive refresh
+        CacheAuditItem('includeSeasonalChallengesInTable', false);
+
+        // Refresh table without seasonal challenges
+        relationsTable.BuildTable('bounties');
     });
 
     // Bounties navbar control
@@ -594,6 +612,20 @@ export async function BuildWorkspace() {
         };
     });
 
+    // Defaults for checkboxIncludeSeasonalChallengesInTable
+    CacheReturnItem('includeSeasonalChallengesInTable')
+    .then((result) => {
+
+        // If there is no result, set default to true
+        if (!result) {
+            CacheAuditItem('includeSeasonalChallengesInTable', true);
+            document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = true;
+        };
+
+        // If there is a result, set checkbox to result
+        document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = result;
+    });
+
     // Slider section values
     rangeSlider.value = itemDisplay.itemDisplaySize;
     bountyImage.style.width = `${itemDisplay.itemDisplaySize}px`;
@@ -602,6 +634,7 @@ export async function BuildWorkspace() {
     document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
     document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
     document.getElementById('checkboxIncludeExpiredBounties').checked = await CacheReturnItem('includeExpiredBounties');
+    document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = await CacheReturnItem('includeSeasonalChallengesInTable');
 
     // Push cache results for defaultContenteView to variabGles
     await CacheReturnItem('defaultContentView')
