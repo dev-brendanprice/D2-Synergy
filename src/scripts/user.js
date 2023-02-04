@@ -266,8 +266,7 @@ export async function OAuthFlow() {
     try {
         // If user has no localStorage items and the code is incorrect
         if (authCode && (!comps || !acToken || !rsToken)) {
-            // await BungieOAuth(authCode);
-            await CheckComponents();
+            await BungieOAuth(authCode);
         }
         // User has no credentials, fired before other conditions
         else if (!authCode && (!comps || !acToken || !rsToken)) {
@@ -333,10 +332,18 @@ export async function BungieOAuth (authCode) {
             log('-> Authorized with Bungie.net');
         })
         .catch(err => {
-            if (err.response.data['error_description'] == 'AuthorizationCodeInvalid' || err.response.data['error_description'] == 'AuthorizationCodeStale') {
-                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
-                return;
+
+            switch (err.response.data) {
+                case 'AuthorizationCodeInvalid':
+                case 'AuthorizationCodeStale':
+                    window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
+                case 'ApplicationTokenKeyIdDoesNotExist':
+                    await CheckComponents();
             };
+            // if (err.response.data['error_description'] == 'AuthorizationCodeInvalid' || err.response.data['error_description'] == 'AuthorizationCodeStale') {
+            //     window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
+            //     return;
+            // };
             console.error(err);
         });
 };
