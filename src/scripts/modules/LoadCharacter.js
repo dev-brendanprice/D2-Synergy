@@ -3,12 +3,14 @@ import {
     ReturnSeasonPassLevel,
     AddValueToElementInner,
     InsertSeperators,
-    ParseProgressionalItems,
     ParseProgressionalRelations,
     StopLoad,
     ParseChar,
     parsePropertyNameIntoWord,
     AddTableRow } from './ModuleScript';
+import {
+    ParseProgressionalItems
+} from './ParseProgressItems.js';
 import { 
     itemDefinitions,
     destinyUserProfile, 
