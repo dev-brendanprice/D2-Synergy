@@ -299,7 +299,7 @@ export async function BungieOAuth (authCode) {
         components = {},
         AuthConfig = {
             headers: {
-                ...axiosHeaders,
+                'X-API-Key': axiosHeaders.ApiKey,
                 Authorization: `Basic ${axiosHeaders.Authorization}`,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
