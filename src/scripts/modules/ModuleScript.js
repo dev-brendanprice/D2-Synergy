@@ -17,7 +17,8 @@ import {
     recordDefinitions,
     presentationNodeDefinitions,
     allProgressionProperties, 
-    destinyUserProfile } from "../user.js";
+    destinyUserProfile,
+    relationsTable } from "../user.js";
 import { LoadCharacter } from './LoadCharacter.js';
 
 const log = console.log.bind(console),
@@ -325,8 +326,26 @@ export function StopLoad(passiveLoad) {
         return;
     };
     
-    document.getElementById('notificationContainer').style.display = 'none';
+    // Hide the skeleton loading container
     document.getElementById('skeletonLoadContainer').style.display = 'none';
+
+    // Toggle the notification loading animation spinner
+    document.getElementById('loadingSpinner').style.display = 'none';
+    document.getElementById('notificationCheckmark').style.display = 'flex';
+
+    // Change notification text
+    document.getElementById('notificationTitle').innerHTML = 'Loading Complete';
+    document.getElementById('notificationMessage').innerHTML = 'Your data has been loaded';
+
+    // Do a fade out animation on the notification container
+    setTimeout(() => {
+        document.getElementById('notificationContainer').classList += 'fade-out';
+
+        // Then display none the notification container
+        setTimeout(() => {
+            document.getElementById('notificationContainer').style.display = 'none';
+        }, 300);
+    }, 4000);
 
     // If mobile view (temp fix)
     if (window.innerWidth <= 645) {
@@ -1597,26 +1616,26 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Find well rested bonus
     let wellRestedBonus = 1;
-    if (seasonProgressionInfo.level === 100) {
-        if (prestigeProgressionSeasonInfo.weeklyProgress <= 500_000) {
-            document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-            document.getElementById('wellRestedBonusField').innerHTML = `2x`;
-            wellRestedBonus = 2;
-        }
-        else {
-            document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
-        };
-    }
-    else if (seasonProgressionInfo.level < 100) {
-        if (seasonProgressionInfo.weeklyProgress <= 500_000) {
-            document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-            document.getElementById('wellRestedBonusField').innerHTML = `2x`;
-            wellRestedBonus = 2;
-        }
-        else {
-            document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
-        };
-    };
+    // if (seasonProgressionInfo.level === 100) {
+    //     if (prestigeProgressionSeasonInfo.weeklyProgress <= 500_000) {
+    //         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+    //         document.getElementById('wellRestedBonusField').innerHTML = `2x`;
+    //         wellRestedBonus = 2;
+    //     }
+    //     else {
+    //         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
+    //     };
+    // }
+    // else if (seasonProgressionInfo.level < 100) {
+    //     if (seasonProgressionInfo.weeklyProgress <= 500_000) {
+    //         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+    //         document.getElementById('wellRestedBonusField').innerHTML = `2x`;
+    //         wellRestedBonus = 2;
+    //     }
+    //     else {
+    //         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
+    //     };
+    // };
         
     // Check if ghost mods are slotted, turn off checkmark if not
     if (ghostModBonusXp) {
@@ -1628,13 +1647,13 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     };
 
     // Check if shared wisdom is not equal to 0, turn off checkmark if not
-    if (seasonPassProgressionStats.sharedWisdomBonusValue) {
-        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-        document.getElementById('sharedWisdomBonusField').innerHTML = `+${seasonPassProgressionStats.sharedWisdomBonusValue}%`;
-    }
-    else {
-        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToResetCheckmark;
-    };
+    // if (seasonPassProgressionStats.sharedWisdomBonusValue) {
+    //     document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+    //     document.getElementById('sharedWisdomBonusField').innerHTML = `+${seasonPassProgressionStats.sharedWisdomBonusValue}%`;
+    // }
+    // else {
+    //     document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToResetCheckmark;
+    // };
 
     // Check if bonus xp is not equal to 0, turn off checkmark if not
     if (seasonPassProgressionStats.bonusXpValue) {
@@ -1657,27 +1676,28 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     });
 
     // Format to 1.n
-    // XP modifier, does not contain well rested bonus
-    const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) * wellRestedBonus) / 100) + 1;
+    // const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) * wellRestedBonus) / 100) + 1;
+    const xpModifier = (((seasonPassProgressionStats.bonusXpValue + ghostModBonusXp)) / 100) + 1;
     
     // Subtract the difference between current weekly progress to the end of the well rested bonus
-    if (((totalXpYield * xpModifier) * 2) > (500_000 - seasonPassProgressionStats.weeklyProgress)) {
+    // if (((totalXpYield * xpModifier) * 2) > (500_000 - seasonPassProgressionStats.weeklyProgress)) {
 
-        log('Well-Rested Surpassed');
+    //     log('Well-Rested Surpassed');
 
-        // Ignore well rested bonus
-        const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp)) / 100) + 1;
+    //     // Ignore well rested bonus
+    //     const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp)) / 100) + 1;
 
-        // log([totalXpYield, xpModifier, (totalXpYield * xpModifier), (500_000 - seasonPassProgressionStats.weeklyProgress), (500_000 - seasonPassProgressionStats.weeklyProgress) / 2]);
-        // log(`${totalXpYield} * ${xpModifier} + ((500_000 - ${seasonPassProgressionStats.weeklyProgress}) / 2)`);
+    //     // log([totalXpYield, xpModifier, (totalXpYield * xpModifier), (500_000 - seasonPassProgressionStats.weeklyProgress), (500_000 - seasonPassProgressionStats.weeklyProgress) / 2]);
+    //     // log(`${totalXpYield} * ${xpModifier} + ((500_000 - ${seasonPassProgressionStats.weeklyProgress}) / 2)`);
 
-        // Calculate XP yield where well rested bonus has no more overhead; will not be used on the overhead calculation
-        totalXpYieldWithModifiers = (totalXpYield * xpModifier) + ((500_000 - seasonPassProgressionStats.weeklyProgress) / 2);
-    }
-    else {
-        log('well rested bonus not surpassed');
-        totalXpYieldWithModifiers = totalXpYield * xpModifier;
-    };
+    //     // Calculate XP yield where well rested bonus has no more overhead; will not be used on the overhead calculation
+    //     totalXpYieldWithModifiers = (totalXpYield * xpModifier) + ((500_000 - seasonPassProgressionStats.weeklyProgress) / 2);
+    // }
+    // else {
+    //     log('well rested bonus not surpassed');
+    //     totalXpYieldWithModifiers = totalXpYield * xpModifier;
+    // };
+    totalXpYieldWithModifiers = totalXpYield * xpModifier;
 
     // Push subheading statistics
     AddValueToElementInner('bountiesTotalField', amountOfBounties);
@@ -1769,16 +1789,16 @@ export async function ParseProgressionalRelations(progressionalItems) {
         });
     };
 
-    // Add relation count to table subheading
-    document.getElementById('relationsTotalField').innerHTML = relationCount;
-
     // Remove keys' values that are not more than 1
     bountyRelations = Object.fromEntries(Object.entries(bountyRelations).filter(([key, value]) => value > 1));
     challengeRelations = Object.fromEntries(Object.entries(challengeRelations).filter(([key, value]) => value > 1));
 
+    // Add relation count to table subheading
+    document.getElementById('relationsTotalField').innerHTML = relationCount;
 
     // Merge relations
     allRelations = {...bountyRelations, ...challengeRelations};
+    
 
     // Convert allRelations to percentages
     allRelations = Object.entries(allRelations).map(([key, value]) => {
@@ -1787,7 +1807,6 @@ export async function ParseProgressionalRelations(progressionalItems) {
 
     // Sort allRelations by percentage
     allRelations.sort((a, b) => b[1] - a[1]);
-    log(allRelations);
 
     // Return all relations in the form of an object
     return {bounties: bountyRelations, challenges: challengeRelations, all: allRelations};

@@ -231,8 +231,14 @@ h2 {
     margin-bottom: 10px;
     height: fit-content;
     width: 300px;
+    opacity: 1;
     background-color: #202020;
     color: white;
+}
+
+#notificationContainer.fade-out {
+    opacity: 0;
+    transition: all 0.4s linear;
 }
 
 #notificationContent {
@@ -256,6 +262,16 @@ h2 {
     height: 2px;
     background-color: red;
     box-shadow: 0px 0px 10px 1px #ED4D4D;
+}
+
+#notificationCheckmark {
+    position: absolute;
+    display: none;
+    right: 0;
+    margin-top: 5px;
+    margin-right: 10px;
+    width: 32px;
+    height: 32px;
 }
 
 .spinner {
@@ -595,7 +611,6 @@ h2 {
         opacity: 1;
     }
 }
-
 
 /* Scrollbar */
 ::-webkit-scrollbar { /* Width */

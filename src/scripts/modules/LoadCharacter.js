@@ -17,7 +17,8 @@ import {
     seasonPassDefinitions,
     progressionDefinitions,
     ProfileProgressions,
-    progressionPropertyKeyValues } from '../user.js';
+    progressionPropertyKeyValues,
+    relationsTable } from '../user.js';
 
 const log = console.log.bind(console);
 
@@ -200,9 +201,15 @@ export async function LoadCharacter(classType, characters) {
         // Get relations for progressional items
         var relations = await ParseProgressionalRelations(progressionalItemsObj);
 
+        // Clear table and declare table div
         let table = document.getElementById('myTable');
-        table.innerHTML = '';
-        table.innerHTML = '<tr><th>Item</th><th>Category</th><th>Relation</th></tr>';
+        relationsTable.div = table;
+        relationsTable.ClearTable();
+
+        // Populate relations objects in global relationsTable object
+        relationsTable.relations.bounties = relations.bounties;
+        relationsTable.relations.challenges = relations.challenges;
+        relationsTable.relations.all = relations.all;
 
         // Append allRelations to table
         for (let index in relations.all) {

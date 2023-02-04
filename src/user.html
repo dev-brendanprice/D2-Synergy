@@ -441,12 +441,12 @@
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="sharedWisdomCheckmarkIcon" src="./static/ico/checkmark.svg">
-                                        <div style="width: 160px;">Shared Wisdom</div>
+                                        <strike><div style="width: 160px;">Shared Wisdom</div></strike>
                                         <div class="modifierValue" id="sharedWisdomBonusField">--</div>
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="wellRestedCheckmarkIcon" src="./static/ico/checkmark.svg">
-                                        <div style="width: 160px;">Well Rested</div>
+                                        <strike><div style="width: 160px;">Well Rested</div></strike>
                                         <div class="modifierValue" id="wellRestedBonusField">--</div>
                                     </div>
                                     <div class="modifierContainer">
@@ -480,7 +480,11 @@
                                     <div>Relations Found</div>
                                 </div>
                             </div>
-                            <div style="margin-top:15px;overflow-y: scroll;max-height: 93%;">
+                            <div style="display: flex;justify-content: right;gap: 10px;">
+                                <div style="padding: 5px;border-radius: 5px;border: 1px rgb(131, 150, 236) solid;cursor: pointer;">Toggle PvE</div>
+                                <div style="padding: 5px;border-radius: 5px;border: 1px rgb(131, 150, 236) solid;background-color: rgb(76, 96, 186);cursor: pointer;">Toggle PvP</div>
+                            </div>
+                            <div style="margin-top:15px;overflow-y: scroll;max-height: 80%;">
                                 <table id="myTable">
                                     <tr>
                                         <th>Item</th>
@@ -488,6 +492,13 @@
                                         <th>Relation</th>
                                     </tr>
                                 </table>
+                            </div>
+                            <div style="display: flex;margin-top: 10px;gap:5px;align-items: center;color: white;">
+                                <label class="switch">
+                                    <input type="checkbox" id="checkboxIncludeSeasonalChallengesInTable">
+                                    <span class="slider round"></span>
+                                </label>
+                                <div style="padding-top:1px;">Include seasonal challenges in table</div>
                             </div>
                         </div>
 
@@ -1045,7 +1056,7 @@
                 <div id="notificationTitle">Loading</div>
                 <div id="notificationMessage">Loading user data</div>
             </div>
-            <div class="spinner mini">
+            <div class="spinner mini" id="loadingSpinner">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 62.08 71.68">
                     <g>
                         <polygon class="a" points="30.04 59.7 10.87 48.64 1 54.34 30.04 71.1 30.04 59.7"></polygon>
@@ -1064,6 +1075,9 @@
                         <polygon class="f" points="40.28 42.33 32.04 47.09 32.04 57.36 49.17 47.47 40.28 42.33"></polygon>
                     </g>
                 </svg>
+            </div>
+            <div id="notificationCheckmark">
+                <img src="./static/ico/icon_tick.svg">
             </div>
         </div>
     </div>

@@ -11,7 +11,8 @@ import {
     RedirUser,
     LoadPrimaryCharacter,
     parsePropertyNameIntoWord,
-    CacheAuditItem } from './modules/ModuleScript.js';
+    CacheAuditItem,
+    AddTableRow } from './modules/ModuleScript.js';
 import {
     ActivityMode,
     Destination,
@@ -53,7 +54,51 @@ export var progressionDefinitions = {},
         vendorDefinitions = {},
         itemDefinitions = {};
 
-// User data
+// Authorization information
+export const homeUrl = import.meta.env.HOME_URL,
+             axiosHeaders = {
+                ApiKey: import.meta.env.API_KEY,
+                Authorization: import.meta.env.AUTH
+             },
+             clientId = import.meta.env.CLIENT_ID;
+
+// Set default axios header
+axios.defaults.headers.common = {
+    "X-API-Key": `${axiosHeaders.ApiKey}`
+};
+
+
+// Collate all definition arrays into one array
+export var allProgressionProperties = [];
+allProgressionProperties.push(
+    ...Destination,
+    ...ActivityMode,
+    ...DamageType,
+    ...ItemCategory,
+    ...AmmoType,
+    ...KillType,
+    ...EnemyType,
+    ...EnemyModifiers,
+    ...SeasonalCategory,
+    ...LocationSpecifics,
+    ...DescriptorSpecifics);
+
+// Progression properties and their corresponding key names
+export var progressionPropertyKeyValues = {
+    'Destination': Destination,
+    'ActivityMode': ActivityMode,
+    'DamageType': DamageType,
+    'ItemCategory': ItemCategory,
+    'AmmoType': AmmoType,
+    'KillType': KillType,
+    'EnemyType': EnemyType,
+    'EnemyModifiers': EnemyModifiers,
+    'SeasonalCategory': SeasonalCategory,
+    'LocationSpecifics': LocationSpecifics,
+    'DescriptorSpecifics': DescriptorSpecifics
+};
+
+// User vars
 let destinyMembershipId,
     membershipType,
     characters;
@@ -133,50 +178,45 @@ export var accentColor = {
     }
 };
 
+// Relations table metadata
+export var relationsTable = {
+    div: {}, // DOM element
+    relations: {
+        bounties: {},
+        challenges: {},
+        all: {}
+    },
+    ClearTable: function() {
+        this.div.innerHTML = '';
+        this.div.innerHTML = '<tr><th>Item</th><th>Category</th><th>Relation</th></tr>';
+    },
+    BuildTable: function(type = 'all') {
+        
+        // Clear table
+        this.ClearTable();
+        log(this.relations);
+        // Update table, looping over type
+        for (let relation in this.relations[type]) {
 
-// Authorization information
-export const homeUrl = import.meta.env.HOME_URL,
-             axiosHeaders = {
-                ApiKey: import.meta.env.API_KEY,
-                Authorization: import.meta.env.AUTH
-             },
-             clientId = import.meta.env.CLIENT_ID;
+            let itemName = relation;
+            let itemRelation = this.relations[type][relation];
+            let itemCategory;
+            for (let item in progressionPropertyKeyValues) {
 
-// Set default axios header
-axios.defaults.headers.common = {
-    "X-API-Key": `${axiosHeaders.ApiKey}`
+                // If relation is in category, store in category
+                if (progressionPropertyKeyValues[item].includes(parsePropertyNameIntoWord(itemName, true))) {
+                    itemCategory = item;
+                };
+            };
+
+            AddTableRow(this.div, [itemName, parsePropertyNameIntoWord(itemCategory), `${itemRelation}pts`]);
+        };
+
+        // Update relation count
+        document.getElementById('relationsTotalField').innerHTML = Object.keys(this.relations[type]).length;
+    }
 };
 
-
-// Collate all definition arrays into one array
-export var allProgressionProperties = [];
-allProgressionProperties.push(
-    ...Destination,
-    ...ActivityMode,
-    ...DamageType,
-    ...ItemCategory,
-    ...AmmoType,
-    ...KillType,
-    ...EnemyType,
-    ...EnemyModifiers,
-    ...SeasonalCategory,
-    ...LocationSpecifics,
-    ...DescriptorSpecifics);
-
-// Progression properties and their corresponding key names
-export var progressionPropertyKeyValues = {
-    'Destination': Destination,
-    'ActivityMode': ActivityMode,
-    'DamageType': DamageType,
-    'ItemCategory': ItemCategory,
-    'AmmoType': AmmoType,
-    'KillType': KillType,
-    'EnemyType': EnemyType,
-    'EnemyModifiers': EnemyModifiers,
-    'SeasonalCategory': SeasonalCategory,
-    'LocationSpecifics': LocationSpecifics,
-    'DescriptorSpecifics': DescriptorSpecifics
-};
 
 // Parse properties into words that can be matched to item descriptors
 allProgressionProperties = allProgressionProperties.map(property => parsePropertyNameIntoWord(property));
