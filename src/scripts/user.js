@@ -390,7 +390,7 @@ export async function CheckComponents () {
     if (isAcTokenExpired || isRsTokenExpired) {
 
         // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
-        delete axios.defaults.headers.common['X-API-Key'];
+        // delete axios.defaults.headers.common['X-API-Key'];
 
         // If either tokens have expired
         isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
