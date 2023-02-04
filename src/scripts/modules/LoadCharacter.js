@@ -8,9 +8,6 @@ import {
     ParseChar,
     parsePropertyNameIntoWord,
     AddTableRow } from './ModuleScript';
-import {
-    ParseProgressionalItems
-} from './ParseProgressItems.js';
 import { 
     itemDefinitions,
     destinyUserProfile, 
@@ -21,6 +18,7 @@ import {
     ProfileProgressions,
     progressionPropertyKeyValues,
     relationsTable } from '../user.js';
+import { ParseProgressionalItems } from './ParseProgressItems.js';
 
 const log = console.log.bind(console);
 

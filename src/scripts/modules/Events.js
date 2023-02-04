@@ -184,6 +184,20 @@ export async function AddEventListeners() {
         relationsTable.BuildTable('bounties');
     });
 
+    // Warn icon hover -- remove when not needed
+    AddListener('warnIcon', 'mouseover', function () {
+        document.getElementById('warnHoverContent').style.display = 'block';
+    });
+    AddListener('warnIcon', 'mouseleave', function () {
+        document.getElementById('warnHoverContent').style.display = 'none';
+    });
+    AddListener('warnIcon2', 'mouseover', function () {
+        document.getElementById('warnHoverContent').style.display = 'block';
+    });
+    AddListener('warnIcon2', 'mouseleave', function () {
+        document.getElementById('warnHoverContent').style.display = 'none';
+    });
+
     // Bounties navbar control
     AddListener('navBarBountiesButton', 'click', function () {
 

@@ -303,6 +303,7 @@
 }
 
 .contentDisplaySegment {
+    position: relative;
     padding: 15px;
     height: 90vh;
     width: 95vw;

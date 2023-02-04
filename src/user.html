@@ -441,13 +441,19 @@
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="sharedWisdomCheckmarkIcon" src="./static/ico/checkmark.svg">
-                                        <strike><div style="width: 160px;">Shared Wisdom</div></strike>
-                                        <div class="modifierValue" id="sharedWisdomBonusField">--</div>
+                                        <div style="display: flex;">
+                                            <strike><div style="width: 140px;">Shared Wisdom</div></strike> <!-- 160px width -->
+                                            <img id="warnIcon" src="./static/ico/warn_icon.svg">
+                                        </div>
+                                        <div class="modifierValue" id="sharedWisdomBonusField">+24%</div>
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="wellRestedCheckmarkIcon" src="./static/ico/checkmark.svg">
-                                        <strike><div style="width: 160px;">Well Rested</div></strike>
-                                        <div class="modifierValue" id="wellRestedBonusField">--</div>
+                                        <div style="display: flex;">
+                                            <strike><div style="width: 140px;">Well Rested</div></strike> <!-- 160px width -->
+                                            <img id="warnIcon2" src="./static/ico/warn_icon.svg">
+                                        </div>
+                                        <div class="modifierValue" id="wellRestedBonusField">+24%</div>
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="ghostModsCheckmarkIcon" src="./static/ico/checkmark.svg">
@@ -457,6 +463,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="warnHoverContent" style="display: none;position: absolute;padding: 4px;margin-left: 135px;margin-top: -30px;border: 1px solid rgb(120, 120, 120);border-radius: 3px;width: 75px;color: white;background-color: rgb(50, 50, 50);font-size: 13px;">Well Rested and Shared Wisdom Currently Unavailable</div>
 
                         <div style="display: flex;margin-top: 10px;gap:5px;align-items: center;color: white;">
                             <label class="switch">
@@ -529,6 +536,7 @@
                                 <div id="noBountiesTooltip">You don't have any bounties on this character.</div>
                                 <div style="margin-top: 15px;" id="bountyItems"></div>
                                 <div style="display: none;margin-top: 5px;font-style: italic;color: rgba(17, 17, 17, 0.83);" id="recommendationTooltip">It is recommended that you have at least ~20 bounties for this process to work best.</div>
+                                <div style="position: absolute;bottom: 10px;padding: 8px;border: 1px rgb(255, 175, 15) solid;border-radius: 5px;background-color: rgba(255, 143, 15, 0.681);width: 90%;">Please report any errors to <span href="https://twitter.com/_devbrendan" style="text-decoration: underline;">@brendanprice</span>❤️</div>
                             </div>
                             <div id="seasonalChallengesContainer">
                                 <div class="contentHeading">Seasonal Challenges</div>

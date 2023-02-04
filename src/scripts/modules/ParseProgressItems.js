@@ -1,5 +1,4 @@
-
-import { 
+import {
     vendorKeys,
     itemTypeKeys,
     baseYields,
@@ -56,8 +55,8 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
           filterToResetCheckmark = 'invert(100%) brightness(50%)';
 
     document.getElementById('seasonPassBonusField').innerHTML = '--';
-    document.getElementById('sharedWisdomBonusField').innerHTML = '--';
-    document.getElementById('wellRestedBonusField').innerHTML = '--';
+    // document.getElementById('sharedWisdomBonusField').innerHTML = '--';
+    // document.getElementById('wellRestedBonusField').innerHTML = '--';
     document.getElementById('ghostModBonusField').innerHTML = '--';
 
     document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToResetCheckmark;

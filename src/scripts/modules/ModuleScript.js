@@ -2,23 +2,14 @@ import {
     itemTypeKeys,
     VendorHashesByLabel, 
     CurrentlyAddedVendors,
-    vendorKeys,
-    baseYields,
-    petraYields,
     ActivityMode } from "./SynergyDefinitions.js";
 import {
     itemDisplay,
     eventFilters,
-    charBounties,
     excludedBountiesByVendor,
     itemDefinitions,
-    objectiveDefinitions,
-    seasonDefinitions,
-    recordDefinitions,
-    presentationNodeDefinitions,
     allProgressionProperties, 
-    destinyUserProfile,
-    relationsTable } from "../user.js";
+    destinyUserProfile } from "../user.js";
 import { LoadCharacter } from './LoadCharacter.js';
 
 const log = console.log.bind(console),
