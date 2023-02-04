@@ -266,7 +266,8 @@ export async function OAuthFlow() {
     try {
         // If user has no localStorage items and the code is incorrect
         if (authCode && (!comps || !acToken || !rsToken)) {
-            await BungieOAuth(authCode);
+            // await BungieOAuth(authCode);
+            await CheckComponents();
         }
         // User has no credentials, fired before other conditions
         else if (!authCode && (!comps || !acToken || !rsToken)) {
@@ -388,9 +389,6 @@ export async function CheckComponents () {
     let isAcTokenExpired = (acToken.inception + acToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1,
         isRsTokenExpired = (rsToken.inception + rsToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
     if (isAcTokenExpired || isRsTokenExpired) {
-
-        // Temporary deletion => Default headers are added back after OAuthFlow mechanisms
-        // delete axios.defaults.headers.common['X-API-Key'];
 
         // If either tokens have expired
         isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
