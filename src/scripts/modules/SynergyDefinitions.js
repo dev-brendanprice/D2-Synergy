@@ -159,12 +159,12 @@ export const VendorHashesByLabel = {
     'edz': 396892126, // Devrim Kay
     'cosmodrome': 1816541247, // Shaw Han
     'myriad': 1576276905, // Failsafe
-    'luna': 1616085565, // Eris Morn
+    'public_loop': 1616085565, // Eris Morn
     'clan': 3347378076, // Hawthorne
     'trials': 765357505, // Saint-14
     'europa': 2531198101, // Variks
     'dreaming_city': 1841717884, // Petra Venj
-    'luna': 3411552308, // Lectern of Enchantment
+    'nightmare': 3411552308, // Lectern of Enchantment
     'season17': 2748388973, // Crown of Sorrow
     'throneworld': 2384113223, // Fynch
     'dare_cards': 3431983428, // Starhorse (still contains 'xur')
