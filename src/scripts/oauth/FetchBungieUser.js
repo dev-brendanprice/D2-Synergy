@@ -8,6 +8,9 @@ export async function FetchBungieUser() {
 
     log('-> FetchBungieUser Called');
 
+    // Check user tokens, as we need to use the access token to fetch the user data
+    await CheckUserTokens();
+
     // Get components
     const components = JSON.parse(window.localStorage.getItem('components'));
     const axiosConfig = {
