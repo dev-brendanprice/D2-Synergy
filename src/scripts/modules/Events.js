@@ -2,15 +2,14 @@ import {
     MainEntryPoint, 
     itemDisplay,
     accentColor,
-    destinyUserProfile,
     itemDefinitions,
-    relationsTable } from '../user.js';
-import { 
-    CacheAuditItem, 
-    CacheReturnItem,
-    Logout,
-    ParseChar } from './ModuleScript.js';
+    relationsTable,
+    UserProfile } from '../user.js';
 import { LoadCharacter } from './LoadCharacter.js';
+import { CacheChangeItem } from './CacheChangeItem.js';
+import { CacheReturnItem } from './CacheReturnItem.js';
+import { Logout } from './Logout.js';
+import { ParseChar } from './ParseChar.js';
 
 
 // Utilities
@@ -109,8 +108,6 @@ const AddDropdownEvent = function (dropwdownContent, dropdownArrow, dropdownBool
 // Add all event listeners
 export async function AddEventListeners() {
 
-    let characters = destinyUserProfile.characters.data;
-
     // Top and Bottom character selects
     AddListener('middleCharacterContainer', 'click', async function () {
 
@@ -123,7 +120,7 @@ export async function AddEventListeners() {
 
         // Load character
         let characterType = ParseChar(document.getElementById('middleCharacterTypeField').innerHTML, true);
-        LoadCharacter(characterType, characters);
+        LoadCharacter(characterType, UserProfile.characters);
 
         // Replace with top selector elements
         document.getElementById('middleCharacterTypeField').innerHTML = typeField;
@@ -143,7 +140,7 @@ export async function AddEventListeners() {
 
         // Load character
         let characterType = ParseChar(document.getElementById('bottomCharacterTypeField').innerHTML, true);
-        LoadCharacter(characterType, characters);
+        LoadCharacter(characterType, UserProfile.characters);
 
         // Replace with top selector elements
         document.getElementById('bottomCharacterTypeField').innerHTML = typeField;
@@ -157,13 +154,13 @@ export async function AddEventListeners() {
 
         // If checked, Store boolean and passive refresh
         if (this.checked) {
-            CacheAuditItem('includeExpiredBounties', true);
+            CacheChangeItem('includeExpiredBounties', true);
             MainEntryPoint(true);
             return;
         };
 
         // If unchecked, Reverse boolean and passive refresh
-        CacheAuditItem('includeExpiredBounties', false);
+        CacheChangeItem('includeExpiredBounties', false);
         MainEntryPoint(true);
     });
 
@@ -172,13 +169,13 @@ export async function AddEventListeners() {
 
         // If checked, Store boolean and passive refresh
         if (this.checked) {
-            CacheAuditItem('includeSeasonalChallengesInTable', true);
+            CacheChangeItem('includeSeasonalChallengesInTable', true);
             MainEntryPoint(true);
             return;
         };
 
         // If unchecked, Reverse boolean and passive refresh
-        CacheAuditItem('includeSeasonalChallengesInTable', false);
+        CacheChangeItem('includeSeasonalChallengesInTable', false);
 
         // Refresh table without seasonal challenges
         relationsTable.BuildTable('bounties');
@@ -290,7 +287,7 @@ export async function AddEventListeners() {
         // secretCount++;
         // if (secretCount >= 7) {
         //     document.getElementById('settingsSecretContainer').style.display = 'block';
-        //     CacheAuditItem('isSecretOn', true);
+        //     CacheChangeItem('isSecretOn', true);
         // };
     });
 
@@ -352,12 +349,12 @@ export async function AddEventListeners() {
     AddListener('checkboxRefreshWhenFocused', 'click', function () {
 
         if (this.checked) {
-            CacheAuditItem('isRefreshOnFocusToggled', true);
+            CacheChangeItem('isRefreshOnFocusToggled', true);
             return;
         };
 
         // Uncheck = clear localStorage value
-        CacheAuditItem('isRefreshOnFocusToggled', false);
+        CacheChangeItem('isRefreshOnFocusToggled', false);
     });
 
 
@@ -367,7 +364,7 @@ export async function AddEventListeners() {
 
         if (this.checked) {
 
-            CacheAuditItem('isRefreshOnIntervalToggled', true);
+            CacheChangeItem('isRefreshOnIntervalToggled', true);
             refreshOnInterval = setInterval(() => {
 
                 // true = passive refresh
@@ -381,7 +378,7 @@ export async function AddEventListeners() {
         };
 
         // Uncheck = clear interval and localStorage value
-        CacheAuditItem('isRefreshOnIntervalToggled', false);
+        CacheChangeItem('isRefreshOnIntervalToggled', false);
         clearInterval(refreshOnInterval);
     });
 
@@ -390,12 +387,12 @@ export async function AddEventListeners() {
     AddListener('checkboxUseSecretIcons', 'click', function () {
         
         if (this.checked) {
-            CacheAuditItem('isSecretOn', true);
+            CacheChangeItem('isSecretOn', true);
             return;
         };
 
         // Uncheck = clear localStorage value
-        CacheAuditItem('isSecretOn', false);
+        CacheChangeItem('isSecretOn', false);
     });
 
 
@@ -427,7 +424,7 @@ export async function AddEventListeners() {
         });
 
         // Save the chosen item to cache and change the current view to the chosen one
-        CacheAuditItem('defaultContentView', this.value);
+        CacheChangeItem('defaultContentView', this.value);
         document.getElementById(this.value).style.display = 'block';
     });
 
@@ -523,7 +520,7 @@ export async function AddEventListeners() {
 
     // Dropdown selection for yields
     AddListener('dropdownYield', 'click', function () {
-
+        log('bruh');
         // This boolean is an attempt to block on subsequent clicks whilst the dropdown is being toggled
         var dropdownBoolean = {
             isElementBeingDroppedDown: false,
@@ -604,7 +601,7 @@ export async function BuildWorkspace() {
         accentColor.UpdateAccentColor(result);
     })
     .catch((error) => {
-        CacheAuditItem('accentColor', '#ED4D4D');
+        CacheChangeItem('accentColor', '#ED4D4D');
         accentColor.UpdateAccentColor('#ED4D4D');
     });
     
@@ -614,7 +611,7 @@ export async function BuildWorkspace() {
         itemDisplay.UpdateItemSize(result);
     })
     .catch((error) => {
-        CacheAuditItem('itemDisplaySize', 55);
+        CacheChangeItem('itemDisplaySize', 55);
         itemDisplay.UpdateItemSize(55);
     });
 
@@ -632,7 +629,7 @@ export async function BuildWorkspace() {
 
         // If there is no result, set default to true
         if (!result) {
-            CacheAuditItem('includeSeasonalChallengesInTable', true);
+            CacheChangeItem('includeSeasonalChallengesInTable', true);
             document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = true;
         };
 
@@ -656,7 +653,7 @@ export async function BuildWorkspace() {
 
         // Set default view if there is none saved already
         if (!result) {
-            CacheAuditItem('defaultContentView', 'bountiesContainer');
+            CacheChangeItem('defaultContentView', 'bountiesContainer');
             document.getElementById(`bountiesContainer`).style.display = 'block';
             document.getElementById('defaultViewDropdown').value = 'bountiesContainer';
             return;
@@ -707,7 +704,7 @@ export async function BuildWorkspace() {
 //         secretCount++;
 //         if (secretCount >= 5) {
 //             document.getElementById('secretIconCheckboxContainer').style.display = 'block';
-//             CacheAuditItem('isSecretOn', true);
+//             CacheChangeItem('isSecretOn', true);
 //         };
 //     });
 
@@ -781,7 +778,7 @@ export async function BuildWorkspace() {
 //             document.getElementById('bountiesContainer').style.display = 'block';
 
 //             // Save the current view to cache
-//             CacheAuditItem('defaultContentView', 'bountiesContainer');
+//             CacheChangeItem('defaultContentView', 'bountiesContainer');
 //         });
 //     });
 
@@ -798,7 +795,7 @@ export async function BuildWorkspace() {
 //             document.getElementById('seasonalChallengesContainer').style.display = 'block';
 
 //             // Save the current view to cache
-//             CacheAuditItem('defaultContentView', 'seasonalChallengesContainer');
+//             CacheChangeItem('defaultContentView', 'seasonalChallengesContainer');
 //         });
 //     });
 
@@ -821,10 +818,10 @@ export async function BuildWorkspace() {
 //     document.getElementById('checkboxRefreshWhenFocused').addEventListener('change', function () {
         
 //         if (this.checked) {
-//             CacheAuditItem('isRefreshOnFocusToggled', true);
+//             CacheChangeItem('isRefreshOnFocusToggled', true);
 //         }
 //         else {
-//             CacheAuditItem('isRefreshOnFocusToggled', false);
+//             CacheChangeItem('isRefreshOnFocusToggled', false);
 //         };
 //     });
 
@@ -859,7 +856,7 @@ export async function BuildWorkspace() {
 
 //         if (this.checked) {
 
-//             CacheAuditItem('isRefreshOnIntervalToggled', true);
+//             CacheChangeItem('isRefreshOnIntervalToggled', true);
 //             refreshOnInterval = setInterval( function () {
 //                 main(true)
 //                     .catch((error) => {
@@ -872,7 +869,7 @@ export async function BuildWorkspace() {
 //         }
 //         else if (!this.checked) {
 
-//             CacheAuditItem('isRefreshOnIntervalToggled', false);
+//             CacheChangeItem('isRefreshOnIntervalToggled', false);
 //             clearInterval(refreshOnInterval);
 //         };
 
@@ -897,7 +894,7 @@ export async function BuildWorkspace() {
 //             element.style.width = `${this.value}px`;
 //         });
 
-//         CacheAuditItem('itemDisplaySize', this.value);
+//         CacheChangeItem('itemDisplaySize', this.value);
 //     };
 
 //     // Reset item size button event listener
@@ -906,7 +903,7 @@ export async function BuildWorkspace() {
 //         rangeSlider.value = defaultItemSize;
 //         bountyImage.style.width = `${defaultItemSize}px`;
 //         rangeValueField.innerHTML = `${defaultItemSize}px`;
-//         CacheAuditItem('itemDisplaySize', defaultItemSize);
+//         CacheChangeItem('itemDisplaySize', defaultItemSize);
 
 //         Array.from(document.getElementsByClassName('bounty')).forEach(element => {
 //             element.style.width = `${defaultItemSize}px`;
@@ -936,7 +933,7 @@ export async function BuildWorkspace() {
 //         });
 
 //         // Save the chosen item to cache and change the current view to the chosen one
-//         CacheAuditItem('defaultContentView', selectedValue);
+//         CacheChangeItem('defaultContentView', selectedValue);
 //         document.getElementById(selectedValue).style.display = 'block';
 //     });
 

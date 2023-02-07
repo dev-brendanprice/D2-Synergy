@@ -11,8 +11,8 @@ module.exports = {
   devOptions: {
     port: 5500
   },
-  optimize: { // Disable minification until stable release
-    // minify: true
+  optimize: {
+    minify: true
   },
   env: {
     version: `Alpha v${packageJson.version}`,

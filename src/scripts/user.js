@@ -1,18 +1,5 @@
-console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
-console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
-
-// Import modules
 import axios from 'axios';
 import { ValidateManifest, ReturnEntry } from './modules/ValidateManifest.js';
-import {
-    VerifyState,
-    StartLoad,
-    StopLoad,
-    RedirUser,
-    LoadPrimaryCharacter,
-    parsePropertyNameIntoWord,
-    CacheAuditItem,
-    AddTableRow } from './modules/ModuleScript.js';
 import {
     ActivityMode,
     Destination,
@@ -27,20 +14,25 @@ import {
     DescriptorSpecifics } from './modules/SynergyDefinitions.js';
 import { AddEventListeners, BuildWorkspace } from './modules/Events.js';
 import { MakeRequest } from './modules/MakeRequest.js';
+import { CheckUserAuthState } from './oauth/CheckUserAuthState.js';
+import { FetchBungieUser } from './oauth/FetchBungieUser.js';
+import { ParsePropertyNameIntoWord } from './modules/ParsePropertyNameIntoWord.js';
+import { VerifyState } from './oauth/VerifyState.js';
+import { LoadPrimaryCharacter } from './modules/LoadPrimaryCharacter.js';
+import { CacheChangeItem } from './modules/CacheChangeItem.js';
+import { AddTableRow } from './modules/AddTableRow.js';
+import { StopLoad } from './modules/StopLoad.js';
+import { StartLoad } from './modules/StartLoad.js';
 
+console.log(`%cD2 SYNERGY ${import.meta.env.version}`, 'font-weight: bold;font-size: 40px;color: white;');
+console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
 
-// Validate state parameter
+// Validate state parameter + start load animation
 VerifyState();
-
-// Start load animation
 StartLoad();
 
 // Utilities
-const urlParams = new URLSearchParams(window.location.search),
-    sessionStorage = window.sessionStorage,
-    localStorage = window.localStorage,
-    log = console.log.bind(console);
-var startTime = new Date().getTime();
+export const log = console.log.bind(console);
 
 
 // Defintion objects
@@ -55,12 +47,12 @@ export var progressionDefinitions = {},
         itemDefinitions = {};
 
 // Authorization information
-export const homeUrl = import.meta.env.HOME_URL,
-             axiosHeaders = {
-                ApiKey: import.meta.env.API_KEY,
-                Authorization: import.meta.env.AUTH
-             },
-             clientId = import.meta.env.CLIENT_ID;
+export const homeUrl = import.meta.env.HOME_URL;
+export const clientId = import.meta.env.CLIENT_ID;
+export const axiosHeaders = { // Does not apply to axios requests automatically
+    ApiKey: import.meta.env.API_KEY,
+    Authorization: import.meta.env.AUTH
+};
 
 // Set default axios header
 axios.defaults.headers.common = {
@@ -68,7 +60,7 @@ axios.defaults.headers.common = {
 };
 
 
-// Collate all definition arrays into one array
+// Put all progression properties into one array
 export var allProgressionProperties = [];
 allProgressionProperties.push(
     ...Destination,
@@ -82,6 +74,9 @@ allProgressionProperties.push(
     ...SeasonalCategory,
     ...LocationSpecifics,
     ...DescriptorSpecifics);
+
+// Remove spaces from each property name
+allProgressionProperties = allProgressionProperties.map(property => ParsePropertyNameIntoWord(property));
 
 // Progression properties and their corresponding key names
 export var progressionPropertyKeyValues = {
@@ -98,18 +93,48 @@ export var progressionPropertyKeyValues = {
     'DescriptorSpecifics': DescriptorSpecifics
 };
 
-// User vars
-let destinyMembershipId,
-    membershipType,
-    characters;
-
-
+// User profile variables
+// export var destinyMembershipId;
+// export var membershipType;
+// export var characters;
+// export var CurrentSeasonHash;
 export var ProfileProgressions;
-export var CurrentSeasonHash;
+export var UserProfile = {
+
+    destinyUserProfile: {},
+    destinyMembershipId: undefined,
+    membershipType: undefined,
+    characters: [],
+    CurrentSeasonHash: undefined,
+
+    AssignDestinyUserProfile: function(profile) {
+        this.destinyUserProfile = profile;
+    },
+    AssignDestinyMembershipId: function(id) {
+        this.destinyMembershipId = id;
+    },
+    AssignMembershipType: function(type) {
+        this.membershipType = type;
+    },
+    AssignCharacters: function(characters) {
+        this.characters = characters;
+    },
+    AssignCurrentSeasonHash: function(hash) {
+        this.CurrentSeasonHash = hash;
+    }
+};
+export const UserProfileProgressions = {
+
+    ProfileProgressions: {},
+
+    AssignProfileProgressions: function(progressions) {
+        this.ProfileProgressions = progressions;
+    }
+};
+
 
 // Object holds all bounties, by vendor, that are to be excluded from permutations
 export var excludedBountiesByVendor = {};
-
 
 // Declare global vars and exports
 export var charBounties = [];
@@ -122,22 +147,6 @@ export var contentView = {
     }
 };
 
-// Deprecated for now
-export var eventBooleans = {
-    areFiltersToggled: false, // Default
-    ReverseBoolean: function(bool) {
-        bool = !bool;
-        return bool;
-    }
-};
-export var eventFilters = {
-    filterDivs: {},
-    grayedOutBounties: [],
-    UpdateFilters: function(value) {
-        this.filterDivs = value;
-    }
-};
-
 // Item display size global
 export var itemDisplay = {
     itemDisplaySize: 55, // Default
@@ -145,7 +154,7 @@ export var itemDisplay = {
 
         // Update global & cache
         this.itemDisplaySize = size;
-        CacheAuditItem('itemDisplaySize', size);
+        CacheChangeItem('itemDisplaySize', size);
 
         // Update dom content
         document.getElementById('accessibilityImageDemo').style.width = `${size}px`;
@@ -159,7 +168,7 @@ export var accentColor = {
 
         // Update global & cache
         this.currentAccentColor = color;
-        CacheAuditItem('accentColor', color);
+        CacheChangeItem('accentColor', color);
 
         // Update dom content
         document.getElementById('topColorBar').style.backgroundColor = color;
@@ -194,7 +203,13 @@ export var relationsTable = {
         
         // Clear table
         this.ClearTable();
-        log(this.relations);
+
+        // Check if table will be empty
+        if (Object.keys(this.relations[type]).length == 0) {
+            AddTableRow(this.div, ['No relations found', '', '']);
+            return;
+        };
+
         // Update table, looping over type
         for (let relation in this.relations[type]) {
 
@@ -204,305 +219,17 @@ export var relationsTable = {
             for (let item in progressionPropertyKeyValues) {
 
                 // If relation is in category, store in category
-                if (progressionPropertyKeyValues[item].includes(parsePropertyNameIntoWord(itemName, true))) {
+                if (progressionPropertyKeyValues[item].includes(ParsePropertyNameIntoWord(itemName, true))) {
                     itemCategory = item;
                 };
             };
 
-            AddTableRow(this.div, [itemName, parsePropertyNameIntoWord(itemCategory), `${itemRelation}pts`]);
+            AddTableRow(this.div, [itemName, ParsePropertyNameIntoWord(itemCategory), `${itemRelation}pts`]);
         };
 
         // Update relation count
         document.getElementById('relationsTotalField').innerHTML = Object.keys(this.relations[type]).length;
     }
-};
-
-
-// Parse properties into words that can be matched to item descriptors
-allProgressionProperties = allProgressionProperties.map(property => parsePropertyNameIntoWord(property));
-
-// Register service worker to load definitions (non blocking)
-const registerDefinitionsServiceWorker = async function () {
-
-    // Check if service worker is supported
-    if ('serviceWorker' in navigator) {
-        const serviceWorker = await navigator.serviceWorker.register('./sw.js', { scope: './', type: 'module' });
-
-        log('🥝 Installing Service Worker');
-        if (serviceWorker.active) {
-            log('🥝 Service Worker Active');
-    
-            serviceWorker.active.postMessage('🥝 HELLO FROM MAIN');
-    
-            // Listen for messages from service worker
-            navigator.serviceWorker.addEventListener('message', (event) => {
-                log('🥝', event.data);
-            });
-        };
-
-        return;
-    };
-
-    // Else do conventional fetch
-    // -- something
-};
-
-
-
-// Main OAuth flow mechanism
-export async function OAuthFlow() {
-
-    log('-> OAuthFlow Called');
-
-    let rsToken = JSON.parse(localStorage.getItem('refreshToken')),
-        acToken = JSON.parse(localStorage.getItem('accessToken')),
-        comps = JSON.parse(localStorage.getItem('components')),
-        authCode = urlParams.get('code'); // ONLY place where authCode is to be fetched from
-
-        // Remove state and auth code from url
-        window.history.pushState({}, document.title, window.location.pathname);
-
-    // Wrap in try.except for error catching
-    try {
-        // If user has no localStorage items and the code is incorrect
-        if (authCode && (!comps || !acToken || !rsToken)) {
-            await BungieOAuth(authCode);
-        }
-        // User has no credentials, fired before other conditions
-        else if (!authCode && (!comps || !acToken || !rsToken)) {
-            window.location.href = homeUrl;
-        }
-
-        // When user comes back with localStorage components but without param URL
-        else if (!authCode && (comps || acToken || rsToken)) {
-            await CheckComponents();
-        }
-
-        // Otherwise, redirect the user back to the 'Authorize' page
-        else {
-            window.location.href = homeUrl;
-        };
-    } catch (error) {
-        console.error(error); // display error page, with error and options for user
-    };
-    log(`-> OAuth Flow Finished [Elapsed: ${new Date().getTime() - startTime}ms]`);
-};
-
-
-
-// Authorize with Bungie.net
-// @string {authCode}
-export async function BungieOAuth (authCode) {
-
-    let AccessToken = {},
-        RefreshToken = {},
-        components = {},
-        AuthConfig = {
-            headers: {
-                'X-API-Key': axiosHeaders.ApiKey,
-                Authorization: `Basic ${axiosHeaders.Authorization}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        };
-        log(axiosHeaders.Authorization);
-
-    // Authorize user and get credentials (first time sign-on (usually))
-    await axios.post('https://www.bungie.net/platform/app/oauth/token', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
-        .then(res => {
-
-            let data = res.data;
-            log(res);
-
-            components['membership_id'] = data['membership_id'];
-            components['token_type'] = data['token_type'];
-            components['authorization_code'] = authCode;
-
-            AccessToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
-            AccessToken['expires_in'] = data['expires_in'];
-            AccessToken['value'] = data['access_token'];
-
-            RefreshToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
-            RefreshToken['expires_in'] = data['refresh_expires_in'];
-            RefreshToken['value'] = data['refresh_token'];
-
-            localStorage.setItem('accessToken', JSON.stringify(AccessToken));
-            localStorage.setItem('components', JSON.stringify(components));
-            localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
-
-            log('-> Authorized with Bungie.net');
-        })
-        .catch(async (err) => {
-
-            switch (err.response.data) {
-                case 'AuthorizationCodeInvalid':
-                case 'AuthorizationCodeStale':
-                    window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
-                case 'ApplicationTokenKeyIdDoesNotExist':
-                    await CheckComponents();
-            };
-            // if (err.response.data['error_description'] == 'AuthorizationCodeInvalid' || err.response.data['error_description'] == 'AuthorizationCodeStale') {
-            //     window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
-            //     return;
-            // };
-            console.error(err);
-        });
-};
-
-
-
-// Check tokens for expiration
-export async function CheckComponents () {
-    
-    let acToken = JSON.parse(localStorage.getItem('accessToken')),
-        rsToken = JSON.parse(localStorage.getItem('refreshToken')),
-        comps = JSON.parse(localStorage.getItem('components')),
-        RefreshToken = {},
-        AccessToken = {},
-        components = {},
-        AuthConfig = {
-            headers: {
-                Authorization: `Basic ${axiosHeaders.Authorization}`,
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
-        };
-
-
-    // Remove invalid localStorage items & Redirect if items are missing
-    var keyNames = ['value', 'inception',  'expires_in', 'membership_id', 'token_type', 'authorization_code'],
-        cKeys = ['membership_id', 'token_type', 'authorization_code'],
-        tokenKeys = ['inception', 'expires_in', 'value'];
-
-
-    Object.keys(rsToken).forEach(item => {
-        if (!keyNames.includes(item)) delete rsToken[item], localStorage.setItem('refreshToken', JSON.stringify(rsToken));
-    });
-    Object.keys(acToken).forEach(item => {
-        if (!keyNames.includes(item)) delete acToken[item], localStorage.setItem('accessToken', JSON.stringify(acToken));
-    });
-    Object.keys(comps).forEach(item => {
-        if (!keyNames.includes(item)) delete comps[item], localStorage.setItem('components', JSON.stringify(comps));
-    });
-
-    Object.keys(tokenKeys).forEach(item => {
-        if (!Object.keys(rsToken).includes(tokenKeys[item])) RedirUser(homeUrl, 'rsToken=true');
-        if (!Object.keys(acToken).includes(tokenKeys[item])) RedirUser(homeUrl, 'acToken=true');
-    });
-    Object.keys(cKeys).forEach(item => {
-        if (!Object.keys(comps).includes(cKeys[item])) RedirUser(homeUrl, 'comps=true');
-    });
-
-
-    // Check if either tokens have expired
-    let isAcTokenExpired = (acToken.inception + acToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1,
-        isRsTokenExpired = (rsToken.inception + rsToken['expires_in']) <= Math.round(new Date().getTime() / 1000) - 1;
-    if (isAcTokenExpired || isRsTokenExpired) {
-
-        // If either tokens have expired
-        isAcTokenExpired ? log('-> Access token expired..') : log('-> Refresh token expired..');
-        await axios.post('https://www.bungie.net/Platform/App/OAuth/token/', `grant_type=refresh_token&refresh_token=${rsToken.value}`, AuthConfig)
-            .then(res => {
-
-                let data = res.data;
-                components["membership_id"] = data["membership_id"];
-                components["token_type"] = data["token_type"];
-                components["authorization_code"] = comps["authorization_code"];
-
-                AccessToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
-                AccessToken['expires_in'] = data['expires_in'];
-                AccessToken['value'] = data['access_token'];
-
-                RefreshToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
-                RefreshToken['expires_in'] = data['refresh_expires_in'];
-                RefreshToken['value'] = data['refresh_token'];
-
-                localStorage.setItem('accessToken', JSON.stringify(AccessToken));
-                localStorage.setItem('components', JSON.stringify(components));
-                localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
-            })
-            .catch(err => {
-                console.error(err);
-                switch (err.response.data['error_description']) {
-                    case 'AuthorizationCodeInvalid':
-                    case 'AuthorizationCodeStale':
-                    case 'ProvidedTokenNotValidRefreshToken':
-                        // Restart OAuthFlow
-                        localStorage.clear();
-                        sessionStorage.clear();
-                        indexedDB.deleteDatabase('keyval-store');
-                        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
-                };
-            });
-        isAcTokenExpired ? log('-> Access Token Refreshed!') : log('-> Refresh Token Refreshed!');
-    };
-    log(`-> Tokens Validated [${new Date().getTime() - startTime}ms]`);
-};
-
-
-
-// Fetch bungie user data
-export async function FetchBungieUserDetails() {
-
-    log('-> FetchBungieUserDetails Called');
-
-    await CheckComponents();
-
-    let components = JSON.parse(localStorage.getItem('components')),
-        axiosConfig = {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(localStorage.getItem('accessToken')).value}`,
-                "X-API-Key": `${axiosHeaders.ApiKey}`
-            }
-        };
-        log(JSON.parse(localStorage.getItem('accessToken')).value);
-        
-
-    // Variables to check/store
-    membershipType = sessionStorage.getItem('membershipType'),
-    destinyMembershipId = JSON.parse(sessionStorage.getItem('destinyMembershipId')),
-    destinyUserProfile = JSON.parse(sessionStorage.getItem('destinyUserProfile'));
-
-    // Check cached data
-    if (!membershipType || !membershipType) {
-
-        // GetBungieNetUserById (uses 254 as membershipType)
-        await axios.get(`https://www.bungie.net/Platform/Destiny2/254/Profile/${components.membership_id}/LinkedProfiles/?getAllMemberships=true`, axiosConfig)
-            .then(response => {
-
-                // Store response
-                destinyMembershipId = response.data.Response.profiles[0].membershipId;
-                membershipType = response.data.Response.profiles[0].membershipType;
-
-                // Cache in sessionStorage
-                sessionStorage.setItem('membershipType', membershipType);
-                sessionStorage.setItem('destinyMembershipId', JSON.stringify(destinyMembershipId));
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
-
-    // GetProfile
-    await axios.get(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900,1200`, axiosConfig)
-        .then(response => {
-                
-            // Store in memory again
-            log(response);
-            destinyUserProfile = response.data.Response;
-
-            // Parse data from destinyUserProfile
-            CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
-            ProfileProgressions = destinyUserProfile.profileProgression.data;
-
-            // Cache in sessionStorage
-            sessionStorage.setItem('destinyUserProfile', JSON.stringify(destinyUserProfile));
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        
-    characters = destinyUserProfile.characters.data;
-    log(`Current season hash: ${CurrentSeasonHash}`);
-    log(`-> FetchBungieUserDetails Finished [${new Date().getTime() - startTime}ms]`);
 };
 
 
@@ -513,10 +240,9 @@ export async function MainEntryPoint(isPassiveReload) {
 
     // Check for passive reload
     if (isPassiveReload) {
-        startTime = new Date().getTime();
         StartLoad();
         document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'none';
-        log(`-> Passive Reload Started..`);
+        log(`-> Passive Reload Called`);
     };
 
     // Change notification label content
@@ -524,13 +250,13 @@ export async function MainEntryPoint(isPassiveReload) {
     document.getElementById('notificationMessage').innerHTML = 'Waiting for Bungie.net..';
 
     // OAuth Flow
-    await OAuthFlow();
+    await CheckUserAuthState();
 
     // Add default headers back, in case OAuthFlow needed a refresh
     axios.defaults.headers.common = { "X-API-Key": `${axiosHeaders.ApiKey}` };
 
     // Fetch bungie user details
-    await FetchBungieUserDetails();
+    await FetchBungieUser();
 
     // Validate and fetch manifest
     await ValidateManifest();
@@ -545,14 +271,13 @@ export async function MainEntryPoint(isPassiveReload) {
     presentationNodeDefinitions = await ReturnEntry('DestinyPresentationNodeDefinition');
 
     // Load first char on profile/last loaded char
-    log(characters);
-    await LoadPrimaryCharacter(characters);
+    await LoadPrimaryCharacter(UserProfile.characters);
 
     // Check for passive reload
     if (isPassiveReload) {
         StopLoad();
         document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'flex';
-        log(`-> Passive Reload Finished [Elapsed: ${(new Date().getTime() - startTime)}ms]`);
+        log(`-> Passive Reload Finished`);
         return;
     };
 
@@ -564,28 +289,28 @@ export async function MainEntryPoint(isPassiveReload) {
 
 
 // Run after DOM load
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
     // Test server availability
-    MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {scriptOrigin: 'user', avoidCache: true})
+    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {avoidCache: true})
     .then((response) => {
-        log(response);
+        log(`${response.status}OK - Bungie.net is online`);
     })
     .catch((error) => {
         console.error(error);
     });
 
     // Build workspace -- default fields etc.
-    BuildWorkspace()
+    await BuildWorkspace()
     .catch((error) => {
         console.error(error);
     });
 
     // Build definitions using service worker
-    registerDefinitionsServiceWorker()
-    .catch((error) => {
-        console.error(`🥝 Service Worker Error: ${error}`);
-    });
+    // RegisterServiceWorker()
+    // .catch((error) => {
+    //     console.error(`🥝 Service Worker Error: ${error}`);
+    // });
 
     // Run main
     MainEntryPoint()

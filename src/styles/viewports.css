@@ -67,6 +67,10 @@
         width: unset;
         height: unset;
     }
+
+    #recommendationTooltip {
+        margin-bottom: 50px;
+    }
 }
 
 @media screen and (max-width: 1050px) {
@@ -287,6 +291,15 @@
     }
 
     #defaultCharacterSelect {
+        display: none;
+    }
+
+    #notificationContainer {
+        margin-right: 5px;
+        margin-bottom: 75px;
+    }
+
+    #overlays {
         display: none;
     }
 }

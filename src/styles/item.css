@@ -8,12 +8,13 @@
     position: relative;
     display: none;
     width: 210px;
-    height: 260px;
+    min-height: 260px;
     background-color: rgba(0, 0, 0, 0.639);
     backdrop-filter: blur(6px);
     border: 1px solid rgba(87, 87, 87, 0.66);
-    z-index: 10;
+    z-index: 99;
     box-shadow: 2px 2px 2px #3F3F3F;
+    pointer-events: none;
 }
 
 .itemContainerComplete {
@@ -35,6 +36,56 @@
     left: 0;
     background: linear-gradient(rgb(182,137,67) 0%, transparent 100%);
     z-index: -10;
+}
+
+#itemDesc {
+    padding-left: 10px;
+    padding-right: 1em;
+    color: white;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 13px;
+}
+
+#itemPrg {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+    width: 90%;
+}
+
+.itemPrgContainer {
+    display: flex;
+    margin-top: auto;
+}
+
+.itemObjectivesContainer {
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.itemPrgDesc {
+    bottom: 0;
+    width: 85%;
+    text-align: left;
+    color: #c8c8c8;
+    opacity: 0.7;
+    font-family: Verdana, Geneva, Tahoma, sans-serif, monospace;
+    font-size: 11px;
+}
+
+.itemPrgCounter {
+    bottom: 0;
+    right: 0;
+    text-align: right;
+    color: #c8c8c8;
+    opacity: 0.7;
+    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-size: 11px;
 }
 
 #bountyItems {
@@ -85,48 +136,6 @@
     color: white;
     font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     font-style: italic;
-    font-size: 11px;
-}
-
-#itemDesc {
-    padding-left: 10px;
-    padding-right: 1em;
-    color: white;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    font-size: 13px;
-}
-
-#itemPrg {
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 10px;
-    width: 90%;
-}
-
-.itemPrgCounter {
-    display: inline-block;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding-right: 10px;
-    text-align: right;
-    color: #c8c8c8;
-    opacity: 0.7;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    font-size: 11px;
-}
-
-.itemPrgDesc {
-    display: inline-block;
-    position: absolute;
-    bottom: 0;
-    padding-top: 10px;
-    padding-left: 10px;
-    width: 80%;
-    text-align: left;
-    color: #c8c8c8;
-    opacity: 0.7;
-    font-family: Verdana, Geneva, Tahoma, sans-serif, monospace;
     font-size: 11px;
 }
 

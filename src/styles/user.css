@@ -18,6 +18,10 @@
     z-index: 0;
 }
 
+#dropdownYield {
+    user-select: all;
+}
+
 #githubIcon {
     width: 23px;
     filter: invert(22%) sepia(0%) saturate(1%) hue-rotate(7deg) brightness(97%) contrast(83%);
@@ -883,7 +887,6 @@ hr.dropdownLine {
     border: none;
     border-radius: 5px;
     background-color: #64696d;
-    user-select: all;
 }
 
 hr.dropdownSubline {

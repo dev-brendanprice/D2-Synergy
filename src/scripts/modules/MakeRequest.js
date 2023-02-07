@@ -1,18 +1,10 @@
 import axios from 'axios';
-
-const log = console.log.bind(console);
-
-const localStorage = window.localStorage,
-    sessionStorage = window.sessionStorage;
-
+import { GenerateRandomString } from './GenerateRandomString.js';
 
 // Custom wrapper for requests
-export const MakeRequest = function (url, config, utils) {
+// @string {url}, @object {config}, @object {utils}
+export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user', avoidCache: false }) {
     return new Promise(async (resolve, reject) => {
-        
-        // Defaults (safe measure)
-        utils.scriptOrigin = utils.scriptOrigin || 'user';
-        utils.avoidCache = utils.avoidCache || false;
 
         // API down, Servers down, or other error
         function CheckForErrorStatus(error, promise) {
@@ -31,8 +23,8 @@ export const MakeRequest = function (url, config, utils) {
                 };
 
                 // Else, check for server down on any other page (user.html)
-                localStorage.clear();
-                sessionStorage.clear();
+                window.localStorage.clear();
+                window.sessionStorage.clear();
                 indexedDB.deleteDatabase('keyval-store');
                 window.location.href = 'index.html';
 
@@ -52,15 +44,4 @@ export const MakeRequest = function (url, config, utils) {
             reject(CheckForErrorStatus(error, {resolve, reject}).response.data);
         });
     });
-};
-
-
-// Generate random string for query param when avoiding cache
-export function GenerateRandomString(len) {
-    let result = ' ',
-        characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    for (let i = 0; i < len; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
-    };
-    return result;
 };

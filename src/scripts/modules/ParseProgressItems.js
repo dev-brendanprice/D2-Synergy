@@ -3,24 +3,24 @@ import {
     itemTypeKeys,
     baseYields,
     petraYields } from './SynergyDefinitions.js'
-import { 
-    ReturnSeasonPassProgressionStats,
-    ParseSeasonalChallenges,
-    InsertSeperators,
-    AddValueToElementInner,
-    CalcXpYield,
-    PushToDOM,
-    SortByType,
-    SortByGroup,
-    ParseBounties,
-    SortBountiesByType,
-    MakeBountyElement } from './ModuleScript.js';
 import {
     seasonDefinitions,
     recordDefinitions,
     presentationNodeDefinitions,
     itemDefinitions,
     objectiveDefinitions } from '../user.js';
+import { MakeBountyElement } from './MakeBountyElement.js';
+import { ParseSeasonalChallenges } from './ParseSeasonalChallenges.js';
+import { ReturnSeasonPassProgressionStats } from './ReturnSeasonPassProgressionStats.js';
+import { ParseBounties } from './ParseBounties.js';
+import { CalcXpYield } from './CalcXpYield.js';
+import { AddValueToElementInner } from './AddValueToElementInner.js';
+import { ReplaceStringVariables } from './ReplaceStringVariables.js';
+import { PushToDOM } from './PushToDOM.js';
+import { SortBountiesByType } from './SortBountiesByType.js';
+import { SortByType } from './SortByType.js';
+import { SortByGroup } from './SortByGroup.js';
+import { InsertSeperators } from './InsertSeperators.js';
 
 const log = console.log.bind(console);
 
@@ -67,7 +67,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     // Get all seasonal challenges
     let allSeasonalChallenges = await ParseSeasonalChallenges(2809059433, seasonDefinitions, recordDefinitions, presentationNodeDefinitions, null);
     returnObj.challenges = allSeasonalChallenges; // Add to return object
-    log('Seasonal Challenges:', allSeasonalChallenges);
 
     // Parse seasonal challenges into corresponding objects
     let completedChallenges = {},
@@ -200,7 +199,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Sort challenges by completion percentage, in ascending order
     let sortedChallenges = Object.values(allSeasonalChallengesAndTheirDivs).sort((a, b) => a.challenge.completionPercentage - b.challenge.completionPercentage);
-    log(Object.entries(sortedChallenges));
 
     // Slice the array of challenges into chunks of 6
     let chunkedChallenges = [];
@@ -253,13 +251,15 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     });
 
     // Loop over inventory items and emit bounties
-    log('loadCharacter parsing bounties');
     let parsedBountiesResponse = ParseBounties(charInventory, CharacterObjectives, itemDefinitions, objectiveDefinitions);
     let characterBounties = parsedBountiesResponse.charBounties;
     amountOfBounties = parsedBountiesResponse.amountOfBounties;
     returnObj.charBounties = characterBounties; // Add bounties to return object
 
-    if (amountOfBounties < 20) {
+    if (amountOfBounties === 0) {
+        document.getElementById('recommendationTooltip').style.display = 'none';
+    }
+    else if (amountOfBounties < 20) {
         document.getElementById('recommendationTooltip').style.display = 'block';
     };
 
@@ -269,7 +269,11 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         let objHashes = characterBounties[bounty].objectives.objectiveHashes;
         characterBounties[bounty].objectiveDefinitions = [];
 
+        // Push objective definitions to bounty
         for (let objHash of objHashes) {
+
+            // Replace string variables
+            objectiveDefinitions[objHash].progressDescription = ReplaceStringVariables(objectiveDefinitions[objHash].progressDescription);
             characterBounties[bounty].objectiveDefinitions.push(objectiveDefinitions[objHash]);
         };
     });
@@ -350,13 +354,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     // Calculate XP yield from (active) bounties
     let totalXpYield = 0;
     let totalXpYieldWithModifiers = 0;
-    await CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields)
-    .then((xpYield) => {
-        totalXpYield = xpYield;
-    })
-    .catch((err) => {
-        console.error(err);
-    });
+    totalXpYield = await CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields);
 
     // Format to 1.n
     // const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) * wellRestedBonus) / 100) + 1;

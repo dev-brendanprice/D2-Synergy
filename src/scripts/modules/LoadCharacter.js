@@ -1,26 +1,22 @@
 import { 
-    CacheAuditItem, 
-    ReturnSeasonPassLevel,
-    AddValueToElementInner,
-    InsertSeperators,
-    ParseProgressionalRelations,
-    StopLoad,
-    ParseChar,
-    parsePropertyNameIntoWord,
-    AddTableRow } from './ModuleScript';
-import { 
     itemDefinitions,
-    destinyUserProfile, 
-    CurrentSeasonHash,
     seasonDefinitions,
     seasonPassDefinitions,
     progressionDefinitions,
-    ProfileProgressions,
     progressionPropertyKeyValues,
-    relationsTable } from '../user.js';
+    relationsTable, 
+    UserProfile,
+    UserProfileProgressions, log } from '../user.js';
 import { ParseProgressionalItems } from './ParseProgressItems.js';
-
-const log = console.log.bind(console);
+import { ReturnSeasonPassLevel } from './ReturnSeasonPassLevel.js';
+import { ParseProgressionalRelations } from './ParseProgressRelations.js';
+import { ParsePropertyNameIntoWord } from './ParsePropertyNameIntoWord.js';
+import { AddValueToElementInner } from './AddValueToElementInner.js';
+import { CacheChangeItem } from './CacheChangeItem.js';
+import { AddTableRow } from './AddTableRow.js';
+import { InsertSeperators } from './InsertSeperators.js';
+import { StopLoad } from './StopLoad.js';
+import { ParseChar } from './ParseChar.js';
 
 var characterLoadToggled = false, // Used to lockout character select during a load
     characterRecords;
@@ -68,9 +64,9 @@ export async function LoadCharacter(classType, characters) {
         document.getElementById('ctgKillType').innerHTML = 'There are no (specific) relations for kill types.';
 
         // Get chosen character via classType
-        for (let entry in destinyUserProfile.characters.data) {
+        for (let entry in UserProfile.characters) {
 
-            let character = destinyUserProfile.characters.data[entry];
+            let character = UserProfile.characters[entry];
             if (character.classType === classType) {
                 characterId = character.characterId;
                 primaryCharacter = character;
@@ -78,7 +74,7 @@ export async function LoadCharacter(classType, characters) {
         };
 
         // Save character to localStorage
-        CacheAuditItem('currentChar', primaryCharacter);
+        CacheChangeItem('currentChar', primaryCharacter);
 
         // Do character selects
         document.getElementById('topCharacterTypeField').innerHTML = ParseChar(primaryCharacter.classType);
@@ -105,14 +101,24 @@ export async function LoadCharacter(classType, characters) {
                 document.getElementById('bottomCharacterPowerLevelField').innerHTML = char.light;
             };
         };
+        
+        // Hide containers dependant on how many characters a user has (1, 2 or 3)
+        if (otherCharacters.length === 0) {
+            document.getElementById('middleCharacterContainer').style.display = 'none';
+            document.getElementById('bottomCharacterContainer').style.display = 'none';
+        }
+        else if (otherCharacters.length === 1) {
+            document.getElementById('bottomCharacterContainer').style.display = 'none';
+        };
 
         // Get character-specific data from destinyUserProfile cache
-        CharacterProgressions = destinyUserProfile.characterProgressions.data[characterId].progressions;
-        CharacterEquipment = destinyUserProfile.characterEquipment.data[characterId].items;
-        CharacterObjectives = destinyUserProfile.itemComponents.objectives.data;
-        CharacterInventories = destinyUserProfile.characterInventories.data;
-        characterRecords = destinyUserProfile.characterRecords.data[characterId].records;
-        ItemSockets = destinyUserProfile.itemComponents.sockets.data;
+        log(UserProfile);
+        CharacterProgressions = UserProfile.destinyUserProfile.characterProgressions.data[characterId].progressions;
+        CharacterEquipment = UserProfile.destinyUserProfile.characterEquipment.data[characterId].items;
+        CharacterObjectives = UserProfile.destinyUserProfile.itemComponents.objectives.data;
+        CharacterInventories = UserProfile.destinyUserProfile.characterInventories.data;
+        characterRecords = UserProfile.destinyUserProfile.characterRecords.data[characterId].records;
+        ItemSockets = UserProfile.destinyUserProfile.itemComponents.sockets.data;
 
         // Ghost experience mod bonus
         let ghostModBonusXp = 0;
@@ -148,9 +154,8 @@ export async function LoadCharacter(classType, characters) {
         });
 
         // Get season pass info
-        log(seasonDefinitions[CurrentSeasonHash], CurrentSeasonHash);
-        seasonProgressionInfo = CharacterProgressions[seasonDefinitions[CurrentSeasonHash].seasonPassProgressionHash];
-        seasonPassInfo = seasonPassDefinitions[seasonDefinitions[CurrentSeasonHash].seasonPassHash];
+        seasonProgressionInfo = CharacterProgressions[seasonDefinitions[UserProfile.CurrentSeasonHash].seasonPassProgressionHash];
+        seasonPassInfo = seasonPassDefinitions[seasonDefinitions[UserProfile.CurrentSeasonHash].seasonPassHash];
         prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
         seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
 
@@ -171,10 +176,10 @@ export async function LoadCharacter(classType, characters) {
 
         // Get artifact info -- check if profile has artifact
         let artifact;
-        if (ProfileProgressions.seasonalArtifact) {
+        if (UserProfileProgressions.ProfileProgressions.seasonalArtifact) {
 
             // Change corresponding HTML elements to display stats
-            artifact = ProfileProgressions.seasonalArtifact;
+            artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
 
             if (artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel !== 0) {
                 AddValueToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
@@ -186,7 +191,7 @@ export async function LoadCharacter(classType, characters) {
             AddValueToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
             AddValueToElementInner('artifactXpToNextPowerBonus', InsertSeperators(artifact.powerBonusProgression.nextLevelAt - artifact.powerBonusProgression.progressToNextLevel));
         }
-        else if (!ProfileProgressions.seasonalArtifact) {
+        else if (!UserProfileProgressions.ProfileProgressions.seasonalArtifact) {
 
             // Change corresponding HTML elements to display stats
             document.getElementById('artifactStatsFirstContainer').style.display = 'none';
@@ -220,16 +225,18 @@ export async function LoadCharacter(classType, characters) {
             for (let item in progressionPropertyKeyValues) {
 
                 // If relation is in category, store in category
-                if (progressionPropertyKeyValues[item].includes(parsePropertyNameIntoWord(relation[0], true))) {
+                if (progressionPropertyKeyValues[item].includes(ParsePropertyNameIntoWord(relation[0], true))) {
                     category = item;
                 };
             };
 
-            AddTableRow(table, [relation[0], parsePropertyNameIntoWord(category), `${relation[1]}pts`]);
+            if (category) {
+                AddTableRow(table, [relation[0], ParsePropertyNameIntoWord(category), `${relation[1]}pts`]);
+            };
         };
 
         // Stop loading sequence
-        CacheAuditItem('lastChar', classType);
+        CacheChangeItem('lastChar', classType);
         characterLoadToggled = false;
         StopLoad();
     };

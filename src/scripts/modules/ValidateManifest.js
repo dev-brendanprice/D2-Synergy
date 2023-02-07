@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { get, set } from 'idb-keyval';
-import { GenerateRandomString } from './ModuleScript.js';
+import { log } from '../user.js';
+import { GenerateRandomString } from './GenerateRandomString.js';
 
-const requiredTables = [
+const requiredManifestTables = [
     'DestinySeasonDefinition',
     'DestinyInventoryItemDefinition',
     'DestinyObjectiveDefinition',
@@ -12,9 +13,7 @@ const requiredTables = [
     'DestinyPresentationNodeDefinition'
 ];
 
-var log = console.log.bind(console),
-    manifest;
-
+var manifest;
 
 
 // Return manifest components
@@ -23,19 +22,16 @@ var ReturnComponentSuffix = async (entry) => {
     if (!manifest) {
         manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
     };
-    let components = manifest.data.Response.jsonWorldComponentContentPaths[window.navigator.language.split('-')[0]];
-    log(components);
 
+    let components = manifest.data.Response.jsonWorldComponentContentPaths[window.navigator.language.split('-')[0]];
     return components[entry];
 };
-
 
 
 // Check if each (required) table exists
 var FixTables = async () => {
 
-    log(requiredTables);
-    for (let table of requiredTables) {
+    for (let table of requiredManifestTables) {
         
         let entry = await get(table);
         if (!entry) {
@@ -53,7 +49,7 @@ var FixTables = async () => {
                 })
                 .catch((error) => {
                     console.error(error);
-                    // Retry request with random query to bypass cache
+                    // Bypass cache
                     return axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(4)}=${GenerateRandomString(4)}`);
                 });
 
@@ -64,11 +60,10 @@ var FixTables = async () => {
 };
 
 
-
 // Check manifest version
 export var ValidateManifest = async () => {
 
-    log('ValidateManifest START')
+    log('-> ValidateManifest Called');
 
     // Change notification label content
     document.getElementById('notificationTitle').innerHTML = 'Loading Definitions';
@@ -87,9 +82,8 @@ export var ValidateManifest = async () => {
     };
 
     // Remove timeout, just in the case overlapping instructions
-    log('ValidateManifest END');
+    log('-> ValidateManifest Finished');
 };
-
 
 
 // Return passed component
