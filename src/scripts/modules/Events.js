@@ -520,7 +520,7 @@ export async function AddEventListeners() {
 
     // Dropdown selection for yields
     AddListener('dropdownYield', 'click', function () {
-        log('bruh');
+
         // This boolean is an attempt to block on subsequent clicks whilst the dropdown is being toggled
         var dropdownBoolean = {
             isElementBeingDroppedDown: false,
@@ -579,6 +579,22 @@ export async function AddEventListeners() {
         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
     });
 
+    // Toggle table types (Filters)
+    AddListener('toggleTypePVE', 'click', function (e) {
+        e.style.backgroundColor = 'background-color: rgb(76, 96, 186);';
+        document.getElementById('toggleTypePVP').style.backgroundColor = 'none';
+        document.getElementById('toggleTypeNONE').style.backgroundColor = 'none';
+    });
+    AddListener('toggleTypePVP', 'click', function (e) {
+        e.style.backgroundColor = 'background-color: rgb(76, 96, 186);';
+        document.getElementById('toggleTypePVE').style.backgroundColor = 'none';
+        document.getElementById('toggleTypeNONE').style.backgroundColor = 'none';
+    });
+    AddListener('toggleTypeNONE', 'click', function (e) {
+        e.style.backgroundColor = 'background-color: rgb(76, 96, 186);';
+        document.getElementById('toggleTypePVE').style.backgroundColor = 'none';
+        document.getElementById('toggleTypePVP').style.backgroundColor = 'none';
+    });
 };
 
 

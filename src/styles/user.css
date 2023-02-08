@@ -83,6 +83,13 @@
 	color: white;
 }
 
+.toggleTableTypeButton {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px rgb(131, 150, 236) solid;
+    cursor: pointer;
+}
+
 #availableVendorStatus {
     margin-top: 12px;
     padding: 5px;
@@ -253,10 +260,6 @@
 }
 
 #accessibilityTextDemo {
-    font-size: var(--fontSizeContent);
-}
-
-#bruh:hover {
     font-size: var(--fontSizeContent);
 }
 
