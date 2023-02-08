@@ -51,7 +51,8 @@ export async function FetchBungieUser() {
         
         // Assign user profile and progression data
         UserProfile.AssignDestinyUserProfile(response.data.Response);
-        UserProfile.AssignCharacters(response.data.Response.characters.data);
+        UserProfile.AssignCharacters(response.data.Response.characters.data); //
+        log(response.data.Response.characters.data);
         UserProfile.AssignCurrentSeasonHash(response.data.Response.profile.data.currentSeasonHash);
         UserProfileProgressions.AssignProfileProgressions(response.data.Response.profileProgression.data);
 
