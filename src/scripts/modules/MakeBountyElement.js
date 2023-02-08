@@ -126,16 +126,26 @@ export async function MakeBountyElement(param) {
         itemOverlay.style.position = 'absolute';
         itemOverlay.style.display = 'block';
 
-        let itemOverlayPos = parseInt(itemOverlay.style.left.split('px')[0]);
-        let itemOverlayWidth = 210;
-        if (!(itemOverlayPos + itemOverlayWidth >= window.innerWidth)) {
-            itemOverlay.style.left = `${e.pageX}px`;
-            itemOverlay.style.top = `${e.pageY}px`;
-        }
-        else {
-            itemOverlay.style.left = `1070px`;
-            itemOverlay.style.top = `${e.pageY}px`;
-        };
+        // let itemOverlayPos = parseInt(itemOverlay.style.left.split('px')[0]);
+        // let itemOverlayWidth = 210;
+
+        itemOverlay.style.left = `${e.pageX}px`;
+        itemOverlay.style.top = `${e.pageY}px`;
+
+        // if (((window.innerWidth - itemOverlayWidth) >= itemOverlayPos)) {
+        //     // console.log(((window.innerWidth - itemOverlayWidth) >= itemOverlayPos));
+        //     itemOverlay.style.left = `${e.pageX}px`;
+        //     itemOverlay.style.top = `${e.pageY}px`;
+        //     return;
+        // };
+
+        // if (!((window.innerWidth - itemOverlayWidth) >= itemOverlayPos)) {
+        //     // console.log(((window.innerWidth - itemOverlayWidth) >= itemOverlayPos));
+        //     itemOverlay.style.left = `${window.innerWidth - (itemOverlayWidth + 10)}px`;
+        //     itemOverlay.style.top = `${e.pageY}px`;
+        //     return;
+        // };
+
     });
 
     item.addEventListener('mouseleave', (e) => {

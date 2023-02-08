@@ -39,7 +39,6 @@ export async function FetchBungieUser() {
                     mostRecentIndex = i;
                 };
             };
-            log(response, mostRecent, mostRecentIndex);
     
             // Store response
             membershipType = response.data.Response.profiles[mostRecentIndex].membershipType;

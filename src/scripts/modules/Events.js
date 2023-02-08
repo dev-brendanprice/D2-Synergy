@@ -174,7 +174,7 @@ export async function AddEventListeners() {
             return;
         };
 
-        // If unchecked, Reverse boolean and passive refresh
+        // If unchecked, Reverse boolean
         CacheChangeItem('includeSeasonalChallengesInTable', false);
 
         // Refresh table without seasonal challenges
@@ -581,19 +581,24 @@ export async function AddEventListeners() {
 
     // Toggle table types (Filters)
     AddListener('toggleTypePVE', 'click', function (e) {
-        e.style.backgroundColor = 'background-color: rgb(76, 96, 186);';
-        document.getElementById('toggleTypePVP').style.backgroundColor = 'none';
-        document.getElementById('toggleTypeNONE').style.backgroundColor = 'none';
+
+        // Button style
+        e.target.style.backgroundColor = 'rgb(80, 95, 190)';
+        document.getElementById('toggleTypePVP').style.backgroundColor = 'unset';
+
+        // Rebuild table
+        relationsTable.toggles.pve = true;
+        relationsTable.BuildTable();
     });
     AddListener('toggleTypePVP', 'click', function (e) {
-        e.style.backgroundColor = 'background-color: rgb(76, 96, 186);';
-        document.getElementById('toggleTypePVE').style.backgroundColor = 'none';
-        document.getElementById('toggleTypeNONE').style.backgroundColor = 'none';
-    });
-    AddListener('toggleTypeNONE', 'click', function (e) {
-        e.style.backgroundColor = 'background-color: rgb(76, 96, 186);';
-        document.getElementById('toggleTypePVE').style.backgroundColor = 'none';
-        document.getElementById('toggleTypePVP').style.backgroundColor = 'none';
+
+        // Button style
+        e.target.style.backgroundColor = 'rgb(80, 95, 190)';
+        document.getElementById('toggleTypePVE').style.backgroundColor = 'unset';
+
+        // Rebuild table
+        relationsTable.toggles.pvp = true;
+        relationsTable.BuildTable();
     });
 };
 

@@ -207,7 +207,7 @@ export async function LoadCharacter(classType, characters) {
         var relations = await ParseProgressionalRelations(progressionalItemsObj);
 
         // Clear table and declare table div
-        let table = document.getElementById('myTable');
+        let table = document.getElementById('relationsTable');
         relationsTable.div = table;
         relationsTable.ClearTable();
 
@@ -215,6 +215,7 @@ export async function LoadCharacter(classType, characters) {
         relationsTable.relations.bounties = relations.bounties;
         relationsTable.relations.challenges = relations.challenges;
         relationsTable.relations.all = relations.all;
+
 
         // Append allRelations to table
         for (let index in relations.all) {

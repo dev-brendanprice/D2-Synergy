@@ -319,7 +319,7 @@
     border-radius: 8px;
 }
 
-#myTable {
+#relationsTable {
     width: 100%;
     font-family: arial, sans-serif;
     user-select: text;
@@ -556,9 +556,16 @@ input:checked+.slider:before {
 
 #contentSubHeadingContainer {
     display: flex;
-    gap: 10px;
     font-size: 14px;
     color: rgb(200, 200, 200);
+}
+
+#toggleButtonsContainer {
+    display: flex;
+    margin-top: -15px;
+    margin-left: auto;
+    gap: 10px;
+    font-size: 16px;
 }
 
 #contentDisplay {

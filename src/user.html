@@ -486,14 +486,13 @@
                                     <div id="relationsTotalField">420</div>
                                     <div>Relations Found</div>
                                 </div>
-                            </div>
-                            <div style="display: flex;justify-content: right;gap: 10px;"> <!-- display flex -->
-                                <div class="toggleTableTypeButton" id="toggleTypePVE">Toggle PvE</div>
-                                <div class="toggleTableTypeButton" id="toggleTypePVP">Toggle PvP</div> 
-                                <div class="toggleTableTypeButton" id="toggleTypeNONE">None</div>
+                                <div id="toggleButtonsContainer" style="display: none;">
+                                    <div class="toggleTableTypeButton" id="toggleTypePVE">Toggle PvE</div>
+                                    <div class="toggleTableTypeButton" id="toggleTypePVP">Toggle PvP</div>
+                                </div>
                             </div>
                             <div style="margin-top:15px;overflow-y: scroll;max-height: 80%;">
-                                <table id="myTable">
+                                <table id="relationsTable">
                                     <tr>
                                         <th>Item</th>
                                         <th>Category</th>
