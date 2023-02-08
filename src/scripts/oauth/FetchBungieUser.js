@@ -25,16 +25,26 @@ export async function FetchBungieUser() {
     let membershipType = window.sessionStorage.getItem('membershipType');
     let destinyMembershipId = window.sessionStorage.getItem('destinyMembershipId');
 
+    // Fetch linked profiles if memshipType or destinyMemshipId don't exist -- 254 as membershipType
     if (!membershipType || !destinyMembershipId) {
-
-        // Fetch linked profiles -- 254 as membershipType
         await MakeRequest(`https://www.bungie.net/Platform/Destiny2/254/Profile/${components.membership_id}/LinkedProfiles/?getAllMemberships=true`, axiosConfig)
         .then((response) => {
 
+            // Find the most recently played on profile
+            let mostRecent = new Date(0);
+            let mostRecentIndex = 0;
+            for (let i = 0; i < response.data.Response.profiles.length; i++) {
+                if (new Date(response.data.Response.profiles[i].dateLastPlayed) > new Date(mostRecent)) {
+                    mostRecent = new Date(response.data.Response.profiles[i].dateLastPlayed);
+                    mostRecentIndex = i;
+                };
+            };
+            log(response, mostRecent, mostRecentIndex);
+    
             // Store response
-            membershipType = response.data.Response.profiles[0].membershipType;
-            destinyMembershipId = response.data.Response.profiles[0].membershipId;
-
+            membershipType = response.data.Response.profiles[mostRecentIndex].membershipType;
+            destinyMembershipId = response.data.Response.profiles[mostRecentIndex].membershipId;
+    
             // Session storage
             window.sessionStorage.setItem('membershipType', membershipType);
             window.sessionStorage.setItem('destinyMembershipId', destinyMembershipId);
@@ -48,7 +58,7 @@ export async function FetchBungieUser() {
     // Fetch profile
     await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900,1200`, axiosConfig)
     .then((response) => {
-        
+
         // Assign user profile and progression data
         UserProfile.AssignDestinyUserProfile(response.data.Response);
         UserProfile.AssignCharacters(response.data.Response.characters.data);
