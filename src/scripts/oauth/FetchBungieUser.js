@@ -48,11 +48,10 @@ export async function FetchBungieUser() {
     // Fetch profile
     await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900,1200`, axiosConfig)
     .then((response) => {
-        
+        log(response);
         // Assign user profile and progression data
         UserProfile.AssignDestinyUserProfile(response.data.Response);
         UserProfile.AssignCharacters(response.data.Response.characters.data); //
-        log(response.data.Response.characters.data);
         UserProfile.AssignCurrentSeasonHash(response.data.Response.profile.data.currentSeasonHash);
         UserProfileProgressions.AssignProfileProgressions(response.data.Response.profileProgression.data);
 
