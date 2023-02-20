@@ -84,6 +84,8 @@
 }
 
 .toggleTableTypeButton {
+    display: flex;
+    gap: 3px;
     padding: 5px;
     border-radius: 5px;
     border: 1px rgb(131, 150, 236) solid;
@@ -319,10 +321,16 @@
     border-radius: 8px;
 }
 
+#relationsTableContainer {
+    margin-top: 15px;
+    overflow-y: scroll;
+    max-height: 80%;
+}
+
 #relationsTable {
     width: 100%;
-    font-family: arial, sans-serif;
     user-select: text;
+    border: 1px solid rgba(52, 52, 52, 0.601);
 }
 
 td, th {
@@ -340,6 +348,11 @@ tr {
     border-bottom: 1px solid rgba(128, 128, 128, 0.468);
 }
 
+tr:first-child {
+    position: sticky;
+    top: 0;
+}
+
 td:last-child {
     background-color: rgb(50, 50, 50);
     text-align: center;
@@ -348,6 +361,10 @@ td:last-child {
 th:last-child {
     background-color: rgb(50, 50, 50);
     text-align: center;
+} 
+
+th {
+    background-color: #3E4148;
 }
 
 tr:nth-child(even) {
@@ -650,6 +667,10 @@ input:checked+.slider:before {
     transform: rotate(90deg);
 }
 
+#dropdownContentXpContainer {
+    margin-top: 5px;
+}
+
 #dropdownContentContainer {
     margin-top: 5px;
 }
@@ -666,7 +687,8 @@ input:checked+.slider:before {
 #yieldDropdownContainer {
     display: none;
     padding-left: 10px;
-    height: 210px;
+    padding-bottom: 15px;
+    height: fit-content;
     clip-path: inset(0px 0px 0px 0px);
     color: gray;
 }
@@ -714,6 +736,16 @@ input:checked+.slider:before {
     margin-top: -5px;
     width: 13px;
     filter: invert(100%) brightness(50%);
+}
+
+#seasonPassBonusText, #ghostModsBonusText, #wellRestedBonusText {
+    width: 160px;
+    text-decoration: line-through;
+}
+
+#sharedWisdomBonusText {
+    width: 140px;
+    text-decoration: line-through;
 }
 
 #topCharacterSelectImg {
@@ -843,7 +875,8 @@ input:checked+.slider:before {
 }
 
 #contentDisplayGridLayout {
-    display: flex;gap: 3px;
+    display: flex;
+    gap: 3px;
 }
 
 .chunkPage {

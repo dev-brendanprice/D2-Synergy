@@ -11,7 +11,9 @@ import {
     EnemyModifiers,
     SeasonalCategory,
     LocationSpecifics,
-    DescriptorSpecifics } from './modules/SynergyDefinitions.js';
+    DescriptorSpecifics,
+    pveActivityModes,
+    pvpActivityModes } from './modules/SynergyDefinitions.js';
 import { AddEventListeners, BuildWorkspace } from './modules/Events.js';
 import { MakeRequest } from './modules/MakeRequest.js';
 import { CheckUserAuthState } from './oauth/CheckUserAuthState.js';
@@ -93,12 +95,18 @@ export var progressionPropertyKeyValues = {
     'DescriptorSpecifics': DescriptorSpecifics
 };
 
+// Progression properties sorted via pvp/pve
+export var progressionPropertiesPVE = {
+    ...EnemyModifiers,
+    ...EnemyType,
+    ...pveActivityModes
+};
+export var progressionPropertiesPVP = {
+    ...pvpActivityModes,
+    ...['GuardianKills']
+};
+
 // User profile variables
-// export var destinyMembershipId;
-// export var membershipType;
-// export var characters;
-// export var CurrentSeasonHash;
-export var ProfileProgressions;
 export var UserProfile = {
 
     destinyUserProfile: {},
@@ -195,17 +203,39 @@ export var relationsTable = {
         challenges: {},
         all: {}
     },
+    toggles: {
+        pvp: true,
+        pve: true,
+        challenges: true,
+        bounties: true
+    },
     ClearTable: function() {
         this.div.innerHTML = '';
         this.div.innerHTML = '<tr><th>Item</th><th>Category</th><th>Relation</th></tr>';
     },
-    BuildTable: function(type = 'all') {
+    BuildTable: function() {
+
+        /*
+
+            Collate all tables and standardize their format (so they are the same)
+            Filter out keys based on the toggles and pvp/pve filters
+            Sort the resulting table, in descending order, via the points (pts) of each key
+
+        */
+        
+        // Clear tableF
+        // this.ClearTable();
+
+        // Update relation count
+        // document.getElementById('relationsTotalField').innerHTML = Object.keys(this.relations[type]).length;
+    },
+    BuildTableDeprecated: function(type) {
         
         // Clear table
         this.ClearTable();
 
         // Check if table will be empty
-        if (Object.keys(this.relations[type]).length == 0) {
+        if (Object.keys(this.relations[type]).length === 0) {
             AddTableRow(this.div, ['No relations found', '', '']);
             return;
         };
@@ -216,13 +246,36 @@ export var relationsTable = {
             let itemName = relation;
             let itemRelation = this.relations[type][relation];
             let itemCategory;
+
             for (let item in progressionPropertyKeyValues) {
 
                 // If relation is in category, store in category
+                log(itemName);
                 if (progressionPropertyKeyValues[item].includes(ParsePropertyNameIntoWord(itemName, true))) {
                     itemCategory = item;
                 };
             };
+            
+            // log(Object.entries(progressionPropertiesPVE).map(([key, value]) => value.includes(itemName)), itemName);
+            // // Check pvp toggle
+            // if (!this.toggles.pvp) {
+            //     if (progressionPropertiesPVP.includes(itemCategory)) {
+            //         continue;
+            //     }
+            //     else {
+            //         return;
+            //     };
+            // };
+
+            // // Check pve toggle
+            // if (!this.toggles.pve) {
+            //     if (progressionPropertiesPVE.includes(itemCategory)) {
+            //         continue;
+            //     }
+            //     else {
+            //         return;
+            //     };
+            // };
 
             AddTableRow(this.div, [itemName, ParsePropertyNameIntoWord(itemCategory), `${itemRelation}pts`]);
         };

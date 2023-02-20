@@ -4,9 +4,9 @@
  * Every reference of an item in the DOM, will use this style script to apply style
  */
 
-.itemContainer {
-    position: relative;
+.overlayContainer {
     display: none;
+    position: relative;
     width: 210px;
     min-height: 260px;
     background-color: rgba(0, 0, 0, 0.639);
@@ -17,9 +17,13 @@
     pointer-events: none;
 }
 
-.itemContainerComplete {
+.itemContainer {
     position: relative;
+}
+
+.itemContainerComplete {
     display: none;
+    position: relative;
     width: 210px;
     height: 260px;
     background-color: rgba(0, 0, 0, 0.639);
@@ -89,7 +93,11 @@
 }
 
 #bountyItems {
-    margin-top: 20px;
+    margin-top: 30px;
+}
+
+#bountyItems > div {
+    display: inline-block;
 }
 
 #challengeItems {
@@ -105,22 +113,22 @@
     z-index: 1;
 }
 
-.expire {
+.statusIcon {
+    display: flex;
     position: absolute;
-    margin-left: -59px;
-    width: 26px;
     z-index: 2;
+    width: 26px; /* default */
     pointer-events: none;
 }
 
+.expire {
+    top: 0px;
+    left: 2px;
+}
+
 .complete {
-    position: absolute;
-    margin-top: 31px;
-    margin-left: -28px;
-    margin-right: 2px;
-    width: 26px;
-    z-index: 2;
-    pointer-events: none;
+    right: 2px;
+    bottom: 4px;
 }
 
 #itemTitle {

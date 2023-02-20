@@ -65,7 +65,8 @@
 
     .contentDisplaySegment {
         width: unset;
-        height: unset;
+        height: fit-content;
+        max-height: 80vh;
     }
 
     #recommendationTooltip {

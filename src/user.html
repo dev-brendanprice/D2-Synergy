@@ -393,35 +393,27 @@
                                 <img src="./static/ico/arrow_down.svg" class="dropdownArrow" id="arrowYield">
                             </div>
                             <div id="yieldDropdownContainer">
-                                <div id="dropdownContentContainer">
-                                    <div style="margin-bottom: 10px;padding-top: 10px;">
-                                        <div>RAW XP:</div>
-                                        <div class="dropdownNumber"  id="rawXpField">000,000,000</div>
-                                    </div>
-                                    <div>
-                                        <div>Artifact Levels:</div>
-                                        <div class="dropdownNumber"  id="artifactLevelsField">0000</div>
-                                    </div>
-                                    <div>
-                                        <div>Season Pass Levels:</div>
-                                        <div class="dropdownNumber" id="SeasonPassLevelsField">000</div>
-                                    </div>
-                                    <div style="display: flex;gap: 5px;font-size: 12px;padding-top: 25px;padding-bottom: 10px;word-wrap: normal;">
-                                        <div style="color: rgb(212, 212, 212);font-style: italic;">With Buffs</div>
-                                        <hr class="dropdownSubline">
-                                    </div>
-                                    <div style="margin-bottom: 10px;padding-top: 10px;">
+                                <div id="dropdownContentXpContainer">
+                                    <div style="display: flex;gap: 5px;margin-bottom: 15px;padding-top: 10px;">
                                         <div>XP:</div>
                                         <div class="dropdownNumber"  id="xpWithModField">000,000,000</div>
                                     </div>
-                                    <div>
-                                        <div>Artifact Levels:</div>
-                                        <div class="dropdownNumber"  id="artifactLevelsWithModField">0000</div>
-                                    </div>
-                                    <div>
+                                    <div style="display: flex;gap: 5px;margin-bottom: 15px;">
                                         <div>Season Pass Levels:</div>
                                         <div class="dropdownNumber"  id="SeasonPassLevelsWithModField">000</div>
                                     </div>
+                                    <div style="color: rgb(177, 177, 177);">Artifact</div>
+                                    <div style="margin-top: 10px;padding-left: 8px;">
+                                        <div style="display: flex;gap: 5px;">
+                                            <div>Artifact Power Bonus Levels:</div>
+                                            <div class="dropdownNumber"  id="artifactLevelsWithModField">0000</div>
+                                        </div>
+                                        <div style="display: flex;gap: 5px;">
+                                            <div>Artifact Mod Levels:</div>
+                                            <div class="dropdownNumber"  id="artifactLevelsWithModField">0000</div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -436,34 +428,31 @@
                                 <div id="dropdownContentContainer">
                                     <div class="modifierContainer" style="margin-top: 5px;">
                                         <img class="modifierCheckmarkIcon" id="seasonPassBonusCheckmarkIcon" src="./static/ico/checkmark.svg">
-                                        <div style="width: 160px;">Season Pass Bonus</div>
+                                        <div id="seasonPassBonusText">Season Pass Bonus</div>
                                         <div class="modifierValue" id="seasonPassBonusField">--</div>
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="sharedWisdomCheckmarkIcon" src="./static/ico/checkmark.svg">
                                         <div style="display: flex;">
-                                            <strike><div style="width: 140px;">Shared Wisdom</div></strike> <!-- 160px width -->
+                                            <div id="sharedWisdomBonusText">Shared Wisdom</div>
                                             <img id="warnIcon" src="./static/ico/warn_icon.svg">
                                         </div>
                                         <div class="modifierValue" id="sharedWisdomBonusField">--</div>
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="wellRestedCheckmarkIcon" src="./static/ico/checkmark.svg">
-                                        <div style="display: flex;">
-                                            <strike><div style="width: 140px;">Well Rested</div></strike> <!-- 160px width -->
-                                            <img id="warnIcon2" src="./static/ico/warn_icon.svg">
-                                        </div>
+                                        <div id="wellRestedBonusText">Well Rested</div>
                                         <div class="modifierValue" id="wellRestedBonusField">--</div>
                                     </div>
                                     <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="ghostModsCheckmarkIcon" src="./static/ico/checkmark.svg">
-                                        <div style="width: 160px;">Ghost Mods</div>
+                                        <div id="ghostModsBonusText">Ghost Mods</div>
                                         <div class="modifierValue" id="ghostModBonusField">--</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="warnHoverContent" style="display: none;position: absolute;padding: 4px;margin-left: 135px;margin-top: -30px;border: 1px solid rgb(120, 120, 120);border-radius: 3px;width: 75px;color: white;background-color: rgb(50, 50, 50);font-size: 13px;">Well Rested and Shared Wisdom Currently Unavailable</div>
+                        <div id="warnHoverContent" style="display: none;position: absolute;padding: 4px;margin-left: 135px;margin-top: -30px;border: 1px solid rgb(120, 120, 120);border-radius: 3px;width: 75px;color: white;background-color: rgb(50, 50, 50);font-size: 13px;">Shared Wisdom Currently Unavailable</div>
 
                         <div style="display: flex;margin-top: 10px;gap:5px;align-items: center;color: white;">
                             <label class="switch">
@@ -487,11 +476,17 @@
                                     <div>Relations Found</div>
                                 </div>
                                 <div id="toggleButtonsContainer" style="display: none;">
-                                    <div class="toggleTableTypeButton" id="toggleTypePVE">Toggle PvE</div>
-                                    <div class="toggleTableTypeButton" id="toggleTypePVP">Toggle PvP</div>
+                                    <div class="toggleTableTypeButton" id="toggleTypePVP">
+                                        <div id="toggleTypePVE">Toggle PvE</div>
+                                        <div style="font-size: 14px;color: gray;" id="PVEButtonTag"></div>
+                                    </div>
+                                    <div class="toggleTableTypeButton" id="toggleTypePVP">
+                                        <div>Toggle PvP</div>
+                                        <div style="font-size: 14px;color: gray;" id="PVPButtonTag"></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div style="margin-top:15px;overflow-y: scroll;max-height: 80%;">
+                            <div id="relationsTableContainer">
                                 <table id="relationsTable">
                                     <tr>
                                         <th>Item</th>
@@ -506,6 +501,20 @@
                                     <span class="slider round"></span>
                                 </label>
                                 <div style="padding-top:1px;">Include seasonal challenges in table</div>
+                            </div>
+                            <div style="display: flex;margin-top: 10px;gap:5px;align-items: center;color: white;">
+                                <label class="switch">
+                                    <input type="checkbox" id="checkboxIncludeSeasonalChallengesInTable">
+                                    <span class="slider round"></span>
+                                </label>
+                                <div style="padding-top:1px;">Include PVP in table</div>
+                            </div>
+                            <div style="display: flex;margin-top: 10px;gap:5px;align-items: center;color: white;">
+                                <label class="switch">
+                                    <input type="checkbox" id="checkboxIncludeSeasonalChallengesInTable">
+                                    <span class="slider round"></span>
+                                </label>
+                                <div style="padding-top:1px;">Include PVE in table</div>
                             </div>
                         </div>
 
@@ -534,7 +543,7 @@
                                     </div>
                                 </div>
                                 <div id="noBountiesTooltip">You don't have any bounties on this character.</div>
-                                <div style="margin-top: 15px;" id="bountyItems"></div>
+                                <div id="bountyItems"></div>
                                 <div style="display: none;margin-top: 5px;font-style: italic;color: rgba(17, 17, 17, 0.83);" id="recommendationTooltip">It is recommended that you have at least ~20 bounties for this process to work best.</div>
                             </div>
                             <div id="seasonalChallengesContainer">

@@ -25,7 +25,8 @@ var characterLoadToggled = false, // Used to lockout character select during a l
 var seasonPassInfo = {},
     seasonPassLevel = 0,
     prestigeProgressionSeasonInfo,
-    seasonProgressionInfo = {};
+    seasonProgressionInfo = {},
+    seasonalArtifactInfo = {};
 
 
 // Load character from specific index
@@ -158,6 +159,8 @@ export async function LoadCharacter(classType, characters) {
         seasonPassInfo = seasonPassDefinitions[seasonDefinitions[UserProfile.CurrentSeasonHash].seasonPassHash];
         prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
         seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
+        seasonalArtifactInfo = itemDefinitions[seasonDefinitions[UserProfile.CurrentSeasonHash].artifactItemHash];
+        seasonalArtifactInfo.powerBonusProgression = progressionDefinitions[1656313730];
 
         let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems, rewardsTrack = {};
 
@@ -201,7 +204,7 @@ export async function LoadCharacter(classType, characters) {
         };
 
         // Get progressional items
-        var progressionalItemsObj = await ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp);
+        var progressionalItemsObj = await ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp, seasonalArtifactInfo);
 
         // Get relations for progressional items
         var relations = await ParseProgressionalRelations(progressionalItemsObj);

@@ -209,12 +209,11 @@ export const pveActivityModes = [
     'Dungeon', //3
     'NightmareHunt', //4
     'Story', //5
-    'Trials', //6
-    'Explore', //7
-    'DofE', //8 - Dares of Eternity
-    'Raid', //9
-    'EmpireHunt', //10
-    'Expedition', //11
+    'Explore', //6
+    'DofE', //7 - Dares of Eternity
+    'Raid', //8
+    'EmpireHunt', //9
+    'Expedition', //10
 ];
 
 // Add specified for vanguard activities
@@ -277,7 +276,7 @@ export const ActivityMode = [
     'Expedition', //27
     'KetchCrash', //28
     'HeistBattleground', //29
-    'Vanguard', //30
+    'Vanguard(strikes)', //30
 ];
 
 // Damage types
@@ -348,6 +347,7 @@ export const EnemyType = [
 export const EnemyModifiers = [
     'Champions', //0
     'Nightmares', //1
+    'Powerful', //2
 ];
 
 // Seasonal Categories via Name

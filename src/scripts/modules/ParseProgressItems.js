@@ -8,7 +8,9 @@ import {
     recordDefinitions,
     presentationNodeDefinitions,
     itemDefinitions,
-    objectiveDefinitions } from '../user.js';
+    objectiveDefinitions,
+    UserProfileProgressions, 
+    progressionDefinitions} from '../user.js';
 import { MakeBountyElement } from './MakeBountyElement.js';
 import { ParseSeasonalChallenges } from './ParseSeasonalChallenges.js';
 import { ReturnSeasonPassProgressionStats } from './ReturnSeasonPassProgressionStats.js';
@@ -26,7 +28,7 @@ const log = console.log.bind(console);
 
 
 // Function to fetch all progressional items
-export async function ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp) {
+export async function ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp, seasonalArtifactInfo) {
 
     let returnObj = {
         charBounties: [],
@@ -43,11 +45,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     // AddValueToElementInner('seasonPassRankLevel', seasonPassProgressionStats.seasonPassLevel);
     // AddValueToElementInner('seasonPassXpBonus', `${seasonPassProgressionStats.bonusXpValue}%`); // +12 for bonus large xp modifier
 
-    // // Pass in stats for the net breakdown section
-    // AddValueToElementInner('sharedWisdomValue', `${seasonPassProgressionStats.sharedWisdomBonusValue}%`);
-    // AddValueToElementInner('ghostModValue', `${ghostModBonusXp}%`);
-    // AddValueToElementInner('bonusXpValue', `${seasonPassProgressionStats.bonusXpValue}%`);
-
 
     // [ -- SEASONAL CHALLENGES -- ]
     // Clear HTML fields
@@ -55,8 +52,8 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
           filterToResetCheckmark = 'invert(100%) brightness(50%)';
 
     document.getElementById('seasonPassBonusField').innerHTML = '--';
-    // document.getElementById('sharedWisdomBonusField').innerHTML = '--';
-    // document.getElementById('wellRestedBonusField').innerHTML = '--';
+    document.getElementById('sharedWisdomBonusField').innerHTML = '--';
+    document.getElementById('wellRestedBonusField').innerHTML = '--';
     document.getElementById('ghostModBonusField').innerHTML = '--';
 
     document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToResetCheckmark;
@@ -301,36 +298,25 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         };
     };
 
-    // Find well rested bonus
-    let wellRestedBonus = 1;
-    // if (seasonProgressionInfo.level === 100) {
-    //     if (prestigeProgressionSeasonInfo.weeklyProgress <= 500_000) {
-    //         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-    //         document.getElementById('wellRestedBonusField').innerHTML = `2x`;
-    //         wellRestedBonus = 2;
-    //     }
-    //     else {
-    //         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
-    //     };
-    // }
-    // else if (seasonProgressionInfo.level < 100) {
-    //     if (seasonProgressionInfo.weeklyProgress <= 500_000) {
-    //         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-    //         document.getElementById('wellRestedBonusField').innerHTML = `2x`;
-    //         wellRestedBonus = 2;
-    //     }
-    //     else {
-    //         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
-    //     };
-    // };
+    // Get weekly progress
+    let weeklyProgress;
+    if (seasonPassProgressionStats.seasonPassLevel >= 100) {
+        weeklyProgress = prestigeProgressionSeasonInfo.weeklyProgress;
+    }
+    else {
+        weeklyProgress = seasonProgressionInfo.weeklyProgress;
+    };
+
         
     // Check if ghost mods are slotted, turn off checkmark if not
     if (ghostModBonusXp) {
         document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
         document.getElementById('ghostModBonusField').innerHTML = `+${ghostModBonusXp}%`;
+        document.getElementById('ghostModsBonusText').style.textDecoration = 'unset';
     }
     else {
         document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToResetCheckmark;
+        document.getElementById('ghostModsBonusText').style.textDecoration = 'line-through';
     };
 
     // Check if shared wisdom is not equal to 0, turn off checkmark if not
@@ -346,9 +332,11 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     if (seasonPassProgressionStats.bonusXpValue) {
         document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
         document.getElementById('seasonPassBonusField').innerHTML = `+${seasonPassProgressionStats.bonusXpValue}%`;
+        document.getElementById('seasonPassBonusText').style.textDecoration = 'unset';
     }
     else {
         document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToResetCheckmark;
+        document.getElementById('seasonPassBonusText').style.textDecoration = 'line-through';
     };
 
     // Calculate XP yield from (active) bounties
@@ -358,27 +346,24 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Format to 1.n
     // const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) * wellRestedBonus) / 100) + 1;
-    const xpModifier = (((seasonPassProgressionStats.bonusXpValue + ghostModBonusXp)) / 100) + 1;
-    
-    // Subtract the difference between current weekly progress to the end of the well rested bonus
-    // if (((totalXpYield * xpModifier) * 2) > (500_000 - seasonPassProgressionStats.weeklyProgress)) {
+    let xpModifier = (((seasonPassProgressionStats.bonusXpValue + ghostModBonusXp)) / 100) + 1;
 
-    //     log('Well-Rested Surpassed');
+    // Check if weekly progress surpasses that of the well-rested buff
+    // weeklyProgress = 450_000; -- bonus xp in this case will 25_000
+    if (((500_000 - weeklyProgress) / 2) < 0) {
+        log('-- Well rested expired --');
+        totalXpYieldWithModifiers = (totalXpYield * xpModifier);
+    }
+    else {
+        log('-- Well rested active --');
+        totalXpYieldWithModifiers = (totalXpYield * xpModifier) + ((500_000 - weeklyProgress) / 2);
+        document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+        document.getElementById('wellRestedBonusField').innerHTML = `2x`;
+        document.getElementById('wellRestedBonusText').style.textDecoration = 'unset';
+    };
 
-    //     // Ignore well rested bonus
-    //     const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp)) / 100) + 1;
-
-    //     // log([totalXpYield, xpModifier, (totalXpYield * xpModifier), (500_000 - seasonPassProgressionStats.weeklyProgress), (500_000 - seasonPassProgressionStats.weeklyProgress) / 2]);
-    //     // log(`${totalXpYield} * ${xpModifier} + ((500_000 - ${seasonPassProgressionStats.weeklyProgress}) / 2)`);
-
-    //     // Calculate XP yield where well rested bonus has no more overhead; will not be used on the overhead calculation
-    //     totalXpYieldWithModifiers = (totalXpYield * xpModifier) + ((500_000 - seasonPassProgressionStats.weeklyProgress) / 2);
-    // }
-    // else {
-    //     log('well rested bonus not surpassed');
-    //     totalXpYieldWithModifiers = totalXpYield * xpModifier;
-    // };
-    totalXpYieldWithModifiers = totalXpYield * xpModifier;
+    // Truncate the result
+    totalXpYieldWithModifiers = Math.trunc(totalXpYieldWithModifiers);
 
     // Push subheading statistics
     AddValueToElementInner('bountiesTotalField', amountOfBounties);
@@ -386,16 +371,32 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     AddValueToElementInner('bountiesCompletedField', amountOfCompletedBounties);
     AddValueToElementInner('bountiesOutstandingField', amountOfBounties - amountOfCompletedBounties);
 
+    // Calculate artifact XP
+    let artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
+    let artifactPointProgressionDefinition = progressionDefinitions[artifact.pointProgression.progressionHash];
+    let artifactPowerBonusDefinition = progressionDefinitions[artifact.powerBonusProgression.progressionHash];
+    log(artifact);
+
+    let nextLevelAt = artifact.powerBonusProgression.nextLevelAt;
+    let percentage = totalXpYieldWithModifiers / nextLevelAt;
+    log(percentage);
+
+    /*
+
+        Get current stepIndex and store because that is the current level we are at
+        If the yield surpasses the required XP to surpass this level, then add the next levels' progress to the total
+
+        Calculate the how many levels are going to be gained based off this, formatting it to n.nn (1.23 for example)
+
+    */
+
+
     // Check if there are no bounties
     if (amountOfBounties === 0) {
 
         // Toggle no items tooltip
         document.getElementById('noBountiesTooltip').style.display = 'block';
 
-        // Set raw xp values to 0
-        AddValueToElementInner('rawXpField', 0);
-        AddValueToElementInner('artifactLevelsField', 0);
-        AddValueToElementInner('SeasonPassLevelsField', 0);
         // Set modified xp values to 0
         AddValueToElementInner('xpWithModField', 0);
         AddValueToElementInner('artifactLevelsWithModField', 0);
@@ -407,10 +408,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         // Toggle no items tooltip
         document.getElementById('noBountiesTooltip').style.display = 'none';
 
-        // Set raw xp values
-        AddValueToElementInner('rawXpField', InsertSeperators(totalXpYield));
-        AddValueToElementInner('artifactLevelsField', 0);
-        AddValueToElementInner('SeasonPassLevelsField', InsertSeperators(totalXpYield / 100_000));
         // Set modified xp values
         AddValueToElementInner('xpWithModField', InsertSeperators(totalXpYieldWithModifiers));
         AddValueToElementInner('artifactLevelsWithModField', 0);

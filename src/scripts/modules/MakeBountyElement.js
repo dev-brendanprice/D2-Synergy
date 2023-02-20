@@ -7,6 +7,7 @@ export async function MakeBountyElement(param) {
 
     let itemObjectivesContainer = document.createElement('div');
     let itemOverlay = document.createElement('div');
+    let itemContainer = document.createElement('div');
     let itemStatus = document.createElement('img');
     let itemTitle = document.createElement('div');
     let itemType = document.createElement('div');
@@ -14,15 +15,22 @@ export async function MakeBountyElement(param) {
     let item = document.createElement('img');
     let hr = document.createElement('hr');
 
+    // itemContainer style
+    itemContainer.className = 'itemContainer';
+    itemContainer.id = `itemContainer_${param.hash}`;
+
+    itemStatus.classList += 'statusIcon';
+
     // Create bottom element
     item.className = `bounty`;
     item.id = `bounty_${param.hash}`;
     item.src = `https://www.bungie.net${param.displayProperties.icon}`;
     item.style.width = `${itemDisplay.itemDisplaySize}px`;
-    document.querySelector('#bountyItems').appendChild(item);
+    itemContainer.appendChild(item);
+    document.querySelector('#bountyItems').appendChild(itemContainer);
 
     // Create overlay element
-    itemOverlay.className = `itemContainer`;
+    itemOverlay.className = `overlayContainer`;
     itemOverlay.id = `item_${param.hash}`;
     document.querySelector('#overlays').appendChild(itemOverlay);
 
@@ -91,7 +99,7 @@ export async function MakeBountyElement(param) {
         });
     };
 
-    // Mark item as complete
+    // Check item completion status
     if (param.progress.length === completionCounter) {
         // Change areObjectivesComplete boolean
         param.areObjectivesComplete = true;
@@ -101,27 +109,26 @@ export async function MakeBountyElement(param) {
         param.areObjectivesComplete = false;
     };
 
-    // Mark item as expired
+    // Else, Mark item as expired
     if (param.isExpired && !param.areObjectivesComplete) {
-
-        // Change style to represent state
-        itemStatus.className = `expire`;
+        itemStatus.classList += ` expire`;
         itemStatus.id = `expire_${param.hash}`;
         itemStatus.src = './static/ico/pursuit_expired.svg';
         document.getElementById(`bounty_${param.hash}`).style.border = '1px solid rgba(179,73,73, 0.749)';
     }
     else if (param.areObjectivesComplete) {
-        itemStatus.className = `complete`;
+        itemStatus.classList += ` complete`;
         itemStatus.id = `complete_${param.hash}`;
         itemStatus.src = './static/ico/pursuit_completed.svg';
         document.getElementById(`bounty_${param.hash}`).style.border = '1px solid rgba(182,137,67, 0.749)';
     };
 
     // Append the item status to the item
-    document.querySelector(`#bountyItems`).append(itemStatus);
+    itemContainer.appendChild(itemStatus);
+    // document.querySelector(`#bountyItems`).append(itemStatus);
 
     // Watch for mouse events
-    item.addEventListener('mousemove', function (e) {
+    itemContainer.addEventListener('mousemove', function (e) {
 
         itemOverlay.style.position = 'absolute';
         itemOverlay.style.display = 'block';
@@ -148,7 +155,7 @@ export async function MakeBountyElement(param) {
 
     });
 
-    item.addEventListener('mouseleave', (e) => {
+    itemContainer.addEventListener('mouseleave', (e) => {
         itemOverlay.style.display = 'none';
     });
 };

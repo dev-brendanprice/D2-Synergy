@@ -155,13 +155,13 @@ export async function AddEventListeners() {
         // If checked, Store boolean and passive refresh
         if (this.checked) {
             CacheChangeItem('includeExpiredBounties', true);
-            MainEntryPoint(true);
+            // MainEntryPoint(true);
             return;
         };
 
         // If unchecked, Reverse boolean and passive refresh
         CacheChangeItem('includeExpiredBounties', false);
-        MainEntryPoint(true);
+        // MainEntryPoint(true);
     });
 
     // Include seasonal challenges in table
@@ -170,7 +170,7 @@ export async function AddEventListeners() {
         // If checked, Store boolean and passive refresh
         if (this.checked) {
             CacheChangeItem('includeSeasonalChallengesInTable', true);
-            MainEntryPoint(true);
+            // MainEntryPoint(true);
             return;
         };
 
@@ -178,7 +178,8 @@ export async function AddEventListeners() {
         CacheChangeItem('includeSeasonalChallengesInTable', false);
 
         // Refresh table without seasonal challenges
-        relationsTable.BuildTable('bounties');
+        relationsTable.toggles.bounties = true;
+        relationsTable.BuildTable();
     });
 
     // Warn icon hover -- remove when not needed
@@ -186,12 +187,6 @@ export async function AddEventListeners() {
         document.getElementById('warnHoverContent').style.display = 'block';
     });
     AddListener('warnIcon', 'mouseleave', function () {
-        document.getElementById('warnHoverContent').style.display = 'none';
-    });
-    AddListener('warnIcon2', 'mouseover', function () {
-        document.getElementById('warnHoverContent').style.display = 'block';
-    });
-    AddListener('warnIcon2', 'mouseleave', function () {
         document.getElementById('warnHoverContent').style.display = 'none';
     });
 
@@ -582,22 +577,24 @@ export async function AddEventListeners() {
     // Toggle table types (Filters)
     AddListener('toggleTypePVE', 'click', function (e) {
 
-        // Button style
-        e.target.style.backgroundColor = 'rgb(80, 95, 190)';
-        document.getElementById('toggleTypePVP').style.backgroundColor = 'unset';
+        // Reverse boolean
+        relationsTable.toggles.pve = !relationsTable.toggles.pve;
+
+        // Change innerHTML tag
+        document.getElementById('PVEButtonTag').innerHTML = `${relationsTable.toggles.pve ? '(on)' : '(off)'}`;
 
         // Rebuild table
-        relationsTable.toggles.pve = true;
         relationsTable.BuildTable();
     });
     AddListener('toggleTypePVP', 'click', function (e) {
 
-        // Button style
-        e.target.style.backgroundColor = 'rgb(80, 95, 190)';
-        document.getElementById('toggleTypePVE').style.backgroundColor = 'unset';
+        // Reverse boolean
+        relationsTable.toggles.pvp = !relationsTable.toggles.pvp;
+
+        // Change innerHTML tag
+        document.getElementById('PVPButtonTag').innerHTML = `${relationsTable.toggles.pvp ? '(on)' : '(off)'}`;
 
         // Rebuild table
-        relationsTable.toggles.pvp = true;
         relationsTable.BuildTable();
     });
 };
