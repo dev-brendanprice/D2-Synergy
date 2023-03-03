@@ -4,7 +4,7 @@
 
 ### [Open D2 Synergy](https://d2synergy.com/)
 
-D2 Synergy is a powerful application that allows players to view progressional items and relationships between them, ensuring maximum XP gain, over time, is acquired.
+D2 Synergy is a third-party application that boosts players' efficiency.
 
 ### Useful Links
 
