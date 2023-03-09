@@ -23,6 +23,15 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
+        
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+          
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.1.0
 
       # ...
       - name: '👷‍♂️ Build'
@@ -36,6 +45,6 @@ jobs:
         name: "Automatic Release Update"
         with:
           TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          SEMVER: '${{ github.event.inputs.semver }}'
-          LABEL: '${{ github.event.inputs.label }}'
+          SEMVER: '${{ steps.package-version.outputs.current-version }}'
+          LABEL: '${{ steps.package-version.outputs.current-version }}'
           NOTES: '${{ steps.gen-notes.outputs.notes }}'
