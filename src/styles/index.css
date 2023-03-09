@@ -4,12 +4,18 @@
  * Style for the landing page of the website
  */
 
+body {
+    height: 100vh;
+    background: radial-gradient(rgb(45, 45, 45), #202020);
+    overflow-y: hidden;
+}
+
 #indexMainContainer {
     margin: 0 auto;
     margin-top: 60px;
     width: 785px;
     border: 1px #56606d solid;
-    background-color: #3e454e;
+    background-color: #2e3238;
     color: white;
     border-radius: 3px;
     text-align: center;
@@ -37,7 +43,7 @@
 
 #websiteAlphaNotice {
     border: 1px rgb(255, 175, 15) solid;
-    background-color: rgba(255, 143, 15, 0.681);
+    background-color: rgba(255, 166, 71, 0.518);
 }
 
 #websiteNotice {
