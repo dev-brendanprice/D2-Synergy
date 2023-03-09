@@ -46,5 +46,5 @@ jobs:
         with:
           TOKEN: '${{ secrets.GITHUB_TOKEN }}'
           SEMVER: '${{ steps.package-version.outputs.current-version }}'
-          LABEL: '${{ steps.package-version.outputs.current-version }}'
+          LABEL: 'Alpha'
           NOTES: '${{ steps.gen-notes.outputs.notes }}'
