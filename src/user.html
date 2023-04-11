@@ -15,6 +15,21 @@
     <link rel="shortcut icon" href="./static/ico/icon.png">
     <meta charset="UTF-8">
     <title>D2 Synergy</title>
+
+    <meta name="theme-color" content="#ED4D4D">
+    <meta name="title" content="D2 Synergy">
+    <meta name="description" content="Optimises progress for best efficiency.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="D2 Synergy">
+    <meta property="og:url" content="https://d2synergy.com/user">
+    <meta property="og:image" content="https://d2synergy.com/static/images/embed.png">
+    <meta property="og:description" content="Optimises progress for best efficiency.">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="D2 Synergy">
+    <meta name="twitter:image" content="https://d2synergy.com/static/images/embed.png">
+    <meta property="twitter:description" content="Optimises progress for best efficiency.">
 </head>
 
 <body>
@@ -32,7 +47,7 @@
         <div id="middleNavBarItems">
             <div data-containerName="bountiesContainer" id="navBarBountiesButton">Bounties</div>
             <div data-containerName="seasonalChallengesContainer" id="navBarChallengesButton">Seasonal Challenges</div>
-            <div data-containerName="statisticsContainer" id="navBarStatisticsButton">Statistics</div>
+            <div data-containerName="statisticsContainer" id="navBarStatisticsButton" style="display: none;">Statistics</div>
         </div>
 
         <div id="rightNavBarItems">
@@ -51,7 +66,7 @@
             <img class="bottomNavBarIcons" src="./static/ico/destiny-icons/meditations.svg">
             <div>Seasonal</div>
         </div>
-        <div data-containerName="statisticsContainer" class="bottomNavBarIconContainer" id="statsMenuMobile">
+        <div data-containerName="statisticsContainer" class="bottomNavBarIconContainer" id="statsMenuMobile" style="display: none;">
             <img class="bottomNavBarIcons" src="./static/ico/destiny-icons/vault.svg">
             <div>Statistics</div>
         </div>
@@ -319,22 +334,25 @@
                                         <div class="dropdownNumber"  id="SeasonPassLevelsWithModField">000</div>
                                     </div>
 
-                                    <div style="margin-top: -6px;margin-left: -7px;background-color: gray;border-radius: 10px;width: 20px;height:2px;transform: rotate(90deg);"></div>
+                                    <div style="display: none;">
 
-                                    <div style="color: rgb(177, 177, 177);margin-top: 10px;">Artifact</div>
-                                    <div style="display: flex;">
-                                        <div>
-                                            <div style="position: absolute;margin-top: -1px;margin-left: 1px;width: 10px;height: 18px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
-                                            <div style="position: absolute;margin-top: -1px;margin-left: 1px;width: 10px;height: 36px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
-                                        </div>
-                                        <div style="margin-top: 10px;padding-left: 16px;">
-                                            <div style="display: flex;gap: 5px;">
-                                                <div>Power Bonus Levels:</div>
-                                                <div class="dropdownNumber"  id="artifactLevelsWithModField">0000</div>
+                                        <div style="margin-top: -6px;margin-left: -7px;background-color: gray;border-radius: 10px;width: 20px;height:2px;transform: rotate(90deg);"></div>
+                                        
+                                        <div style="color: rgb(177, 177, 177);margin-top: 10px;">Artifact</div>
+                                        <div style="display: flex;">
+                                            <div>
+                                                <div style="position: absolute;margin-top: -1px;margin-left: 1px;width: 10px;height: 18px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
+                                                <div style="position: absolute;margin-top: -1px;margin-left: 1px;width: 10px;height: 36px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
                                             </div>
-                                            <div style="display: flex;gap: 5px;">
-                                                <div>Mod Levels:</div>
-                                                <div class="dropdownNumber"  id="artifactLevelsWithModField">0000</div>
+                                            <div style="margin-top: 10px;padding-left: 16px;">
+                                                <div style="display: flex;gap: 5px;">
+                                                    <div>Power Bonus Levels:</div>
+                                                    <div class="dropdownNumber"  id="artifactLevelsWithModField">0</div>
+                                                </div>
+                                                <div style="display: flex;gap: 5px;">
+                                                    <div>Mod Levels:</div>
+                                                    <div class="dropdownNumber"  id="artifactLevelsWithModField">0</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -1147,7 +1147,7 @@ hr.dropdownSubline {
 }
 
 .userToggleContainer {
-    display: flex;
+    display: none; /* flex */
     margin-top: 8px;
     gap: 5px;
     align-items: center;
