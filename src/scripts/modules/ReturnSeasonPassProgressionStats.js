@@ -30,7 +30,7 @@ export async function ReturnSeasonPassProgressionStats(seasonProgressionInfo, pr
         returnObject.xpToMaxSeasonPassRank = 0;
 
         // Hide if rank is 100+
-        document.getElementById('seasonPassSecondContainer').style.display = 'none';
+        // document.getElementById('seasonPassSecondContainer').style.display = 'none';
 
         // Weekly progress
         returnObject.weeklyProgress = prestigeInfo.weeklyProgress;

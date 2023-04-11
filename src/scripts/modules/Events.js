@@ -9,7 +9,8 @@ import { LoadCharacter } from './LoadCharacter.js';
 import { CacheChangeItem } from './CacheChangeItem.js';
 import { CacheReturnItem } from './CacheReturnItem.js';
 import { Logout } from './Logout.js';
-import { ParseChar } from './ParseChar.js';
+import { ParseClass } from './ParseClass.js';
+import { getNextTuesday } from './GetNextReset.js';
 
 
 // Utilities
@@ -107,79 +108,117 @@ const AddDropdownEvent = function (dropwdownContent, dropdownArrow, dropdownBool
 
 // Add all event listeners
 export async function AddEventListeners() {
+    
+    
+    // Listen for click event on character selects (multiple use)
+    AddListener('characterSelect', 'click', async function () {
+        
+        let characterId = this.getAttribute('data-character-id');
+        LoadCharacter(characterId, UserProfile.characters, false);
+
+    }, 'class');
+
 
     // Top and Bottom character selects
-    AddListener('middleCharacterContainer', 'click', async function () {
+    // AddListener('middleCharacterContainer', 'click', async function () {
 
-        const typeField = document.getElementById('topCharacterTypeField').innerHTML,
-              powerLevelField = document.getElementById('topCharacterPowerLevelField').innerHTML;
+    //     const typeField = document.getElementById('topCharacterTypeField').innerHTML,
+    //           powerLevelField = document.getElementById('topCharacterPowerLevelField').innerHTML;
 
-        let currentChar = await CacheReturnItem('currentChar');
-        let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
-        let emblemPath = itemDefinitions[currentChar.emblemHash].secondaryOverlay;
+    //     let currentChar = await CacheReturnItem('currentChar');
+    //     let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
+    //     let emblemPath = itemDefinitions[currentChar.emblemHash].secondaryOverlay;
 
-        // Load character
-        let characterType = ParseChar(document.getElementById('middleCharacterTypeField').innerHTML, true);
-        LoadCharacter(characterType, UserProfile.characters);
+    //     // Load character
+    //     let characterType = ParseClass(document.getElementById('middleCharacterTypeField').innerHTML, true);
+    //     LoadCharacter(characterType, UserProfile.characters);
 
-        // Replace with top selector elements
-        document.getElementById('middleCharacterTypeField').innerHTML = typeField;
-        document.getElementById('middleCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
-        document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
-        document.getElementById('middleCharacterPowerLevelField').innerHTML = powerLevelField;
-    });
+    //     // Replace with top selector elements
+    //     document.getElementById('middleCharacterTypeField').innerHTML = typeField;
+    //     document.getElementById('middleCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+    //     document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
+    //     document.getElementById('middleCharacterPowerLevelField').innerHTML = powerLevelField;
+    // });
 
-    AddListener('bottomCharacterContainer', 'click', async function () {
+    // AddListener('bottomCharacterContainer', 'click', async function () {
 
-        const typeField = document.getElementById('topCharacterTypeField').innerHTML,
-              powerLevelField = document.getElementById('topCharacterPowerLevelField').innerHTML;
+    //     const typeField = document.getElementById('topCharacterTypeField').innerHTML,
+    //           powerLevelField = document.getElementById('topCharacterPowerLevelField').innerHTML;
 
-        let currentChar = await CacheReturnItem('currentChar');
-        let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
-        let emblemPath = itemDefinitions[currentChar.emblemHash].secondaryOverlay;
+    //     let currentChar = await CacheReturnItem('currentChar');
+    //     let emblemLargeBg = itemDefinitions[currentChar.emblemHash].secondarySpecial;
+    //     let emblemPath = itemDefinitions[currentChar.emblemHash].secondaryOverlay;
 
-        // Load character
-        let characterType = ParseChar(document.getElementById('bottomCharacterTypeField').innerHTML, true);
-        LoadCharacter(characterType, UserProfile.characters);
+    //     // Load character
+    //     let characterType = ParseClass(document.getElementById('bottomCharacterTypeField').innerHTML, true);
+    //     LoadCharacter(characterType, UserProfile.characters);
 
-        // Replace with top selector elements
-        document.getElementById('bottomCharacterTypeField').innerHTML = typeField;
-        document.getElementById('bottomCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
-        document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
-        document.getElementById('bottomCharacterPowerLevelField').innerHTML = powerLevelField;
-    });
+    //     // Replace with top selector elements
+    //     document.getElementById('bottomCharacterTypeField').innerHTML = typeField;
+    //     document.getElementById('bottomCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
+    //     document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
+    //     document.getElementById('bottomCharacterPowerLevelField').innerHTML = powerLevelField;
+    // });
 
-    // Include expired bounties checkbox
-    AddListener('checkboxIncludeExpiredBounties', 'change', function () {
+    // Include/omit expired bounties checkbox (xp yield only)
+    AddListener('checkboxIncludeExpiredBountiesInYield', 'change', function () {
 
-        // If checked, Store boolean and passive refresh
         if (this.checked) {
-            CacheChangeItem('includeExpiredBounties', true);
-            // MainEntryPoint(true);
+            CacheChangeItem('includeExpiredBountiesInTable', true);
+            relationsTable.toggles.expired = true;
+            // relationsTable.BuildTable();
             return;
         };
 
-        // If unchecked, Reverse boolean and passive refresh
-        CacheChangeItem('includeExpiredBounties', false);
-        // MainEntryPoint(true);
+        CacheChangeItem('includeExpiredBountiesInTable', false);
+        relationsTable.toggles.expired = false;
+        // relationsTable.BuildTable();
+
     });
 
-    // Include seasonal challenges in table
+    // Include/omit seasonal challenges from table
     AddListener('checkboxIncludeSeasonalChallengesInTable', 'change', function () {
 
-        // If checked, Store boolean and passive refresh
         if (this.checked) {
             CacheChangeItem('includeSeasonalChallengesInTable', true);
-            // MainEntryPoint(true);
+            relationsTable.toggles.challenges = true;
+            // relationsTable.BuildTable();
             return;
         };
 
-        // If unchecked, Reverse boolean
         CacheChangeItem('includeSeasonalChallengesInTable', false);
+        relationsTable.toggles.challenges = false;
+        // relationsTable.BuildTable();
+    });
 
-        // Refresh table without seasonal challenges
-        relationsTable.toggles.bounties = true;
-        relationsTable.BuildTable();
+    // Include/omit pve keys from table
+    AddListener('toggleTypePVE', 'click', function () {
+
+        if (this.checked) {
+            CacheChangeItem('includePveInTable', true);
+            relationsTable.toggles.pve = true;
+            // relationsTable.BuildTable();
+            return;
+        };
+
+        CacheChangeItem('includePveInTable', false);
+        relationsTable.toggles.pve = false;
+        // relationsTable.BuildTable();
+    });
+
+    // Include/omit pvp keys from table
+    AddListener('toggleTypePVP', 'click', function () {
+
+        if (this.checked) {
+            CacheChangeItem('includePvpInTable', true);
+            relationsTable.toggles.pvp = true;
+            // relationsTable.BuildTable();
+            return;
+        };
+
+        CacheChangeItem('includePvpInTable', false);
+        relationsTable.toggles.pvp = false;
+        // relationsTable.BuildTable();
     });
 
     // Warn icon hover -- remove when not needed
@@ -190,42 +229,79 @@ export async function AddEventListeners() {
         document.getElementById('warnHoverContent').style.display = 'none';
     });
 
+    // Help interface tooltip for enforce relation affinity
+    AddListener('tooltipEnforceRelationAffinity', 'mouseover', function () {
+        document.getElementById('tooltipEnforceContent').style.display = 'block';
+    });
+    AddListener('tooltipEnforceRelationAffinity', 'mouseleave', function () {
+        document.getElementById('tooltipEnforceContent').style.display = 'none';
+    });
+
+    // Help interface tooltip for enforce relation affinity
+    AddListener('tooltipIncludeSinglePoints', 'mouseover', function () {
+        document.getElementById('tooltipIncludeSinglePointContent').style.display = 'block';
+    });
+    AddListener('tooltipIncludeSinglePoints', 'mouseleave', function () {
+        document.getElementById('tooltipIncludeSinglePointContent').style.display = 'none';
+    });
+
     // Bounties navbar control
     AddListener('navBarBountiesButton', 'click', function () {
 
+        // Toggle settings page in the case that it is open (accessibility)
         ToggleSettingsMenu();
         
-        let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
+        // Toggle corresponding pages
+        let containerName = this.getAttribute('data-containerName');
+        let containersToHide = containerNames.filter(x => x !== containerName);
+
         for (let container of containersToHide) {
             document.getElementById(`${container}`).style.display = 'none';
         };
-        document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
+        document.getElementById(containerName).style.display = 'block';
+
+        // Store the page as this is the page that was last visited (until it is changed)
+        CacheChangeItem('lastVisitedPage', containerName);
     });
 
 
     // Challenges navbar control
     AddListener('navBarChallengesButton', 'click', function () {
 
+        // Toggle settings page in the case that it is open (accessibility)
         ToggleSettingsMenu();
         
-        let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
+        // Toggle corresponding pages
+        let containerName = this.getAttribute('data-containerName');
+        let containersToHide = containerNames.filter(x => x !== containerName);
+
         for (let container of containersToHide) {
             document.getElementById(`${container}`).style.display = 'none';
         };
-        document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
+        document.getElementById(containerName).style.display = 'block';
+
+        // Store the page as this is the page that was last visited (until it is changed)
+        CacheChangeItem('lastVisitedPage', containerName);
     });
 
 
     // Statistics navbar control
     AddListener('navBarStatisticsButton', 'click', function () {
 
+        // Toggle settings page in the case that it is open (accessibility)
         ToggleSettingsMenu();
         
-        let containersToHide = containerNames.filter(x => x !== this.getAttribute('data-containerName'));
+        // Toggle corresponding pages
+        let containerName = this.getAttribute('data-containerName');
+        let containersToHide = containerNames.filter(x => x !== containerName);
+
         for (let container of containersToHide) {
             document.getElementById(`${container}`).style.display = 'none';
         };
-        document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
+        document.getElementById(containerName).style.display = 'block';
+
+        // Store the page as this is the page that was last visited (until it is changed)
+        CacheChangeItem('lastVisitedPage', containerName);
     });
 
 
@@ -269,22 +345,14 @@ export async function AddEventListeners() {
     });
 
 
-    // Character buttons
-    for (let i=0; i <= 2; i++) {
-        AddListener(`charContainer${i}`, 'click', () => {
-            LoadCharacter(i);
-        });
-    };
-
-
     // Title button (secret setting activation)
-    AddListener('navBarTitle', 'click', function () {
-        // secretCount++;
-        // if (secretCount >= 7) {
-        //     document.getElementById('settingsSecretContainer').style.display = 'block';
-        //     CacheChangeItem('isSecretOn', true);
-        // };
-    });
+    // AddListener('navBarTitle', 'click', function () {
+    //     secretCount++;
+    //     if (secretCount >= 7) {
+    //         document.getElementById('settingsSecretContainer').style.display = 'block';
+    //         CacheChangeItem('isSecretOn', true);
+    //     };
+    // });
 
 
     // General settings button
@@ -375,6 +443,33 @@ export async function AddEventListeners() {
         // Uncheck = clear interval and localStorage value
         CacheChangeItem('isRefreshOnIntervalToggled', false);
         clearInterval(refreshOnInterval);
+    });
+
+
+    // Remember last page checkbox
+    AddListener('checkboxRememberLastpage', 'change', function () {
+
+        if (this.checked) {
+
+            // Toggle boolean
+            CacheChangeItem('isRememberLastPageToggled', true);
+
+            // Grey out default page dropdown and disable it
+            document.getElementById('defaultViewDropdownContainer').style.opacity = '50%';
+            document.getElementById('defaultViewDropdown').options[0].disabled = true;
+            document.getElementById('defaultViewDropdown').options[1].disabled = true;
+            document.getElementById('defaultViewDropdown').options[2].disabled = true;
+            return;
+        };
+
+        // Uncheck = clear localStorage value
+        CacheChangeItem('isRememberLastPageToggled', false);
+
+        // un-Grey out default page dropdown and disable it
+        document.getElementById('defaultViewDropdownContainer').style.opacity = '100%';
+        document.getElementById('defaultViewDropdown').options[0].disabled = false;
+        document.getElementById('defaultViewDropdown').options[1].disabled = false;
+        document.getElementById('defaultViewDropdown').options[2].disabled = false;
     });
 
 
@@ -547,61 +642,62 @@ export async function AddEventListeners() {
         AddDropdownEvent(dropdownContent, arrow, dropdownBoolean);
     });
 
-    let currentlyShowingChunkIndex = 0;
+    
+    /*
+        Previous and Next arrows for seasonal challenges
+        Get maximum chunks that will be held in seasonalChallengeItems
+        ^ This value will the be the last index (page)
+    */
+    let currentIndex = 0;
+    let lastIndex = Math.trunc(UserProfile.misc.challengesCount / 6) - 1;
+
     // Show next chunk of seasonal challenges
     AddListener('nextSeasonalChallengePageButton', 'click', function () {
 
-        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
-        if (currentlyShowingChunkIndex === 12) {
-            currentlyShowingChunkIndex = 0;
+        // Hide current page
+        document.getElementById(`challengeChunk${currentIndex}`).style.display = 'none';
+
+        // If first page, set index to last page
+        if (currentIndex === lastIndex) {
+            currentIndex = 0;
         }
+
+        // Else, decrement index
         else {
-            currentlyShowingChunkIndex++;
+            currentIndex++;
         };
-        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
+
+        // Show current page
+        document.getElementById(`challengeChunk${currentIndex}`).style.display = 'grid';
     });
 
     // Show previous chunk of seasonal challenges
     AddListener('previousSeasonalChallengePageButton', 'click', function () {
 
-        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
-        if (currentlyShowingChunkIndex === 0) {
-            currentlyShowingChunkIndex = 12;
+        // Hide current page
+        document.getElementById(`challengeChunk${currentIndex}`).style.display = 'none';
+
+        // If first page, set index to last page
+        if (currentIndex === 0) {
+            currentIndex = lastIndex;
         }
+
+        // Else, decrement index
         else {
-            currentlyShowingChunkIndex--;
+            currentIndex--;
         };
-        document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
-    });
 
-    // Toggle table types (Filters)
-    AddListener('toggleTypePVE', 'click', function (e) {
-
-        // Reverse boolean
-        relationsTable.toggles.pve = !relationsTable.toggles.pve;
-
-        // Change innerHTML tag
-        document.getElementById('PVEButtonTag').innerHTML = `${relationsTable.toggles.pve ? '(on)' : '(off)'}`;
-
-        // Rebuild table
-        relationsTable.BuildTable();
-    });
-    AddListener('toggleTypePVP', 'click', function (e) {
-
-        // Reverse boolean
-        relationsTable.toggles.pvp = !relationsTable.toggles.pvp;
-
-        // Change innerHTML tag
-        document.getElementById('PVPButtonTag').innerHTML = `${relationsTable.toggles.pvp ? '(on)' : '(off)'}`;
-
-        // Rebuild table
-        relationsTable.BuildTable();
+        // Show current page
+        document.getElementById(`challengeChunk${currentIndex}`).style.display = 'grid';
     });
 };
 
 
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
+
+    // Get time until weekly reset (timezone specific ofc)
+    document.getElementById('timeUntilWeeklyReset').innerHTML = `Weekly Reset: ${getNextTuesday()}`;
 
     let rangeSlider = document.getElementById('accessibilityImageSizeSlider'),
         bountyImage = document.getElementById('accessibilityImageDemo');
@@ -660,12 +756,39 @@ export async function BuildWorkspace() {
     bountyImage.style.width = `${itemDisplay.itemDisplaySize}px`;
 
     // Set checkboxes to chosen state, from localStorage (userCache)
-    document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled');
-    document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled');
-    document.getElementById('checkboxIncludeExpiredBounties').checked = await CacheReturnItem('includeExpiredBounties');
-    document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = await CacheReturnItem('includeSeasonalChallengesInTable');
+    // Using ternary in the case that a boolean is not returned from CacheReturnItem
+    document.getElementById('toggleTypePVP').checked = await CacheReturnItem('includePvpInTable') ? true : false;
+    document.getElementById('toggleTypePVE').checked = await CacheReturnItem('includePveInTable') ? true : false;
+    document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled') ? true : false;
+    document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled') ? true : false;
+    document.getElementById('checkboxIncludeExpiredBountiesInYield').checked = await CacheReturnItem('includeExpiredBountiesInYield') ? true : false;
+    document.getElementById('checkboxIncludeExpiredBountiesInTable').checked = await CacheReturnItem('includeExpiredBountiesInTable') ? true : false;
+    document.getElementById('checkboxIncludeSeasonalChallengesInYield').checked = await CacheReturnItem('includeSeasonalChallengesInYield') ? true : false;
+    document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = await CacheReturnItem('includeSeasonalChallengesInTable') ? true : false;
 
-    // Push cache results for defaultContenteView to variabGles
+    // Check if rememberLastPage is true
+    await CacheReturnItem('isRememberLastPageToggled')
+    .then((result) => {
+
+        // Set the checkbox state using the boolean stored in localStorage
+        if (result) {
+
+            document.getElementById('checkboxRememberLastpage').checked = result;
+
+            // Change the dropdown box above to correct state
+            document.getElementById('defaultViewDropdownContainer').style.opacity = '50%';
+            document.getElementById('defaultViewDropdown').options[0].disabled = true;
+            document.getElementById('defaultViewDropdown').options[1].disabled = true;
+            document.getElementById('defaultViewDropdown').options[2].disabled = true;
+        };
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+
+
+    // Parse defaultContentView results and push to DOM
     await CacheReturnItem('defaultContentView')
     .then((result) => {
 
@@ -676,10 +799,28 @@ export async function BuildWorkspace() {
             document.getElementById('defaultViewDropdown').value = 'bountiesContainer';
             return;
         };
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 
-        // Set default view to result from cache
-        // document.getElementById(`${result}`).style.display = 'block';
-        // document.getElementById('defaultViewDropdown').value = result;
+    // Check if last page is being remembered, if so make the default the last visited page
+    await CacheReturnItem('isRememberLastPageToggled')
+    .then((result) => {
+
+        // If true, hide all pages (elegantly!) then show the last visited one
+        if (result) {
+            CacheReturnItem('lastVisitedPage')
+            .then((pageName) => {
+                document.getElementById('bountiesContainer').style.display = 'none';
+                document.getElementById('seasonalChallengesContainer').style.display = 'none';
+                document.getElementById('statisticsContainer').style.display = 'none';
+                document.getElementById(pageName).style.display = 'block';
+            })
+            .catch((error) => {
+                return error;
+            });
+        };
     })
     .catch((error) => {
         console.error(error);
@@ -704,299 +845,3 @@ export async function BuildWorkspace() {
     modifiersDropdownArrow.style.transform = 'rotate(0deg)';
 
 };
-
-
-// DEPRECATED
-// async function AddEventListenersDeprecated() {
-
-//     log('AddEventListeners START');
-//     // Add listeners for buttons
-//     for (let a = 0; a <= 2; a++) {
-//         document.getElementById(`charContainer${a}`).addEventListener('click', () => {
-//             LoadCharacter(a);
-//         });
-//     };
-
-//     // Click on title to show secret setting
-//     document.getElementById('navBarTitle').addEventListener('click', () => {
-//         secretCount++;
-//         if (secretCount >= 5) {
-//             document.getElementById('secretIconCheckboxContainer').style.display = 'block';
-//             CacheChangeItem('isSecretOn', true);
-//         };
-//     });
-
-//     // Hover events for "Current Yield"
-//     document.getElementById('statsTitleQuery').addEventListener('mousemove', () => {
-//         document.getElementById('queryDiv').style.display = 'block';
-//     });
-//     document.getElementById('statsTitleQuery').addEventListener('mouseleave', () => {
-//         document.getElementById('queryDiv').style.display = 'none';
-//     });
-
-//     // Hover events for "Net Breakdown"
-//     // Shared wisdom bonus hover
-//     const statSharedWisdom = document.getElementById('statSharedWisdom');
-//     statSharedWisdom.addEventListener('mouseover', () => {
-//         document.getElementById('sharedWisdomPopupContainer').style.display = 'inline-block';
-//     });
-//     statSharedWisdom.addEventListener('mouseleave', () => {
-//         document.getElementById('sharedWisdomPopupContainer').style.display = 'none';
-//     });
-
-//     // Ghost mod bonus hover
-//     const statGhostMod = document.getElementById('statGhostMod');
-//     statGhostMod.addEventListener('mouseover', () => {
-//         document.getElementById('ghostModPopupContainer').style.display = 'inline-block';
-//     });
-//     statGhostMod.addEventListener('mouseleave', () => {
-//         document.getElementById('ghostModPopupContainer').style.display = 'none';
-//     });
-
-//     // Bonus XP hover
-//     const statBonusXp = document.getElementById('statBonusXp');
-//     statBonusXp.addEventListener('mouseover', () => {
-//         document.getElementById('BonusXpPopupContainer').style.display = 'inline-block';
-//     });
-//     statBonusXp.addEventListener('mouseleave', () => {
-//         document.getElementById('BonusXpPopupContainer').style.display = 'none';
-//     });
-
-//     // Remove filters button
-//     document.getElementById('removeFiltersID').addEventListener('click', () => {
-
-//         // Loop over charBounties and reverse filtered items
-//         charBounties.forEach(bounty => {
-//             if (eventFilters.grayedOutBounties) {
-//                 eventFilters.grayedOutBounties.forEach(greyHash => {
-//                     document.getElementById(`${bounty.hash}`).style.opacity = 'unset';
-//                     document.getElementById(`item_${bounty.hash}`).style.opacity = 'unset';
-//                 });
-//             };
-//         });
-//         eventFilters.grayedOutBounties = []; // Clear array
-
-
-//         // Loop over bounty filters and reverse selected filers
-//         Object.keys(eventFilters.filterDivs).forEach(filter => {
-//             eventFilters.filterDivs[filter].element.style.color = 'rgb(138, 138, 138)';
-//         });
-//     });
-
-//     // Click event for "Bounties" side button
-//     document.getElementById('cgBounties').addEventListener('click', () => {
-
-//         CacheReturnItem('defaultContentView')
-//         .then(result => {
-
-//             // display: none the current view
-//             document.getElementById(result).style.display = 'none';
-
-//             // Show the bounties view
-//             document.getElementById('bountiesContainer').style.display = 'block';
-
-//             // Save the current view to cache
-//             CacheChangeItem('defaultContentView', 'bountiesContainer');
-//         });
-//     });
-
-//     // Click event for "Seasonal Challenges" side button
-//     document.getElementById('cgSeasonalChalls').addEventListener('click', () => {
-
-//         CacheReturnItem('defaultContentView')
-//         .then(result => {
-
-//             // display: none the current view
-//             document.getElementById(result).style.display = 'none';
-
-//             // Show the seasonalChallenges view
-//             document.getElementById('seasonalChallengesContainer').style.display = 'block';
-
-//             // Save the current view to cache
-//             CacheChangeItem('defaultContentView', 'seasonalChallengesContainer');
-//         });
-//     });
-
-//     // Toggle item filters button(s) (reverse container style)
-//     document.getElementById('btnHideFilters').addEventListener('click', () => {
-
-//         let filterContentContainer = document.getElementById('filterContentContainer');
-
-//         // Check if boolean is true/false - change content
-//         if (filterContentContainer.style.display === 'block') {
-//             filterContentContainer.style.display = 'none';
-//         }
-//         else if (filterContentContainer.style.display === 'none') {
-//             filterContentContainer.style.display = 'block';
-//         };
-//     });
-
-
-//     // Settings toggles input listeners
-//     document.getElementById('checkboxRefreshWhenFocused').addEventListener('change', function () {
-        
-//         if (this.checked) {
-//             CacheChangeItem('isRefreshOnFocusToggled', true);
-//         }
-//         else {
-//             CacheChangeItem('isRefreshOnFocusToggled', false);
-//         };
-//     });
-
-//     function passiveReload () {
-//         if (!document.hidden) {
-//             main(true)
-//             .catch((error) => {
-//                 console.error(error);
-//             });
-//         };
-//     };
-
-//     // When the user changes focuses the tab again, reload
-//     document.addEventListener('visibilitychange', function () {
-
-//         if (!document.hidden) {
-//             CacheReturnItem('isRefreshOnFocusToggled')
-//             .then(result => {
-
-//                 if (result === true) {
-//                     document.getElementById('loadingIcon').style.display = 'none';
-//                     document.getElementById('loadingText').style.marginTop = '-65px';
-//                     passiveReload();
-//                 };
-//             });
-//         };
-//     });
-
-//     // Refresh 2 minute interval event listener
-//     let refreshOnInterval;
-//     document.getElementById('checkboxRefreshOnInterval').addEventListener('change', function () {
-
-//         if (this.checked) {
-
-//             CacheChangeItem('isRefreshOnIntervalToggled', true);
-//             refreshOnInterval = setInterval( function () {
-//                 main(true)
-//                     .catch((error) => {
-//                         console.error(error);
-//                     });
-//             }, 120_000);
-
-//             document.getElementById('loadingIcon').style.display = 'none';
-//             document.getElementById('loadingText').style.marginTop = '-65px';
-//         }
-//         else if (!this.checked) {
-
-//             CacheChangeItem('isRefreshOnIntervalToggled', false);
-//             clearInterval(refreshOnInterval);
-//         };
-
-//     });
-
-//     // (Default) Item size range slider
-//     let rangeSlider = document.getElementById('itemSizeSlider'), 
-//         rangeValueField = document.getElementById('itemSizeField'), 
-//         bountyImage = document.getElementById('settingsBountyImage'), 
-//         defaultItemSize = 55;
-
-//     // Default value
-//     rangeValueField.innerHTML = `${rangeSlider.value}px`;
-
-//     // Input listener for range slider
-//     rangeSlider.oninput = function () {
-
-//         bountyImage.style.width = `${this.value}px`;
-//         rangeValueField.innerHTML = `${this.value}px`;
-
-//         Array.from(document.getElementsByClassName('bounty')).forEach(element => {
-//             element.style.width = `${this.value}px`;
-//         });
-
-//         CacheChangeItem('itemDisplaySize', this.value);
-//     };
-
-//     // Reset item size button event listener
-//     document.getElementById('resetItemSize').addEventListener('click', () => {
-
-//         rangeSlider.value = defaultItemSize;
-//         bountyImage.style.width = `${defaultItemSize}px`;
-//         rangeValueField.innerHTML = `${defaultItemSize}px`;
-//         CacheChangeItem('itemDisplaySize', defaultItemSize);
-
-//         Array.from(document.getElementsByClassName('bounty')).forEach(element => {
-//             element.style.width = `${defaultItemSize}px`;
-//         });
-//     });
-
-//     // Form event for choosing the default content view
-//     document.getElementById('defaultViewDropdown').addEventListener('change', () => {
-
-//         const contentViewsThatINeedToChange = [
-//             'bountiesContainer', 
-//             'seasonalChallengesContainer'
-//         ];
-
-//         const selectedValue = document.getElementById('defaultViewDropdown').value;
-        
-//         // Filter my current content views to display: none if they are not selectedValue
-//         contentViewsThatINeedToChange
-//         .forEach(value => {
-
-//             if (value !== selectedValue) {
-//                 document.getElementById(value).style.display = 'none';
-//                 return;
-//             };
-
-//             document.getElementById(value).style.display = 'block';
-//         });
-
-//         // Save the chosen item to cache and change the current view to the chosen one
-//         CacheChangeItem('defaultContentView', selectedValue);
-//         document.getElementById(selectedValue).style.display = 'block';
-//     });
-
-//     // Add listener for available vendor popup close button
-//     document.getElementById('availableVendorPopupClose').addEventListener('click', () => {
-//         document.getElementById('availableVendorPopupCanvas').style.display = 'none';
-//         document.getElementById('availableVendorPopup').style.display = 'none';
-//     });
-
-//     // Add an event listener to the canvas to close the popup (for ease of use)
-//     document.getElementById('availableVendorPopupCanvas').addEventListener('click', () => {
-//         document.getElementById('availableVendorPopupCanvas').style.display = 'none';
-//         document.getElementById('availableVendorPopup').style.display = 'none';
-//     });
-    
-
-//     // Add listener for next arrow to show previous chunk of seasonal challenges
-//     // Add listener for next arrow to show next chunk of seasonal challenges
-//     let currentlyShowingChunkIndex = 0;
-
-//     document.getElementById('nextSeasonalChallengePageButton').addEventListener('click', () => {
-
-//         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
-//         if (currentlyShowingChunkIndex === 12) {
-//             currentlyShowingChunkIndex = 0;
-//         }
-//         else {
-//             currentlyShowingChunkIndex++;
-//         };
-//         log(`currentlyShowingChunkIndex: ${currentlyShowingChunkIndex}`);
-//         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
-//     });
-
-//     document.getElementById('previousSeasonalChallengePageButton').addEventListener('click', () => {
-
-//         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'none';
-//         if (currentlyShowingChunkIndex === 0) {
-//             currentlyShowingChunkIndex = 12;
-//         }
-//         else {
-//             currentlyShowingChunkIndex--;
-//         };
-//         log(`currentlyShowingChunkIndex: ${currentlyShowingChunkIndex}`);
-//         document.getElementById(`challengeChunk${currentlyShowingChunkIndex}`).style.display = 'grid';
-//     });
-
-//     log('AddEventListeners END');
-// };

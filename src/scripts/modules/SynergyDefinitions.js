@@ -180,6 +180,13 @@ export const CurrentlyAddedVendors = {
     'None': null,
 };
 
+// Progression item group types
+export const progressionItemGroupTypes = [
+    'Crucible', //0
+    'Vanguard', //1
+    'Gambit', //3
+];
+
 // Add specifiers for seperating PvP specific properties
 export const pvpActivityModes = [
     'Crucible', //0
@@ -214,6 +221,8 @@ export const pveActivityModes = [
     'Raid', //8
     'EmpireHunt', //9
     'Expedition', //10
+    'Vanguard', //11
+    'Battlegrounds', //12
 ];
 
 // Add specified for vanguard activities
@@ -242,6 +251,7 @@ export const Destination = [
     'Europa', //5
     'Cosmodrome', //6
     'Throne World', //7
+    'Neomuna', //8
 ];
 
 // Hashes for activity modes
@@ -276,7 +286,10 @@ export const ActivityMode = [
     'Expedition', //27
     'KetchCrash', //28
     'HeistBattleground', //29
-    'Vanguard(strikes)', //30
+    'Vanguard', //30
+    'DefiantBattleground', //31
+    'TerminalOverload', //32
+    'VexIncursionZone', //33
 ];
 
 // Damage types
@@ -286,6 +299,7 @@ export const DamageType = [
     'Kinetic', //2
     'Void', //3
     'Stasis', //4
+    'Strand', //5
 ];
 
 // Weapon types
@@ -331,6 +345,7 @@ export const KillType = [
     'InASingleLife', //11
     'LongRange', //12
     'Abilities', //13
+    'Orbs', //14
 ];
 
 // Enemy types
@@ -348,6 +363,8 @@ export const EnemyModifiers = [
     'Champions', //0
     'Nightmares', //1
     'Powerful', //2
+    'Bosses', //3
+    'Boss', //4
 ];
 
 // Seasonal Categories via Name
@@ -355,6 +372,7 @@ export const SeasonalCategory = [
     'SeasonOfTheSeraph', //0
     'SeasonOfPlunder', //1
     'SeasonOfTheHaunted', //2
+    'SeasonOfTheDefiance', //3
 ];
 
 // Location Specifics
@@ -389,7 +407,7 @@ export const LocationSpecifics = [
     'Mothyards', //27
     'The Steppes', //28
     'Forgotten Shore', //29
-    'Skywatch', //30s
+    'Skywatch', //30
 ];
 
 // Descriptor Specifics
@@ -400,4 +418,5 @@ export const DescriptorSpecifics = [
     'OrbsOfPower', //3
     'Clanmates', //4
     'Bosses', //5
+    'Orbs', //6
 ];
