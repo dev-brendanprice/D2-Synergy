@@ -132,7 +132,7 @@ export async function FetchBungieUserDeprecated() {
             destinyUserProfile = response.data.Response;
 
             // Parse data from destinyUserProfile
-            CurrentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
+            currentSeasonHash = destinyUserProfile.profile.data.currentSeasonHash;
             ProfileProgressions = destinyUserProfile.profileProgression.data;
 
             // Cache in window.sessionStorage
@@ -143,5 +143,5 @@ export async function FetchBungieUserDeprecated() {
         });
         
     characters = destinyUserProfile.characters.data;
-    log(`Current season hash: ${CurrentSeasonHash}`);
+    log(`Current season hash: ${currentSeasonHash}`);
 };

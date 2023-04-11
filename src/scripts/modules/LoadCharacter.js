@@ -16,7 +16,9 @@ import { CacheChangeItem } from './CacheChangeItem.js';
 import { AddTableRow } from './AddTableRow.js';
 import { InsertSeperators } from './InsertSeperators.js';
 import { StopLoad } from './StopLoad.js';
-import { ParseChar } from './ParseChar.js';
+import { ParseClass } from './ParseClass.js';
+import { ParseRace } from './ParseRace.js';
+import { MakeCharacterSelect } from './MakeCharacterSelect.js';
 
 var characterLoadToggled = false, // Used to lockout character select during a load
     characterRecords;
@@ -26,12 +28,13 @@ var seasonPassInfo = {},
     seasonPassLevel = 0,
     prestigeProgressionSeasonInfo,
     seasonProgressionInfo = {},
-    seasonalArtifactInfo = {};
+    seasonalArtifactInfo = {},
+    seasonInfo = {};
 
 
 // Load character from specific index
-// @int {classType}, @boolean {isRefresh}
-export async function LoadCharacter(classType, characters) {
+// @int {characterId}, @obj {characters}, @boolean {isFirstTimeLoad}
+export async function LoadCharacter(characterId, characters, isFirstTimeLoad = true) {
 
     if (!characterLoadToggled) {
 
@@ -49,71 +52,61 @@ export async function LoadCharacter(classType, characters) {
             CharacterInventories,
             CharacterObjectives,
             CharacterEquipment,
-            characterId,
             primaryCharacter,
             ItemSockets;
 
 
         // Clear (emtpy fields that are going to change) DOM content
-        document.getElementById('noItemsTooltip').style.display = 'none';
         document.getElementById('bountyItems').innerHTML = '';
         document.getElementById('overlays').innerHTML = '';
-        document.getElementById('filters').innerHTML = '';
-        document.getElementById('ctgDestination').innerHTML = 'There are no (specific) relations for destinations.';
-        document.getElementById('ctgActivityMode').innerHTML = 'There are no (specific) relations for activities.';
-        document.getElementById('ctgItemCategory').innerHTML = 'There are no (specific) relations for weapon types.';
-        document.getElementById('ctgKillType').innerHTML = 'There are no (specific) relations for kill types.';
 
-        // Get chosen character via classType
-        for (let entry in UserProfile.characters) {
+        // Get chosen character via characterId
+        for (let v in characters) {
 
-            let character = UserProfile.characters[entry];
-            if (character.classType === classType) {
-                characterId = character.characterId;
-                primaryCharacter = character;
+            let char = characters[v];
+            if (char.characterId === characterId) {
+                primaryCharacter = char;
             };
         };
 
         // Save character to localStorage
         CacheChangeItem('currentChar', primaryCharacter);
 
-        // Do character selects
-        document.getElementById('topCharacterTypeField').innerHTML = ParseChar(primaryCharacter.classType);
-        document.getElementById('topCharacterSelectImg').src = `https://www.bungie.net${primaryCharacter.emblemBackgroundPath}`;
-        document.getElementById('topCharacterPowerLevelField').innerHTML = primaryCharacter.light;
+        // Check if first time load (build character selects if so etc)
+        if (isFirstTimeLoad) {
 
-        let otherCharacters = Object.keys(characters).filter(v => v!==characterId);
-        for (let id of otherCharacters) {
-            
-            let char = characters[id];
-            let emblemLargeBg = itemDefinitions[char.emblemHash].secondarySpecial;
-            let emblemPath = itemDefinitions[char.emblemHash].secondaryOverlay;
+            // Make characterInfo object
+            let characterInfo = {};
+            characterInfo.emblemIco = itemDefinitions[primaryCharacter.emblemHash].secondaryOverlay;
+            characterInfo.characterClass = ParseClass(primaryCharacter.classType);
+            characterInfo.characterRace = ParseRace(primaryCharacter.raceType);
+            characterInfo.characterPower = primaryCharacter.light;
+            characterInfo.characterId = primaryCharacter.characterId;
 
-            if (!document.getElementById('middleCharacterTypeField').innerHTML) {
-                document.getElementById('middleCharacterTypeField').innerHTML = ParseChar(char.classType);
-                document.getElementById('middleCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
-                document.getElementById('middleCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
-                document.getElementById('middleCharacterPowerLevelField').innerHTML = char.light;
-            }
-            else if (!document.getElementById('bottomCharacterTypeField').innerHTML) {
-                document.getElementById('bottomCharacterTypeField').innerHTML = ParseChar(char.classType);
-                document.getElementById('bottomCharacterContainer').style.backgroundImage = `url(https://www.bungie.net${emblemLargeBg})`;
-                document.getElementById('bottomCharacterIconImg').src = `https://www.bungie.net${emblemPath}`;
-                document.getElementById('bottomCharacterPowerLevelField').innerHTML = char.light;
+            // Add main character to DOM
+            MakeCharacterSelect(characterInfo);
+
+            // Filter out character that is the main one
+            let otherCharacters = Object.keys(characters).filter(v => v!==characterId);
+
+            // Add other characters to DOM
+            for (let id of otherCharacters) {
+
+                // Make characterInfo obj for each character
+                let character = characters[id];
+                let characterInfo = {};
+                characterInfo.emblemIco = itemDefinitions[character.emblemHash].secondaryOverlay;
+                characterInfo.characterClass = ParseClass(character.classType);
+                characterInfo.characterRace = ParseRace(character.raceType);
+                characterInfo.characterPower = character.light;
+                characterInfo.characterId = character.characterId;
+
+                // Add character to DOM
+                MakeCharacterSelect(characterInfo);
             };
-        };
-        
-        // Hide containers dependant on how many characters a user has (1, 2 or 3)
-        if (otherCharacters.length === 0) {
-            document.getElementById('middleCharacterContainer').style.display = 'none';
-            document.getElementById('bottomCharacterContainer').style.display = 'none';
-        }
-        else if (otherCharacters.length === 1) {
-            document.getElementById('bottomCharacterContainer').style.display = 'none';
         };
 
         // Get character-specific data from destinyUserProfile cache
-        log(UserProfile);
         CharacterProgressions = UserProfile.destinyUserProfile.characterProgressions.data[characterId].progressions;
         CharacterEquipment = UserProfile.destinyUserProfile.characterEquipment.data[characterId].items;
         CharacterObjectives = UserProfile.destinyUserProfile.itemComponents.objectives.data;
@@ -154,17 +147,60 @@ export async function LoadCharacter(classType, characters) {
             };
         });
 
-        // Get season pass info
-        seasonProgressionInfo = CharacterProgressions[seasonDefinitions[UserProfile.CurrentSeasonHash].seasonPassProgressionHash];
-        seasonPassInfo = seasonPassDefinitions[seasonDefinitions[UserProfile.CurrentSeasonHash].seasonPassHash];
-        prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
-        seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
-        seasonalArtifactInfo = itemDefinitions[seasonDefinitions[UserProfile.CurrentSeasonHash].artifactItemHash];
-        seasonalArtifactInfo.powerBonusProgression = progressionDefinitions[1656313730];
 
-        let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems, rewardsTrack = {};
+        // Loop over season from definitions to get the highest statistics across all seasons
+        let pastSeasonLevels = [];
+        for (let hash in seasonDefinitions) {
 
-        // Iterate through rewards track and formalize into a clean(er) array structure
+            // Check if season >= season 8
+            if (seasonDefinitions[hash].seasonNumber >= 8) {
+
+                let season = seasonDefinitions[hash];
+
+                // Get season pass hash
+                let seasonPassHash = season.seasonPassHash;
+                let seasonPass = seasonPassDefinitions[seasonPassHash];
+
+                // Get season pass normal and prestige progression hash
+                let seasonPassProgressionHash = season.seasonPassProgressionHash;
+                let seasonPassProgressionPrestigeHash = seasonPass.prestigeProgressionHash;
+
+                // Get info from each progression
+                let seasonProgression = CharacterProgressions[seasonPassProgressionHash];
+                let seasonProgressionPrestige = CharacterProgressions[seasonPassProgressionPrestigeHash];
+
+                // Push season level to array
+                pastSeasonLevels.push(await ReturnSeasonPassLevel(seasonProgression, seasonProgressionPrestige));
+                
+            };
+            
+            // Check if hash is the current season
+            if (hash == UserProfile.currentSeasonHash) {
+
+                // Pull info from the current season
+                seasonProgressionInfo = CharacterProgressions[seasonDefinitions[hash].seasonPassProgressionHash];
+                seasonPassInfo = seasonPassDefinitions[seasonDefinitions[hash].seasonPassHash];
+                prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
+                seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
+                seasonalArtifactInfo = itemDefinitions[seasonDefinitions[hash].artifactItemHash];
+                seasonalArtifactInfo.powerBonusProgression = progressionDefinitions[1656313730];
+                seasonInfo = seasonDefinitions[hash];
+
+            };
+        };
+
+        // Store season start date
+        seasonProgressionInfo.startDate = seasonInfo.startDate;
+
+        // Sort levels in descending order to get highest season pass level
+        pastSeasonLevels = pastSeasonLevels.sort((a,b) => b-a);
+        let highestSeasonPassLevel = pastSeasonLevels[0];
+        let seasonPassLevelsTotal = pastSeasonLevels.reduce((a,b) => a+b, 0);
+        
+        // Re-structure season pass rewards into a cleaner array structure
+        let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems;
+        let rewardsTrack = {};
+
         seasonPassRewardsTrack.forEach(v => {
 
             if (!rewardsTrack[v.rewardedAtProgressionLevel]) {
@@ -175,33 +211,33 @@ export async function LoadCharacter(classType, characters) {
 
 
         // Push subheading statistics
-        AddValueToElementInner('currentSeasonNameField', seasonPassInfo.displayProperties.name);
+        // AddValueToElementInner('currentSeasonNameField', seasonPassInfo.displayProperties.name);
 
         // Get artifact info -- check if profile has artifact
-        let artifact;
-        if (UserProfileProgressions.ProfileProgressions.seasonalArtifact) {
+        // let artifact;
+        // if (UserProfileProgressions.ProfileProgressions.seasonalArtifact) {
 
-            // Change corresponding HTML elements to display stats
-            artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
+        //     // Change corresponding HTML elements to display stats
+        //     artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
 
-            if (artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel !== 0) {
-                AddValueToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
-            }
-            else {
-                document.getElementById('artifactStatsSecondContainer').style.display = 'none';
-            };
+        //     if (artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel !== 0) {
+        //         AddValueToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
+        //     }
+        //     else {
+        //         document.getElementById('artifactStatsSecondContainer').style.display = 'none';
+        //     };
 
-            AddValueToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
-            AddValueToElementInner('artifactXpToNextPowerBonus', InsertSeperators(artifact.powerBonusProgression.nextLevelAt - artifact.powerBonusProgression.progressToNextLevel));
-        }
-        else if (!UserProfileProgressions.ProfileProgressions.seasonalArtifact) {
+        //     AddValueToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
+        //     AddValueToElementInner('artifactXpToNextPowerBonus', InsertSeperators(artifact.powerBonusProgression.nextLevelAt - artifact.powerBonusProgression.progressToNextLevel));
+        // }
+        // else if (!UserProfileProgressions.ProfileProgressions.seasonalArtifact) {
 
-            // Change corresponding HTML elements to display stats
-            document.getElementById('artifactStatsFirstContainer').style.display = 'none';
-            document.getElementById('artifactStatsSecondContainer').style.display = 'none';
-            document.getElementById('artifactStatsThirdMetricContainer').style.display = 'none';
-            document.getElementById('artifactStatsNoArtifactIsPresent').style.display = 'block';
-        };
+        //     // Change corresponding HTML elements to display stats
+        //     document.getElementById('artifactStatsFirstContainer').style.display = 'none';
+        //     document.getElementById('artifactStatsSecondContainer').style.display = 'none';
+        //     document.getElementById('artifactStatsThirdMetricContainer').style.display = 'none';
+        //     document.getElementById('artifactStatsNoArtifactIsPresent').style.display = 'block';
+        // };
 
         // Get progressional items
         var progressionalItemsObj = await ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp, seasonalArtifactInfo);
@@ -209,38 +245,38 @@ export async function LoadCharacter(classType, characters) {
         // Get relations for progressional items
         var relations = await ParseProgressionalRelations(progressionalItemsObj);
 
-        // Clear table and declare table div
-        let table = document.getElementById('relationsTable');
-        relationsTable.div = table;
-        relationsTable.ClearTable();
-
         // Populate relations objects in global relationsTable object
         relationsTable.relations.bounties = relations.bounties;
         relationsTable.relations.challenges = relations.challenges;
         relationsTable.relations.all = relations.all;
+        relationsTable.relations.averageRelationCount = relations.averageRelationCount;
+
+        // Declare table div then build the table
+        relationsTable.div = document.getElementById('relationsTable');
+        relationsTable.BuildTable();
 
 
         // Append allRelations to table
-        for (let index in relations.all) {
+        // for (let index in relations.all) {
             
-            // Find the category that the relation corresponds to
-            let relation = relations.all[index];
-            let category;
-            for (let item in progressionPropertyKeyValues) {
+        //     // Find the category that the relation corresponds to
+        //     let relation = relations.all[index];
+        //     let category;
+        //     for (let item in progressionPropertyKeyValues) {
 
-                // If relation is in category, store in category
-                if (progressionPropertyKeyValues[item].includes(ParsePropertyNameIntoWord(relation[0], true))) {
-                    category = item;
-                };
-            };
+        //         // If relation is in category, store in category
+        //         if (progressionPropertyKeyValues[item].includes(ParsePropertyNameIntoWord(relation[0], true))) {
+        //             category = item;
+        //         };
+        //     };
 
-            if (category) {
-                AddTableRow(table, [relation[0], ParsePropertyNameIntoWord(category), `${relation[1]}pts`]);
-            };
-        };
+        //     if (category) {
+        //         AddTableRow(table, [relation[0], ParsePropertyNameIntoWord(category), `${relation[1]}pts`]);
+        //     };
+        // };
 
         // Stop loading sequence
-        CacheChangeItem('lastChar', classType);
+        CacheChangeItem('lastChar', characterId);
         characterLoadToggled = false;
         StopLoad();
     };

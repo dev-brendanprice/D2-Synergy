@@ -1,3 +1,10 @@
+
+/*
+
+    None of these functions are used so they are marked as deprecated, for now.
+
+*/
+
 import { itemTypeKeys } from "./SynergyDefinitions.js";
 import { allProgressionProperties, UserProfile, log } from "../user.js";
 import { LoadCharacter } from './LoadCharacter.js';

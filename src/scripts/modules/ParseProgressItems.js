@@ -10,7 +10,8 @@ import {
     itemDefinitions,
     objectiveDefinitions,
     UserProfileProgressions, 
-    progressionDefinitions} from '../user.js';
+    progressionDefinitions, 
+    UserProfile } from '../user.js';
 import { MakeBountyElement } from './MakeBountyElement.js';
 import { ParseSeasonalChallenges } from './ParseSeasonalChallenges.js';
 import { ReturnSeasonPassProgressionStats } from './ReturnSeasonPassProgressionStats.js';
@@ -62,14 +63,18 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToResetCheckmark;
 
     // Get all seasonal challenges
-    let allSeasonalChallenges = await ParseSeasonalChallenges(2809059433, seasonDefinitions, recordDefinitions, presentationNodeDefinitions, null);
-    returnObj.challenges = allSeasonalChallenges; // Add to return object
+    let currentSeasonalChallenges = await ParseSeasonalChallenges(UserProfile.currentSeasonHash, seasonProgressionInfo);
+    returnObj.challenges = currentSeasonalChallenges; // Add to return object
 
-    // Parse seasonal challenges into corresponding objects
-    let completedChallenges = {},
-        notCompletedChallenges = {},
-        allSeasonalChallengesAndTheirDivs = {};
+    // Separate challenges based on their completion status
+    let completedChallenges = {};
+    let notCompletedChallenges = {};
+    let allSeasonalChallengesAndTheirDivs = {};
+    let completedChallengesCount = 0;
+    let notCompletedChallengesCount = 0;
 
+
+    // Add objectives to (all) seasonal challenges
     for (const recordHash in characterRecords) {
 
         const objectives = characterRecords[recordHash].objectives;
@@ -88,59 +93,80 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         };
     };
 
-
     // Create HTML elements for seasonal challenges
-    for (const challengeHash in allSeasonalChallenges) {
+    for (let challengeHash in currentSeasonalChallenges) {
 
         // Create HTML element for challenge
-        let challengeContainer = document.createElement('div'),
-            challengeIcon = document.createElement('img'),
-            challengeName = document.createElement('div'),
-            challengeBreakline = document.createElement('hr'),
-            challengeDescription = document.createElement('div'),
-            challengeProgressContainer = document.createElement('div'),
-            challengeProgressTrack = document.createElement('div'),
-            challengeProgressPercentBar = document.createElement('div');
+        let challengeContainer = document.createElement('div');
+        let challengeHeadingContainer = document.createElement('div');
+        let challengeHeadingAttributeContainer = document.createElement('div');
+        let challengeIcon = document.createElement('img');
+        let challengeName = document.createElement('div');
+        let challengeDescription = document.createElement('div');
+        let challengeProgressContainer = document.createElement('div');
+        let challengeProgressTrack = document.createElement('div');
+        let challengeProgressPercentBar = document.createElement('div');
+        let challengeRewardsContainer = document.createElement('div');
+        let challengeProgressAttributesContainer = document.createElement('div');
 
         // Set attributes for challenge container
         challengeContainer.className = 'challengeContainer';
+        challengeHeadingContainer.className = 'challengeHeadingContainer';
+        challengeHeadingAttributeContainer.className = 'challengeHeadingAttributeContainer';
         challengeContainer.id = `${challengeHash}`;
         challengeIcon.className = 'challengeIcon';
         challengeName.className = 'challengeName';
-        challengeBreakline.className = 'challengeBreakline';
         challengeDescription.className = 'challengeDescription';
         challengeProgressContainer.className = 'challengeProgressContainer';
         challengeProgressTrack.className = 'challengeProgressTrack';
         challengeProgressPercentBar.className = 'challengeProgressPercentBar';
+        challengeRewardsContainer.className = 'challengeRewardsContainer';
+        challengeProgressAttributesContainer.className = 'challengeProgressAttributesContainer';
 
         // Set attributes for content
-        challengeDescription.innerHTML = allSeasonalChallenges[challengeHash].displayProperties.description;
-        challengeName.innerHTML = allSeasonalChallenges[challengeHash].displayProperties.name;
-        challengeIcon.src = `https://www.bungie.net${allSeasonalChallenges[challengeHash].displayProperties.icon}`;
+        challengeDescription.innerHTML = currentSeasonalChallenges[challengeHash].displayProperties.description;
+        challengeName.innerHTML = currentSeasonalChallenges[challengeHash].displayProperties.name;
+        challengeIcon.src = `https://www.bungie.net${currentSeasonalChallenges[challengeHash].displayProperties.icon}`;
         challengeContainer.style.userSelect = 'none';
 
         // Check if challenge is completed
         if (completedChallenges[challengeHash]) {
-            challengeContainer.style.border = '1px solid #b39a36';
+
+            challengeContainer.classList.add('challengeContainerComplete');
+            currentSeasonalChallenges[challengeHash].isComplete = true;
+
+            // Check if challenge has been claimed
+            let destinyProfileRecords = UserProfile.destinyUserProfile.characterRecords.data[characterId].records;
+            if (destinyProfileRecords[challengeHash]) {
+
+                if (destinyProfileRecords[challengeHash].state === 0) {
+                    currentSeasonalChallenges[challengeHash].isClaimed = false;
+                    challengeContainer.classList.remove('challengeContainerComplete');
+                    challengeContainer.classList.add('challengeContainerCompletedNotClaimed');
+                }
+                else if (destinyProfileRecords[challengeHash].state === 1) {
+                    currentSeasonalChallenges[challengeHash].isClaimed = true;
+                };
+            };
+
+        }
+        else {
+            challengeContainer.classList.add('challengeContainerNotComplete');
+            currentSeasonalChallenges[challengeHash].isComplete = false;
         };
 
         // Append all the content together
-        challengeProgressContainer.appendChild(challengeProgressTrack);
-        challengeProgressContainer.appendChild(challengeProgressPercentBar);
-        challengeContainer.appendChild(challengeIcon);
-        challengeContainer.appendChild(challengeName);
-        challengeContainer.appendChild(challengeBreakline);
-        challengeContainer.appendChild(challengeDescription);
-        challengeContainer.appendChild(challengeProgressContainer);
+        challengeHeadingContainer.append(challengeIcon, challengeHeadingAttributeContainer);
+        challengeHeadingAttributeContainer.append(challengeName, challengeDescription);
+        challengeContainer.appendChild(challengeHeadingContainer);
 
         // Store the challenge and its div
         allSeasonalChallengesAndTheirDivs[challengeHash] = {};
         allSeasonalChallengesAndTheirDivs[challengeHash].container = challengeContainer;
-        allSeasonalChallengesAndTheirDivs[challengeHash].challenge = allSeasonalChallenges[challengeHash];
+        allSeasonalChallengesAndTheirDivs[challengeHash].challenge = currentSeasonalChallenges[challengeHash];
 
         // Append objectives to the challenge
         allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives = [];
-
         if (notCompletedChallenges[challengeHash] || completedChallenges[challengeHash]) {
 
             let challengeObjectives;
@@ -149,7 +175,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
             if (Object.keys(notCompletedChallenges).includes(challengeHash)) {
 
                 challengeObjectives = notCompletedChallenges[challengeHash].objectives;
-                for (const objective in challengeObjectives) {
+                for (let objective in challengeObjectives) {
                     allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives.push(notCompletedChallenges[challengeHash].objectives[objective]);
                 };
             };
@@ -158,31 +184,120 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
             if (Object.keys(completedChallenges).includes(challengeHash)) {
 
                 challengeObjectives = completedChallenges[challengeHash].objectives;
-                for (const objective in challengeObjectives) {
+                for (let objective in challengeObjectives) {
                     allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives.push(completedChallenges[challengeHash].objectives[objective]);
                 };
             };
         };
 
+        // Add objective element to challenge
+        for (let objective of currentSeasonalChallenges[challengeHash].objectives) {
+
+            // Objective container
+            let objectiveContainer = document.createElement('div');
+
+            // Checkbox
+            let objectiveCheckboxOuter = document.createElement('div');
+            let objectiveCheckboxMiddle = document.createElement('div');
+            let objectiveCheckboxInner = document.createElement('div');
+
+            // Checkbox style
+            objectiveCheckboxOuter.className = 'objectiveCheckboxOuter';
+            objectiveCheckboxMiddle.className = 'objectiveCheckboxMiddle';
+            objectiveCheckboxInner.className = 'objectiveCheckboxInner';
+
+            // Progress bar (objectiveAttributes doubles as a container)
+            let objectiveAttributes = document.createElement('div');
+            let objectiveName = document.createElement('div');
+            let objectiveProgress = document.createElement('div');
+
+            // Progress bar style
+            objectiveAttributes.className = 'objectiveAttributes';
+            objectiveContainer.className = 'objectiveContainer';
+            objectiveName.className = 'objectiveName';
+            objectiveProgress.className = 'objectiveProgress';
+
+            // InnerHTML values etc
+            objectiveName.innerHTML = objectiveDefinitions[objective.objectiveHash].progressDescription || 'Completed';
+            objectiveProgress.innerHTML = `${objective.progress}/${objective.completionValue}`;
+
+            // If objective is complete
+            if (objective.complete) {
+
+                // Change innerHTML to avoid overflow values
+                objectiveProgress.innerHTML = `${objective.completionValue}/${objective.completionValue}`;
+
+                // Change checkbox style
+                objectiveCheckboxOuter.style.borderColor = 'var(--challengeCompletedCheckboxOuter)';
+                objectiveCheckboxMiddle.style.borderColor = 'var(--challengeCompletedCheckboxMiddle)';
+                objectiveCheckboxInner.style.backgroundColor = 'var(--challengeCompletedCheckboxInner)';
+                
+                // Change attribute container style (to children too)
+                objectiveName.style.color = '#BABABA';
+                objectiveProgress.style.color = '#BABABA';
+                objectiveAttributes.style.color = '#494949';
+            };
+
+            // Append elements to their parents
+            objectiveCheckboxOuter.appendChild(objectiveCheckboxMiddle);
+            objectiveCheckboxMiddle.appendChild(objectiveCheckboxInner);
+            objectiveAttributes.append(objectiveName, objectiveProgress);
+
+            // Push elements to top-most parent
+            objectiveContainer.append(objectiveCheckboxOuter, objectiveAttributes);
+
+            // Push objectives to parent container
+            challengeProgressAttributesContainer.appendChild(objectiveContainer);
+
+        };
+        challengeContainer.appendChild(challengeProgressAttributesContainer);
+
+        // Add reward items to the challenge
+        if (currentSeasonalChallenges[challengeHash].rewardItems) {
+
+            let challengeRewardItems = currentSeasonalChallenges[challengeHash].rewardItems;
+            for (let reward of challengeRewardItems) {
+                
+                let rewardContainer = document.createElement('div');
+                let rewardName = document.createElement('div');
+                let rewardIcon = document.createElement('img');
+
+                rewardContainer.className = 'singleChallengeRewardContainer';
+                rewardName.innerHTML = itemDefinitions[reward.itemHash].displayProperties.name;
+                rewardIcon.src = `https://www.bungie.net${itemDefinitions[reward.itemHash].displayProperties.icon}`;
+                rewardName.className = 'challengeRewardName';
+                rewardIcon.className = 'challengeRewardIcon';
+
+                rewardContainer.append(rewardIcon, rewardName);
+                challengeRewardsContainer.appendChild(rewardContainer);
+            };
+
+            challengeContainer.appendChild(challengeRewardsContainer);
+        };
+
         // Check if the challenge is completed, set isComplete to true in guard statement, otherwise false by default
         // This is to make it easier to check if the challenge is complete, as opposed to comparing with completedChallenges
-        allSeasonalChallengesAndTheirDivs[challengeHash].challenge.isComplete = false;
         if (completedChallenges[challengeHash]) {
+            completedChallengesCount++;
             allSeasonalChallengesAndTheirDivs[challengeHash].challenge.isComplete = true;
+        }
+        else {
+            notCompletedChallengesCount++;
+            allSeasonalChallengesAndTheirDivs[challengeHash].challenge.isComplete = false;
         };
 
         // Sort challenge completion progress as a percentage of the total completion value
-        let challengeObjectiveProgressTotal = 0,
-            challengeObjectiveCompletionTotal = 0,
-            challengeObjectives = allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives;
+        let challengeObjectiveProgressTotal = 0;
+        let challengeObjectiveCompletionTotal = 0;
+        let challengeObjectives = allSeasonalChallengesAndTheirDivs[challengeHash].challenge.objectives;
 
-        for (const objective of challengeObjectives) {
-            challengeObjectiveProgressTotal += objective.progress;
-            challengeObjectiveCompletionTotal += objective.completionValue;
+        for (const objective in challengeObjectives) {
+            challengeObjectiveProgressTotal += challengeObjectives[objective].progress;
+            challengeObjectiveCompletionTotal += challengeObjectives[objective].completionValue;
         };
 
-        // Calculate progress as a percentage, if objective is "0/1" then it is a boolean, 
-        // so set progress to 0% (if not complete) or 100% (if complete)
+        // Calculate progress as a percentage, if objective is "0/1" then it is a boolean,
+        // so set progress (if not complete) or 100% (if complete, avoid overflow)
         allSeasonalChallengesAndTheirDivs[challengeHash].challenge.completionPercentage = (challengeObjectiveProgressTotal / challengeObjectiveCompletionTotal) * 100;
 
         // Change width of challengeProgressPercentBar based on completion percentage
@@ -192,46 +307,63 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         else {
             challengeProgressPercentBar.style.width = `${allSeasonalChallengesAndTheirDivs[challengeHash].challenge.completionPercentage}%`;
         };
+
     };
 
-    // Sort challenges by completion percentage, in ascending order
+
+    // Sort challenges by completion percentage, in ascending order (so the completed ones are at the end)
     let sortedChallenges = Object.values(allSeasonalChallengesAndTheirDivs).sort((a, b) => a.challenge.completionPercentage - b.challenge.completionPercentage);
 
-    // Slice the array of challenges into chunks of 6
-    let chunkedChallenges = [];
-    for (let i=0; i<Object.keys(sortedChallenges).length; i+=6) {
-        chunkedChallenges.push(sortedChallenges.slice(i, i+6));
+    // Push challenges to UserProfile (global scope usage)
+    UserProfile.AssignProgressions('challenges', sortedChallenges.map(v => v.challenge));
+
+    // Find out how many "chunks" we need to display all the challenges
+    let chunkCount = sortedChallenges.length / 6;
+
+    // If there is a remainder
+    if (chunkCount % 1 !== 0) {
+
+        // Add one and truncate number (account for overflow)
+        chunkCount++;
+        chunkCount = Math.trunc(chunkCount);
     };
 
-    // Create HTML elements for each chunk of challenges
-    for (let i=0; i<chunkedChallenges.length; i++) {
-        
-        // Create container thath olds the current chunk of 6 challenges
+    // Seperate and push challenges into chunks of 6
+    let tempChallengesArray = sortedChallenges;
+    for (let i=0; i < chunkCount; i++) { // Loop over chunks
+
+        // Create chunk DOM container
         let chunkContainer = document.createElement('div');
         chunkContainer.className = 'chunkPage';
         chunkContainer.id = `challengeChunk${i}`;
-        
-        // If it's the first iteration then, show the container, otherwise hide it
-        if (i === 0) {
-            chunkContainer.style.display = 'grid';
-        }
-        else {
-            chunkContainer.style.display = 'none';
+        chunkContainer.style.display = 'none';
+
+        // If first chunk - show
+        if (i===0) chunkContainer.style.display = 'grid';
+
+        /*
+            Append challenges to chunks in group of 6
+            Push those chunks to the DOM
+
+            Iterate 6 times, appending items each time, checking to see if it exists before appending
+        */
+        for (let z=0; z < 6; z++) {
+            if (tempChallengesArray[z]) {
+                chunkContainer.appendChild(tempChallengesArray[z].container);
+            };
         };
 
-        // Append each challenge, from the chunk, to the chunk container
-        for (const chunk of chunkedChallenges[i]) {
-            chunkContainer.appendChild(chunk.container);
-        };
+        // Remove first 6 items of array
+        tempChallengesArray = tempChallengesArray.slice(6);
 
-        // Append the chunk container to seasonalChallengeItems
+        // Append chunk to the DOM
         document.getElementById('seasonalChallengeItems').appendChild(chunkContainer);
     };
 
     // Push HTML fields for challenges header stats
-    document.getElementById('outstandingChallengesAmountField').innerHTML = `${Object.keys(notCompletedChallenges).length}`;
-    document.getElementById('completedChallengesAmountField').innerHTML = `${Object.keys(completedChallenges).length}`;
-    document.getElementById('challengesAmountField').innerHTML = `${Object.keys(allSeasonalChallenges).length}`;
+    document.getElementById('challengesTotalField').innerHTML = `${Object.keys(currentSeasonalChallenges).length}`;
+    document.getElementById('challengesOutstandingField').innerHTML = notCompletedChallengesCount;
+    document.getElementById('challengesCompletedField').innerHTML = completedChallengesCount;
     // [ -- END OF SEASONAL CHALLENGES -- ]
 
 
@@ -251,7 +383,9 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     let parsedBountiesResponse = ParseBounties(charInventory, CharacterObjectives, itemDefinitions, objectiveDefinitions);
     let characterBounties = parsedBountiesResponse.charBounties;
     amountOfBounties = parsedBountiesResponse.amountOfBounties;
-    returnObj.charBounties = characterBounties; // Add bounties to return object
+
+    // Add bounties to return object
+    returnObj.charBounties = characterBounties;
 
     if (amountOfBounties === 0) {
         document.getElementById('recommendationTooltip').style.display = 'none';
@@ -281,12 +415,41 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     // Sort bounties by type (weekly, daily etc)
     bountyArr = SortByType(bountyArr, SortBountiesByType);
 
-    // Push sorted bounties to the page
-    PushToDOM(bountyArr, amountOfBounties, MakeBountyElement);
+    // Seperate bounties from category array and sort via completion status
+    let newBountyArr = [];
+    Object.keys(bountyArr).forEach(v => {
+
+        let group = bountyArr[v];
+        if (group.length !== 0) {
+            group.forEach(item => {
+                newBountyArr.push(item);
+            });
+        };
+    });
+
+    // Sort bounties by completion status
+    newBountyArr.sort((a,b) => {
+        if (a.isComplete === b.isComplete) {
+            return 0;
+        }
+        else {
+            if (a.isComplete) {
+                return -1;
+            }
+            else {
+                return 1;
+            };
+        };
+    });
+    newBountyArr.reverse();
+
+    // Push items to DOM
+    newBountyArr.forEach(item => MakeBountyElement(item));
+
 
     // Get statistics for subheadings
-    let amountOfExpiredBounties = 0, 
-        amountOfCompletedBounties = 0;
+    let amountOfExpiredBounties = 0;
+    let amountOfCompletedBounties = 0;
 
     // Count completed and expired bounties
     for (let bounty of characterBounties) {
@@ -298,7 +461,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         };
     };
 
-    // Get weekly progress
+    // Get weekly progress -- If player is >= level 100 then it means they have "prestiged"
     let weeklyProgress;
     if (seasonPassProgressionStats.seasonPassLevel >= 100) {
         weeklyProgress = prestigeProgressionSeasonInfo.weeklyProgress;
@@ -375,11 +538,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     let artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
     let artifactPointProgressionDefinition = progressionDefinitions[artifact.pointProgression.progressionHash];
     let artifactPowerBonusDefinition = progressionDefinitions[artifact.powerBonusProgression.progressionHash];
-    log(artifact);
-
-    let nextLevelAt = artifact.powerBonusProgression.nextLevelAt;
-    let percentage = totalXpYieldWithModifiers / nextLevelAt;
-    log(percentage);
 
     /*
 
@@ -389,6 +547,8 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         Calculate the how many levels are going to be gained based off this, formatting it to n.nn (1.23 for example)
 
     */
+
+    // ..
 
 
     // Check if there are no bounties

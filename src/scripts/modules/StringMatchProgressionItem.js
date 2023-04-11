@@ -9,12 +9,15 @@ export function stringMatchProgressionItem(progressionItem) {
     // Wildcard searches for properties that have other naming conventions/aliases
     const propertyAliases = {
         'Submachine Gun': 'SMG',
-        'Season Of The Seraph': `${ParsePropertyNameIntoWord(ActivityMode[29])}`
+        'Dares of Eternity': 'Dares',
+        'Dares of Eternity': 'DofE',
+        'Season Of The Seraph': `${ParsePropertyNameIntoWord(ActivityMode[29])}`,
+        'Season Of Defiance': `${ParsePropertyNameIntoWord(ActivityMode[31])}`
     };
 
     // ProgressionItems' displayProperties
-    let progressionDescriptor = progressionItem.displayProperties.description,
-        matchedProperties = [];
+    let progressionDescriptor = progressionItem.displayProperties.description;
+    let matchedProperties = [];
     
     // Loop over allProgressionProperties to match against the item description
     for (let property of allProgressionProperties) {

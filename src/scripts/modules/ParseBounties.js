@@ -1,5 +1,5 @@
-import { excludedBountiesByVendor } from '../user.js';
-import { VendorHashesByLabel } from './SynergyDefinitions.js';
+import { excludedBountiesByVendor, log } from '../user.js';
+import { VendorHashesByLabel, progressionItemGroupTypes } from './SynergyDefinitions.js';
 import { stringMatchProgressionItem } from './StringMatchProgressionItem.js';
 import { ReplaceStringVariables } from './ReplaceStringVariables.js';
 
@@ -58,6 +58,43 @@ export function ParseBounties(charInventory, charObjectives, itemDefinitions) {
             item.isComplete = false;
             if (entriesAmount === entriesCount) {
                 item.isComplete = true;
+            };
+
+            /*
+                Set isRepeatable to false if the stackUniqueLabel includes 'repeatable'
+                This won't work correctly as stackUniqueLabel has no standardized format that it follows
+
+                Repeatable bounties almost always state the *group type via the itemTypeDisplayName.
+                  *Group type (crucible, gunsmith, vanguard, etc)
+                Daily bounties almost always state the group type via the displayProperties.description
+                This is why we are making this check to ensure the item has its group type present in props
+
+                // Pending on deletion or refactor/re-use
+            */
+            if (item.inventory.stackUniqueLabel.includes('repeatable')) {
+
+                // Add bounty group type to item.props
+                item.isRepetable = true;
+                // item.props.push(item.itemTypeDisplayName.split(' ')[0]);
+            }
+            else {
+                
+                item.isRepetable = false;
+
+                // // Add bounty group type to item.props
+                // let itemGroupTypes = progressionItemGroupTypes.map(v => v.toLowerCase());
+                // let stackUniqueLabel = item.inventory.stackUniqueLabel.split('.');
+                // let groupTypeProps = [];
+
+                // itemGroupTypes.forEach(v => {
+                //     if (stackUniqueLabel.includes(v)) {
+                //         groupTypeProps.push(v);
+                //     };
+                // });
+
+                // if (groupTypeProps.length > 0) {
+                //     item.props.push(groupTypeProps);
+                // };
             };
 
             // Push bounty item to charBounties and increment amountOfBounties

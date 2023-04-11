@@ -29,7 +29,7 @@
 
 body {
     user-select: none;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    font-family: var(--DestinyUIFont);
     background-color: #22272e;
 }
 
@@ -62,7 +62,7 @@ h2 {
     width: 100vw;
     background-color: rgba(237, 77, 77, 0.8);
     box-shadow: 0px 0px 10px 1px #ED4D4D;
-    z-index: 99; /* Keep box shadow on top of navbar */
+    z-index: 201; /* Keep box shadow on top of navbar */
 }
 
 #navBarContainer {
@@ -76,7 +76,7 @@ h2 {
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    z-index: 10;
+    z-index: 200;
 }
 
 #navBarTitleContainer {
@@ -205,7 +205,6 @@ h2 {
 #warnIcon {
     margin-top: -1px;
     width: 20px;
-    cursor: pointer;
 }
 
 /* Logout button for mobile */
@@ -228,15 +227,17 @@ h2 {
 }
 
 .warningTooltip {
+    position: absolute;
     display: flex;
     padding: 8px;
-    margin-top: 10px;
-    bottom: 10px;
+    padding-top: 10px;
+    margin-bottom: 15px;
+    bottom: 0;
     width: 90%;
     gap: 5px;
     border: 1px rgb(255, 175, 15) solid;
     border-radius: 5px;
-    background-color: rgba(255, 143, 15, 0.6);
+    background-color: rgba(255, 158, 54, 0.634);
 }
 
 .warningTooltipLink {
@@ -246,7 +247,7 @@ h2 {
 
 /* Notification */
 #notificationContainer {
-    position: absolute;
+    position: fixed;
     display: none;
     bottom: 0;
     right: 0;
@@ -257,6 +258,7 @@ h2 {
     opacity: 1;
     background-color: #202020;
     color: white;
+    z-index: 199;
 }
 
 #notificationContainer.fade-out {
@@ -551,43 +553,6 @@ h2 {
 }
 
 
-/* Loadbar */
-#loadBarContainer {
-    display: none;
-    position: absolute;
-    top: 0px;
-}
-#slider{
-    position: absolute;
-    margin-left: -10px;
-    width: 103vw;
-    height: 2px;
-    overflow-x: hidden;
-}
-.subline{
-    position: absolute;
-    height: 2px;
-    background: #22272E;
-    overflow-x: hidden;
-    border-radius: 3px;
-    z-index: 100;
-}
-.inc{
-    animation: increase 2s infinite;
-}
-.dec{
-    animation: decrease 2s 0.5s infinite;
-}
-@keyframes increase {
-    from { left: -5%; width: 5%; }
-    to { left: 130%; width: 100%; }
-}
-@keyframes decrease {
-    from { left: -80%; width: 80%; }
-    to { left: 110%; width: 10%; }
-}
-
-
 /* Onload Animation */
 .fade-in {
     animation-name: FadeIn;
@@ -661,17 +626,6 @@ hr {
     width: 100%;
     border: 0;
     border-top: 1px solid gray;
-}
-
-hr.horizontalRuler {
-    padding: 0;
-    margin: 0;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: 1px;
-    width: 100%;
-	border: none;
-	background-color: #adadad;
 }
 
 @keyframes rotating {

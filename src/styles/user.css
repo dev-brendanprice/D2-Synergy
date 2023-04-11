@@ -4,6 +4,12 @@
  * Style for user.html, does not contain media queries
  */
 
+body {
+    height: 100vh;
+    overflow-y: hidden;
+    background: radial-gradient(rgb(45, 45, 45), #202020);
+}
+
 .contentHeading {
     font-size: var(--fontSizeHeading);
 }
@@ -16,10 +22,6 @@
 #userMainContainer {
     margin-top: 60px;
     z-index: 0;
-}
-
-#dropdownYield {
-    user-select: all;
 }
 
 #githubIcon {
@@ -41,19 +43,6 @@
 
 #twitterIcon:hover {
     filter: invert(22%) sepia(0%) saturate(1%) hue-rotate(7deg) brightness(80%) contrast(83%);
-}
-
-.propertySubheadings {
-    display: inline-block;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: var(--SegoeUIFont);
-}
-
-.propertyNames {
-    display: inline-block;
-    font-size: 15px;
-    font-family: var(--SegoeUIFont);
 }
 
 .propertySecretIcon {
@@ -248,6 +237,11 @@
     font-size: var(--fontSizeContent);
 }
 
+#defaultViewDropdownContainer {
+    margin-top: 15px;
+    margin-left: 5px;
+}
+
 .labelRangeContainer {
     width: 90%;
     font-size: var(--fontSizeContent);
@@ -316,35 +310,115 @@
     padding: 15px;
     height: 90vh;
     width: 95vw;
-    border: solid 1px rgb(50, 50, 50);
-    background-color: #3e4148;
+    border: 1px #56606d solid;
+    background-color: #2e3238;
     border-radius: 8px;
 }
 
-#relationsTableContainer {
-    margin-top: 15px;
+#relationsTableContent {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    max-height: 395px;
+}
+
+#tblCon {
+    display: block;
+    width: 100%;
+    max-height: 100%;
     overflow-y: scroll;
-    max-height: 80%;
 }
 
 #relationsTable {
+    /* display: none; */
     width: 100%;
-    user-select: text;
-    border: 1px solid rgba(52, 52, 52, 0.601);
+    height: 100%;
+}
+
+#noRelationsExistElement {
+    display: none;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    filter: blur(50%);
+}
+
+#noRelationsExistText {
+    display: block;
+    margin: 0 auto;
+    margin-top: 100px;
+    width: 80%;
+    text-align: center;
+    justify-content: center;
+}
+
+#relationSquares {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    gap: 10px;
+    user-select: none;
+}
+
+#relationSquares > div {
+    padding: 8px;
+    background-color: rgb(33, 33, 33);
+    border-radius: 5px;
+    border: 1px solid rgb(101, 101, 101);
+    justify-content: center;
+    text-align: center;
+}
+
+.relationSquareTitleContainers {
+    display: flex;
+    margin: 0 auto;
+    gap: 5px;
+    justify-content: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.relationSquareGreen .relationSquareOrange .relationSquareNormal {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.relationSquareGreen {
+    color: green;
+}
+.relationSquareOrange {
+    color: orange;
+}
+
+.relationSquareEmbed {
+    padding: 4px;
+    margin-top: 5px;
+    background-color: rgb(80, 80, 80);
+    border-radius: 4px;
+}
+
+.relationSquareIco {
+    width: 13px;
+}
+
+.greenIco {
+    filter: invert(50%) sepia(12%) saturate(2719%) hue-rotate(84deg) brightness(92%) contrast(86%);
 }
 
 td, th {
-    text-align: left;
     padding: 5px;
     padding-top: 7px;
     padding-bottom: 7px;
+    text-align: left;
 }
 
 th {
+    height: 20px;
     padding-bottom: 12px;
 }
 
 tr {
+    width: 100%;
     border-bottom: 1px solid rgba(128, 128, 128, 0.468);
 }
 
@@ -382,45 +456,6 @@ tr:nth-child(even) {
     opacity: 0;
     width: 0;
     height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 13px;
-    width: 13px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-}
-
-input:checked+.slider {
-    background-color: var(--accentColor);
-}
-
-input:checked+.slider:before {
-    -webkit-transform: translateX(18px);
-    -ms-transform: translateX(18px);
-    transform: translateX(18px);
-}
-
-/* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
 }
 
 
@@ -641,9 +676,89 @@ input:checked+.slider:before {
 /* ######### */
 
 #defaultCharacterSelect {
-    padding-bottom: 30px;
-    width: fit-content;
-    filter: brightness(80%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 25px;
+}
+
+.characterSelect {
+    position: relative;
+    display: grid;
+    padding-left: 10px;
+    margin: 1px;
+    gap: 1rem;
+    grid-template-columns: 36px 1fr 75px;
+    width: 100%;
+    height: 50px;
+    color: white;
+    background-color: rgb(80, 80, 80, 0.6);
+    align-items: center;
+    cursor: pointer;
+}
+
+.characterSelect > div {
+    z-index: 99;
+}
+
+.characterSelect:hover {
+    border: 1px solid white;
+    margin: unset;
+}
+
+.characterBg {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,#89323800 50%,rgba(200, 200, 200, 0.5));
+    overflow: hidden;
+    z-index: -1;
+}
+
+.characterClassIco {
+    display: block;
+    margin-left: auto;
+    margin-right: 40px;
+    margin-top: -10px;
+    width: 40%;
+    opacity: 90%;
+    /* filter: invert(21%) sepia(47%) saturate(1408%) hue-rotate(317deg) brightness(100%) contrast(90%); */
+}
+
+.characterEmblemIco {
+    width: 38px;
+}
+
+.characterInfo {
+    align-items: left;
+}
+
+.characterClass {
+    font-size: 17px;
+}
+
+.characterRace {
+    font-size: 13px;
+    color: #fff9;
+}
+
+.characterPowerCon {
+    display: flex;
+}
+
+.characterPower {
+    font-size: 24px;
+    color: #e5d163;
+}
+
+.powerIcon {
+    margin-top: -5px;
+    width: 13px;
+    filter: invert(91%) sepia(18%) saturate(1236%) hue-rotate(356deg) brightness(94%) contrast(91%);
 }
 
 .characterSelectSlim {
@@ -653,12 +768,46 @@ input:checked+.slider:before {
     text-align: center;
     height: 30px;
     width: 100%;
-    /* background-color: black; */
     overflow-x: hidden;
     background-position: center;
     background-size: contain;
     color: white;
     cursor: pointer;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+}
+input:checked+.slider {
+    background-color: var(--accentColor);
+}
+input:checked+.slider:before {
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+.slider.round:before {
+    border-radius: 50%;
 }
 
 .dropdownArrow {
@@ -700,6 +849,10 @@ input:checked+.slider:before {
     height: fit-content;
     clip-path: inset(0px 0px 0px 0px);
     color: gray;
+}
+
+.hyperlinkBlue {
+    color: rgb(146, 171, 230);
 }
 
 .pre {
@@ -834,19 +987,15 @@ input:checked+.slider:before {
     letter-spacing: 1px;
 }
 
-#sideSelectionBar {
-    display: none;
-    float: left;
-    margin-left: 5px;
+.seasonalChallengesUIContainer {
+    display: flex;
+    margin-top: 15px;
+    gap: 10px;
 }
 
 #seasonalChallengesContainer, #statisticsContainer {
     display: none;
-}
-
-#seasonChallengeControlGridContainer {
-    display: inline-flex;
-    width: 100%;
+    font-family: var(--DestinyUIFont);
 }
 
 .seasonalChallengePageButton {
@@ -885,9 +1034,35 @@ input:checked+.slider:before {
 }
 
 .challengeContainer {
-    border: 1px solid #8C8C8C;
-    background-color: rgba(60, 60, 60, 0.461);
     font-family: var(--SegoeUIFont);
+    width: 100%;
+}
+
+.challengeContainerNotComplete {
+    border: 2px solid #8C8C8C;
+    background-color: #3c3c3c76;
+    background: linear-gradient(transparent, transparent, transparent, rgba(10, 111, 132, 0.5));
+}
+
+.challengeContainerComplete {
+    border: 2px solid #3798a9;
+    background-color: #1c5863;
+}
+
+.challengeContainerCompletedNotClaimed {
+    border: 2px solid #a4dbcc;
+    background-color: #314b47;
+}
+
+.challengeHeadingContainer {
+    display: flex;
+    gap: 5px;
+}
+
+.challengeHeadingAttributeContainer {
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
 }
 
 .bountyIcon {
@@ -900,27 +1075,12 @@ input:checked+.slider:before {
 }
 
 .challengeName {
-    margin-top: -45px;
-    margin-left: 55px;
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: 18px;
     width: 275px;
-    letter-spacing: 1px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-hr.challengeBreakline {
-    padding: none;
-    margin: auto;
-    margin-top: 15px;
-    width: 95%;
-    height: 1px;
-    border: none;
-    border-radius: 1px;
-    background-color: #7e8891;
+    font-weight: 600;
+    font-family: var(--DestinyUIFont);
 }
 
 hr.dropdownLine {
@@ -948,19 +1108,205 @@ hr.dropdownSubline {
     padding-bottom: 5px;
     gap: 8px;
     cursor: pointer;
+    user-select: none;
+}
+
+.sharedWisdomWarningIcon {
+    display: none;
+    position: absolute;
+    padding: 7px;
+    margin-left: 80px;
+    margin-top: -50px;
+    border: 1px solid rgb(120, 120, 120);
+    border-radius: 3px;
+    width: fit-content;
+    color: white;
+    background-color: rgb(50, 50, 50);
+    font-size: 13px;
+    z-index: 99;
+}
+
+.userHelpHoverIcon {
+    margin-top: 3px;
+    width: 14px;
+    height: 14px;
+    filter: invert(78%) sepia(95%) saturate(2%) hue-rotate(312deg) brightness(113%) contrast(103%);
+}
+
+.tooltipContainer {
+    position: absolute;
+    display: none;
+    padding: 8px;
+    margin-top: 10px;
+    margin-left: 200px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    background-color: rgb(50,50,50);
+    font-size: 13px;
+    z-index: 99;
+}
+
+.userToggleContainer {
+    display: flex;
+    margin-top: 8px;
+    gap: 5px;
+    align-items: center;
+    color: white;
+}
+
+#recommendationTooltip {
+    display: none;
+    margin-top: 5px;
+    font-style: italic;
+    color: rgba(17, 17, 17, 0.83);
+}
+
+.statsColumnContainer {
+    display: flex;
+    max-height: 100%;
+    overflow-y: scroll;
+    gap: 11px;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+.statContainer {
+    padding-left: 14px;
+    padding-top: 7px;
+    height: 200px;
+    border: 1px solid #1E1E1E;
+    background-color: #323134;
+    background-image: url("../static/images/UI/statistic_container_bg.svg");
+    background-size: 60%;
+    background-repeat: repeat;
+    background-position-y: -2px;
+}
+
+.statHeadingContainer {
+    display: flex;
+    flex-direction: column;
+    gap: -5px;
+}
+
+.statContainerSubheading {
+    font-size: 13px;
+    color: #A5A5A5;
+}
+
+.statContainerMainHeading {
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.3px;
+}
+
+.statMetricsContainer {
+    display: flex;
+    margin-top: 9px;
+    padding: 8px;
+    padding-left: 9px;
+    padding-right: 9px;
+    width: fit-content;
+    height: 130px;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.statMetricsContainer > div {
+    padding-top: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 100px;
+    border: solid 1px #555555;
+}
+
+.metricSubheading {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #fff9;
+}
+
+.metricHeading {
+    margin-top: -3px;
+    font-size: 16px;
+    color: white;
+}
+
+.seasonRankMetricContainer {
+    margin-top: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    text-align: center;
+}
+
+#seasonRankMetric {
+    margin-top: -59px;
+    margin-left: -2px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#toggleMetricTooltipsButton {
+    display: flex;
+    margin-top: 6px;
+    margin-left: 1px;
+    padding-top: 4px;
+    padding-left: 5px;
+    padding-right: 7px;
+    width: fit-content;
+    height: 16px;
+    gap: 5px;
+    background-color: black;
+    opacity: 60%;
+    border-radius: 3px;
+    border: solid 1px transparent;
+    font-size: 12px;
+    color: white;
+    cursor: pointer;
+}
+
+#toggleMetricTooltipsButton:hover {
+    border: solid 1px white;
+}
+
+.toggleMetricTooltipIcon {
+    margin-top: -3px;
+    width: 11px;
 }
 
 .challengeDescription {
-    margin-top: 3px;
-    margin-left: 8px;
-    margin-bottom: 10px;
-    width: 90%;
+    width: 95%;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1; /* number of lines to show */
             line-clamp: 1; 
     -webkit-box-orient: vertical;
+}
+
+.challengeRewardsContainer {
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    gap: -20px;
+    flex-direction: column;
+}
+
+.challengeRewardName {
+    font-size: 14px;
+}
+
+.singleChallengeRewardContainer {
+    display: flex;
+    margin-left: 10px;
+}
+
+.challengeRewardIcon {
+    margin-right: 3px;
+    width: 18px;
+    height: 18px;
 }
 
 .challengeProgressContainer {
@@ -983,49 +1329,37 @@ hr.dropdownSubline {
     z-index: 10;
 }
 
-#levellingStatisticsContainer {
-    display: none;
+.challengeProgressAttributesContainer {
+    display: flex;
+    margin-left: 11px;
+    margin-right: 10px;
+    flex-direction: column;
+    gap: 3px;
 }
 
-.containerTitle {
-    margin-top: -7px;
-    margin-bottom: -12px;
-    text-transform: uppercase;
-    font-size: 23px;
-    font-weight: 600;
-    font-family: var(--SegoeUIFont);
-    letter-spacing: 1px;
-}
-
-.subheadingFields {
-    display: inline-block;
-    padding-right: 3px;
-    font-size: 15px;
-    font-family: var(--SegoeUIFont);
-}
-
-#bountiesFieldSubText {
-    display: inline-block;
-    font-size: 15px;
-    font-family: var(--SegoeUIFont);
-}
-
-.levellingContainerTitle {
-    margin-top: 36px;
-    margin-bottom: 7px;
-    text-transform: uppercase;
+.objectiveAttributes {
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    height: 14px;
+    background-color: rgba(38, 38, 38, 0.322);
     color: white;
-    font-size: 23px;
-    font-weight: 600;
-    font-family: var(--SegoeUIFont);
-    letter-spacing: 1px;
+    font-size: 12px;
 }
 
-#currentSeasonNameField {
-    display: inline-block;
-    color: white;
-    font-size: 15px;
-    font-family: var(--SegoeUIFont);
+.objectiveName {
+    margin-top: -2px;
+    width: 100%;
+}
+
+.objectiveProgress {
+    margin-top: -2px;
+}
+
+.objectiveContainer {
+    display: flex;
+    gap: 5px;
 }
 
 #noBountiesTooltip {
@@ -1034,31 +1368,6 @@ hr.dropdownSubline {
     color: #767676;
     font-size: 15px;
     font-style: italic;
-}
-
-#categories {
-    display: none;
-    margin-top: 3px;
-}
-
-#categories > div {
-    padding-top: 7px;
-    padding-bottom: 7px;
-    color: #CDCBCB;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: 0.25s;
-}
-
-
-#cgSeasonalChalls:hover {
-    color: white;
-    transition: 0.25s;
-}
-
-#cgBounties:hover {
-    color: white;
-    transition: 0.25s;
 }
 
 #questDisplayContainer {
@@ -1099,29 +1408,6 @@ hr.dropdownSubline {
     animation: skeletonLoadAnimation 2s ease-in infinite;
 }
 
-#charactersContainer {
-    display: none;
-}
-
-#charactersContainer > div {
-    display: none;
-    cursor: pointer;
-}
-
-.classBg {
-    width: 220px;
-}
-
-.classType {
-    position: absolute;
-    margin-left: 43px;
-    margin-top: 5px;
-    color: white;
-    font-weight: 0;
-    letter-spacing: 1.3px;
-    font-size: 18px;
-}
-
 .classLight {
     position: absolute;
     margin-left: 54px;
@@ -1131,235 +1417,15 @@ hr.dropdownSubline {
     font-size: 15px;
 }
 
-.lightIcon {
-    position: absolute;
-    margin-left: 45px;
-    margin-top: 28px;
-    width: 8px;
-}
-
-#statsContainer {
-    margin-top: 50px;
-    width: 75%;
-}
-
 #seasonalStatsContainer {
     display: none;
     margin-top: 50px;
     width: 75%;
 }
 
-#statsTitle {
-    display: inline-block;
-    padding-bottom: 7px;
-    text-align: left;
-    color: #CDCBCB;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-#baseStatsTitle {
-    display: inline-block;
-    margin-top: 16px;
-    text-align: left;
-    color: #CDCBCB;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-#statsTitleQuery {
-    display: inline-block;
-    margin-left: 8px;
-    width: 14px;
-    filter: invert(48%) sepia(13%) saturate(3207%);
-}
-
-#queryDiv {
-    position: absolute;
-    display: none;
-    padding: 3px;
-    left: 95px;
-    width: 90px;
-    color: #CDCBCB;
-    font-size: 11px;
-    background-color: #313131;
-    border: 1px solid #585858;
-    border-radius: 3px;
-}
-
 #loadingContentContainer {
     display: none !important;
     text-align: center;
-}
-
-#filterContentContainer {
-    display: none;
-}
-
-#baseStatsContainer {
-    margin-top: 10px;
-}
-
-#baseStatsContainer > div {
-    display: inline-block;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    color: #CDCBCB;
-}
-
-#netStatsContainer {
-    margin-top: 10px;
-}
-
-#netStatsContainer > div {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    color: #CDCBCB;
-}
-
-.statsCheckmark {
-    display: inline-block;
-    margin-right: 5px;
-    width: 13px;
-    filter: invert(82%) sepia(20%) saturate(1304%) hue-rotate(78deg) brightness(85%) contrast(90%);
-}
-
-.statsCross {
-    display: none;
-    margin-right: 5px;
-    width: 13px;
-}
-
-.netStatBuffHeading {
-    display: inline-block;
-    color: #8DDBFF !important;
-    font-style: italic;
-    text-decoration: underline;
-}
-
-.popupArrow {
-    position: absolute;
-    display: inline-block;
-    margin-top: -17px;
-    width: 12px;
-    filter: invert(10%);
-    transform: rotate(90deg);
-}
-
-.percentagePopup {
-    position: absolute;
-    display: inline-block;
-    margin-top: -25px;
-    margin-left: 8px;
-    padding: 5px;
-    width: 45px;
-    text-align: center;
-    font-variant-numeric: normal;
-    background-color: #1A1A1E;
-    border-radius: 3px;
-}
-
-#sharedWisdomPopupContainer {
-    position: absolute;
-    display: none;
-    margin-top: 20px;
-    margin-left: 5px;
-}
-
-#ghostModPopupContainer {
-    position: absolute;
-    display: none;
-    margin-top: 20px;
-    margin-left: 5px;
-}
-
-#BonusXpPopupContainer {
-    position: absolute;
-    display: none;
-    margin-top: 20px;
-    margin-left: 5px;
-}
-
-.netXpHeading {
-    display: inline-block;
-    margin-top: 10px;
-}
-
-#totalNetXpField {
-    display: inline-block;
-}
-
-.propertyStatisticContainer {
-    display: table;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin: 0 auto;
-    background-color: #1B1B1B;
-    border: 1px solid #646464;
-    border-radius: 5px;
-    justify-content: left;
-    text-align: left;
-}
-
-.propertyStatisticContainerForDestinations {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin: 0 auto;
-    background-color: #1B1B1B;
-    border: 1px solid #646464;
-    border-radius: 5px;
-    justify-content: left;
-    text-align: left;
-}
-
-.propertyStatisticContainerForDestinations > div {
-    padding-bottom: 5px;
-}
-
-.propertySubContainer {
-    display: inline-block;
-    padding: 5px;
-    margin: 0 auto;
-}
-
-.propertySubContainer2 {
-    display: inline-block;
-    padding: 5px;
-    margin: 0 auto;
-    width: 120px;
-    text-align: center;
-    justify-content: center;
-}
-
-#synergiesContainer {
-    display: flex;
-    margin-top: 15px;
-    height: 100%;
-}
-
-#middleGroup {
-    margin-left: 15px;
-    height: 10%;
-}
-
-#leftGroup {
-    height: 100%;
-}
-
-#rightGroup {
-    margin-left: 15px;
-    width: fit-content;
-    height: 100%;
-}
-
-.propertyTextName {
-    margin-bottom: 5px;
-    font-size: 16px;
-
 }
 
 .weaponTypeContainer {
@@ -1368,92 +1434,6 @@ hr.dropdownSubline {
     margin-right: 5px;
     text-align: center;
     justify-content: center;
-}
-
-.weaponTypeIcon {
-    display: block;
-    margin-bottom: 5px;
-    width: 50px;
-    filter: invert(100%);
-}
-
-.weaponTypePercentageField {
-    display: block;
-    margin: 0 auto;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 4px;
-    padding-right: 4px;
-    width: fit-content;
-    background-color: #464646;
-    border: 1px solid #646464;
-    border-radius: 3px;
-    font-size: 15px;
-    font-variant-numeric: tabular-nums;
-}
-
-.elementalSubContainer {
-    display: inline-block;
-    margin: auto;
-    margin-right: 5px;
-    text-align: center;
-    justify-content: center;
-}
-
-.elementalIcon {
-    margin-bottom: 5px;
-    width: 40px;
-}
-
-.elementalPercentageField {
-    display: block;
-    margin: 0 auto;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 4px;
-    padding-right: 4px;
-    width: fit-content;
-    background-color: #464646;
-    border: 1px solid #646464;
-    border-radius: 3px;
-    font-size: 15px;
-    font-variant-numeric: tabular-nums;
-}
-
-.ammoPercentageField {
-    display: block;
-    margin: 0 auto;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 4px;
-    padding-right: 4px;
-    width: fit-content;
-    background-color: #464646;
-    border: 1px solid #646464;
-    border-radius: 3px;
-    font-size: 15px;
-    font-variant-numeric: tabular-nums;
-}
-
-.ammoSubContainer  {
-    display: inline-block;
-    margin: auto;
-    margin-right: 5px;
-    text-align: center;
-    justify-content: center;
-}
-
-.ammoSubContainer > div {
-    position: relative;
-    left: 49%;
-    -webkit-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    transform: translateX(-50%);
-}
-
-.ammoIcon {
-    margin-bottom: 5px;
-    width: 40px;
 }
 
 #levellingContentDisplay > div {
@@ -1466,108 +1446,6 @@ hr.dropdownSubline {
     padding-top: 7px;
     padding-bottom: 3px;
     color: #CDCBCB;
-}
-
-#statsTableLayoutContainer {
-    display: inline-block;
-    margin-top: 8px;
-}
-#statsTableLayoutContainer > div {
-    width: 350px;
-    height: 150px;
-    padding: 2px;
-    border: #555 1px solid;
-    border-radius: 5px;
-    color: white;
-}
-
-.containerMetricNumber {
-    display: inline-block;
-    color: #8DDBFF;
-}
-
-/* Seasonal artifact statistic container */
-#artifactStats {
-    /* display: inline-block; */
-    text-align: center;
-}
-#artifactStatsBg {
-    background-image: url('../static/images/artifact_background.jpg');
-    background-size: cover;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    filter: brightness(50%) blur(var(--blurFilterAmount));
-}
-#artifactStatsContentContainer {
-    position: absolute;
-    text-align: left;
-    margin-top: -140px;
-    margin-left: 15px;
-}
-#artifactStatsFirstContainer {
-    margin-top: 13px;
-    font-size: 22px;
-}
-#artifactStatsSecondContainer {
-    margin-top: 8px;
-    font-size: 22px;
-}
-#artifactStatsSuffix {
-    display: inline-block;
-    font-size: 18px;
-}
-.artifactStatsSuffixBottom {
-    font-size: 18px;
-    margin-top: -4px;
-}
-#artifactStatsThirdMetricContainer {
-    position: absolute;
-    margin-top: -120px;
-    margin-left: 230px;
-    text-align: center;
-}
-#artifactStatsMetricSeasonPassLevel {
-    font-size: 35px;
-    font-weight: 600;
-}
-#artifactStatsMetricRankTitle {
-    font-weight: 600;
-}
-#artifactStatsMetricFireteamBonus {
-    margin-top: 10px;
-}
-#artifactStatsMetricFireteamBonusSuffix { 
-    margin-top: -18px;
-}
-#artifactStatsArtifactImage {
-    position: absolute;
-    margin-top: 5px;
-    width: 80px;
-    border: 1px grey dashed;
-    z-index: -0;
-}
-#artifactStatsArtifactImage:hover {
-    filter: blur(3px);
-    -webkit-filter: blur(3px);
-}
-#artifactStatsArtifactBonus {
-    position: absolute;
-    margin-top: 64px;
-    margin-left: 3px;
-    font-size: 20px;
-    font-weight: 600;
-    color: #8DDBFF;
-    z-index: 10;
-}
-#artifactStatsNoArtifactIsPresent {
-    position: absolute;
-    display: none;
-    margin-top: -80px;
-    margin-left: 13px;
-    color: white;
-    font-size: 15px;
-    font-style: italic;
 }
 
 #burgerStackIcon {
@@ -1592,150 +1470,6 @@ hr.dropdownSubline {
     width: 100px;
     height: 150px;
     background-color: #575757;
-}
-
-
-/* Season pass statistic container */
-#seasonPass {
-    display: block;
-    margin-top: 15px;
-    text-align: center;
-}
-#seasonPassBg {
-    background-image: url('../static/images/seasonal_background.jpg');
-    background-size: cover;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    filter: brightness(50%) blur(var(--blurFilterAmount));
-}
-#seasonPassContentContainer {
-    position: absolute;
-    text-align: left;
-    margin-top: -140px;
-    margin-left: 15px;
-}
-#seasonPassFirstContainer {
-    margin-top: 13px;
-    font-size: 22px;
-}
-#seasonPassSecondContainer {
-    margin-top: 30px;
-    font-size: 22px;
-}
-#seasonPassSuffix {
-    display: inline-block;
-    font-size: 18px;
-}
-#seasonPassSuffixBottom {
-    position: absolute;
-    font-size: 18px;
-    margin-top: -3px;
-}
-#seasonPassThirdMetricContainer {
-    position: absolute;
-    margin-top: -130px;
-    margin-left: 190px;
-    text-align: center;
-}
-#seasonPassRankLevel {
-    margin-left: 50px;
-    font-size: 35px;
-    font-weight: 600;
-}
-#seasonPassRankTitle {
-    margin-left: 50px;
-    font-weight: 600;
-}
-#seasonPassFireteamBonusContainer {
-    display: inline-block;
-    margin-right: 5px;
-}
-#seasonPassFireteamBonus {
-    margin-top: 10px;
-    color: #8DDBFF;
-}
-#seasonPassFireteamBonusSuffix { 
-    margin-top: -18px;
-    font-weight: 600;
-}
-#seasonPassXpBonusContainer {
-    position: absolute;
-    display: inline-block;
-    margin-left: 5px;
-}
-#seasonPassXpBonus {
-    margin-top: 10px;
-    color: #8DDBFF;
-}
-#seasonPassXpBonusSuffix { 
-    margin-top: -18px;
-    font-weight: 600;
-}
-
-
-/* Bright engram statistic container */
-#brightEngram {
-    display: none;
-    margin-left: 20px;
-    text-align: center;
-}
-#brightEngramBg {
-    background-image: url('../static/images/eververse.png');
-    background-size: cover;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    filter: brightness(50%) blur(var(--blurFilterAmount));
-}
-#brightEngramContentContainer {
-    position: absolute;
-    text-align: left;
-    margin-top: -140px;
-    margin-left: 15px;
-}
-#brightEngramFirstContainer {
-    margin-top: 15px;
-    font-size: 22px;
-}
-#brightEngramSuffix {
-    display: inline-block;
-    font-size: 18px;
-}
-#brightEngramSecondContainer {
-    margin-top: 40px;
-    font-size: 22px;
-}
-#brightEngramEngramImageLeft {
-    position: absolute;
-    margin-top: -140px;
-    margin-left: 35px;
-    width: 45px;
-    z-index: 1;
-}
-#brightEngramEngramImageMiddle {
-    position: absolute;
-    margin-top: -140px;
-    margin-left: 50px;
-    width: 100px;
-    z-index: 2;
-}
-#brightEngramEngramImageRight {
-    position: absolute;
-    margin-top: -140px;
-    margin-left: 120px;
-    width: 45px;
-    z-index: 1;
-}
-#brightEngramSuffixBottom {
-    position: absolute;
-    font-size: 18px;
-    margin-top: -3px;
-}
-#brightEngranTooltip {
-    position:absolute;
-    font-size: 13px;
-    font-style: italic;
 }
 
 /* Animations */

@@ -8,12 +8,13 @@ export async function MakeBountyElement(param) {
     let itemObjectivesContainer = document.createElement('div');
     let itemOverlay = document.createElement('div');
     let itemContainer = document.createElement('div');
+    let itemHeader = document.createElement('div');
+    let itemAttributes = document.createElement('div');
     let itemStatus = document.createElement('img');
     let itemTitle = document.createElement('div');
     let itemType = document.createElement('div');
     let itemDesc = document.createElement('div');
     let item = document.createElement('img');
-    let hr = document.createElement('hr');
 
     // itemContainer style
     itemContainer.className = 'itemContainer';
@@ -38,24 +39,36 @@ export async function MakeBountyElement(param) {
     itemObjectivesContainer.className = 'itemObjectivesContainer';
 
     // Prop content of item
+    itemHeader.className = 'itemHeader';
     itemTitle.id = 'itemTitle';
     itemType.id = 'itemType';
     itemDesc.id = 'itemDesc';
+    itemAttributes.className = 'itemAttributes';
     itemTitle.innerHTML = param.displayProperties.name;
     itemType.innerHTML = param.itemTypeDisplayName;
-    itemDesc.innerHTML = param.displayProperties.description;
+
+    // Reformat item description to include a breakline when a sentence ends
+    let itemDescriptionSplit = (param.displayProperties.description).split('.');
+    itemDesc.innerHTML = `${itemDescriptionSplit[0]}. <br><br>${itemDescriptionSplit[1]}`;
+    // itemDesc.innerHTML = itemDescriptionSplit[0] + '.' + '<br>' + itemDescriptionSplit[1];
 
     // Assign content to parent
-    document.querySelector(`#item_${param.hash}`).append(itemTitle, itemType, hr, itemDesc);
+    itemHeader.append(itemTitle, itemType);
+    document.querySelector(`#item_${param.hash}`).append(itemHeader);
 
     // Create item progress and push to DOM
-    let rootIndex = param.objectiveDefinitions, completionCounter = 0;
+    let rootIndex = param.objectiveDefinitions;
+    let completionCounter = 0;
 
     for (let indexCount = 0; indexCount < rootIndex.length; indexCount++) {
 
-        let itemPrgContainer = document.createElement('div');
-        let itemPrgCounter = document.createElement('div'); 
+        let itemPrgCounter = document.createElement('div');
         let itemPrgDesc = document.createElement('div');
+        let objectiveContainer = document.createElement('div');
+        let objectiveCheckbox = document.createElement('div');
+        let objectiveCheckboxOuter = document.createElement('div');
+        let objectiveCheckboxMiddle = document.createElement('div');
+        let objectiveCheckboxInner = document.createElement('div');
 
         // Check if progess string exceeds char limit
         if (rootIndex[indexCount].progressDescription.length >= 24) {
@@ -67,33 +80,51 @@ export async function MakeBountyElement(param) {
             rootIndex[indexCount].progressDescription = rt + '..';
         };
 
-        itemPrgContainer.className = 'itemPrgContainer';
+        // Give item progress attributes their style
         itemPrgCounter.className = 'itemPrgCounter';
         itemPrgDesc.className = 'itemPrgDesc';
         itemPrgCounter.id = `prgCounter_${rootIndex[indexCount].hash}`;
         itemPrgDesc.id = `prgDesc_${rootIndex[indexCount].hash}`;
 
-        itemPrgContainer.appendChild(itemPrgDesc);
-        itemPrgContainer.appendChild(itemPrgCounter);
-        itemObjectivesContainer.appendChild(itemPrgContainer);
-        document.querySelector(`#item_${param.hash}`).appendChild(itemObjectivesContainer);
+        // Create objective checkboxes
+        objectiveContainer.className = 'objectiveContainer';
+        objectiveCheckboxOuter.className = 'objectiveCheckboxOuter';
+        objectiveCheckboxOuter.id = `Outer_${rootIndex[indexCount].hash}`;
+        objectiveCheckboxMiddle.className = 'objectiveCheckboxMiddle';
+        objectiveCheckboxMiddle.id = `Middle_${rootIndex[indexCount].hash}`;
+        objectiveCheckboxInner.className = 'objectiveCheckboxInner';
+        objectiveCheckboxInner.id = `Inner_${rootIndex[indexCount].hash}`;
+        objectiveCheckboxOuter.appendChild(objectiveCheckboxMiddle);
+        objectiveCheckboxMiddle.appendChild(objectiveCheckboxInner);
+        objectiveCheckbox.appendChild(objectiveCheckboxOuter);
+
+        // Add checkbox and item progress to flex container
+        objectiveContainer.append(objectiveCheckbox, itemPrgDesc, itemPrgCounter);
+        itemObjectivesContainer.append(objectiveContainer);
+
+        itemAttributes.appendChild(itemDesc);
+        itemAttributes.appendChild(itemObjectivesContainer);
+        document.querySelector(`#item_${param.hash}`).appendChild(itemAttributes);
 
         // Render item objective progress
         itemPrgDesc.innerHTML = rootIndex[indexCount].progressDescription;
-        param.progress.forEach(h => {
-            if (h.objectiveHash === rootIndex[indexCount].hash) {
+        param.progress.forEach(v => {
+            if (v.objectiveHash === rootIndex[indexCount].hash) {
 
                 // Render objective progress
                 if (rootIndex[indexCount].completionValue === 100) {
-                    itemPrgCounter.innerHTML = `${h.progress}%`;
+                    itemPrgCounter.innerHTML = `${v.progress}%`;
                 }
                 else if (rootIndex[indexCount].completionValue !== 100) {
-                    itemPrgCounter.innerHTML = `${h.progress}/${h.completionValue}`;
+                    itemPrgCounter.innerHTML = `${v.progress}/${v.completionValue}`;
                 };
 
                 // Check if objective is completed
-                if (h.complete) {
+                if (v.complete) {
                     completionCounter++;
+                    document.getElementById(`Outer_${v.objectiveHash}`).style.border = '1.5px solid var(--completedCheckboxOuter)';
+                    document.getElementById(`Middle_${v.objectiveHash}`).style.border = '1.5px solid var(--completedCheckboxMiddle)';
+                    document.getElementById(`Inner_${v.objectiveHash}`).style.backgroundColor = 'var(--completedCheckboxInner)';
                 };
             };
         });
@@ -103,6 +134,7 @@ export async function MakeBountyElement(param) {
     if (param.progress.length === completionCounter) {
         // Change areObjectivesComplete boolean
         param.areObjectivesComplete = true;
+
     }
     else if (param.progress.length !== completionCounter) {
         // Change areObjectivesComplete boolean
@@ -113,45 +145,27 @@ export async function MakeBountyElement(param) {
     if (param.isExpired && !param.areObjectivesComplete) {
         itemStatus.classList += ` expire`;
         itemStatus.id = `expire_${param.hash}`;
-        itemStatus.src = './static/ico/pursuit_expired.svg';
+        itemStatus.src = './static/ico/destiny-icons/pursuit_expired.svg';
         document.getElementById(`bounty_${param.hash}`).style.border = '1px solid rgba(179,73,73, 0.749)';
     }
     else if (param.areObjectivesComplete) {
         itemStatus.classList += ` complete`;
         itemStatus.id = `complete_${param.hash}`;
-        itemStatus.src = './static/ico/pursuit_completed.svg';
+        itemStatus.src = './static/ico/destiny-icons/pursuit_completed.svg';
         document.getElementById(`bounty_${param.hash}`).style.border = '1px solid rgba(182,137,67, 0.749)';
     };
 
     // Append the item status to the item
     itemContainer.appendChild(itemStatus);
-    // document.querySelector(`#bountyItems`).append(itemStatus);
 
-    // Watch for mouse events
+    // Watch for mouse move event (when mouse hovers over bounty element)
     itemContainer.addEventListener('mousemove', function (e) {
 
         itemOverlay.style.position = 'absolute';
         itemOverlay.style.display = 'block';
 
-        // let itemOverlayPos = parseInt(itemOverlay.style.left.split('px')[0]);
-        // let itemOverlayWidth = 210;
-
         itemOverlay.style.left = `${e.pageX}px`;
         itemOverlay.style.top = `${e.pageY}px`;
-
-        // if (((window.innerWidth - itemOverlayWidth) >= itemOverlayPos)) {
-        //     // console.log(((window.innerWidth - itemOverlayWidth) >= itemOverlayPos));
-        //     itemOverlay.style.left = `${e.pageX}px`;
-        //     itemOverlay.style.top = `${e.pageY}px`;
-        //     return;
-        // };
-
-        // if (!((window.innerWidth - itemOverlayWidth) >= itemOverlayPos)) {
-        //     // console.log(((window.innerWidth - itemOverlayWidth) >= itemOverlayPos));
-        //     itemOverlay.style.left = `${window.innerWidth - (itemOverlayWidth + 10)}px`;
-        //     itemOverlay.style.top = `${e.pageY}px`;
-        //     return;
-        // };
 
     });
 

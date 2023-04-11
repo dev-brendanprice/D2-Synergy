@@ -5,7 +5,7 @@ import { CacheReturnItem } from './CacheReturnItem.js';
 export async function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields) {
 
     var totalXP = 0;
-    var includeExpiredBounties = await CacheReturnItem('includeExpiredBounties');
+    var includeExpiredBounties = await CacheReturnItem('includeExpiredBountiesInTable');
 
     // Self func
     function DiffXP(bounty, bountyType) {

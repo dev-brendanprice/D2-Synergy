@@ -113,7 +113,9 @@ export var UserProfile = {
     destinyMembershipId: undefined,
     membershipType: undefined,
     characters: [],
-    CurrentSeasonHash: undefined,
+    currentSeasonHash: undefined,
+    progressions: { bounties:{}, challenges: {} },
+    misc: { bountiesCount: 0, challengesCount: 0 },
 
     AssignDestinyUserProfile: function(profile) {
         this.destinyUserProfile = profile;
@@ -128,7 +130,20 @@ export var UserProfile = {
         this.characters = characters;
     },
     AssignCurrentSeasonHash: function(hash) {
-        this.CurrentSeasonHash = hash;
+        this.currentSeasonHash = hash;
+    },
+    AssignProgressions: function(type, data) {
+
+        // Loop through data and append each one
+        data.forEach(item => {
+            this.progressions[type][item.hash] = item;
+
+            // Increment misc counter for item type
+            this.misc[`${type}Count`]++;
+        });
+    },
+    AssignMisc: function(key, val) {
+        this.misc[key] = val;
     }
 };
 export const UserProfileProgressions = {
@@ -198,7 +213,7 @@ export var accentColor = {
 // Relations table metadata
 export var relationsTable = {
     div: {}, // DOM element
-    relations: {
+    relations: { // Specific to current character
         bounties: {},
         challenges: {},
         all: {}
@@ -207,81 +222,166 @@ export var relationsTable = {
         pvp: true,
         pve: true,
         challenges: true,
-        bounties: true
+        expiredBounties: true
     },
     ClearTable: function() {
+        
+        // Clear relations table
         this.div.innerHTML = '';
-        this.div.innerHTML = '<tr><th>Item</th><th>Category</th><th>Relation</th></tr>';
+        this.div.innerHTML = '<tr><th>Keyword</th><th>Relation</th></tr>';
+
+        let ctgs = ['ActivityMode', 'ItemCategory', 'DamageType', 'KillType', 'EnemyType'];
+
+        // Clear relation squares
+        for (let item of ctgs) {
+            document.getElementById(`${item}Title`).className = 'relationSquareNormal';
+            document.getElementById(`${item}Arrow`).src = './static/ico/neutral_ring.svg';
+            document.getElementById(`${item}Arrow`).classList.remove('greenIco');
+            document.getElementById(`${item}Text`).innerHTML = '--';
+        };
     },
     BuildTable: function() {
 
-        /*
-
-            Collate all tables and standardize their format (so they are the same)
-            Filter out keys based on the toggles and pvp/pve filters
-            Sort the resulting table, in descending order, via the points (pts) of each key
-
-        */
-        
-        // Clear tableF
-        // this.ClearTable();
-
-        // Update relation count
-        // document.getElementById('relationsTotalField').innerHTML = Object.keys(this.relations[type]).length;
-    },
-    BuildTableDeprecated: function(type) {
-        
-        // Clear table
-        this.ClearTable();
-
-        // Check if table will be empty
-        if (Object.keys(this.relations[type]).length === 0) {
-            AddTableRow(this.div, ['No relations found', '', '']);
-            return;
-        };
-
-        // Update table, looping over type
-        for (let relation in this.relations[type]) {
-
-            let itemName = relation;
-            let itemRelation = this.relations[type][relation];
-            let itemCategory;
-
-            for (let item in progressionPropertyKeyValues) {
-
-                // If relation is in category, store in category
-                log(itemName);
-                if (progressionPropertyKeyValues[item].includes(ParsePropertyNameIntoWord(itemName, true))) {
-                    itemCategory = item;
-                };
+        function findAverage(typeString, item) {
+            if (item[1] > averageRelationCount) {
+                document.getElementById(`${typeString}Title`).className = 'relationSquareGreen';
+                document.getElementById(`${typeString}Arrow`).src = './static/ico/blackArrow.svg';
+                document.getElementById(`${typeString}Arrow`).classList.add('greenIco');
+            }
+            else if (item[1] < averageRelationCount) {
+                document.getElementById(`${typeString}Title`).className = 'relationSquareOrange';
+                document.getElementById(`${typeString}Arrow`).src = './static/ico/orangeArrow.svg';
+                document.getElementById(`${typeString}Arrow`).classList.remove('greenIco');
             };
             
-            // log(Object.entries(progressionPropertiesPVE).map(([key, value]) => value.includes(itemName)), itemName);
-            // // Check pvp toggle
-            // if (!this.toggles.pvp) {
-            //     if (progressionPropertiesPVP.includes(itemCategory)) {
-            //         continue;
-            //     }
-            //     else {
-            //         return;
-            //     };
-            // };
-
-            // // Check pve toggle
-            // if (!this.toggles.pve) {
-            //     if (progressionPropertiesPVE.includes(itemCategory)) {
-            //         continue;
-            //     }
-            //     else {
-            //         return;
-            //     };
-            // };
-
-            AddTableRow(this.div, [itemName, ParsePropertyNameIntoWord(itemCategory), `${itemRelation}pts`]);
+            // Change the average up/down green/orange arrow based on the average relation count
+            document.getElementById(`${typeString}Text`).innerHTML = item[0];
         };
 
-        // Update relation count
-        document.getElementById('relationsTotalField').innerHTML = Object.keys(this.relations[type]).length;
+        /*
+
+            Take relations and push each one as a row to the relations table
+            Filter relations based on which toggles are set to true or false
+
+        */
+
+        // Clear table first and init
+        this.ClearTable();
+        let totalRelationCount = 0;
+        let totalItemCount = 0;
+        let averageRelationCount = this.relations.averageRelationCount;
+
+        // Iterate over all relations
+        Object.keys(this.relations.all).forEach((relation) => {
+
+
+            // Check if challenges are toggled
+            if (!this.toggles.challenges) {
+
+                // Loop over challenges and subtract each challenges' key value from relations.all
+                Object.keys(this.relations.challenges).forEach((challengeRelation) => {
+                    if (this.relations.challenges[challengeRelation][0] === this.relations.all[relation][0]) {
+                        this.relations.all[relation][1] -= this.relations.challenges[challengeRelation][1];
+                    };
+                });
+            };
+
+            // Check if properties have a value of zero -> omit
+            if (this.relations.all[relation][1] === 0) {
+                delete this.relations.all[relation];
+            };
+        });
+
+        // Rebuild relations.all objects
+        this.relations.all = Object.entries(this.relations.all).map(([key, value]) => value);
+
+        // Sort relations.all via relationCount and descending order, before pushing rows to table
+        this.relations.all = Object.values(this.relations.all).sort((a,b) => b[1] - a[1]);
+
+
+        // Check table relation count(s)
+        if (Object.keys(this.relations.all).length === 0) {
+            document.getElementById('noRelationsExistElement').style.display = 'block';
+            document.getElementById('tblCon').style.display = 'none';
+            document.getElementById('relationsTotalField').innerHTML = '0';
+            return;
+        }
+        else {
+            document.getElementById('noRelationsExistElement').style.display = 'none';
+            document.getElementById('tblCon').style.display = 'block';
+        };
+
+        // Iterate over all relations again (after keys are removed otherwise emits undefined)
+        Object.keys(this.relations.all).forEach((a) => {
+
+            let itemName = this.relations.all[a][0];
+            let itemRelationCount = this.relations.all[a][1];
+
+            // Add property value to relation count
+            totalRelationCount += this.relations.all[a][1];
+
+            // Increment item count
+            totalItemCount++;
+
+            // Add table row with item data
+            AddTableRow(this.div, [itemName, `${itemRelationCount}pts`]);
+        });
+
+        // To avoid oddly shaped table cells, check to see how much space is left in container
+        // and fill whitespace with empty cells
+        if (totalItemCount < 10) {
+            let requiredRows = 20 - totalItemCount; // 10 is the max rows before overflow occurs
+            for (let i=0; i<requiredRows; i++) {
+                AddTableRow(this.div, ['', '']);
+            };
+        };
+
+        // Update table subheading relation count
+        document.getElementById('relationsTotalField').innerHTML = `${totalRelationCount}`;
+
+        let highestActivityMode;
+        let highestItemCategory; // e.g. scout rifle
+        let highestDamageType;
+        let highestKillType;
+        let highestEnemyType;
+
+        // Find the highest relation from each category
+        // allRelations is sorted so it should find the first match
+        this.relations.all.forEach(item => {
+            
+            let name = ParsePropertyNameIntoWord(item[0], true);
+
+            if (ActivityMode.includes(name)) {
+                if (!highestActivityMode) {
+                    highestActivityMode = name;
+                    findAverage('ActivityMode', item);
+                };
+            }
+            else if (ItemCategory.includes(name)) {
+                if (!highestItemCategory) {
+                    highestItemCategory = name;
+                    findAverage('ItemCategory', item);
+                };
+            }
+            else if (DamageType.includes(name)) {
+                if (!highestDamageType) {
+                    highestDamageType = name;
+                    findAverage('DamageType', item);
+                };
+            }
+            else if (KillType.includes(name)) {
+                if (!highestKillType) {
+                    highestKillType = name;
+                    findAverage('KillType', item);
+                };
+            }
+            else if (EnemyType.includes(name)) {
+                if (!highestEnemyType) {
+                    highestEnemyType = name;
+                    findAverage('EnemyType', item);
+                };
+            };
+        });
     }
 };
 
