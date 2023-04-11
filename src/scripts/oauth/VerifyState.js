@@ -11,6 +11,6 @@ export async function VerifyState() {
         window.location.reload();
     }
     else { // ?? Window.window ???
-        window.window.localStorage.removeItem('stateCode');
+        window.localStorage.removeItem('stateCode');
     };
 };

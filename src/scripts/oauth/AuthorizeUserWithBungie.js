@@ -1,4 +1,3 @@
-// import { MakeRequest } from "../modules/MakeRequest";
 import { axiosHeaders, log } from '../user.js';
 import axios from 'axios';
 
