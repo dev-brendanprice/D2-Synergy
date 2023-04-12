@@ -198,6 +198,7 @@ export var accentColor = {
         document.getElementById('topColorBar').style.boxShadow = `0px 0px 10px 1px ${color}`;
         document.getElementById('notificationTopBgLine').style.backgroundColor = color;
         document.getElementById('notificationTopBgLine').style.boxShadow = `0px 0px 10px 1px ${color}`;
+        document.getElementById('colorBar').style.backgroundColor = color;
         
         // Range sliders
         for (let element of document.getElementsByClassName('settingRange')) {
