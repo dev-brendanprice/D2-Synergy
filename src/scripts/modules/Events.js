@@ -690,8 +690,34 @@ export async function AddEventListeners() {
         // Show current page
         document.getElementById(`challengeChunk${currentIndex}`).style.display = 'grid';
     });
+
+    // Button to dismiss the popup div
+    AddListener('popupDismissButton', 'click', function () {
+        document.getElementById('loadpopupContainer').style.display = 'none';
+        document.getElementById('loadpopupBackplate').style.display = 'none';
+    });
+
+    // Click on whitespace to close popup
+    AddListener('loadpopupBackplate', 'click', function () {
+        document.getElementById('loadpopupContainer').style.display = 'none';
+        document.getElementById('loadpopupBackplate').style.display = 'none';
+    });
+
+    // Show "What's New" popup
+    AddListener('checkboxShowPopup', 'change', function () {
+
+        // Toggle boolean
+        if (this.checked) {
+            CacheChangeItem('showPopup', true);
+            return;
+        };
+
+        // Uncheck = clean localStorage value
+        CacheChangeItem('showPopup', false);
+    });
 };
 
+// {"key":"#ED4D4D","accentColor":"#ED4D4D","includeSeasonalChallengesInTable":true,"defaultContentView":"bountiesContainer","lastChar":"2305843009263012379","currentChar":{"membershipId":"4611686018447977370","membershipType":1,"characterId":"2305843009263012379","dateLastPlayed":"2023-03-27T23:59:35Z","minutesPlayedThisSession":"2","minutesPlayedTotal":"71510","light":1795,"stats":{"144602215":18,"392767087":100,"1735777505":100,"1935470627":1795,"1943323491":37,"2996146975":40,"4244567218":80},"raceHash":2803282938,"genderHash":3111576190,"classHash":3655393761,"raceType":1,"classType":0,"genderType":0,"emblemPath":"/common/destiny2_content/icons/09778fd6deb3a4cb60f57659d3715328.jpg","emblemBackgroundPath":"/common/destiny2_content/icons/aaca6252f13a969b8185d747e4dc5e7c.jpg","emblemHash":4077939647,"emblemColor":{"red":19,"green":18,"blue":20,"alpha":255},"levelProgression":{"progressionHash":1716568313,"dailyProgress":0,"dailyLimit":0,"weeklyProgress":0,"weeklyLimit":0,"currentProgress":0,"level":50,"levelCap":50,"stepIndex":50,"progressToNextLevel":0,"nextLevelAt":0},"baseCharacterLevel":50,"percentToNextLevel":0,"titleRecordHash":1384029371},"lastVisitedPage":"bountiesContainer","showPopup":true}
 
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
@@ -699,17 +725,14 @@ export async function BuildWorkspace() {
     // Get time until weekly reset (timezone specific ofc)
     document.getElementById('timeUntilWeeklyReset').innerHTML = `Weekly Reset: ${getNextTuesday()}`;
 
-    let rangeSlider = document.getElementById('accessibilityImageSizeSlider'),
-        bountyImage = document.getElementById('accessibilityImageDemo');
+    let rangeSlider = document.getElementById('accessibilityImageSizeSlider');
+    let bountyImage = document.getElementById('accessibilityImageDemo');
+    let showPopupBool = false; // default
 
-    // Scroll to top of page
+    // Scroll to top of page (idk but it wasn't sticking to the top)
     window.scrollTo(0, 0);
-    
-    // Put version number in navbar and settings footer
-    document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
-    document.getElementById('settingsFooterVersionField').innerHTML = `${import.meta.env.version}`;
 
-    // Configure accent color
+    // Change popup top bar colour to what is saved in localStorage
     await CacheReturnItem('accentColor')
     .then((result) => {
         accentColor.UpdateAccentColor(result);
@@ -717,6 +740,75 @@ export async function BuildWorkspace() {
     .catch((error) => {
         CacheChangeItem('accentColor', '#ED4D4D');
         accentColor.UpdateAccentColor('#ED4D4D');
+        console.error(error);
+    });
+    
+    // Put version number in navbar and settings footer
+    document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+    document.getElementById('settingsFooterVersionField').innerHTML = `${import.meta.env.version}`;
+    document.getElementById('popupVersion').innerHTML = `${import.meta.env.version}`;
+
+    // Check if load is first time load on this version
+    await CacheReturnItem('storedVersion')
+    .then((result) => {
+
+        // If stored version is not set, set it
+        if (result === undefined) {
+            CacheChangeItem('storedVersion', import.meta.env.version);
+        }
+
+        // If stored version !== equal to the current version
+        else if (result !== import.meta.env.version) {
+
+            // Toggle boolean and set stored version to current
+            showPopupBool = true;
+            CacheChangeItem('storedVersion', import.meta.env.version);
+        };
+        log(import.meta.env.version, result);
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+    // Check if its first time visit
+    await CacheReturnItem('isFirstTimeVisit')
+    .then((result) => {
+
+        // Is first time load
+        if (result === undefined) {
+
+            // Show corresponding content in popup
+            document.getElementById('firstTimeLoadPopupContent').style.display = 'block';
+
+            // Toggle boolean
+            CacheChangeItem('isFirstTimeVisit', false);
+            return;
+        };
+
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+    // Check if popup should be shown
+    await CacheReturnItem('showPopup')
+    .then((result) => {
+
+        // Show popup container
+        if (result) {
+            if (showPopupBool) {
+                document.getElementById('loadpopupContainer').style.display = 'block';
+                document.getElementById('loadpopupBackplate').style.display = 'block';
+            };
+            document.getElementById('checkboxShowPopup').checked = true;
+            return;
+        };
+
+        // If no result, set to false
+        document.getElementById('checkboxShowPopup').checked = false;
+    })
+    .catch((error) => {
+        console.error(error);
     });
     
     // Push cache results for itemDisplaySize to variables
