@@ -14,11 +14,69 @@
     <link rel="icon" href="./static/ico/icon.png">
     <link rel="shortcut icon" href="./static/ico/icon.png">
     <meta charset="UTF-8">
-    <title>D2 Synergy</title>
+
+    <title>D2Synergy</title>
+
+    <meta name="theme-color" content="#323232">
+    <meta name="title" content="D2 Synergy">
+    <meta name="description" content="Indexes progressional items and suggests best decisions for optimal progress.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="D2 Synergy">
+    <meta property="og:description" content="Indexes progressional items and suggests best decisions for optimal progress.">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="D2 Synergy">
+    <meta property="twitter:description" content="Indexes progressional items and suggests best decisions for optimal progress.">
 </head>
 
 <body>
-    
+
+    <div id="loadpopupBackplate"></div>
+
+    <div id="loadpopupContainer">
+        <div id="colorBar"></div>
+
+        <div class="loadpopupContent">
+            
+            <div id="firstTimeLoadPopupContent">
+                <div style="font-size: 30px;">First Time?</div>
+                <div style="margin-top: 5px;font-size: 16px;">
+                    It seems this is your first time using D2 Synergy!
+                    <br><br>
+                    Here are some resources to get started:<br>
+                    Submit an issue <a class="hyperlinkBlue" href="" target="_blank">here</a><br>
+                    Suggest a feature <a class="hyperlinkBlue" href="" target="_blank">here</a><br>
+                    User guide <a class="hyperlinkBlue" href="" target="_blank">here</a>
+                    <br><br>
+                    <span style="font-weight: 600;">Note:</span> This is still in Alpha, so it won’t work as expected all the time. Please do submit an issue or let me know if you find a bug ❤️‍
+                </div>
+                <div class="popupUnderline"></div>
+            </div>
+
+            <div class="whatsNewPopupContent">
+                <div style="display: flex;gap: 5px;">
+                    <div style="font-size: 30px;">What's New</div>
+                    <div id="popupVersion">0.0.0</div>
+                </div>
+                <div style="margin-top: 5px;font-size: 16px;">
+                    <ul id="whatsNewFeaturesList">
+                        <li>Added this popup</li>
+                        <li>Added new settings options</li>
+                        <li>Cleaned up some UI</li>
+                        <li>Squashed some bugs</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="popupDismissButton" class="uiButton bottomRight" style="margin-bottom: 20px;margin-right: 20px;">
+                <div>Dismiss</div>
+                <img style="margin-top: 1px;margin-left: 125px;width: 20px;" src="./static/ico/arrow_narrow_right.svg">
+            </div>
+
+        </div>
+    </div>
+
     <div id="topColorBar"></div>
 
     <!-- Other viewports navbar (ie Desktop/Laptop) -->
@@ -130,6 +188,10 @@
                             <label class="labelContainer">
                                 <input type="checkbox" id="checkboxRememberLastpage" class="settingCheckbox">
                                 <div class="checkboxLabel">Remember last visited page</div>
+                            </label>
+                            <label class="labelContainer" style="margin-top: 15px;">
+                                <input type="checkbox" id="checkboxShowPopup" class="settingCheckbox">
+                                <div class="checkboxLabel">Show "What's New" popup</div>
                             </label>
                         </div>
                     </div>
@@ -764,6 +826,7 @@
             </div>
         </div>
     </div>
+
     <div id="overlays"></div>
 
     <script type="module" src="scripts/user.js"></script>
