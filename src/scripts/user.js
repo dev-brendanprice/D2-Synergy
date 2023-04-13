@@ -440,7 +440,7 @@ export async function MainEntryPoint(isPassiveReload) {
     return;
 };
 
-
+ 
 
 // Run after DOM load
 document.addEventListener('DOMContentLoaded', async () => {

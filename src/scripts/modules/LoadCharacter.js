@@ -183,6 +183,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
                 prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
                 seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
                 seasonalArtifactInfo = itemDefinitions[seasonDefinitions[hash].artifactItemHash];
+                seasonalArtifactInfo.powerBonusProgression = {};
                 seasonalArtifactInfo.powerBonusProgression = progressionDefinitions[1656313730];
                 seasonInfo = seasonDefinitions[hash];
 
