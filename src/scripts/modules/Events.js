@@ -764,7 +764,7 @@ export async function BuildWorkspace() {
             showPopupBool = true;
             CacheChangeItem('storedVersion', import.meta.env.version);
         };
-        log(import.meta.env.version, result);
+
     })
     .catch((error) => {
         console.error(error);
