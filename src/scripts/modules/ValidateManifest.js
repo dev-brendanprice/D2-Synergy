@@ -14,6 +14,7 @@ const requiredManifestTables = [
 ];
 
 var manifest;
+let notificationLoadCounter = 0;
 
 
 // Return manifest components
@@ -49,13 +50,17 @@ var FixTables = async () => {
                 })
                 .catch((error) => {
                     console.error(error);
-                    // Bypass cache
-                    return axios.get(`https://www.bungie.net${suffix}?${GenerateRandomString(4)}=${GenerateRandomString(4)}`);
+                    // Bypass cache as a last resort
+                    return axios.get(`https://www.bungie.net${suffix}?cachereset=${GenerateRandomString(4)}`);
                 });
 
-            log(newTable);
+            // Store the response in idb using idb-keyval
             set(table, newTable.data);
         };
+
+        // Increment notification load counter
+        notificationLoadCounter++;
+        document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${notificationLoadCounter}/${requiredManifestTables.length}`;
     };
 };
 
@@ -67,7 +72,7 @@ export var ValidateManifest = async () => {
 
     // Change notification label content
     document.getElementById('notificationTitle').innerHTML = 'Loading Definitions';
-    document.getElementById('notificationMessage').innerHTML = 'Parsing definitions..';
+    document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${notificationLoadCounter}/${requiredManifestTables.length}`;
 
     // Fetch manifest
     let localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');

@@ -7,7 +7,7 @@ export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user'
     return new Promise(async (resolve, reject) => {
 
         // API down, Servers down, or other error
-        function CheckForErrorStatus(error, promise) {
+        function CheckForErrorStatus(error) {
 
             // If .response is transformed/appended via error
             if (error.response.data || error.response.data.ErrorCode === 5) {
@@ -32,8 +32,10 @@ export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user'
             };
         };
 
-        // Append random string as query param to CF cache
-        utils.avoidCache ? `${url}?=${GenerateRandomString(10)}` : null;
+        // Append random string as query param to avoid CF cache
+        if (utils.avoidCache) {
+            url += `&cachereset=${GenerateRandomString(10)}`;
+        };
 
         // Make request, return if successful, else check for error status
         await axios.get(url, config)
