@@ -10,10 +10,10 @@ export async function CheckUserAuthState() {
     
     log('-> CheckUserAuthState Called');
 
-    let rsToken = JSON.parse(window.localStorage.getItem('refreshToken')),
-        acToken = JSON.parse(window.localStorage.getItem('accessToken')),
-        comps = JSON.parse(window.localStorage.getItem('components')),
-        authCode = urlParams.get('code'); // One time use
+    let rsToken = JSON.parse(window.localStorage.getItem('refreshToken'));
+    let acToken = JSON.parse(window.localStorage.getItem('accessToken'));
+    let comps = JSON.parse(window.localStorage.getItem('components'));
+    let authCode = urlParams.get('code'); // One time use
 
         // Remove state and auth code from url (clean URL)
         window.history.pushState({}, window.location.host, window.location.pathname);

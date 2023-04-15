@@ -43,7 +43,7 @@ export async function AuthorizeUserWithBungie (authCode) {
 
             log('-> Authorized with Bungie.net');
         })
-        .catch((err) => {
+        .catch((error) => {
 
             // switch (err.response.data) {
             //     case 'AuthorizationCodeInvalid':
@@ -52,6 +52,6 @@ export async function AuthorizeUserWithBungie (authCode) {
             //     case 'ApplicationTokenKeyIdDoesNotExist':
             //         CheckUserTokens();
             // };
-            console.error(err);
+            console.error(error);
         });
 };

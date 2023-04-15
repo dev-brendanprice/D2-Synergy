@@ -11,6 +11,7 @@ import { CacheReturnItem } from './CacheReturnItem.js';
 import { Logout } from './Logout.js';
 import { ParseClass } from './ParseClass.js';
 import { getNextTuesday } from './GetNextReset.js';
+import { FetchBungieUser } from '../oauth/FetchBungieUser.js';
 
 
 // Utilities
@@ -717,7 +718,6 @@ export async function AddEventListeners() {
     });
 };
 
-// {"key":"#ED4D4D","accentColor":"#ED4D4D","includeSeasonalChallengesInTable":true,"defaultContentView":"bountiesContainer","lastChar":"2305843009263012379","currentChar":{"membershipId":"4611686018447977370","membershipType":1,"characterId":"2305843009263012379","dateLastPlayed":"2023-03-27T23:59:35Z","minutesPlayedThisSession":"2","minutesPlayedTotal":"71510","light":1795,"stats":{"144602215":18,"392767087":100,"1735777505":100,"1935470627":1795,"1943323491":37,"2996146975":40,"4244567218":80},"raceHash":2803282938,"genderHash":3111576190,"classHash":3655393761,"raceType":1,"classType":0,"genderType":0,"emblemPath":"/common/destiny2_content/icons/09778fd6deb3a4cb60f57659d3715328.jpg","emblemBackgroundPath":"/common/destiny2_content/icons/aaca6252f13a969b8185d747e4dc5e7c.jpg","emblemHash":4077939647,"emblemColor":{"red":19,"green":18,"blue":20,"alpha":255},"levelProgression":{"progressionHash":1716568313,"dailyProgress":0,"dailyLimit":0,"weeklyProgress":0,"weeklyLimit":0,"currentProgress":0,"level":50,"levelCap":50,"stepIndex":50,"progressToNextLevel":0,"nextLevelAt":0},"baseCharacterLevel":50,"percentToNextLevel":0,"titleRecordHash":1384029371},"lastVisitedPage":"bountiesContainer","showPopup":true}
 
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
@@ -754,6 +754,15 @@ export async function BuildWorkspace() {
 
         // If stored version is not set, set it
         if (result === undefined) {
+
+            /*
+                In this case the user could be a new visitor, prior to the 5.6 release
+
+                Instead of only storing the version, clear all cache and fetch again
+                This is because the cached data is (somehow) wrong -- data before ~5.6
+            */
+            window.sessionStorage.clear();
+            FetchBungieUser(false);
             CacheChangeItem('storedVersion', import.meta.env.version);
         }
 

@@ -3,18 +3,12 @@ import {
     seasonDefinitions,
     seasonPassDefinitions,
     progressionDefinitions,
-    progressionPropertyKeyValues,
     relationsTable, 
-    UserProfile,
-    UserProfileProgressions, log } from '../user.js';
+    UserProfile, log } from '../user.js';
 import { ParseProgressionalItems } from './ParseProgressItems.js';
 import { ReturnSeasonPassLevel } from './ReturnSeasonPassLevel.js';
 import { ParseProgressionalRelations } from './ParseProgressRelations.js';
-import { ParsePropertyNameIntoWord } from './ParsePropertyNameIntoWord.js';
-import { AddValueToElementInner } from './AddValueToElementInner.js';
 import { CacheChangeItem } from './CacheChangeItem.js';
-import { AddTableRow } from './AddTableRow.js';
-import { InsertSeperators } from './InsertSeperators.js';
 import { StopLoad } from './StopLoad.js';
 import { ParseClass } from './ParseClass.js';
 import { ParseRace } from './ParseRace.js';
@@ -183,7 +177,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
                 prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
                 seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
                 seasonalArtifactInfo = itemDefinitions[seasonDefinitions[hash].artifactItemHash];
-                seasonalArtifactInfo.powerBonusProgression = {};
                 seasonalArtifactInfo.powerBonusProgression = progressionDefinitions[1656313730];
                 seasonInfo = seasonDefinitions[hash];
 
@@ -210,36 +203,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
             rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
         });
 
-
-        // Push subheading statistics
-        // AddValueToElementInner('currentSeasonNameField', seasonPassInfo.displayProperties.name);
-
-        // Get artifact info -- check if profile has artifact
-        // let artifact;
-        // if (UserProfileProgressions.ProfileProgressions.seasonalArtifact) {
-
-        //     // Change corresponding HTML elements to display stats
-        //     artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
-
-        //     if (artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel !== 0) {
-        //         AddValueToElementInner('artifactXpToNextUnlock', InsertSeperators(artifact.pointProgression.nextLevelAt - artifact.pointProgression.progressToNextLevel));
-        //     }
-        //     else {
-        //         document.getElementById('artifactStatsSecondContainer').style.display = 'none';
-        //     };
-
-        //     AddValueToElementInner('artifactStatsArtifactBonus', `+${artifact.powerBonus}`);
-        //     AddValueToElementInner('artifactXpToNextPowerBonus', InsertSeperators(artifact.powerBonusProgression.nextLevelAt - artifact.powerBonusProgression.progressToNextLevel));
-        // }
-        // else if (!UserProfileProgressions.ProfileProgressions.seasonalArtifact) {
-
-        //     // Change corresponding HTML elements to display stats
-        //     document.getElementById('artifactStatsFirstContainer').style.display = 'none';
-        //     document.getElementById('artifactStatsSecondContainer').style.display = 'none';
-        //     document.getElementById('artifactStatsThirdMetricContainer').style.display = 'none';
-        //     document.getElementById('artifactStatsNoArtifactIsPresent').style.display = 'block';
-        // };
-
         // Get progressional items
         var progressionalItemsObj = await ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp, seasonalArtifactInfo);
 
@@ -255,26 +218,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
         // Declare table div then build the table
         relationsTable.div = document.getElementById('relationsTable');
         relationsTable.BuildTable();
-
-
-        // Append allRelations to table
-        // for (let index in relations.all) {
-            
-        //     // Find the category that the relation corresponds to
-        //     let relation = relations.all[index];
-        //     let category;
-        //     for (let item in progressionPropertyKeyValues) {
-
-        //         // If relation is in category, store in category
-        //         if (progressionPropertyKeyValues[item].includes(ParsePropertyNameIntoWord(relation[0], true))) {
-        //             category = item;
-        //         };
-        //     };
-
-        //     if (category) {
-        //         AddTableRow(table, [relation[0], ParsePropertyNameIntoWord(category), `${relation[1]}pts`]);
-        //     };
-        // };
 
         // Stop loading sequence
         CacheChangeItem('lastChar', characterId);

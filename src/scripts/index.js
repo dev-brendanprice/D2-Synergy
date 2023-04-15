@@ -16,9 +16,9 @@ CheckSession();
 // Check localStorage to determine if user has signed in already
 async function CheckSession() {
 
-    const acToken = JSON.parse(localStorage.getItem('accessToken')),
-        rsToken = JSON.parse(localStorage.getItem('refreshToken')),
-        comps = JSON.parse(localStorage.getItem('components'));
+    const acToken = JSON.parse(localStorage.getItem('accessToken'));
+    const rsToken = JSON.parse(localStorage.getItem('refreshToken'));
+    const comps = JSON.parse(localStorage.getItem('components'));
 
 
     // Indicates if localStorage is missing an item(s)
@@ -29,7 +29,7 @@ async function CheckSession() {
     // Redirect user through if localStorage has items
     if (acToken && rsToken && comps) {
         log('-> Session Exists, Redirecting..');
-        window.location.href = 'user.html';
+        window.location.href = 'user';
     };
 };
 
@@ -37,8 +37,9 @@ async function CheckSession() {
 // Generate a random string for state code
 // @int {len}
 async function GenerateRandomString(len) {
-    let result = ' ',
-        characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+    let result = ' ';
+    let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     for (let i = 0; i < len; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     };

@@ -41,17 +41,16 @@ var FixTables = async () => {
             delete axios.defaults.headers.common['X-API-Key'];
 
             // Request/Set new table
-            let suffix = await ReturnComponentSuffix(table),
-                newTable;
+            let suffix = await ReturnComponentSuffix(table);
+            let newTable;
 
-            newTable = await axios.get(`https://www.bungie.net${suffix}`)
+            // Bypass cache to avoid expired definitions
+            newTable = await axios.get(`https://www.bungie.net${suffix}?cachereset=${GenerateRandomString(4)}`)
                 .then((res) => {
                     return res;
                 })
                 .catch((error) => {
                     console.error(error);
-                    // Bypass cache as a last resort
-                    return axios.get(`https://www.bungie.net${suffix}?cachereset=${GenerateRandomString(4)}`);
                 });
 
             // Store the response in idb using idb-keyval

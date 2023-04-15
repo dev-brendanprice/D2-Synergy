@@ -10,7 +10,7 @@ export async function VerifyState() {
         window.sessionStorage.clear();
         window.location.reload();
     }
-    else { // ?? Window.window ???
+    else {
         window.localStorage.removeItem('stateCode');
     };
 };

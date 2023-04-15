@@ -3,12 +3,15 @@ import { axiosHeaders, log, UserProfile, UserProfileProgressions } from '../user
 import { MakeRequest } from "../modules/MakeRequest";
 
 // Fetch bungie user data
-export async function FetchBungieUser() {
+// @checkTokens {boolean}
+export async function FetchBungieUser(checkTokens = true) {
 
     log('-> FetchBungieUser Called');
 
     // Check user tokens, as we need to use the access token to fetch the user data
-    await CheckUserTokens();
+    if (checkTokens) {
+        await CheckUserTokens();
+    };
 
     // Get components
     const components = JSON.parse(window.localStorage.getItem('components'));
