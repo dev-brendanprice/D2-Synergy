@@ -4,6 +4,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet">
 
     <link rel="stylesheet" href="styles/user.css">
     <link rel="stylesheet" href="styles/src.css">
@@ -64,9 +65,9 @@
                 </div>
                 <div style="margin-top: 5px;font-size: 16px;">
                     <ul id="whatsNewFeaturesList">
-                        <li>Added this popup</li>
-                        <li>Added new settings options</li>
-                        <li>Cleaned up some UI</li>
+                        <li>Re-designed the navigation bar</li>
+                        <li>Added a help button in the navigation bar</li>
+                        <li>Changed the font to something that is more clear</li>
                         <li>Squashed some bugs</li>
                     </ul>
                 </div>
@@ -86,17 +87,28 @@
     <div id="navBarContainer">
 
         <div id="navBarTitleContainer">
+            <img id="navBarIcon" src="./static/ico/icon.png">
             <div id="navBarTitle">D2 Synergy</div>
-            <a id="navBarVersion" href="https://github.com/brendanprice2003/D2-Synergy/commits/main" target="_blank"></a>
+            <a id="navBarVersion" href="https://github.com/brendanprice2003/D2-Synergy/commits/main" target="_blank">Alpha v0.5.7</a>
         </div>
 
         <div id="middleNavBarItems">
-            <div data-containerName="bountiesContainer" id="navBarBountiesButton">Bounties</div>
-            <div data-containerName="seasonalChallengesContainer" id="navBarChallengesButton">Seasonal Challenges</div>
-            <div data-containerName="statisticsContainer" id="navBarStatisticsButton" style="display: none;">Statistics</div>
+            <div class="middleNavbarItemContainer">
+                <div data-containerName="bountiesContainer" id="navBarBountiesButton">Bounties</div>
+                <!-- <img class="middleNavbarItemUi" src="./static/ico/ui_line.svg"> -->
+            </div>
+            <div class="middleNavbarItemContainer">
+                <div data-containerName="seasonalChallengesContainer" id="navBarChallengesButton">Seasonal Challenges</div>
+                <!-- <img class="middleNavbarItemUi" src="./static/ico/ui_dot.svg"> -->
+            </div>
+            <div class="middleNavbarItemContainer">
+                <div data-containerName="statisticsContainer" id="navBarStatisticsButton">Statistics</div>
+                <!-- <img class="middleNavbarItemUi" src="./static/ico/ui_line.svg"> -->
+            </div>
         </div>
 
         <div id="rightNavBarItems">
+            <img class="navBarIcons" id="navBarHelpIcon" src="./static/ico/ui_help.svg" href="https://github.com/brendanprice2003/D2-Synergy/wiki/User-Guide" target="_blank">
             <img class="navBarIcons" id="navBarSettingsIcon" src="./static/ico/settings.svg">
             <img class="navBarIcons" id="navBarLogoutIcon" src="./static/ico/logout.svg">
         </div>
@@ -470,13 +482,16 @@
     
                     <div id="contentDisplayGridLayout">
                         <div class="contentDisplaySegment">
-                            <div class="contentHeading">Relations</div>
-                            <div id="contentSubHeadingContainer">
-                                <div style="display: flex;gap: 5px;">
+
+                            <div class="contentHeadingContainer">
+                                <div class="contentHeading">Relations</div>
+                                <div class="subHeadingContainer">
                                     <div id="relationsTotalField">420</div>
-                                    <div>Relations Found</div>
+                                    <div>Relations</div> 
                                 </div>
                             </div>
+
+                            <hr class="contentHeadingSeperator"></hr>
 
                             <div id="relationsTableContent">
 
@@ -596,57 +611,67 @@
                                         <img class="userHelpHoverIcon" id="tooltipIncludeSinglePoints" src="./static/ico/interface_help.webp">
                                     </div>
                                 </div>
-                                <div class="tooltipContainer" id="tooltipIncludeSinglePointContent">Include relations that have one relation. Hidden because... well.. a single point means it doesn't relate to anything!</div>
+                                <div class="tooltipContainer" id="tooltipIncludeSinglePointContent">Include relations that have one relation. -- A single point means it doesn't relate to anything! (besides itself)</div>
                             </div>
-                            <div class="warningTooltip">Please report any errors to <div class="warningTooltipLink" href="" onclick="window.open('https://twitter.com/_devbrendan', '_blank');">@brendanprice</div><div style="margin-top: -2px;">❤️</div><div class="warningTooltipLink hyperlinkBlue" href="" onclick="window.open('https://github.com/brendanprice2003/D2-Synergy/wiki/User-Guide#troubleshooting', '_blank');">Learn More</div></div>
                         </div>
 
                         <div class="contentDisplaySegment">
                             <div id="bountiesContainer">
-                                <div class="contentHeading">Bounties</div>
-                                <div id="contentSubHeadingContainer">
-                                    <div style="display: flex;gap: 5px;">
-                                        <div id="bountiesTotalField">0</div>
-                                        <div>Bounties</div>
-                                    </div>
-                                    <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
-                                    <div style="display: flex;gap: 5px;">
-                                        <div id="bountiesOutstandingField">0</div>
-                                        <div>Outstanding</div>
-                                    </div>
-                                    <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
-                                    <div style="display: flex;gap: 5px;">
-                                        <div id="bountiesCompletedField">0</div>
-                                        <div>Completed</div>
-                                    </div>
-                                    <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
-                                    <div style="display: flex;gap: 5px;">
-                                        <div id="bountiesExpiredField">0</div>
-                                        <div>Expired</div>
+
+                                <div class="contentHeadingContainer">
+                                    <div class="contentHeading">Bounties</div>
+                                    <div style="display: flex;gap: 2px;">
+                                        <div class="subHeadingContainer">
+                                            <div id="bountiesTotalField">0</div>
+                                            <div>Bounties</div>
+                                        </div>
+                                        <img src="./static/ico/dot.svg" class="subHeadingDotUI">
+                                        <div class="subHeadingContainer">
+                                            <div id="bountiesOutstandingField">0</div>
+                                            <div>Outstanding</div>
+                                        </div>
+                                        <img src="./static/ico/dot.svg" class="subHeadingDotUI">
+                                        <div class="subHeadingContainer">
+                                            <div id="bountiesCompletedField">0</div>
+                                            <div>Completed</div>
+                                        </div>
+                                        <img src="./static/ico/dot.svg" class="subHeadingDotUI">
+                                        <div class="subHeadingContainer">
+                                            <div id="bountiesExpiredField">0</div>
+                                            <div>Expired</div>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <hr class="contentHeadingSeperator"></hr>
+
                                 <div id="noBountiesTooltip">You don't have any bounties on this character.</div>
                                 <div id="bountyItems"></div>
-                                <div id="recommendationTooltip">Note: It is recommended that you have ~20 (completable) bounties for this process to work best.</div>
+                                <div id="recommendationTooltip">Note: It is recommended that you have ~20 (completable) bounties.</div>
                             </div>
                             <div id="seasonalChallengesContainer">
-                                <div class="contentHeading">Seasonal Challenges</div>
-                                <div id="contentSubHeadingContainer">
-                                    <div style="display: flex;gap: 5px;">
-                                        <div id="challengesTotalField">0</div>
-                                        <div>Challenges</div>
-                                    </div>
-                                    <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
-                                    <div style="display: flex;gap: 5px;">
-                                        <div id="challengesOutstandingField">0</div>
-                                        <div>Outstanding</div>
-                                    </div>
-                                    <img src="./static/ico/dot.svg" style="width: 12px;filter: invert(100%) brightness(50%);">
-                                    <div style="display: flex;gap: 5px;">
-                                        <div id="challengesCompletedField">0</div>
-                                        <div>Completed</div>
+
+                                <div class="contentHeadingContainer">
+                                    <div class="contentHeading">Seasonal Challenges</div>
+                                    <div style="display: flex;gap: 2px;">
+                                        <div class="subHeadingContainer">
+                                            <div id="challengesTotalField">0</div>
+                                            <div>Challenges</div>
+                                        </div>
+                                        <img src="./static/ico/dot.svg" class="subHeadingDotUI">
+                                        <div class="subHeadingContainer">
+                                            <div id="challengesOutstandingField">0</div>
+                                            <div>Outstanding</div>
+                                        </div>
+                                        <img src="./static/ico/dot.svg" class="subHeadingDotUI">
+                                        <div class="subHeadingContainer">
+                                            <div id="challengesCompletedField">0</div>
+                                            <div>Completed</div>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <hr class="contentHeadingSeperator"></hr>
 
                                 <div class="seasonalChallengesUIContainer">
                                     <div class="seasonalChallengePageButton" id="previousSeasonalChallengePageButton">
@@ -832,6 +857,8 @@
             </div>
         </div>
     </div>
+
+    <div class="warningTooltip">This is still Alpha. Please report any errors to <div class="warningTooltipLink" href="" onclick="window.open('https://twitter.com/_devbrendan', '_blank');">@brendanprice</div><div style="margin-top: -2px;">❤️</div><div class="warningTooltipLink hyperlinkBlue" href="" onclick="window.open('https://github.com/brendanprice2003/D2-Synergy/wiki/User-Guide#troubleshooting', '_blank');">Learn More</div></div>
 
     <div id="overlays"></div>
 

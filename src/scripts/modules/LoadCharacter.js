@@ -52,6 +52,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
 
         // Clear (emtpy fields that are going to change) DOM content
         document.getElementById('bountyItems').innerHTML = '';
+        document.getElementById('seasonalChallengeItems').innerHTML = '';
         document.getElementById('overlays').innerHTML = '';
 
         // Get chosen character via characterId

@@ -90,10 +90,10 @@
         width: 200px;
     }
 
-    #navBarTitle {
+    /* #navBarTitle {
         margin-top: 2px;
         font-size: 26px;
-    }
+    } */
 
     #navBarVersion {
         display: none;

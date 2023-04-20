@@ -7,7 +7,7 @@
 :root {
     --SegoeUIFont:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     --TabularNumsFont:'Inter', sans-serif;
-    --DestinyUIFont:"Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+    --UIFont:'SF Pro Display', sans-serif;
 
     /* Deprecated */
     --blurFilterAmount:3px;
@@ -29,7 +29,7 @@
 
 body {
     user-select: none;
-    font-family: var(--DestinyUIFont);
+    font-family: var(--UIFont);
     background-color: #22272e;
 }
 
@@ -67,7 +67,7 @@ h2 {
 
 #navBarContainer {
     position: fixed;
-    display: inline-flex;
+    display: flex;
     top: 2px;
     left: 0;
     height: 45px;
@@ -79,22 +79,45 @@ h2 {
     z-index: 200;
 }
 
+.middleNavbarItemContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#navBarHelpIcon {
+    filter: unset;
+    width: 22px;
+}
+
 #navBarTitleContainer {
+    display: flex;
     margin-left: 15px;
     top: 5px;
     color: white;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
+}
+
+#navBarIcon {
+    margin-top: 2px;
+    margin-right: 7px;
+    width: 20px;
+    height: 20px;
 }
 
 #navBarTitle {
-    display: inline-block;
-    font-size: 30px;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 #navBarVersion {
-    display: inline-block;
-    font-size: 15px;
+    margin-top: 6px;
+    font-size: 13px;
     color: #677474;
+    opacity: 0;
     text-decoration: none;
 }
 
@@ -127,12 +150,11 @@ h2 {
 
 #middleNavBarItems {
     display: flex;
-    margin-top: 3px;
+    margin-top: -2px;
     margin-right: 180px;
     gap: 40px;
     color: #BFBFBF;
     font-size: 18px;
-    
     align-items: center;
 }
 
@@ -161,7 +183,6 @@ h2 {
     width: 28px;
     filter: invert(65%);
     cursor: pointer;
-    
 }
 
 #navBarSettingsIcon:hover {
@@ -231,13 +252,16 @@ h2 {
     display: flex;
     padding: 8px;
     padding-top: 10px;
+    padding-right: 15px;
+    margin-left: 15px;
     margin-bottom: 15px;
+    left: 0;
     bottom: 0;
-    width: 90%;
     gap: 5px;
-    border: 1px rgb(255, 175, 15) solid;
+    border: 1px #ffaf0f solid;
     border-radius: 5px;
-    background-color: rgba(255, 158, 54, 0.634);
+    background-color: #ff9e36a2;
+    color: white;
 }
 
 .warningTooltipLink {

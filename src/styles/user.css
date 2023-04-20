@@ -11,7 +11,8 @@ body {
 }
 
 .contentHeading {
-    font-size: var(--fontSizeHeading);
+    font-size: 19px;
+    color: #CECECE;
 }
 
 #contextMenuSettingsMobile {
@@ -307,12 +308,13 @@ body {
 
 .contentDisplaySegment {
     position: relative;
-    padding: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
     height: 90vh;
-    width: 95vw;
-    border: 1px #56606d solid;
+    width: 50vw;
+    /* border: 1px #56606d solid;
     background-color: #2e3238;
-    border-radius: 8px;
+    border-radius: 8px; */
 }
 
 #relationsTableContent {
@@ -606,10 +608,26 @@ tr:nth-child(even) {
     font-size: var(--fontSizeContent);
 }
 
-#contentSubHeadingContainer {
+hr.contentHeadingSeperator {
+    margin-top: 5px;
+    height: 2px;
+    border: transparent;
+    background-color: #47484B;
+}
+
+.contentHeadingContainer {
     display: flex;
     font-size: 14px;
     color: rgb(200, 200, 200);
+    justify-content: space-between;
+}
+
+.subHeadingContainer {
+    display: flex;
+    margin-top: 5px;
+    gap: 5px;
+    font-size: 14px;
+    color: #6D6D6D;
 }
 
 #toggleButtonsContainer {
@@ -989,13 +1007,19 @@ input:checked+.slider:before {
 
 .seasonalChallengesUIContainer {
     display: flex;
-    margin-top: 15px;
+    margin-top: 11px;
     gap: 10px;
 }
 
 #seasonalChallengesContainer, #statisticsContainer {
     display: none;
-    font-family: var(--DestinyUIFont);
+    font-family: var(--UIFont);
+}
+
+.subHeadingDotUI {
+    margin-top: 3px;
+    width: 12px;
+    filter: invert(100%) brightness(50%);
 }
 
 .seasonalChallengePageButton {
@@ -1080,7 +1104,7 @@ input:checked+.slider:before {
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: 600;
-    font-family: var(--DestinyUIFont);
+    font-family: var(--UIFont);
 }
 
 hr.dropdownLine {
@@ -1158,7 +1182,7 @@ hr.dropdownSubline {
     display: none;
     margin-top: 5px;
     font-style: italic;
-    color: rgba(17, 17, 17, 0.83);
+    color: #4d4d4d;
 }
 
 .statsColumnContainer {
@@ -1191,7 +1215,7 @@ hr.dropdownSubline {
 }
 
 .statContainerSubheading {
-    font-size: 13px;
+    font-size: 12px;
     color: #A5A5A5;
 }
 
@@ -1223,7 +1247,7 @@ hr.dropdownSubline {
 }
 
 .metricSubheading {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.4;
     color: #fff9;
 }
@@ -1284,6 +1308,7 @@ hr.dropdownSubline {
     -webkit-line-clamp: 1; /* number of lines to show */
             line-clamp: 1; 
     -webkit-box-orient: vertical;
+    font-size: 14px;
 }
 
 .challengeRewardsContainer {
@@ -1295,12 +1320,12 @@ hr.dropdownSubline {
 }
 
 .challengeRewardName {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .singleChallengeRewardContainer {
     display: flex;
-    margin-left: 10px;
+    margin-left: 9px;
 }
 
 .challengeRewardIcon {

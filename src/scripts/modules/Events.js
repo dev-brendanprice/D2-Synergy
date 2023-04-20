@@ -745,6 +745,7 @@ export async function BuildWorkspace() {
     
     // Put version number in navbar and settings footer
     document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+    document.getElementById('navBarVersion').style.opacity = 100;
     document.getElementById('settingsFooterVersionField').innerHTML = `${import.meta.env.version}`;
     document.getElementById('popupVersion').innerHTML = `${import.meta.env.version}`;
 
