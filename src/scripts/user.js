@@ -146,12 +146,28 @@ export var UserProfile = {
         this.misc[key] = val;
     }
 };
+
+// User progressions - might deprecate
 export const UserProfileProgressions = {
 
     ProfileProgressions: {},
 
     AssignProfileProgressions: function(progressions) {
         this.ProfileProgressions = progressions;
+    }
+};
+
+// User XP modifiers
+export const UserXpModifiers = {
+
+    // Store as (whole number) percentages
+    seasonPass: 0,
+    sharedWisdom: 0,
+    wellRested: 0,
+    ghostMod: 0,
+
+    AssignModifier: function(type, val) {
+        this[type] = val;
     }
 };
 
@@ -208,6 +224,26 @@ export var accentColor = {
         for (let element of document.getElementsByClassName('settingCheckbox')) {
             element.style.accentColor = color;
         };
+    }
+};
+
+// Season pass level for specific rewards (array based)
+export var seasonPassLevelStructure = {
+
+    sharedWisdomLevels: [],
+
+    AssignLevelStructure: function(type, arr) {
+        this[type] = arr;
+    }
+};
+
+// User transistory data
+export var userTrasistoryData = {
+
+    highestSeasonPassRankInFireteam: 0,
+
+    AssignTransistoryData: function(type, val) {
+        this[type] = val;
     }
 };
 

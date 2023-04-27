@@ -534,43 +534,48 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     AddValueToElementInner('bountiesCompletedField', amountOfCompletedBounties);
     AddValueToElementInner('bountiesOutstandingField', amountOfBounties - amountOfCompletedBounties);
 
-    // Calculate artifact XP
-    let artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
-    let artifactPointProgressionDefinition = progressionDefinitions[artifact.pointProgression.progressionHash];
-    let artifactPowerBonusDefinition = progressionDefinitions[artifact.powerBonusProgression.progressionHash];
-
-    /*
-
-        Get current stepIndex and store because that is the current level we are at
-        If the yield surpasses the required XP to surpass this level, then add the next levels' progress to the total
-
-        Calculate the how many levels are going to be gained based off this, formatting it to n.nn (1.23 for example)
-
-    */
-
     // ..
+    let artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
+    // let artifactPointProgressionDefinition = progressionDefinitions[artifact.pointProgression.progressionHash];
+    // let artifactPowerBonusDefinition = progressionDefinitions[artifact.powerBonusProgression.progressionHash];
 
 
     // Check if there are no bounties
     if (amountOfBounties === 0) {
 
-        // Toggle no items tooltip
+        // No items tooltip
         document.getElementById('noBountiesTooltip').style.display = 'block';
 
-        // Set modified xp values to 0
+        // Artifact power bonus fraction fields
+        AddValueToElementInner('artifactPowerBonusProgressField', 0);
+        AddValueToElementInner('artifactPowerBonusCeilingField', 0);
+
+        // Artifact mod levels fraction fields
+        AddValueToElementInner('artifactModLevelsProgressField', 0);
+        AddValueToElementInner('artifactModLevelsCeilingField', 0);
+
+        // Season pass levels and total XP
         AddValueToElementInner('xpWithModField', 0);
-        AddValueToElementInner('artifactLevelsWithModField', 0);
         AddValueToElementInner('SeasonPassLevelsWithModField', 0);
 
     }
     else if (amountOfBounties > 0) {
 
-        // Toggle no items tooltip
+        // No items tooltip
         document.getElementById('noBountiesTooltip').style.display = 'none';
 
-        // Set modified xp values
+        // Artifact power bonus fraction fields
+        let totalArtifactPowerBonusXp = artifact.powerBonusProgression.progressToNextLevel + totalXpYieldWithModifiers;
+        AddValueToElementInner('artifactPowerBonusProgressField', InsertSeperators(totalArtifactPowerBonusXp));
+        AddValueToElementInner('artifactPowerBonusCeilingField', InsertSeperators(artifact.powerBonusProgression.nextLevelAt));
+
+        // Artifact mod levels fraction fields
+        let totalArtifactModLevelsXp = artifact.pointProgression.progressToNextLevel + totalXpYieldWithModifiers;
+        AddValueToElementInner('artifactModLevelsProgressField', InsertSeperators(totalArtifactModLevelsXp));
+        AddValueToElementInner('artifactModLevelsCeilingField', InsertSeperators(artifact.pointProgression.nextLevelAt));
+
+        // Season pass levels and total XP
         AddValueToElementInner('xpWithModField', InsertSeperators(totalXpYieldWithModifiers));
-        AddValueToElementInner('artifactLevelsWithModField', 0);
         AddValueToElementInner('SeasonPassLevelsWithModField', InsertSeperators(totalXpYieldWithModifiers / 100_000));
     };
     // [ -- END OF BOUNTIES -- ]

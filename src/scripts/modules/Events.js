@@ -14,7 +14,7 @@ import { getNextTuesday } from './GetNextReset.js';
 import { FetchBungieUser } from '../oauth/FetchBungieUser.js';
 
 
-// Utilities
+// Misc
 const log = console.log.bind(console),
       localStorage = window.localStorage;
 var secretCount = 0;
@@ -326,6 +326,12 @@ export async function AddEventListeners() {
 
         settingsGridContainer.style.display = 'flex';
         containerThatDoesNotContainSettings.style.display = 'none';
+    });
+
+    // (navbar) Help button
+    AddListener('navBarHelpIcon', 'click', function() {
+        // Open new tab and focus it
+        window.open('https://github.com/brendanprice2003/D2-Synergy/wiki/User-Guide', '_blank').focus();
     });
 
 

@@ -489,6 +489,10 @@ tr:nth-child(even) {
     color: rgb(190, 255, 255);
 }
 
+#artifactPowerBonusProgressField:after, #artifactModLevelsProgressField:after {
+    content: " /";
+}
+
 #bottomMiddleNavBarItems {
     display: none;
     position: fixed;

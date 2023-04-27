@@ -22,7 +22,7 @@ export async function CheckUserTokens () {
 
     // Self function to refresh tokens
     const RefreshTokens = async function () {
-        isAcTokenExpired ? log('---> Access Token Expired') : log('---> Refresh Token Expired');
+        log('---> Tokens expired');
         await axios.post('https://www.bungie.net/Platform/App/OAuth/token/', `grant_type=refresh_token&refresh_token=${rsToken.value}`, AuthConfig)
             .then(res => {
 
@@ -54,7 +54,7 @@ export async function CheckUserTokens () {
                         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
                 };
             });
-        isAcTokenExpired ? log('---> Access Token Refreshed') : log('---> Refresh Token Refreshed');
+            log('---> Tokens refreshed');
     };
 
 

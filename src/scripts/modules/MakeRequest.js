@@ -34,7 +34,7 @@ export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user'
 
         // Append random string as query param to avoid CF cache
         if (utils.avoidCache) {
-            url += `&cachereset=${GenerateRandomString(10)}`;
+            url += `&cachebust=${GenerateRandomString(10)}`;
         };
 
         // Make request, return if successful, else check for error status

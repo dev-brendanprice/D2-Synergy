@@ -1,6 +1,7 @@
-import { CheckUserTokens } from "./CheckUserTokens";
+import { CheckUserTokens } from './CheckUserTokens';
 import { axiosHeaders, log, UserProfile, UserProfileProgressions } from '../user.js';
-import { MakeRequest } from "../modules/MakeRequest";
+import { MakeRequest } from '../modules/MakeRequest';
+import { FetchPrimaryUserMembership } from '../modules/FetchPrimaryUserMembership.js';
 
 // Fetch bungie user data
 // @checkTokens {boolean}
@@ -29,35 +30,21 @@ export async function FetchBungieUser(checkTokens = true) {
 
     // Fetch linked profiles if memshipType or destinyMemshipId don't exist -- 254 as membershipType
     if (!membershipType || !destinyMembershipId) {
-        await MakeRequest(`https://www.bungie.net/Platform/Destiny2/254/Profile/${components.membership_id}/LinkedProfiles/?getAllMemberships=true`, axiosConfig)
-        .then((response) => {
 
-            // Find the most recently played on profile
-            let mostRecent = new Date(0);
-            let mostRecentIndex = 0;
-            for (let i = 0; i < response.data.Response.profiles.length; i++) {
-                if (new Date(response.data.Response.profiles[i].dateLastPlayed) > new Date(mostRecent)) {
-                    mostRecent = new Date(response.data.Response.profiles[i].dateLastPlayed);
-                    mostRecentIndex = i;
-                };
-            };
-    
-            // Store response
-            membershipType = response.data.Response.profiles[mostRecentIndex].membershipType;
-            destinyMembershipId = response.data.Response.profiles[mostRecentIndex].membershipId;
-    
-            // Session storage
-            window.sessionStorage.setItem('membershipType', membershipType);
-            window.sessionStorage.setItem('destinyMembershipId', destinyMembershipId);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        const primaryUserProfile = await FetchPrimaryUserMembership(components.membership_id);
+
+        // Store memship id and type
+        membershipType = primaryUserProfile.membershipType;
+        destinyMembershipId = primaryUserProfile.membershipId
+
+        // Store in session storage
+        window.sessionStorage.setItem('membershipType', membershipType)
+        window.sessionStorage.setItem('destinyMembershipId', destinyMembershipId);
     };
 
 
     // Fetch profile
-    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900,1200`, axiosConfig)
+    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900,1000,1200`, axiosConfig)
     .then((response) => {
 
         // Assign user profile and progression data
