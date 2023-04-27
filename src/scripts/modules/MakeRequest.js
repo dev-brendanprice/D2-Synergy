@@ -26,7 +26,7 @@ export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user'
                 window.localStorage.clear();
                 window.sessionStorage.clear();
                 indexedDB.deleteDatabase('keyval-store');
-                window.location.href = 'index.html';
+                window.location.href = 'home.html';
 
                 return error;
             };
