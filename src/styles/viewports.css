@@ -262,6 +262,19 @@
     #overlays {
         display: none;
     }
+
+    .warningTooltip {
+        display: none;
+    }
+
+    .mobileSecond {
+        margin-top: 30px;
+    }
+
+    .contentDisplaySegment {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
 }
 
 
