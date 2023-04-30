@@ -22,11 +22,11 @@ export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user'
                     return error;
                 };
 
-                // Else, check for server down on any other page (user.html)
+                // Else, Go back to welcome page, with isOutage params (this is likely a bungie.net error)
                 window.localStorage.clear();
                 window.sessionStorage.clear();
                 indexedDB.deleteDatabase('keyval-store');
-                window.location.href = 'index.html';
+                window.location.href = '/welcome?isOutage=true';
 
                 return error;
             };
