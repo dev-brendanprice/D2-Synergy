@@ -86,7 +86,7 @@
 
 @media screen and (max-width: 950px) {
     #navBarTitleContainer {
-        margin-left: -19px;
+        /* margin-left: -19px; */
         width: 200px;
     }
 
