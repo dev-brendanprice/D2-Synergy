@@ -9,11 +9,29 @@ module.exports = {
     out: './build'
   },
   devOptions: {
-    port: 5500
+    port: 5500,
+    open: 'none'
   },
   optimize: {
     minify: true
   },
+  routes: [
+    {
+      match: 'routes',
+      src: '/user',
+      dest: '/user.html',
+    },
+    {
+      match: 'routes',
+      src: '/welcome',
+      dest: '/index.html',
+    },
+    {
+      match: 'routes',
+      src: '.*',
+      dest: '/index.html',
+    }
+  ],
   env: {
     version: `Alpha v${packageJson.version}`,
     CLIENT_ID: process.env.CLIENT_ID,

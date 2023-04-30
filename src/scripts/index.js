@@ -36,7 +36,7 @@ async function CheckSession() {
 
 // Generate a random string for state code
 // @int {len}
-async function GenerateRandomString(len) {
+function GenerateRandomString(len) {
 
     let result = ' ';
     let characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -47,8 +47,23 @@ async function GenerateRandomString(len) {
 };
 
 
+// Check for outage from previous redirect using the isOutage query
+function CheckForOutageViaParams() {
+
+    let urlParams = new URLSearchParams(window.location.search);
+    let isOutage = urlParams.get('isOutage');
+
+    if (isOutage) {
+        document.getElementById('serverDeadContainer').style.display = 'block';
+    };
+};
+
+
 // Listen for DOM load
 window.addEventListener('DOMContentLoaded', function () {
+
+    // Check for outage via the query params of a previous redirect
+    CheckForOutageViaParams();
 
     const stateCode = GenerateRandomString(128);
 
@@ -66,4 +81,7 @@ window.addEventListener('DOMContentLoaded', function () {
     .catch((error) => {
         console.error(error);
     });
+
+    // Omit query params from URL on reload
+    window.history.pushState({}, window.location.host, 'welcome');
 });
