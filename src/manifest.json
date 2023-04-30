@@ -47,5 +47,5 @@
         }
     ],
     "theme_color": "#000000",
-    "display": "fullscreen"
+    "display": "minimal-ui"
 }
