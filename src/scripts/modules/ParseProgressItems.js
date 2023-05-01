@@ -11,7 +11,9 @@ import {
     objectiveDefinitions,
     UserProfileProgressions, 
     progressionDefinitions, 
-    UserProfile } from '../user.js';
+    UserProfile,
+    userTrasistoryData,
+    seasonPassLevelStructure } from '../user.js';
 import { MakeBountyElement } from './MakeBountyElement.js';
 import { ParseSeasonalChallenges } from './ParseSeasonalChallenges.js';
 import { ReturnSeasonPassProgressionStats } from './ReturnSeasonPassProgressionStats.js';
@@ -362,7 +364,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Push HTML fields for challenges header stats
     document.getElementById('challengesTotalField').innerHTML = `${Object.keys(currentSeasonalChallenges).length}`;
-    document.getElementById('challengesOutstandingField').innerHTML = notCompletedChallengesCount;
     document.getElementById('challengesCompletedField').innerHTML = completedChallengesCount;
     // [ -- END OF SEASONAL CHALLENGES -- ]
 
@@ -532,13 +533,31 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     AddValueToElementInner('bountiesTotalField', amountOfBounties);
     AddValueToElementInner('bountiesExpiredField', amountOfExpiredBounties);
     AddValueToElementInner('bountiesCompletedField', amountOfCompletedBounties);
-    AddValueToElementInner('bountiesOutstandingField', amountOfBounties - amountOfCompletedBounties);
+
+
+    // User transistory (shared wisdom mainly)
+    let highestSeasonPassRankInFireteam = userTrasistoryData.highestSeasonPassRankInFireteam;
+    let sharedWisdomLevels = seasonPassLevelStructure.sharedWisdomLevels;
+    let sharedWisdomPercentage = 0;
+    
+    // Find the highest shared wisdom modifier via fireteam members
+    for (let level of sharedWisdomLevels) {
+        if (highestSeasonPassRankInFireteam > level) {
+            sharedWisdomPercentage += 2;
+        };
+    };
+
+    // Change shared wisdom modifier elements
+    document.getElementById('sharedWisdomBonusField').innerHTML = `+${sharedWisdomPercentage}%`;
+    document.getElementById('sharedWisdomBonusText').style.textDecoration = 'unset';
+    document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+    
+
 
     // ..
     let artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
     // let artifactPointProgressionDefinition = progressionDefinitions[artifact.pointProgression.progressionHash];
     // let artifactPowerBonusDefinition = progressionDefinitions[artifact.powerBonusProgression.progressionHash];
-
 
     // Check if there are no bounties
     if (amountOfBounties === 0) {

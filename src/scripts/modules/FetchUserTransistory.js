@@ -9,7 +9,7 @@ import { GenerateRandomString } from './GenerateRandomString.js';
 import { FetchPrimaryUserMembership } from './FetchPrimaryUserMembership.js';
 
 // Fetch transistory data from current user
-export function FetchUserTransistory() {
+export async function FetchUserTransistory() {
 
     // Fetch config + Query params
     // const membershipType = UserProfile.membershipType;
@@ -22,8 +22,8 @@ export function FetchUserTransistory() {
     };
 
     // Request user's transistory data
-    MakeRequest(`https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018471667515/?components=1000&cachebust=${GenerateRandomString(12)}`, axiosConfig)
-    .then((response) => {
+    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018526359175/?components=1000&cachebust=${GenerateRandomString(12)}`, axiosConfig)
+    .then( async (response) => {
 
         const transistoryData = response.data.Response.profileTransitoryData;
         let fireteamMembers = [];
@@ -32,16 +32,18 @@ export function FetchUserTransistory() {
         if (transistoryData.data) {
             if (transistoryData.data.partyMembers.length > 1) {
 
+                log('User is in a fireteam');
+
                 // Store fireteam members
                 fireteamMembers = transistoryData.data.partyMembers;
 
                 // Exclude user from fireteam members
                 fireteamMembers = fireteamMembers.filter((member) => {
-                    return parseInt(member.membershipId) !== 4611686018471667515;
+                    return parseInt(member.membershipId) !== 4611686018526359175;
                 });
 
                 // Get user with highest season pass rank
-                FindHighestUser(fireteamMembers);
+                await FindHighestUser(fireteamMembers);
                 return;
             };
         };
@@ -57,7 +59,7 @@ export function FetchUserTransistory() {
 
 async function FindHighestUser(fireteamMembers) {
 
-    // ..
+    // Config
     let highestSeasonRankFromMembers = 0;
     const axiosConfig = {
         headers: {
@@ -66,9 +68,9 @@ async function FindHighestUser(fireteamMembers) {
         }
     };
 
+    // Iterate fireteam members
     for (let user of fireteamMembers) {
 
-        // ..
         let userDestinyMembershipId = user.membershipId;
         let userDestinyMembershipType;
 
@@ -85,14 +87,17 @@ async function FindHighestUser(fireteamMembers) {
             let seasonProgression = characterProgressions[seasonDefinitions[UserProfile.currentSeasonHash].seasonPassProgressionHash];
             let seasonRank = seasonProgression.level;
 
-            if (seasonRank === 100) {
-                highestSeasonRankFromMembers = seasonRank;
+            // Check if members season rank is higher than 100, store 100 as the highest
+            if (seasonRank >= 100) {
+                highestSeasonRankFromMembers = 100;
                 return;
             };
 
+            // Check if members season rank is higher than the stored rank, if so replace with current members season rank
             if (seasonRank > highestSeasonRankFromMembers) {
                 highestSeasonRankFromMembers = seasonRank;
             };
+
         })
         .catch((error) => {
             console.error(error);

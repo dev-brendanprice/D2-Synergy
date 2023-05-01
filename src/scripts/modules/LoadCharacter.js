@@ -176,7 +176,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
 
                 // Pull info from the current season
                 seasonProgressionInfo = CharacterProgressions[seasonDefinitions[hash].seasonPassProgressionHash];
-                log(seasonProgressionInfo)
                 seasonPassInfo = seasonPassDefinitions[seasonDefinitions[hash].seasonPassHash];
                 prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
                 seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
@@ -211,7 +210,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
         GetSeasonPassRewardsStructure(rewardsTrack);
         
         // Get shared wisdom value (if any) from transistory data
-        FetchUserTransistory();
+        await FetchUserTransistory();
 
         // Get progressional items
         var progressionalItemsObj = await ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp, seasonalArtifactInfo);

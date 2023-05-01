@@ -1,6 +1,4 @@
-import { seasonPassLevelStructure, itemDefinitions, log } from "../user";
-
-// ..
+import { seasonPassLevelStructure, itemDefinitions } from "../user";
 
 // @rewardsTrack {object}
 export function GetSeasonPassRewardsStructure(rewardsTrack) {
