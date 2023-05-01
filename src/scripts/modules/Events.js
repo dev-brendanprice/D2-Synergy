@@ -820,7 +820,15 @@ export async function BuildWorkspace() {
             return;
         };
 
-        // If no result, set to false
+        if (result === undefined) {
+
+            // If it has not been set, use defaults
+            document.getElementById('checkboxShowPopup').checked = true;
+            CacheChangeItem('showPopup', true);
+            return;
+        };
+
+        // If result is false, set .checked to false
         document.getElementById('checkboxShowPopup').checked = false;
     })
     .catch((error) => {
