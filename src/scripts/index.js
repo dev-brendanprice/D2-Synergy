@@ -83,5 +83,5 @@ window.addEventListener('DOMContentLoaded', function () {
     });
 
     // Omit query params from URL on reload
-    window.history.pushState({}, window.location.host, 'welcome');
+    window.history.pushState({}, window.location.host, `${import.meta.env.HOME_URL}`);
 });

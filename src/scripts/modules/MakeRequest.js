@@ -26,7 +26,7 @@ export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user'
                 window.localStorage.clear();
                 window.sessionStorage.clear();
                 indexedDB.deleteDatabase('keyval-store');
-                window.location.href = '/welcome?isOutage=true';
+                window.location.href = `${import.meta.env.HOME_URL}/?isOutage=true`;
 
                 return error;
             };
