@@ -46,7 +46,7 @@ export function ReplaceNamedStringVariables(descriptor) {
                 let substringToReplace = descriptor.slice(indices[i], indices[i+1]+1);
                 descriptor = descriptor.replace(substringToReplace, variableNameElement);
 
-                log(descriptor);
+                // log(descriptor);
             };
         };
     };
