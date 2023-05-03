@@ -100,6 +100,24 @@ export const GhostXpMods = {
     3292232295: '12'
 };
 
+// Seasonal challenge completion rewards
+// Corresponding bright dust values
+export const rewardsBasedOnChallengerXP = {
+    'Challenger XP': 0,
+    'Challenger XP+': 75,
+    'Challenger XP++': 150,
+    'Challenger XP+++': 300
+};
+export const rewardsBasedOnSingularItems = {
+    'Challenger XP': 25_000,
+    'Challenger XP+': 50_000,
+    'Challenger XP++': 100_000,
+    'Challenger XP+++': 200_000,
+    'Large Bright Dust Pile': 4000,
+    'War Table Upgrade': 1,
+    'Trials of Osiris Weapon': 1
+};
+
 // Bounty type
 export const itemTypeKeys = [
     'weekly',

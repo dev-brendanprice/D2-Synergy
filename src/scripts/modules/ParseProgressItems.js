@@ -2,7 +2,9 @@ import {
     vendorKeys,
     itemTypeKeys,
     baseYields,
-    petraYields } from './SynergyDefinitions.js'
+    petraYields,
+    rewardsBasedOnChallengerXP,
+    rewardsBasedOnSingularItems } from './SynergyDefinitions.js'
 import {
     seasonDefinitions,
     recordDefinitions,
@@ -257,15 +259,47 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         // Add reward items to the challenge
         if (currentSeasonalChallenges[challengeHash].rewardItems) {
 
+            // Loop over challenge reward items
             let challengeRewardItems = currentSeasonalChallenges[challengeHash].rewardItems;
-            for (let reward of challengeRewardItems) {
+            for (let i=0; i<challengeRewardItems.length; i++) {
+
+                // root reward from current iteration
+                let reward = challengeRewardItems[i];
                 
+                // Create DOM elements
                 let rewardContainer = document.createElement('div');
                 let rewardName = document.createElement('div');
                 let rewardIcon = document.createElement('img');
 
+                // Get corresponding reward values, based on the reward name
+                let rewardUiName = itemDefinitions[reward.itemHash].displayProperties.name;
+                let previousRewardUiName;
+
+                // Check the next reward is bright dust, if so go to the previous iteration to get the corresponding reward value
+                if (challengeRewardItems[i-1]) {
+
+                    previousRewardUiName = itemDefinitions[challengeRewardItems[i-1].itemHash].displayProperties.name;
+                    let currentRewardName = itemDefinitions[challengeRewardItems[i].itemHash].displayProperties.name;
+
+                    // Bright dust reward value
+                    if (previousRewardUiName.includes('Challenger XP')) {
+                        let rewardValue = InsertSeperators(rewardsBasedOnChallengerXP[previousRewardUiName]);
+                        rewardName.innerHTML = `${currentRewardName} (${rewardValue})`;
+                    };
+                }
+
+                // Else, use reward values based on singular items
+                else {
+                    let rewardValue = InsertSeperators(rewardsBasedOnSingularItems[rewardUiName]);
+                    rewardName.innerHTML = `${rewardUiName} (${rewardValue})`;
+
+                    // ..
+                    if (rewardUiName.includes('Challenger XP')) {
+                        // log(rewardUiName, rewardValue);
+                    };
+                };
+
                 rewardContainer.className = 'singleChallengeRewardContainer';
-                rewardName.innerHTML = itemDefinitions[reward.itemHash].displayProperties.name;
                 rewardIcon.src = `https://www.bungie.net${itemDefinitions[reward.itemHash].displayProperties.icon}`;
                 rewardName.className = 'challengeRewardName';
                 rewardIcon.className = 'challengeRewardIcon';

@@ -1074,8 +1074,7 @@ input:checked+.slider:before {
 
 .challengeContainerNotComplete {
     border: 2px solid #8C8C8C;
-    background-color: #3c3c3c76;
-    background: linear-gradient(transparent, transparent, transparent, rgba(10, 111, 132, 0.5));
+    background: linear-gradient(#59595953, #59595953, #59595953, #0d91ab80);
 }
 
 .challengeContainerComplete {
