@@ -407,8 +407,8 @@
                                         <div>
                                             <div style="position: absolute;margin-top: -1px;margin-left: 1px;width: 10px;height: 18px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
                                             <div style="position: absolute;margin-top: -1px;margin-left: 1px;width: 10px;height: 36px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
-                                            <div style="position: absolute;margin-top: 70px;margin-left: 1px;width: 10px;height: 36px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
-                                            <div style="position: absolute;margin-top: 24px;margin-left: 1px;width: 10px;height: 65px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
+                                            <div style="position: absolute;margin-top: 60px;margin-left: 1px;width: 10px;height: 36px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
+                                            <div style="position: absolute;margin-top: 16px;margin-left: 1px;width: 10px;height: 65px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
                                         </div>
                                         <div style="margin-top: 8px;padding-left: 16px;">
                                             <div>
@@ -432,7 +432,7 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div style="width: 240px;">
                             <div id="dropdownModifiers" class="dropdownContainer">
                                 <div style="color: gray;font-size: 14px;">Modifiers</div>
                                 <hr class="dropdownLine">
@@ -440,7 +440,7 @@
                             </div>
                             <div id="modifiersDropdownContainer">
                                 <div id="dropdownContentContainer">
-                                    <div class="modifierContainer" style="margin-top: 5px;">
+                                    <div class="modifierContainer">
                                         <img class="modifierCheckmarkIcon" id="seasonPassBonusCheckmarkIcon" src="./static/ico/checkmark.svg">
                                         <div id="seasonPassBonusText">Season Pass Bonus</div>
                                         <div class="modifierValue" id="seasonPassBonusField">--</div>
@@ -857,7 +857,12 @@
         </div>
     </div>
 
-    <div class="warningTooltip">This is still Alpha. Please report any errors to <div class="warningTooltipLink" href="" onclick="window.open('https://twitter.com/_devbrendan', '_blank');">@brendanprice</div><div style="margin-top: -2px;">❤️</div><div class="warningTooltipLink hyperlinkBlue" href="" onclick="window.open('https://github.com/brendanprice2003/D2-Synergy/wiki/User-Guide#troubleshooting', '_blank');">Learn More</div></div>
+    <div class="warningTooltip" id="warningTooltip">This is still Alpha. Please report any errors to 
+        <div class="warningTooltipLink" href="" onclick="window.open('https://twitter.com/_devbrendan', '_blank');">@brendanprice</div>
+        <div style="margin-top: -2px;">❤️</div>
+        <div class="warningTooltipLink hyperlinkBlue" href="" onclick="window.open('https://github.com/brendanprice2003/D2-Synergy/wiki/User-Guide#troubleshooting', '_blank');">Learn More</div>
+        <img id="warningTooltipCloseButton" src="./static/ico/close.svg">
+    </div>
 
     <div id="overlays"></div>
 

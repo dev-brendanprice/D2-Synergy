@@ -592,7 +592,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
         // Artifact power bonus fraction fields
         let totalArtifactPowerBonusXp = artifact.powerBonusProgression.progressToNextLevel + totalXpYieldWithModifiers;
-        AddValueToElementInner('artifactPowerBonusProgressField', `${artifact.powerBonusProgression.progressToNextLevel} + ${totalXpYieldWithModifiers} = ${totalArtifactPowerBonusXp}`);
+        AddValueToElementInner('artifactPowerBonusProgressField', `${InsertSeperators(artifact.powerBonusProgression.progressToNextLevel)} + ${InsertSeperators(totalXpYieldWithModifiers)} = ${InsertSeperators(totalArtifactPowerBonusXp)}`);
         AddValueToElementInner('artifactPowerBonusCeilingField', InsertSeperators(artifact.powerBonusProgression.nextLevelAt));
 
         // Artifact mod levels fraction fields
@@ -607,7 +607,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
         // Season pass levels and total XP
         AddValueToElementInner('xpWithModField', InsertSeperators(totalXpYieldWithModifiers));
-        AddValueToElementInner('SeasonPassLevelsWithModField', InsertSeperators(totalXpYieldWithModifiers / 100_000));
+        AddValueToElementInner('SeasonPassLevelsWithModField', InsertSeperators((totalXpYieldWithModifiers / 100_000).toFixed(2)));
     };
     // [ -- END OF BOUNTIES -- ]
 

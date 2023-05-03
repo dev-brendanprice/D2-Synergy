@@ -486,7 +486,16 @@ tr:nth-child(even) {
 }
 
 .dropdownNumber {
+    font-size: 80%;
     color: rgb(190, 255, 255);
+}
+
+#xpWithModField {
+    font-size: 16px;
+}
+
+#SeasonPassLevelsWithModField {
+    font-size: 16px;
 }
 
 #artifactPowerBonusProgressField:after, #artifactModLevelsProgressField:after {
@@ -856,16 +865,14 @@ input:checked+.slider:before {
 }
 
 #yieldDropdownContainer {
-    display: none;
     padding-left: 10px;
-    padding-bottom: 15px;
+    padding-bottom: 30px;
     height: fit-content;
     clip-path: inset(0px 0px 0px 0px);
     color: gray;
 }
 
 #modifiersDropdownContainer {
-    display: none;
     padding-left: 10px;
     padding-bottom: 10px;
     height: fit-content;
@@ -951,7 +958,6 @@ input:checked+.slider:before {
 #characterPowerLevelField {
     margin-left: 2px;
     font-size: 15px;
-    font-weight: 600;
     color: yellow;
 }
 
@@ -1114,7 +1120,6 @@ input:checked+.slider:before {
 hr.dropdownLine {
     display: block;
     height: 2px;
-    width: 100%;
     border: none;
     border-radius: 5px;
     background-color: #64696d;

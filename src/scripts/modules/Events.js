@@ -230,6 +230,11 @@ export async function AddEventListeners() {
         document.getElementById('warnHoverContent').style.display = 'none';
     });
 
+    // Hide *orange* warning tooltip at bottom of page
+    AddListener('warningTooltipCloseButton', 'click', function () {
+        document.getElementById('warningTooltip').style.display = 'none';
+    });
+
     // Help interface tooltip for enforce relation affinity
     AddListener('tooltipEnforceRelationAffinity', 'mouseover', function () {
         document.getElementById('tooltipEnforceContent').style.display = 'block';

@@ -269,6 +269,16 @@ h2 {
     cursor: pointer;
 }
 
+#warningTooltipCloseButton {
+    margin-left: 15px;
+    width: 12px;
+    cursor: pointer;
+}
+
+#warningTooltipCloseButton:hover {
+    filter: invert(100%);
+}
+
 /* Notification */
 #notificationContainer {
     position: fixed;
