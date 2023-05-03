@@ -515,11 +515,11 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     // Check if weekly progress surpasses that of the well-rested buff
     // weeklyProgress = 450_000; -- bonus xp in this case will 25_000
     if (((500_000 - weeklyProgress) / 2) < 0) {
-        log('-- Well rested expired --');
+        log('📚 Well rested expired');
         totalXpYieldWithModifiers = (totalXpYield * xpModifier);
     }
     else {
-        log('-- Well rested active --');
+        log('📚 Well rested active');
         totalXpYieldWithModifiers = (totalXpYield * xpModifier) + ((500_000 - weeklyProgress) / 2);
         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
         document.getElementById('wellRestedBonusField').innerHTML = `2x`;
@@ -548,9 +548,16 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     };
 
     // Change shared wisdom modifier elements
-    document.getElementById('sharedWisdomBonusField').innerHTML = `+${sharedWisdomPercentage}%`;
-    document.getElementById('sharedWisdomBonusText').style.textDecoration = 'unset';
-    document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+    if (sharedWisdomPercentage > 0) {
+        document.getElementById('sharedWisdomBonusField').innerHTML = `+${sharedWisdomPercentage}%`;
+        document.getElementById('sharedWisdomBonusText').style.textDecoration = 'unset';
+        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
+    }
+    else {
+        document.getElementById('sharedWisdomBonusField').innerHTML = `--`;
+        document.getElementById('sharedWisdomBonusText').style.textDecoration = 'line-through';
+        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToResetCheckmark;
+    };
     
 
 
@@ -585,13 +592,18 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
         // Artifact power bonus fraction fields
         let totalArtifactPowerBonusXp = artifact.powerBonusProgression.progressToNextLevel + totalXpYieldWithModifiers;
-        AddValueToElementInner('artifactPowerBonusProgressField', InsertSeperators(totalArtifactPowerBonusXp));
+        AddValueToElementInner('artifactPowerBonusProgressField', `${artifact.powerBonusProgression.progressToNextLevel} + ${totalXpYieldWithModifiers} = ${totalArtifactPowerBonusXp}`);
         AddValueToElementInner('artifactPowerBonusCeilingField', InsertSeperators(artifact.powerBonusProgression.nextLevelAt));
 
         // Artifact mod levels fraction fields
         let totalArtifactModLevelsXp = artifact.pointProgression.progressToNextLevel + totalXpYieldWithModifiers;
         AddValueToElementInner('artifactModLevelsProgressField', InsertSeperators(totalArtifactModLevelsXp));
-        AddValueToElementInner('artifactModLevelsCeilingField', InsertSeperators(artifact.pointProgression.nextLevelAt));
+        if(artifact.pointProgression.level === artifact.pointProgression.levelCap) {
+            AddValueToElementInner('artifactModLevelsCeilingField', 'Unlocked All!');
+        }
+        else {
+            AddValueToElementInner('artifactModLevelsCeilingField', InsertSeperators(artifact.pointProgression.nextLevelAt));
+        };
 
         // Season pass levels and total XP
         AddValueToElementInner('xpWithModField', InsertSeperators(totalXpYieldWithModifiers));

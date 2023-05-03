@@ -21,7 +21,7 @@ export function ReplaceStringVariables(descriptor) {
         // Get the string variable id
         let variableId = descriptor.slice(indices[i+1], indices[i]).split(':')[1];
         if (variableId) {
-            
+
             // Check in profile and character contexts for string variables
             let variableValue;
             if (UserProfile.destinyUserProfile.profileStringVariables.data.integerValuesByHash[variableId]) {

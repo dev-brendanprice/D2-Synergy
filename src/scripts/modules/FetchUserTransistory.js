@@ -12,8 +12,8 @@ import { FetchPrimaryUserMembership } from './FetchPrimaryUserMembership.js';
 export async function FetchUserTransistory() {
 
     // Fetch config + Query params
-    // const membershipType = UserProfile.membershipType;
-    // const destinyMembershipId = UserProfile.destinyMembershipId;
+    const membershipType = UserProfile.membershipType;
+    const destinyMembershipId = UserProfile.destinyMembershipId;
     const axiosConfig = {
         headers: {
             Authorization: `Bearer ${JSON.parse(window.localStorage.getItem('accessToken')).value}`,
@@ -22,7 +22,7 @@ export async function FetchUserTransistory() {
     };
 
     // Request user's transistory data
-    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/3/Profile/4611686018526359175/?components=1000&cachebust=${GenerateRandomString(12)}`, axiosConfig)
+    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=1000&cachebust=${GenerateRandomString(12)}`, axiosConfig)
     .then( async (response) => {
 
         const transistoryData = response.data.Response.profileTransitoryData;
@@ -32,14 +32,14 @@ export async function FetchUserTransistory() {
         if (transistoryData.data) {
             if (transistoryData.data.partyMembers.length > 1) {
 
-                log('User is in a fireteam');
+                log('📚 User in a fireteam');
 
                 // Store fireteam members
                 fireteamMembers = transistoryData.data.partyMembers;
 
                 // Exclude user from fireteam members
                 fireteamMembers = fireteamMembers.filter((member) => {
-                    return parseInt(member.membershipId) !== 4611686018526359175;
+                    return parseInt(member.membershipId) !== destinyMembershipId;
                 });
 
                 // Get user with highest season pass rank
@@ -48,8 +48,8 @@ export async function FetchUserTransistory() {
             };
         };
 
-        // User is not in a fireteam
-        log('User is not in a fireteam');
+        // Else, user is not in a fireteam
+        log('📚 User not in a fireteam');
 
     })
     .catch((error) => {

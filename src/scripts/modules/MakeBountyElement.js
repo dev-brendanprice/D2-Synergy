@@ -1,4 +1,5 @@
-import { itemDisplay } from '../user.js';
+import { itemDisplay, log } from '../user.js';
+import { ReplaceNamedStringVariables } from './ReplaceNamedStringVariables.js';
 
 
 // Make element for entry data when hash is found in itemDefinitions
@@ -69,6 +70,9 @@ export async function MakeBountyElement(param) {
         let objectiveCheckboxOuter = document.createElement('div');
         let objectiveCheckboxMiddle = document.createElement('div');
         let objectiveCheckboxInner = document.createElement('div');
+
+        // Replace named variables for their respective icons
+        ReplaceNamedStringVariables(rootIndex[indexCount].progressDescription);
 
         // Check if progess string exceeds char limit
         if (rootIndex[indexCount].progressDescription.length >= 24) {
