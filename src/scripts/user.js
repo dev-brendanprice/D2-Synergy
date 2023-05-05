@@ -431,7 +431,7 @@ export async function MainEntryPoint(isPassiveReload) {
     // Check for passive reload
     if (isPassiveReload) {
         StartLoad();
-        document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'none';
+        // document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'none';
         log(`-> Passive Reload Called`);
     };
 
@@ -466,7 +466,7 @@ export async function MainEntryPoint(isPassiveReload) {
     // Check for passive reload
     if (isPassiveReload) {
         StopLoad();
-        document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'flex';
+        // document.getElementById('containerThatHasTheSideSelectionAndContentDisplay').style.display = 'flex';
         log(`-> Passive Reload Finished`);
         return;
     };

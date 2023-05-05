@@ -514,23 +514,29 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         
     // Check if ghost mods are slotted, turn off checkmark if not
     if (ghostModBonusXp) {
+        document.getElementById('ghostModsCheckmarkIcon').src = './static/ico/checkmark.svg';
         document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-        document.getElementById('ghostModBonusField').innerHTML = `+${ghostModBonusXp}%`;
+        AddValueToElementInner('ghostModBonusField', `+${ghostModBonusXp}%`);
         document.getElementById('ghostModsBonusText').style.textDecoration = 'unset';
     }
     else {
+        document.getElementById('ghostModsCheckmarkIcon').src = './static/ico/crossmark.svg';
         document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToResetCheckmark;
+        AddValueToElementInner('ghostModBonusField', `--`);
         document.getElementById('ghostModsBonusText').style.textDecoration = 'line-through';
     };
 
     // Check if bonus xp is not equal to 0, turn off checkmark if not
     if (seasonPassProgressionStats.bonusXpValue) {
+        document.getElementById('seasonPassBonusCheckmarkIcon').src = './static/ico/checkmark.svg';
         document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-        document.getElementById('seasonPassBonusField').innerHTML = `+${seasonPassProgressionStats.bonusXpValue}%`;
+        AddValueToElementInner('seasonPassBonusField', `+${seasonPassProgressionStats.bonusXpValue}%`);
         document.getElementById('seasonPassBonusText').style.textDecoration = 'unset';
     }
     else {
+        document.getElementById('seasonPassBonusCheckmarkIcon').src = './static/ico/crossmark.svg';
         document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToResetCheckmark;
+        AddValueToElementInner('seasonPassBonusField', `--`);
         document.getElementById('seasonPassBonusText').style.textDecoration = 'line-through';
     };
 
@@ -549,12 +555,17 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     if (((500_000 - weeklyProgress) / 2) < 0) {
         log('📚 Well rested expired');
         totalXpYieldWithModifiers = (totalXpYield * xpModifier);
+        document.getElementById('wellRestedCheckmarkIcon').src = './static/ico/crossmark.svg';
+        document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
+        AddValueToElementInner('wellRestedBonusField', `--`);
+        document.getElementById('wellRestedBonusText').style.textDecoration = 'line-through';
     }
     else {
         log('📚 Well rested active');
         totalXpYieldWithModifiers = (totalXpYield * xpModifier) + ((500_000 - weeklyProgress) / 2);
+        document.getElementById('wellRestedCheckmarkIcon').src = './static/ico/checkmark.svg';
         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-        document.getElementById('wellRestedBonusField').innerHTML = `2x`;
+        AddValueToElementInner('wellRestedBonusField', `2x`);
         document.getElementById('wellRestedBonusText').style.textDecoration = 'unset';
     };
 
@@ -581,14 +592,16 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Change shared wisdom modifier elements
     if (sharedWisdomPercentage > 0) {
+        document.getElementById('sharedWisdomCheckmarkIcon').src = './static/ico/checkmark.svg';
+        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
         AddValueToElementInner('sharedWisdomBonusField', `+${sharedWisdomPercentage}%`);
         document.getElementById('sharedWisdomBonusText').style.textDecoration = 'unset';
-        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
     }
     else {
+        document.getElementById('sharedWisdomCheckmarkIcon').src = './static/ico/crossmark.svg';
+        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToResetCheckmark;
         AddValueToElementInner('sharedWisdomBonusField', `--`);
         document.getElementById('sharedWisdomBonusText').style.textDecoration = 'line-through';
-        document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToResetCheckmark;
     };
     
 

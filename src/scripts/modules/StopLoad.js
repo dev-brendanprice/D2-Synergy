@@ -3,11 +3,6 @@
 // @boolean {passiveLoad}
 export function StopLoad(passiveLoad) {
     
-    if (passiveLoad) {
-        document.getElementById('loadBarContainer').style.display = 'none';
-        return;
-    };
-    
     // Hide the skeleton loading container
     document.getElementById('skeletonLoadContainer').style.display = 'none';
 

@@ -14,7 +14,6 @@ const requiredManifestTables = [
 ];
 
 var manifest;
-let notificationLoadCounter = 0;
 
 
 // Return manifest components
@@ -30,7 +29,11 @@ var ReturnComponentSuffix = async (entry) => {
 
 
 // Check if each (required) table exists
-var FixTables = async () => {
+var FixTables = async (uiCounter=0) => {
+
+    // Change notification label content
+    document.getElementById('notificationTitle').innerHTML = 'Loading Definitions';
+    document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${uiCounter}/${requiredManifestTables.length}`;
 
     for (let table of requiredManifestTables) {
 
@@ -58,8 +61,8 @@ var FixTables = async () => {
         };
 
         // Increment notification load counter
-        notificationLoadCounter++;
-        document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${notificationLoadCounter}/${requiredManifestTables.length}`;
+        uiCounter++;
+        document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${uiCounter}/${requiredManifestTables.length}`;
     };
 };
 
@@ -68,10 +71,6 @@ var FixTables = async () => {
 export var ValidateManifest = async () => {
 
     log('-> ValidateManifest Called');
-
-    // Change notification label content
-    document.getElementById('notificationTitle').innerHTML = 'Loading Definitions';
-    document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${notificationLoadCounter}/${requiredManifestTables.length}`;
 
     // Fetch manifest
     let localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
