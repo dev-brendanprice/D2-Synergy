@@ -733,6 +733,10 @@ export async function AddEventListeners() {
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
 
+    // TEMP DEV FIX (LAZY)
+    CacheChangeItem('isRefreshOnFocusToggled', false);
+    CacheChangeItem('isRefreshOnIntervalToggled', false);
+
     // Get time until weekly reset (timezone specific ofc)
     document.getElementById('timeUntilWeeklyReset').innerHTML = `Weekly Reset: ${getNextTuesday()}`;
 
