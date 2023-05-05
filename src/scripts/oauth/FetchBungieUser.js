@@ -1,7 +1,8 @@
 import { CheckUserTokens } from './CheckUserTokens';
-import { axiosHeaders, log, UserProfile, UserProfileProgressions } from '../user.js';
+import { requestHeaders, log, UserProfile, UserProfileProgressions } from '../user.js';
 import { MakeRequest } from '../modules/MakeRequest';
 import { FetchPrimaryUserMembership } from '../modules/FetchPrimaryUserMembership.js';
+import axios from 'axios';
 
 // Fetch bungie user data
 // @checkTokens {boolean}
@@ -16,10 +17,10 @@ export async function FetchBungieUser(checkTokens = true) {
 
     // Get components
     const components = JSON.parse(window.localStorage.getItem('components'));
-    const axiosConfig = {
+    const requestConfig = {
         headers: {
             Authorization: `Bearer ${JSON.parse(window.localStorage.getItem('accessToken')).value}`,
-            "X-API-Key": `${axiosHeaders.ApiKey}`
+            "X-API-Key": `${requestHeaders.ApiKey}`
         }
     };
 
@@ -42,9 +43,8 @@ export async function FetchBungieUser(checkTokens = true) {
         window.sessionStorage.setItem('destinyMembershipId', destinyMembershipId);
     };
 
-
     // Fetch profile
-    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900,1000,1200`, axiosConfig)
+    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=100,104,200,201,202,205,300,301,305,900,1000,1200`, requestConfig, {avoidCache: true})
     .then((response) => {
 
         // Assign user profile and progression data

@@ -742,17 +742,6 @@ export async function BuildWorkspace() {
 
     // Scroll to top of page (idk but it wasn't sticking to the top)
     window.scrollTo(0, 0);
-
-    // Change popup top bar colour to what is saved in localStorage
-    await CacheReturnItem('accentColor')
-    .then((result) => {
-        accentColor.UpdateAccentColor(result);
-    })
-    .catch((error) => {
-        CacheChangeItem('accentColor', '#ED4D4D');
-        accentColor.UpdateAccentColor('#ED4D4D');
-        console.error(error);
-    });
     
     // Put version number in navbar and settings footer
     document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
@@ -760,36 +749,48 @@ export async function BuildWorkspace() {
     document.getElementById('settingsFooterVersionField').innerHTML = `${import.meta.env.version}`;
     document.getElementById('popupVersion').innerHTML = `${import.meta.env.version}`;
 
-    // Check if load is first time load on this version
-    await CacheReturnItem('storedVersion')
+    // Change popup top bar colour to what is saved in localStorage
+    await CacheReturnItem('accentColor')
     .then((result) => {
-
-        // If stored version is not set, set it
-        if (result === undefined) {
-
-            /*
-                In this case the user could be a new visitor, prior to the 5.6 release
-
-                Instead of only storing the version, clear all cache and fetch again
-                This is because the cached data is (somehow) wrong -- data before ~5.6
-            */
-            window.sessionStorage.clear();
-            FetchBungieUser(false);
-            CacheChangeItem('storedVersion', import.meta.env.version);
-        }
-
-        // If stored version !== equal to the current version
-        else if (result !== import.meta.env.version) {
-
-            // Toggle boolean and set stored version to current
-            showPopupBool = true;
-            CacheChangeItem('storedVersion', import.meta.env.version);
-        };
-
+        accentColor.UpdateAccentColor(result);
     })
     .catch((error) => {
-        console.error(error);
+        // console.error(error);
+        CacheChangeItem('accentColor', '#ED4D4D');
+        accentColor.UpdateAccentColor('#ED4D4D');
     });
+
+    // Check if load is first time load on this version
+    // await CacheReturnItem('storedVersion')
+    // .then((result) => {
+
+    //     // If stored version is not set, set it
+    //     if (result === undefined) {
+
+    //         /*
+    //             In this case the user could be a new visitor, prior to the 5.6 release
+
+    //             Instead of only storing the version, clear all cache and fetch again
+    //             This is because the cached data is (somehow) wrong -- data before ~5.6
+    //         */
+    //         window.sessionStorage.clear();
+    //         log('events.js');
+    //         FetchBungieUser(false);
+    //         CacheChangeItem('storedVersion', import.meta.env.version);
+    //     }
+
+    //     // If stored version !== equal to the current version
+    //     else if (result !== import.meta.env.version) {
+
+    //         // Toggle boolean and set stored version to current
+    //         showPopupBool = true;
+    //         CacheChangeItem('storedVersion', import.meta.env.version);
+    //     };
+
+    // })
+    // .catch((error) => {
+    //     console.error(error);
+    // });
 
     // Check if its first time visit
     await CacheReturnItem('isFirstTimeVisit')

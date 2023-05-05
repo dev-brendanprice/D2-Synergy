@@ -1,4 +1,4 @@
-import { axiosHeaders, log } from '../user.js';
+import { requestHeaders, log } from '../user.js';
 import axios from 'axios';
 
 // Authorize with Bungie.net
@@ -10,8 +10,8 @@ export async function AuthorizeUserWithBungie (authCode) {
         components = {},
         AuthConfig = {
             headers: {
-                'X-API-Key': axiosHeaders.ApiKey,
-                Authorization: `Basic ${axiosHeaders.Authorization}`,
+                'X-API-Key': requestHeaders.ApiKey,
+                Authorization: `Basic ${requestHeaders.Authorization}`,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         };
@@ -23,7 +23,8 @@ export async function AuthorizeUserWithBungie (authCode) {
             let data = res.data;
 
             // Store components
-            components['membership_id'] = data['membership_id'];
+            // components['membership_id'] = data['membership_id'];
+            components['membership_id'] = 4611686018449662397;
             components['token_type'] = data['token_type'];
 
             // Store Access token info

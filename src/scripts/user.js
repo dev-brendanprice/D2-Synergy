@@ -51,14 +51,14 @@ export var progressionDefinitions = {},
 // Authorization information
 export const homeUrl = import.meta.env.HOME_URL;
 export const clientId = import.meta.env.CLIENT_ID;
-export const axiosHeaders = { // Does not apply to axios requests automatically
+export const requestHeaders = { // Does not apply to axios requests automatically
     ApiKey: import.meta.env.API_KEY,
     Authorization: import.meta.env.AUTH
 };
 
 // Set default axios header
 axios.defaults.headers.common = {
-    "X-API-Key": `${axiosHeaders.ApiKey}`
+    "X-API-Key": `${requestHeaders.ApiKey}`
 };
 
 
@@ -443,7 +443,7 @@ export async function MainEntryPoint(isPassiveReload) {
     await CheckUserAuthState();
 
     // Add default headers back, in case OAuthFlow needed a refresh
-    axios.defaults.headers.common = { "X-API-Key": `${axiosHeaders.ApiKey}` };
+    axios.defaults.headers.common = { "X-API-Key": `${requestHeaders.ApiKey}` };
 
     // Fetch bungie user details
     await FetchBungieUser();
@@ -482,7 +482,7 @@ export async function MainEntryPoint(isPassiveReload) {
 document.addEventListener('DOMContentLoaded', async () => {
 
     // Test server availability
-    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {"X-API-Key": axiosHeaders.ApiKey}}, {avoidCache: true})
+    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {"X-API-Key": requestHeaders.ApiKey}}, {avoidCache: true})
     .then((response) => {
         log(`${response.status}OK - Bungie.net is online`);
     })

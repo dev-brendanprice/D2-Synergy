@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { axiosHeaders, log, homeUrl } from '../user.js';
+import { requestHeaders, log, homeUrl } from '../user.js';
 import { ClearApplicationData } from './ClearApplicationData.js';
 
 // Check tokens for expiration
@@ -15,7 +15,7 @@ export async function CheckUserTokens () {
     let components = {};
     let AuthConfig = {
             headers: {
-                Authorization: `Basic ${axiosHeaders.Authorization}`,
+                Authorization: `Basic ${requestHeaders.Authorization}`,
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         };
@@ -27,8 +27,8 @@ export async function CheckUserTokens () {
             .then(res => {
 
                 let data = res.data;
-                components["membership_id"] = data["membership_id"];
-                components["token_type"] = data["token_type"];
+                components['membership_id'] = data['membership_id'];
+                components['token_type'] = data['token_type'];
 
                 AccessToken['inception'] = Math.round(new Date().getTime() / 1000); // Seconds
                 AccessToken['expires_in'] = data['expires_in'];

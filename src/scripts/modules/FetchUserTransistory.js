@@ -1,5 +1,5 @@
 import { 
-    axiosHeaders, 
+    requestHeaders, 
     UserProfile,
     UserXpModifiers,
     userTrasistoryData,
@@ -14,15 +14,15 @@ export async function FetchUserTransistory() {
     // Fetch config + Query params
     const membershipType = UserProfile.membershipType;
     const destinyMembershipId = UserProfile.destinyMembershipId;
-    const axiosConfig = {
+    const requestConfig = {
         headers: {
             Authorization: `Bearer ${JSON.parse(window.localStorage.getItem('accessToken')).value}`,
-            "X-API-Key": `${axiosHeaders.ApiKey}`
+            "X-API-Key": `${requestHeaders.ApiKey}`
         }
     };
 
     // Request user's transistory data
-    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=1000&cachebust=${GenerateRandomString(12)}`, axiosConfig)
+    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${membershipType}/Profile/${destinyMembershipId}/?components=1000&cachebust=${GenerateRandomString(12)}`, requestConfig)
     .then( async (response) => {
 
         const transistoryData = response.data.Response.profileTransitoryData;
@@ -61,10 +61,10 @@ async function FindHighestUser(fireteamMembers) {
 
     // Config
     let highestSeasonRankFromMembers = 0;
-    const axiosConfig = {
+    const requestConfig = {
         headers: {
             Authorization: `Bearer ${JSON.parse(window.localStorage.getItem('accessToken')).value}`,
-            "X-API-Key": `${axiosHeaders.ApiKey}`
+            "X-API-Key": `${requestHeaders.ApiKey}`
         }
     };
 
@@ -79,7 +79,7 @@ async function FindHighestUser(fireteamMembers) {
         userDestinyMembershipType = primaryUserProfile.membershipType;
 
         // Fetch progressions and store highest rank
-        await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${userDestinyMembershipType}/Profile/${userDestinyMembershipId}/?components=202`, axiosConfig)
+        await MakeRequest(`https://www.bungie.net/Platform/Destiny2/${userDestinyMembershipType}/Profile/${userDestinyMembershipId}/?components=202`, requestConfig)
         .then((response) => {
 
             let characters = response.data.Response.characterProgressions.data;

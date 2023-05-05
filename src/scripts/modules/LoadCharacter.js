@@ -73,25 +73,12 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
         // Check if first time load (build character selects if so etc)
         if (isFirstTimeLoad) {
 
-            // Make characterInfo object
-            let characterInfo = {};
-            characterInfo.emblemIco = itemDefinitions[primaryCharacter.emblemHash].secondaryOverlay;
-            characterInfo.characterClass = ParseClass(primaryCharacter.classType);
-            characterInfo.characterRace = ParseRace(primaryCharacter.raceType);
-            characterInfo.characterPower = primaryCharacter.light;
-            characterInfo.characterId = primaryCharacter.characterId;
+            // Add characters to DOM
+            for (let i=0; i<Object.keys(characters).length; i++) {
+                
+                let characterId = Object.keys(characters)[i];
+                let character = characters[characterId];
 
-            // Add main character to DOM
-            MakeCharacterSelect(characterInfo);
-
-            // Filter out character that is the main one
-            let otherCharacters = Object.keys(characters).filter(v => v!==characterId);
-
-            // Add other characters to DOM
-            for (let id of otherCharacters) {
-
-                // Make characterInfo obj for each character
-                let character = characters[id];
                 let characterInfo = {};
                 characterInfo.emblemIco = itemDefinitions[character.emblemHash].secondaryOverlay;
                 characterInfo.characterClass = ParseClass(character.classType);
@@ -99,7 +86,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
                 characterInfo.characterPower = character.light;
                 characterInfo.characterId = character.characterId;
 
-                // Add character to DOM
                 MakeCharacterSelect(characterInfo);
             };
         };
@@ -198,6 +184,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
         let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems;
         let rewardsTrack = {};
 
+        // Loop over season pass rewards
         seasonPassRewardsTrack.forEach(v => {
 
             if (!rewardsTrack[v.rewardedAtProgressionLevel]) {

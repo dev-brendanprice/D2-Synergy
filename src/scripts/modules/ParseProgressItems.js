@@ -286,6 +286,12 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
                         let rewardValue = InsertSeperators(rewardsBasedOnChallengerXP[previousRewardUiName]);
                         rewardName.innerHTML = `${currentRewardName} (${rewardValue})`;
                     };
+
+                    // Singular challenger XP reward value
+                    if (currentRewardName.includes('Challenger XP')) {
+                        let rewardValue = InsertSeperators(rewardsBasedOnSingularItems[currentRewardName]);
+                        rewardName.innerHTML = `${currentRewardName} (${rewardValue})`;
+                    };
                 }
 
                 // Else, use reward values based on singular items
@@ -517,15 +523,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         document.getElementById('ghostModsBonusText').style.textDecoration = 'line-through';
     };
 
-    // Check if shared wisdom is not equal to 0, turn off checkmark if not
-    // if (seasonPassProgressionStats.sharedWisdomBonusValue) {
-    //     document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-    //     document.getElementById('sharedWisdomBonusField').innerHTML = `+${seasonPassProgressionStats.sharedWisdomBonusValue}%`;
-    // }
-    // else {
-    //     document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToResetCheckmark;
-    // };
-
     // Check if bonus xp is not equal to 0, turn off checkmark if not
     if (seasonPassProgressionStats.bonusXpValue) {
         document.getElementById('seasonPassBonusCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
@@ -541,6 +538,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     let totalXpYield = 0;
     let totalXpYieldWithModifiers = 0;
     totalXpYield = await CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields);
+    log(totalXpYield);
 
     // Format to 1.n
     // const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) * wellRestedBonus) / 100) + 1;
@@ -583,12 +581,12 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Change shared wisdom modifier elements
     if (sharedWisdomPercentage > 0) {
-        document.getElementById('sharedWisdomBonusField').innerHTML = `+${sharedWisdomPercentage}%`;
+        AddValueToElementInner('sharedWisdomBonusField', `+${sharedWisdomPercentage}%`);
         document.getElementById('sharedWisdomBonusText').style.textDecoration = 'unset';
         document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
     }
     else {
-        document.getElementById('sharedWisdomBonusField').innerHTML = `--`;
+        AddValueToElementInner('sharedWisdomBonusField', `--`);
         document.getElementById('sharedWisdomBonusText').style.textDecoration = 'line-through';
         document.getElementById('sharedWisdomCheckmarkIcon').style.filter = filterToResetCheckmark;
     };

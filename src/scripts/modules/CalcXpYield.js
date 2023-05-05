@@ -1,4 +1,5 @@
 import { CacheReturnItem } from './CacheReturnItem.js';
+import { log } from '../user';
 
 // Calculate total XP gain from (active) bounties
 // @array {bountyArr}, @array {itemTypeKeys}, @object {baseYields}, @object {petraYields}
@@ -7,9 +8,10 @@ export async function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYiel
     var totalXP = 0;
     var includeExpiredBounties = await CacheReturnItem('includeExpiredBountiesInTable');
 
-    // Self func
+    // Get corresponding xp
     function DiffXP(bounty, bountyType) {
-        // Check if bounty is from Petra
+        // log(bounty, bountyType);
+        // Dreaming city bounties grant half xp
         if (bounty.inventory.stackUniqueLabel.includes('dreaming_city')) {
             totalXP += petraYields[bountyType];
             return;
@@ -32,6 +34,11 @@ export async function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYiel
 
                 // Get bounty type
                 var bountyType = itemTypeKeys.filter(v => bounty.inventory.stackUniqueLabel.includes(v))[0];
+
+                // Check if bounty is none of the ctgs (daily, weekly, repetable, etc)
+                if (bountyType === undefined || bountyType.length === 0) {
+                    return;
+                };
 
                 // Check if bounty does not conform to required stackUniqueLabel format
                 if (bountyType === undefined) {

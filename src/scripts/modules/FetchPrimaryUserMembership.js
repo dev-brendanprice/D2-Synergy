@@ -1,4 +1,4 @@
-import { axiosHeaders, log, UserProfile, UserProfileProgressions } from '../user.js';
+import { requestHeaders, log, UserProfile, UserProfileProgressions } from '../user.js';
 import { MakeRequest } from "../modules/MakeRequest";
 
 // Fetch bungie user data
@@ -7,15 +7,15 @@ export async function FetchPrimaryUserMembership(destinyMembershipId) {
 
     // Get components
     let primaryMembership = {};
-    const axiosConfig = {
+    const requestConfig = {
         headers: {
             Authorization: `Bearer ${JSON.parse(window.localStorage.getItem('accessToken')).value}`,
-            "X-API-Key": `${axiosHeaders.ApiKey}`
+            "X-API-Key": `${requestHeaders.ApiKey}`
         }
     };
 
     // Fetch linked profiles if memshipType or destinyMemshipId don't exist -- 254 as membershipType
-    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/254/Profile/${destinyMembershipId}/LinkedProfiles/?getAllMemberships=true`, axiosConfig)
+    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/254/Profile/${destinyMembershipId}/LinkedProfiles/?getAllMemberships=true`, requestConfig)
     .then((response) => {
 
         // Find the most recently played on profile
