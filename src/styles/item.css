@@ -158,6 +158,21 @@
     cursor: help;
 }
 
+.bountyProgressBarContainer {
+    position: absolute;
+    margin-left: 2px;
+    margin-top: -10px;
+    width: 57px;
+    height: 6px;
+    background-color: rgba(84, 84, 84, 0.656);
+}
+
+.bountyProgressBar {
+    position: absolute;
+    height: 6px;
+    background-color: #76D484;
+}
+
 .statusIcon {
     display: flex;
     position: absolute;

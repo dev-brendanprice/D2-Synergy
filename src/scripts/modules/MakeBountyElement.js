@@ -16,18 +16,28 @@ export async function MakeBountyElement(param) {
     let itemType = document.createElement('div');
     let itemDesc = document.createElement('div');
     let item = document.createElement('img');
+    let itemPrgCon = document.createElement('div');
+    let itemPrg = document.createElement('div');
 
     // itemContainer style
     itemContainer.className = 'itemContainer';
     itemContainer.id = `itemContainer_${param.hash}`;
 
+    // Item status e.g. completed or expired
     itemStatus.classList += 'statusIcon';
 
-    // Create bottom element
-    item.className = `bounty`;
+    // Create progress bar
+    itemPrgCon.className = 'bountyProgressBarContainer';
+    itemPrg.className = 'bountyProgressBar';
+    itemPrgCon.appendChild(itemPrg);
+
+    // Create image element
+    item.className = 'bounty';
     item.id = `bounty_${param.hash}`;
     item.src = `https://www.bungie.net${param.displayProperties.icon}`;
     item.style.width = `${itemDisplay.itemDisplaySize}px`;
+
+    // Div hierarchy
     itemContainer.appendChild(item);
     document.querySelector('#bountyItems').appendChild(itemContainer);
 
@@ -60,6 +70,9 @@ export async function MakeBountyElement(param) {
     // Create item progress and push to DOM
     let rootIndex = param.objectiveDefinitions;
     let completionCounter = 0;
+    let completionProgressPercentage = 0;
+    let completionPercentage = 0;
+
 
     for (let indexCount = 0; indexCount < rootIndex.length; indexCount++) {
 
@@ -110,17 +123,21 @@ export async function MakeBountyElement(param) {
         itemAttributes.appendChild(itemObjectivesContainer);
         document.querySelector(`#item_${param.hash}`).appendChild(itemAttributes);
 
-        // Render item objective progress
+        // Item objective progress
         itemPrgDesc.innerHTML = rootIndex[indexCount].progressDescription;
         param.progress.forEach(v => {
             if (v.objectiveHash === rootIndex[indexCount].hash) {
 
-                // Render objective progress
+                // Objective progress
                 if (rootIndex[indexCount].completionValue === 100) {
                     itemPrgCounter.innerHTML = `${v.progress}%`;
+                    completionProgressPercentage += v.progress;
+                    completionPercentage += v.completionValue;
                 }
                 else if (rootIndex[indexCount].completionValue !== 100) {
                     itemPrgCounter.innerHTML = `${v.progress}/${v.completionValue}`;
+                    completionProgressPercentage += v.progress;
+                    completionPercentage += v.completionValue;
                 };
 
                 // Check if objective is completed
@@ -133,6 +150,10 @@ export async function MakeBountyElement(param) {
             };
         });
     };
+
+    // Calculate total % progress
+    let prg = Math.round((completionProgressPercentage / completionPercentage) * 100);
+    itemPrg.style.width = `${prg}%`;
 
     // Check item completion status
     if (param.progress.length === completionCounter) {
@@ -157,10 +178,11 @@ export async function MakeBountyElement(param) {
         itemStatus.id = `complete_${param.hash}`;
         itemStatus.src = './static/ico/destiny-icons/pursuit_completed.svg';
         document.getElementById(`bounty_${param.hash}`).style.border = '1px solid rgba(182,137,67, 0.749)';
+        itemPrgCon.style.display = 'none';
     };
 
-    // Append the item status to the item
-    itemContainer.appendChild(itemStatus);
+    // Append the item status and progress
+    itemContainer.append(itemStatus, itemPrgCon);
 
     // Watch for mouse move event (when mouse hovers over bounty element)
     itemContainer.addEventListener('mousemove', function (e) {
