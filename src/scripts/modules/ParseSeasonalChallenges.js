@@ -42,7 +42,7 @@ export async function ParseSeasonalChallenges(seasonHash, seasonProgressionInfo)
     let weeksPassed = Math.trunc(todayDate - startDate) / (24*3600*1000*7);
 
     // Find the current (within the current week) seasonal challenges
-    for (let i=0; i<weeksPassed+1; i++) {
+    for (let i=0; i<weeksPassed; i++) {
 
         // Get current week based on index
         let week = presentationNodeDefinitions[seasonPresentationNodes[i].presentationNodeHash];
