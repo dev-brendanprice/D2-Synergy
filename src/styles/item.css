@@ -65,6 +65,7 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
+    font-size: 11px;
 }
 
 .objectiveCheckboxOuter {
@@ -108,32 +109,29 @@
 
 .itemObjectivesContainer {
     display: flex;
+    position: absolute;
     padding-left: 10px;
     padding-right: 10px;
-    margin-top: 15px;
     margin-bottom: 15px;
-    gap: 10px;
+    width: 90%;
+    bottom: 0;
+    gap: 5px;
     flex-direction: column;
 }
 
 .itemPrgDesc {
-    bottom: 0;
     width: 85%;
     text-align: left;
     color: #c8c8c8;
-    opacity: 0.7;
+    opacity: 1;
     font-family: Verdana, Geneva, Tahoma, sans-serif, monospace;
-    font-size: 11px;
 }
 
 .itemPrgCounter {
-    bottom: 0;
     right: 0;
     text-align: right;
     color: #c8c8c8;
-    opacity: 0.7;
-    font-family: "Neue Haas Grotesk Display", "Destiny Symbols", Segoe-MDL, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
-    font-size: 11px;
+    opacity: 1;
 }
 
 #bountyItems {

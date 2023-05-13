@@ -143,6 +143,8 @@ export async function MakeBountyElement(param) {
                 // Check if objective is completed
                 if (v.complete) {
                     completionCounter++;
+                    itemPrgDesc.style.opacity = '0.6';
+                    itemPrgCounter.style.opacity = '0.6';
                     document.getElementById(`Outer_${v.objectiveHash}`).style.border = '1.5px solid var(--completedCheckboxOuter)';
                     document.getElementById(`Middle_${v.objectiveHash}`).style.border = '1.5px solid var(--completedCheckboxMiddle)';
                     document.getElementById(`Inner_${v.objectiveHash}`).style.backgroundColor = 'var(--completedCheckboxInner)';

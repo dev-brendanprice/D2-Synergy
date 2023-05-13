@@ -3,7 +3,6 @@ import {
     itemDisplay,
     accentColor,
     itemDefinitions,
-    relationsTable,
     UserProfile } from '../user.js';
 import { LoadCharacter } from './LoadCharacter.js';
 import { CacheChangeItem } from './CacheChangeItem.js';
@@ -12,6 +11,7 @@ import { Logout } from './Logout.js';
 import { ParseClass } from './ParseClass.js';
 import { getNextTuesday } from './GetNextReset.js';
 import { FetchBungieUser } from '../oauth/FetchBungieUser.js';
+import { relationsTable } from './relationsTable.js';
 
 
 // Misc
@@ -36,7 +36,7 @@ const ToggleSettingsMenu = function () {
 
 
 // Event listener wrapper
-const AddListener = function (elementName, event, callback, selectorType) {
+export const AddListener = function (elementName, event, callback, selectorType) {
 
     try {
 
@@ -440,21 +440,21 @@ export async function AddEventListeners() {
         if (this.checked) {
 
             CacheChangeItem('isRefreshOnIntervalToggled', true);
-            refreshOnInterval = setInterval(() => {
+            // refreshOnInterval = setInterval(() => {
 
-                // true = passive refresh
-                MainEntryPoint(true)
-                .catch((error) => {
-                    console.error(error);
-                });
-            }, 120_000);
+            //     // true = passive refresh
+            //     MainEntryPoint(true)
+            //     .catch((error) => {
+            //         console.error(error);
+            //     });
+            // }, 10_000);
 
             return;
         };
 
         // Uncheck = clear interval and localStorage value
         CacheChangeItem('isRefreshOnIntervalToggled', false);
-        clearInterval(refreshOnInterval);
+        // clearInterval(refreshOnInterval);
     });
 
 
@@ -733,10 +733,6 @@ export async function AddEventListeners() {
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
 
-    // TEMP DEV FIX (LAZY)
-    CacheChangeItem('isRefreshOnFocusToggled', false);
-    CacheChangeItem('isRefreshOnIntervalToggled', false);
-
     // Get time until weekly reset (timezone specific ofc)
     document.getElementById('timeUntilWeeklyReset').innerHTML = `Weekly Reset: ${getNextTuesday()}`;
 
@@ -765,36 +761,25 @@ export async function BuildWorkspace() {
     });
 
     // Check if load is first time load on this version
-    // await CacheReturnItem('storedVersion')
-    // .then((result) => {
+    await CacheReturnItem('storedVersion')
+    .then((result) => {
 
-    //     // If stored version is not set, set it
-    //     if (result === undefined) {
+        // set if undefined
+        if (result === undefined) {
+            showPopupBool = true;
+            CacheChangeItem('storedVersion', import.meta.env.version);
+        }
 
-    //         /*
-    //             In this case the user could be a new visitor, prior to the 5.6 release
+        // if current version does not match stored version
+        else if (result !== import.meta.env.version) {
+            showPopupBool = true;
+            CacheChangeItem('storedVersion', import.meta.env.version);
+        };
 
-    //             Instead of only storing the version, clear all cache and fetch again
-    //             This is because the cached data is (somehow) wrong -- data before ~5.6
-    //         */
-    //         window.sessionStorage.clear();
-    //         log('events.js');
-    //         FetchBungieUser(false);
-    //         CacheChangeItem('storedVersion', import.meta.env.version);
-    //     }
-
-    //     // If stored version !== equal to the current version
-    //     else if (result !== import.meta.env.version) {
-
-    //         // Toggle boolean and set stored version to current
-    //         showPopupBool = true;
-    //         CacheChangeItem('storedVersion', import.meta.env.version);
-    //     };
-
-    // })
-    // .catch((error) => {
-    //     console.error(error);
-    // });
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 
     // Check if its first time visit
     await CacheReturnItem('isFirstTimeVisit')
@@ -886,12 +871,51 @@ export async function BuildWorkspace() {
     document.getElementById('toggleTypePVP').checked = await CacheReturnItem('includePvpInTable') ? true : false;
     document.getElementById('toggleTypePVE').checked = await CacheReturnItem('includePveInTable') ? true : false;
     document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled') ? true : false;
-    document.getElementById('checkboxRefreshOnInterval').checked = await CacheReturnItem('isRefreshOnIntervalToggled') ? true : false;
     document.getElementById('checkboxIncludeExpiredBountiesInYield').checked = await CacheReturnItem('includeExpiredBountiesInYield') ? true : false;
     document.getElementById('checkboxIncludeExpiredBountiesInTable').checked = await CacheReturnItem('includeExpiredBountiesInTable') ? true : false;
     document.getElementById('checkboxIncludeSeasonalChallengesInYield').checked = await CacheReturnItem('includeSeasonalChallengesInYield') ? true : false;
     document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = await CacheReturnItem('includeSeasonalChallengesInTable') ? true : false;
 
+
+    // Check if boolean has been set for refreshing on interval
+    await CacheReturnItem('isRefreshOnIntervalToggled')
+    .then((res) => {
+
+        // Check if this bool has been set, set default, which is true
+        if (res === undefined || res) {
+            CacheChangeItem('isRefreshOnIntervalToggled', true);
+            document.getElementById('checkboxRefreshOnInterval').checked = true;
+            return;
+        };
+
+        // Else set to false
+        document.getElementById('checkboxRefreshOnInterval').checked = false;
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+    // Refresh on interval
+    setInterval( async function() {
+
+        await CacheReturnItem('isRefreshOnIntervalToggled')
+        .then((res) => {
+
+            // true = passive refresh
+            if (res) {
+                MainEntryPoint(true)
+                .catch((error) => {
+                    console.error(error);
+                });
+            };
+
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+    }, 120_000);
+    
     // Check if rememberLastPage is true
     await CacheReturnItem('isRememberLastPageToggled')
     .then((result) => {

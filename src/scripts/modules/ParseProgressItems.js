@@ -28,6 +28,10 @@ import { SortBountiesByType } from './SortBountiesByType.js';
 import { SortByType } from './SortByType.js';
 import { SortByGroup } from './SortByGroup.js';
 import { InsertSeperators } from './InsertSeperators.js';
+import { AddListener } from './Events.js';
+import { CacheReturnItem } from './CacheReturnItem.js';
+import { CacheChangeItem } from './CacheChangeItem.js';
+import { AddYieldValues } from './AddYieldValues.js';
 
 const log = console.log.bind(console);
 
@@ -42,6 +46,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Call function to get progressions for season pass XP and bonus stats
     const seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack);
+    const artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
 
     // Season Pass innerHTML changes
     // AddValueToElementInner('seasonPassXpToNextRank', InsertSeperators(seasonPassProgressionStats.progressToNextLevel));
@@ -484,7 +489,8 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     });
     newBountyArr.reverse();
 
-    // Push items to DOM
+    // Clear innerHTML and push items to DOM
+    document.getElementById('bountyItems').innerHTML = '';
     newBountyArr.forEach(item => MakeBountyElement(item));
 
 
@@ -544,7 +550,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     let totalXpYield = 0;
     let totalXpYieldWithModifiers = 0;
     totalXpYield = await CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields);
-    log(totalXpYield);
 
     // Format to 1.n
     // const xpModifier = (((seasonPassProgressionStats.bonusXpValue + seasonPassProgressionStats.sharedWisdomBonusValue + ghostModBonusXp) * wellRestedBonus) / 100) + 1;
@@ -603,13 +608,52 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         AddValueToElementInner('sharedWisdomBonusField', `--`);
         document.getElementById('sharedWisdomBonusText').style.textDecoration = 'line-through';
     };
+
+
+    // Use modifiers toggle
+    let yieldsData = {
+        artifact: artifact,
+        base: totalXpYield,
+        modified: totalXpYieldWithModifiers,
+        useModifiers: true // Default
+    };
+
+    // Listen for checkbox change
+    AddListener('checkboxUseModifiers', 'change', async function() {
+
+        if (this.checked) {
+            CacheChangeItem('useModifiers', true);
+            yieldsData.useModifiers = true;
+            await AddYieldValues(yieldsData);
+            return;
+        };
+
+        CacheChangeItem('useModifiers', false);
+        yieldsData.useModifiers = false;
+        await AddYieldValues(yieldsData);
+    });
+
+    // Check for cache item
+    await CacheReturnItem('useModifiers')
+    .then((res) => {
+        
+        // Check if val doesnt exist
+        if (res === undefined) {
+            CacheChangeItem('useModifiers', true); // Default
+            document.getElementById('checkboxUseModifiers').checked = true;
+            yieldsData.useModifiers = true;
+            return;
+        };
+
+        document.getElementById('checkboxUseModifiers').checked = res;
+        yieldsData.useModifiers = res;
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
     
 
-
-    // ..
-    let artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
-    // let artifactPointProgressionDefinition = progressionDefinitions[artifact.pointProgression.progressionHash];
-    // let artifactPowerBonusDefinition = progressionDefinitions[artifact.powerBonusProgression.progressionHash];
 
     // Check if there are no bounties
     if (amountOfBounties === 0) {
@@ -635,24 +679,9 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         // No items tooltip
         document.getElementById('noBountiesTooltip').style.display = 'none';
 
-        // Artifact power bonus fraction fields
-        let totalArtifactPowerBonusXp = artifact.powerBonusProgression.progressToNextLevel + totalXpYieldWithModifiers;
-        AddValueToElementInner('artifactPowerBonusProgressField', `${InsertSeperators(artifact.powerBonusProgression.progressToNextLevel)} + ${InsertSeperators(totalXpYieldWithModifiers)} = ${InsertSeperators(totalArtifactPowerBonusXp)}`);
-        AddValueToElementInner('artifactPowerBonusCeilingField', InsertSeperators(artifact.powerBonusProgression.nextLevelAt));
+        // add yield values
+        await AddYieldValues(yieldsData);
 
-        // Artifact mod levels fraction fields
-        let totalArtifactModLevelsXp = artifact.pointProgression.progressToNextLevel + totalXpYieldWithModifiers;
-        AddValueToElementInner('artifactModLevelsProgressField', InsertSeperators(totalArtifactModLevelsXp));
-        if(artifact.pointProgression.level === artifact.pointProgression.levelCap) {
-            AddValueToElementInner('artifactModLevelsCeilingField', 'Unlocked All!');
-        }
-        else {
-            AddValueToElementInner('artifactModLevelsCeilingField', InsertSeperators(artifact.pointProgression.nextLevelAt));
-        };
-
-        // Season pass levels and total XP
-        AddValueToElementInner('xpWithModField', InsertSeperators(totalXpYieldWithModifiers));
-        AddValueToElementInner('SeasonPassLevelsWithModField', InsertSeperators((totalXpYieldWithModifiers / 100_000).toFixed(2)));
     };
     // [ -- END OF BOUNTIES -- ]
 

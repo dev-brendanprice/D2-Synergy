@@ -3,7 +3,6 @@ import {
     seasonDefinitions,
     seasonPassDefinitions,
     progressionDefinitions,
-    relationsTable, 
     UserXpModifiers,
     UserProfile, log } from '../user.js';
 import { ParseProgressionalItems } from './ParseProgressItems.js';
@@ -16,6 +15,7 @@ import { ParseRace } from './ParseRace.js';
 import { MakeCharacterSelect } from './MakeCharacterSelect.js';
 import { FetchUserTransistory } from './FetchUserTransistory.js';
 import { GetSeasonPassRewardsStructure } from './GetSeasonPassRewardsStructure.js';
+import { relationsTable } from './relationsTable.js';
 
 var characterLoadToggled = false, // Used to lockout character select during a load
     characterRecords;
@@ -54,7 +54,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
 
 
         // Clear (emtpy fields that are going to change) DOM content
-        document.getElementById('bountyItems').innerHTML = '';
         document.getElementById('seasonalChallengeItems').innerHTML = '';
         document.getElementById('overlays').innerHTML = '';
 
@@ -72,6 +71,8 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
 
         // Check if first time load (build character selects if so etc)
         if (isFirstTimeLoad) {
+
+            document.getElementById('defaultCharacterSelect').innerHTML = '';
 
             // Add characters to DOM
             for (let i=0; i<Object.keys(characters).length; i++) {

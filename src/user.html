@@ -15,7 +15,7 @@
     <link rel="icon" href="./static/ico/icon.png">
     <link rel="shortcut icon" href="./static/ico/icon.png">
     <meta charset="UTF-8">
-    
+
     <title>D2Synergy</title>
 
     <link rel="manifest" href="manifest.json">
@@ -68,10 +68,11 @@
                     <ul id="whatsNewFeaturesList">
                         <li>Re-designed the navigation bar</li>
                         <li>Added a help button in the navigation bar</li>
-                        <li>Changed the font to something that is more clear</li>
+                        <li>New font!</li>
+                        <li>Added a toggle that lets you swap between xp values with or without modifiers</li>
                         <li>Added yield stats for artifacts</li>
                         <li>Added support for the shared wisdom XP modifier</li>
-                        <li>A new PWA is available that you can download via any browsers on all platforms!</li>
+                        <li>A new PWA is available that you can download via any browser on all platforms!</li>
                         <li>🛠️ Bug fixes</li>
                     </ul>
                 </div>
@@ -188,11 +189,11 @@
                     <div class="settingSection">
                         <h2>General Options</h2>
                         <div style="display: flex;flex-direction: column;gap: 5px;">
-                            <label class="labelContainer" style="display: none;">
+                            <label class="labelContainer">
                                 <input type="checkbox" id="checkboxRefreshWhenFocused" class="settingCheckbox">
                                 <div class="checkboxLabel">Refresh data when browser tab is focused</div>
                             </label>
-                            <label class="labelContainer" style="display: none;">
+                            <label class="labelContainer">
                                 <input type="checkbox" id="checkboxRefreshOnInterval" class="settingCheckbox">
                                 <div class="checkboxLabel">Refresh data every 2 minutes</div>
                             </label>
@@ -388,6 +389,14 @@
                             <div id="yieldDropdownContainer">
                                 <div id="dropdownContentXpContainer">
 
+                                    <div class="userToggleContainer" style="display: flex;margin-bottom: 5px;">
+                                        <label class="switchSmall">
+                                            <input type="checkbox" id="checkboxUseModifiers">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div style="padding-top:1px;font-size: 13px;color: #858585;">Use modifiers</div>
+                                    </div>
+
                                     <div style="display: flex;gap: 5px;margin-bottom: 15px;padding-top: 10px;">
                                         <div>XP:</div>
                                         <div class="dropdownNumber"  id="xpWithModField">000,000,000</div>
@@ -502,6 +511,7 @@
 
                             <hr class="contentHeadingSeperator"></hr>
 
+                            <!-- old table layout -->
                             <div id="relationsTableContent">
 
                                 <div id="tblCon">
@@ -523,7 +533,62 @@
                                         <div id="timeUntilWeeklyReset"></div>
                                     </div>
                                 </div>
-                
+
+                            </div>
+
+
+
+
+                            <!-- new table layout -->
+                            <!-- flex -->
+                            <div style="display: none;flex-direction: column;margin-top: 20px;">
+
+                                <!-- heading row -->
+                                <div class="tableHeadingRow tableRow">
+                                    <div>Item Name</div>
+                                    <div>Affinity</div>
+                                    <div>Coverage %</div>
+                                    <div>Relation Points</div>
+                                </div>
+
+                                <!-- content row -->
+                                <hr class="tableRowSeperator"></hr>
+                                <div class="tableContentRow tableRow">
+
+                                    <div class="tableItemNameContainer">
+                                        <div class="tableItemIconSquareContainer" style="background-color: #35648F;width: 26px !important;">
+                                            <img src="./static/ico/destiny-icons/vanguard_icon.svg" class="tableItemIconImg">
+                                        </div>
+                                        <div class="tableItemNameFieldContainer">item name</div>
+                                    </div>
+                                    
+                                    <div class="tableAffinitiesContainer">
+                                        <div class="tableItemIconSquareContainer" style="background-color: #4DCF5F;">
+                                            <img src="./static/ico/destiny-icons/vanguard_icon.svg" class="tableItemIconImg">
+                                        </div>
+                                        <div class="tableItemIconSquareContainer" style="background-color: #EACE3A;">
+                                            <img src="./static/ico/destiny-icons/vanguard_icon.svg" class="tableItemIconImg">
+                                        </div>
+                                        <div class="tableItemIconSquareContainer tableItemIconSquareContainerNull"></div>
+                                    </div>
+
+                                    <div class="tableCoverageField">50%</div>
+                                    <div class="tablePointsField">50</div>
+                                </div>
+                                <hr class="tableRowSeperator"></hr>
+                            </div>
+
+
+                            
+
+                            <div class="affinitiesContainer">
+
+                                <div class="contentHeadingContainer">
+                                    <div class="contentHeading">Affinities</div>
+                                </div>
+
+                                <hr class="contentHeadingSeperator"></hr>
+
                                 <div id="relationSquares">
                                     <div>
                                         <div class="relationSquareTitleContainers">
@@ -561,7 +626,6 @@
                                         <div class="relationSquareEmbed" id="EnemyTypeText">--</div>
                                     </div>
                                 </div>
-
                             </div>
 
                             <div>
@@ -574,7 +638,7 @@
                                     <div style="padding-top:1px;">Include seasonal challenges in table</div>
                                 </div>
 
-                                <div class="userToggleContainer"> <!-- flex -->
+                                <div class="userToggleContainer">
                                     <label class="switch">
                                         <input type="checkbox" id="checkboxIncludeExpiredBountiesInTable">
                                         <span class="slider round"></span>
@@ -582,7 +646,7 @@
                                     <div style="padding-top:1px;">Include expired bounties in table</div>
                                 </div>
 
-                                <div class="userToggleContainer"> <!-- flex -->
+                                <div class="userToggleContainer">
                                     <label class="switch">
                                         <input type="checkbox" id="toggleTypePVP">
                                         <span class="slider round"></span>
@@ -590,7 +654,7 @@
                                     <div style="padding-top:1px;">Include PvP in table</div>
                                 </div>
 
-                                <div class="userToggleContainer"> <!-- flex -->
+                                <div class="userToggleContainer">
                                     <label class="switch">
                                         <input type="checkbox" id="toggleTypePVE">
                                         <span class="slider round"></span>
