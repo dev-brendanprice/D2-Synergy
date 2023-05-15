@@ -1,4 +1,4 @@
-import { requestHeaders, log, UserProfile, UserProfileProgressions } from '../user.js';
+import { requestHeaders, log, UserProfile } from '../user.js';
 import { MakeRequest } from "../modules/MakeRequest";
 
 // Fetch bungie user data

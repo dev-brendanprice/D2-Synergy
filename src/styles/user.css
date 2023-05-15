@@ -1341,6 +1341,7 @@ hr.dropdownSubline {
 }
 
 .statContainerMainHeading {
+    margin-top: -3px;
     font-size: 20px;
     font-weight: 600;
     color: white;
@@ -1349,37 +1350,86 @@ hr.dropdownSubline {
 
 .statMetricsContainer {
     display: flex;
-    margin-top: 9px;
+    margin-top: 5px;
     padding: 8px;
     padding-left: 9px;
     padding-right: 9px;
     width: fit-content;
-    height: 130px;
+    height: 135px;
     gap: 10px;
     background-color: rgba(0, 0, 0, 0.6);
 }
 
 .statMetricsContainer > div {
     padding-top: 4px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 6px;
+    padding-right: 6px;
     width: 100px;
     border: solid 1px #555555;
 }
 
 .metricSubheading {
-    font-size: 12px;
+    font-size: 10px;
     line-height: 1.4;
     color: #fff9;
 }
 
 .metricHeading {
     margin-top: -3px;
-    font-size: 16px;
+    font-size: 14px;
     color: white;
 }
 
-.seasonRankMetricContainer {
+.backplate {
+    margin-top: 15px !important;
+}
+
+.backplateContainer-Single {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: -50px;
+}
+
+.backplateContainer-Duo {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-top: -55px;
+    margin-left: 10px;
+}
+
+.backplateContainer-Quad {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: -80px;
+    padding-top: 5px;
+}
+
+.metricXLarge {
+    font-size: 25px;
+}
+
+.metricLarge {
+    font-size: 20px;
+}
+
+.metricMedium {
+    font-size: 14px;
+}
+
+.metricSub {
+    font-size: 16px;
+    color: #b9b9b9;
+}
+
+.metricSubSmall {
+    font-size: 12px;
+    color: #d3d3d3;
+}
+
+.metricContainer {
     margin-top: 5px;
     margin-left: 0px;
     margin-right: 0px;
@@ -1387,14 +1437,13 @@ hr.dropdownSubline {
 }
 
 #seasonRankMetric {
-    margin-top: -59px;
-    margin-left: -2px;
+    margin-top: -66px;
     font-size: 24px;
     font-weight: bold;
 }
 
-#toggleMetricTooltipsButton {
-    display: flex;
+#toggleMetricHintsButton {
+    display: none; /* flex */
     margin-top: 6px;
     margin-left: 1px;
     padding-top: 4px;
@@ -1412,11 +1461,11 @@ hr.dropdownSubline {
     cursor: pointer;
 }
 
-#toggleMetricTooltipsButton:hover {
+#toggleMetricHintsButton:hover {
     border: solid 1px white;
 }
 
-.toggleMetricTooltipIcon {
+.toggleMetricHintIcon {
     margin-top: -3px;
     width: 11px;
 }

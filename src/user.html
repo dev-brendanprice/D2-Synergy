@@ -106,7 +106,7 @@
                 <div data-containerName="seasonalChallengesContainer" id="navBarChallengesButton">Seasonal Challenges</div>
                 <!-- <img class="middleNavbarItemUi" src="./static/ico/ui_dot.svg"> -->
             </div>
-            <div class="middleNavbarItemContainer" style="display: none;">
+            <div class="middleNavbarItemContainer">
                 <div data-containerName="statisticsContainer" id="navBarStatisticsButton">Statistics</div>
                 <!-- <img class="middleNavbarItemUi" src="./static/ico/ui_line.svg"> -->
             </div>
@@ -753,8 +753,8 @@
                                 <div class="statsColumnContainer">
                                     <div class="statContainer">
                                         <div class="statHeadingContainer">
-                                            <div class="statContainerSubheading">Season 20</div>
-                                            <div class="statContainerMainHeading">Season of Dawn</div>
+                                            <div class="statContainerSubheading" id="seasonNumberMetric">Season 00</div>
+                                            <div class="statContainerMainHeading" id="seasonNameMetric">Season of Word</div>
                                         </div>
                                         <div class="statMetricsContainer">
 
@@ -763,9 +763,9 @@
                                                     <div class="metricSubheading">Season Pass</div>
                                                     <div class="metricHeading">Rank</div>
                                                 </div>
-                                                <div class="seasonRankMetricContainer">
-                                                    <img src="./static/images/UI/season_rank_backplate.svg">
-                                                    <div id="seasonRankMetric">4657</div>
+                                                <div class="metricContainer">
+                                                    <img style="width: 95px;margin-top: -3px;" id="seasonRankBackplate" src="./static/images/UI/season_rank_backplate.svg">
+                                                    <div id="seasonRankMetric">----</div>
                                                 </div>
                                             </div>
 
@@ -774,8 +774,12 @@
                                                     <div class="metricSubheading">Season Rank</div>
                                                     <div class="metricHeading">Next Rank</div>
                                                 </div>
-                                                <div class="seasonRankMetricContainer">
+                                                <div class="metricContainer backplate">
                                                     <img style="width: 100%;" src="./static/images/UI/metric_backplate_m.png">
+                                                    <div class="backplateContainer-Duo">
+                                                        <div class="metricLarge" id="seasonPassRankProgressMetric">--,---</div>
+                                                        <div class="metricSub">/100,000xp</div>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -784,12 +788,31 @@
                                                     <div class="metricSubheading">All-time High</div>
                                                     <div class="metricHeading">Rank</div>
                                                 </div>
+                                                <div class="metricContainer backplate">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_m.png">
+                                                    <div class="backplateContainer-Single">
+                                                        <div class="metricXLarge" id="highestSeasonPassRankMetric">-,---</div>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div>
+                                            <div style="display: none;">
                                                 <div class="metricHeaderContainer">
                                                     <div class="metricSubheading">Season Pass</div>
                                                     <div class="metricHeading">Rewards</div>
+                                                </div>
+                                                <div class="metricContainer backplate">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_L.png">
+                                                    <div class="backplateContainer-Quad">
+                                                        <div>
+                                                            <div class="metricSubSmall">Claimed Items</div>
+                                                            <div id="seasonPassRewardsClaimedMetric">--</div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="metricSubSmall">Unclaimed Items</div>
+                                                            <div id="seasonPassRewardsUnclaimedMetric">--</div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -797,54 +820,117 @@
                                     </div>
                                     <div class="statContainer">
                                         <div class="statHeadingContainer">
-                                            <div class="statContainerSubheading">Lantern of Osiris</div>
+                                            <div class="statContainerSubheading" id="seasonArtifactNameMetric">Lantern of Osiris</div>
                                             <div class="statContainerMainHeading">Seasonal Artifact</div>
                                         </div>
                                         <div class="statMetricsContainer">
+
                                             <div>
                                                 <div class="metricHeaderContainer">
                                                     <div class="metricSubheading">Artifact Power</div>
-                                                    <div class="metricHeading">Bonus</div>
+                                                    <div class="metricHeading">Power Bonus</div>
+                                                </div>
+                                                <div class="metricContainer">
+                                                    <img style="width: 55px;margin-top: -5px;" id="artifactBonusBackplate" src="./static/images/UI/season_rank_backplate.svg">
+                                                    <div style="margin-top: -40px;color: #00F0FF;" id="artifactBonusMetric">+--</div>
+                                                </div>
+                                                <div class="metricContainer" style="margin-top: 20px;">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_s.png">
+                                                    <div class="backplateContainer-Duo" style="margin-top: -40px;">
+                                                        <div class="metricMedium" style="font-size: 16px;" id="artifactPowerBonusProgressMetric">-,---,---</div>
+                                                        <div class="metricMedium" style="font-size: 14px;color: #b9b9b9;" id="artifactPowerBonusCeilingMetric">/-,---,---xp</div>
+                                                    </div>
                                                 </div>
                                             </div>
+
                                             <div>
                                                 <div class="metricHeaderContainer">
                                                     <div class="metricSubheading">Artifact Progress</div>
                                                     <div class="metricHeading">Perks</div>
                                                 </div>
+                                                <div class="metricContainer">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_s.png">
+                                                    <div style="display: flex;margin-top: -35px;justify-content: center;">
+                                                        <div class="metricLarge" id="artifactModUnlocksMetric">--</div>
+                                                        <div class="metricSub" id="artifactModUnlocksCeilingMetric">/--</div>
+                                                    </div>
+                                                </div>
+                                                <div class="metricContainer" style="margin-top: 12px;">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_sm.png">
+                                                    <div class="backplateContainer-Duo" style="display: none;margin-top: -45px;" id="perkProgressTextContainer">
+                                                        <div class="metricLarge" style="font-size: 16px;" id="artifactModUnlockProgressMetric">-,---,---</div>
+                                                        <div class="metricSub" style="font-size: 14px;" id="artifactModUnlockProgressCeilingMetric">/-,---,---xp</div>
+                                                    </div>
+                                                    <div style="margin-top: -45px;" id="allModSlotsUnlockedTextContainer">
+                                                        <div style="font-size: 14px;color: rgb(167, 167, 167);">All slots unlocked!</div>
+                                                    </div>
+                                                </div>
                                             </div>
+
                                             <div>
                                                 <div class="metricHeaderContainer">
                                                     <div class="metricSubheading">All-time High</div>
-                                                    <div class="metricHeading">Bonus</div>
+                                                    <div class="metricHeading">Power Bonus</div>
+                                                </div>
+                                                <div class="metricContainer backplate">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_m.png">
+                                                    <div class="backplateContainer-Single">
+                                                        <div class="metricXLarge" id="highestPowerBonusMetric">--</div>
+                                                    </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
-                                    <div class="statContainer">
+                                    <div class="statContainer" style="display: none;">
                                         <div class="statHeadingContainer">
                                             <div class="statContainerSubheading">Eververse Shloot</div>
                                             <div class="statContainerMainHeading">Bright Engram Progression</div>
                                         </div>
                                         <div class="statMetricsContainer">
+
                                             <div>
                                                 <div class="metricHeaderContainer">
                                                     <div class="metricSubheading">Bright Engram</div>
                                                     <div class="metricHeading">Progress</div>
                                                 </div>
+                                                <div class="metricContainer backplate">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_m.png">
+                                                    <div class="backplateContainer-Duo">
+                                                        <div class="metricLarge" id="brightEngramProgressMetric">---,---</div>
+                                                        <div class="metricSub">/500,000xp</div>
+                                                    </div>
+                                                </div>
                                             </div>
+
                                             <div>
                                                 <div class="metricHeaderContainer">
                                                     <div class="metricSubheading">Season Progress</div>
                                                     <div class="metricHeading">Total</div>
                                                 </div>
+                                                <div class="metricContainer backplate">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_m.png">
+                                                    <div class="backplateContainer-Duo">
+                                                        <div class="metricLarge" id="brightEngramsTotalSeasonalMetric">--</div>
+                                                        <div class="metricSub">Engrams</div>
+                                                    </div>
+                                                </div>
                                             </div>
+
                                             <div>
                                                 <div class="metricHeaderContainer">
                                                     <div class="metricSubheading">All-time High</div>
                                                     <div class="metricHeading">Total</div>
                                                 </div>
+                                                <div class="metricContainer backplate">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_m.png">
+                                                    <div class="backplateContainer-Duo">
+                                                        <div class="metricLarge" id="highestBrightEngramsTotalSeasonalMetric">--</div>
+                                                        <div class="metricSub">Engrams</div>
+                                                    </div>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="statContainer">
@@ -853,30 +939,52 @@
                                             <div class="statContainerMainHeading">XP Progression</div>
                                         </div>
                                         <div class="statMetricsContainer">
+
                                             <div>
                                                 <div class="metricHeaderContainer">
                                                     <div class="metricSubheading">Season Progress</div>
                                                     <div class="metricHeading">Total XP</div>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <div class="metricHeaderContainer">
-                                                    <div class="metricSubheading">Current Session</div>
-                                                    <div class="metricHeading">Progress</div>
+                                                <div class="metricContainer backplate">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_m.png">
+                                                    <div class="backplateContainer-Single" style="margin-top: -45px;">
+                                                        <div style="font-size: 90%;" id="seasonProgressXpMetric">---,---,---</div>
+                                                    </div>
                                                 </div>
                                             </div>
+
                                             <div>
                                                 <div class="metricHeaderContainer">
                                                     <div class="metricSubheading">All-time High</div>
                                                     <div class="metricHeading">Total XP</div>
                                                 </div>
+                                                <div class="metricContainer backplate">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_m.png">
+                                                    <div class="backplateContainer-Single" style="margin-top: -45px;">
+                                                        <div style="font-size: 90%;" id="highestSeasonProgressXpMetric">---,---,---</div>
+                                                    </div>
+                                                </div>
                                             </div>
+
+                                            <div>
+                                                <div class="metricHeaderContainer">
+                                                    <div class="metricSubheading">Lifetime</div>
+                                                    <div class="metricHeading">Total XP</div>
+                                                </div>
+                                                <div class="metricContainer backplate">
+                                                    <img style="width: 100%;" src="./static/images/UI/metric_backplate_m.png">
+                                                    <div class="backplateContainer-Single" style="margin-top: -45px;">
+                                                        <div style="font-size: 90%;" id="lifetimeProgressXpMetric">---,---,---</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
-                                <div id="toggleMetricTooltipsButton">
-                                    <img class="toggleMetricTooltipIcon" src="./static/ico/tooltip_icon.svg">
-                                    <div id="toggleMetricTooltipsButtonText">Hide Tooltips</div>
+                                <div id="toggleMetricHintsButton">
+                                    <img class="toggleMetricHintIcon" src="./static/ico/hint_icon.svg">
+                                    <div id="toggleMetricHintsButtonText">Hide Hints</div>
                                 </div>
                             </div>
                         </div>

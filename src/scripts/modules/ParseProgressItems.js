@@ -15,7 +15,7 @@ import {
     progressionDefinitions, 
     UserProfile,
     userTrasistoryData,
-    seasonPassLevelStructure } from '../user.js';
+    seasonPassLevelStructure, log } from '../user.js';
 import { MakeBountyElement } from './MakeBountyElement.js';
 import { ParseSeasonalChallenges } from './ParseSeasonalChallenges.js';
 import { ReturnSeasonPassProgressionStats } from './ReturnSeasonPassProgressionStats.js';
@@ -32,8 +32,9 @@ import { AddListener } from './Events.js';
 import { CacheReturnItem } from './CacheReturnItem.js';
 import { CacheChangeItem } from './CacheChangeItem.js';
 import { AddYieldValues } from './AddYieldValues.js';
+import { ParseStatistics } from './ParseStatistics.js';
 
-const log = console.log.bind(console);
+export let seasonPassProgressionStats = {};
 
 
 // Function to fetch all progressional items
@@ -45,7 +46,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     };
 
     // Call function to get progressions for season pass XP and bonus stats
-    const seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack);
+    seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack);
     const artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
 
     // Season Pass innerHTML changes
@@ -653,6 +654,8 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     });
 
     
+    // Add metrics to statistics page
+    await ParseStatistics();
 
 
     // Check if there are no bounties

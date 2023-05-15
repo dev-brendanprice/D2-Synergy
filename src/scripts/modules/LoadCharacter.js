@@ -16,17 +16,24 @@ import { MakeCharacterSelect } from './MakeCharacterSelect.js';
 import { FetchUserTransistory } from './FetchUserTransistory.js';
 import { GetSeasonPassRewardsStructure } from './GetSeasonPassRewardsStructure.js';
 import { relationsTable } from './relationsTable.js';
+import { ReturnSeasonPassLevelProgress } from './ReturnSeasonPassLevelProgress.js';
+import { artifactSteps } from './SynergyDefinitions.js';
 
-var characterLoadToggled = false, // Used to lockout character select during a load
-    characterRecords;
+let characterLoadToggled = false; // Used to lockout character select during a load
+let characterRecords;
 
 // Profile data
-var seasonPassInfo = {},
-    seasonPassLevel = 0,
-    prestigeProgressionSeasonInfo,
-    seasonProgressionInfo = {},
-    seasonalArtifactInfo = {},
-    seasonInfo = {};
+export let seasonPassLevel = 0;
+export let seasonalArtifactInfo = {};
+export let pastSeasonLevels;
+export let pastSeasonPowerBonuses = [];
+export let pastTotalXpValues = [];
+export let totalSeasonXpEarnt = 0;
+export let lifetimeXpEarnt = 0;
+let seasonPassInfo = {};
+let prestigeProgressionSeasonInfo;
+let seasonProgressionInfo = {};
+let seasonInfo = {};
 
 
 // Load character from specific index
@@ -133,7 +140,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
         });
 
         // Loop over season from definitions to get the highest statistics across all seasons
-        let pastSeasonLevels = [];
+        pastSeasonLevels = [];
         for (let hash in seasonDefinitions) {
 
             // Check if season >= season 8
@@ -154,8 +161,31 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
                 let seasonProgressionPrestige = CharacterProgressions[seasonPassProgressionPrestigeHash];
 
                 // Push season level to array
-                pastSeasonLevels.push(await ReturnSeasonPassLevel(seasonProgression, seasonProgressionPrestige));
-                
+                let seasonPassLevel = await ReturnSeasonPassLevel(seasonProgression, seasonProgressionPrestige);
+                pastSeasonLevels.push(seasonPassLevel);
+
+                // Get season progress - next level and cap
+                let seasonProgress = await ReturnSeasonPassLevelProgress(seasonProgression, seasonProgressionPrestige);
+                let seasonTotalXp;
+                if (seasonProgress.progress !== 0) {
+                    seasonTotalXp = (seasonPassLevel * 100_000) + seasonProgress.progress;
+                };
+                pastTotalXpValues.push(`${seasonTotalXp}`);
+
+                // Get (Estimate) artifact level
+                let powerBonus = 0;
+                for (let i=0; i<artifactSteps.length; i++) {
+
+                    // Take current artifact level step off total xp to get progress
+                    seasonTotalXp = seasonTotalXp - artifactSteps[i];
+
+                    // If step is higher than progress and progress !negative
+                    if (artifactSteps[i] >= seasonTotalXp && seasonTotalXp > 0) {
+                        powerBonus = i;
+                    };
+                };
+                pastSeasonPowerBonuses.push(powerBonus);
+
             };
             
             // Check if hash is the current season
@@ -167,9 +197,11 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
                 prestigeProgressionSeasonInfo = CharacterProgressions[seasonPassInfo.prestigeProgressionHash];
                 seasonPassLevel = await ReturnSeasonPassLevel(seasonProgressionInfo, prestigeProgressionSeasonInfo);
                 seasonalArtifactInfo = itemDefinitions[seasonDefinitions[hash].artifactItemHash];
-                seasonalArtifactInfo.powerBonusProgression = progressionDefinitions[1656313730];
+                seasonalArtifactInfo.powerBonusProgression = progressionDefinitions[1656313730]; // hash is for XP
                 seasonInfo = seasonDefinitions[hash];
 
+                let seasonProgress = await ReturnSeasonPassLevelProgress(seasonProgressionInfo, prestigeProgressionSeasonInfo);
+                totalSeasonXpEarnt = (seasonPassLevel * 100_000) + seasonProgress.progress;
             };
         };
 
@@ -178,8 +210,16 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
 
         // Sort levels in descending order to get highest season pass level
         pastSeasonLevels = pastSeasonLevels.sort((a,b) => b-a);
-        // let highestSeasonPassLevel = pastSeasonLevels[0];
-        // let seasonPassLevelsTotal = pastSeasonLevels.reduce((a,b) => a+b, 0);
+        pastSeasonPowerBonuses = pastSeasonPowerBonuses.sort((a,b) => b-a);
+
+        // Remove undefined values and sort in descending order
+        pastTotalXpValues = pastTotalXpValues.filter((val) => { return val !== 'undefined'; });
+        pastTotalXpValues = pastTotalXpValues.sort((a,b) => b-a);
+
+        // Find lifetime XP earnt
+        let seasonProgress = await ReturnSeasonPassLevelProgress(seasonProgressionInfo, prestigeProgressionSeasonInfo);
+        let totalSeasonRanks = pastSeasonLevels.reduce((step, a) => step + a, 0);
+        lifetimeXpEarnt = (totalSeasonRanks * 100_000) + seasonProgress.progress;
         
         // Re-structure season pass rewards into a cleaner array structure
         let seasonPassRewardsTrack = progressionDefinitions[seasonPassInfo.rewardProgressionHash].rewardItems;
