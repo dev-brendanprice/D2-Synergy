@@ -17,7 +17,7 @@ body {
 
 #contextMenuSettingsMobile {
     margin-top: 3px;
-    width: 28px;
+    width: 24px;
 }
 
 #userMainContainer {
@@ -464,12 +464,16 @@ hr.tableRowSeperator {
     border: 1px solid rgb(101, 101, 101);
     justify-content: center;
     text-align: center;
-    width: 100%;
+    width: 130px;
+}
+
+#secondDropdown {
+    width: 240px;
 }
 
 .affinitiesContainer {
     display: flex;
-    margin-top: 20px;
+    margin-top: 17px;
     width: 100%;
     flex-direction: column;
 }
@@ -620,17 +624,15 @@ tr:nth-child(even) {
 #bottomMiddleNavBarItems {
     display: none;
     position: fixed;
-    padding-top: 10px;
-    padding-bottom: 10px;
     bottom: 0;
     left: 0;
     width: 100vw;
-    height: 50px;
+    height: fit-content;
     gap: 12.5%;
     justify-content: center;
     text-align: center;
     align-items: center;
-    background-color: #1E1E1E;
+    background-color: #1a191a;
     color: #C1C1C1;
     z-index: 10;
 }
@@ -871,8 +873,7 @@ hr.contentHeadingSeperator {
     margin-right: 40px;
     margin-top: -10px;
     width: 40%;
-    opacity: 90%;
-    /* filter: invert(21%) sepia(47%) saturate(1408%) hue-rotate(317deg) brightness(100%) contrast(90%); */
+    opacity: 80%;
 }
 
 .characterEmblemIco {
@@ -1471,7 +1472,6 @@ hr.dropdownSubline {
 }
 
 .challengeDescription {
-    width: 95%;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

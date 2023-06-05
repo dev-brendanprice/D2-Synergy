@@ -123,19 +123,15 @@
     <div id="bottomMiddleNavBarItems">
         <div data-containerName="bountiesContainer" class="bottomNavBarIconContainer" id="bountiesMenuMobile">
             <img class="bottomNavBarIcons" src="./static/ico/destiny-icons/pursuits.svg">
-            <div>Bounties</div>
         </div>
         <div data-containerName="seasonalChallengesContainer" class="bottomNavBarIconContainer" id="seasonalMenuMobile">
             <img class="bottomNavBarIcons" src="./static/ico/destiny-icons/meditations.svg">
-            <div>Seasonal</div>
         </div>
         <div data-containerName="statisticsContainer" class="bottomNavBarIconContainer" id="statsMenuMobile" style="display: none;">
             <img class="bottomNavBarIcons" src="./static/ico/destiny-icons/vault.svg">
-            <div>Statistics</div>
         </div>
         <div class="bottomNavBarIconContainer" id="contextMenuSettingsMobile">
-            <img class="bottomNavBarIcons" src="./static/ico/more_dots.svg">
-            <div style="padding-bottom: 4px;">More</div>
+            <img class="bottomNavBarIcons" src="./static/ico/settings.svg">
         </div>
     </div>
 
@@ -441,7 +437,7 @@
                             </div>
                         </div>
 
-                        <div style="width: 240px;">
+                        <div id="secondDropdown">
                             <div id="dropdownModifiers" class="dropdownContainer">
                                 <div style="color: gray;font-size: 14px;">Modifiers</div>
                                 <hr class="dropdownLine">
@@ -501,39 +497,41 @@
                     <div id="contentDisplayGridLayout">
                         <div class="contentDisplaySegment">
 
-                            <div class="contentHeadingContainer">
-                                <div class="contentHeading">Relations</div>
-                                <div class="subHeadingContainer">
-                                    <div id="relationsTotalField">420</div>
-                                    <div>Relations</div> 
-                                </div>
-                            </div>
-
-                            <hr class="contentHeadingSeperator"></hr>
-
-                            <!-- old table layout -->
-                            <div id="relationsTableContent">
-
-                                <div id="tblCon">
-                                    <table id="relationsTable">
-                                        <tr>
-                                            <th>Keyword</th>
-                                            <th>Relation</th>
-                                        </tr>
-                                    </table>
-
-                                </div>
-
-                                <div id="noRelationsExistElement">
-                                    <div id="noRelationsExistText">
-                                        No (notable) relations exist.
-                                        <br><br>
-                                        Pick up bounties, quests or wait until more seasonal challenges are available.
-                                        <br><br><br>
-                                        <div id="timeUntilWeeklyReset"></div>
+                            <div style="display: none;">
+                                <div class="contentHeadingContainer">
+                                    <div class="contentHeading">Relations</div>
+                                    <div class="subHeadingContainer">
+                                        <div id="relationsTotalField">420</div>
+                                        <div>Relations</div> 
                                     </div>
                                 </div>
-
+    
+                                <hr class="contentHeadingSeperator"></hr>
+    
+                                <!-- old table layout -->
+                                <div id="relationsTableContent">
+    
+                                    <div id="tblCon">
+                                        <table id="relationsTable">
+                                            <tr>
+                                                <th>Keyword</th>
+                                                <th>Relation</th>
+                                            </tr>
+                                        </table>
+    
+                                    </div>
+    
+                                    <div id="noRelationsExistElement">
+                                        <div id="noRelationsExistText">
+                                            No (notable) relations exist.
+                                            <br><br>
+                                            Pick up bounties, quests or wait until more seasonal challenges are available.
+                                            <br><br><br>
+                                            <div id="timeUntilWeeklyReset"></div>
+                                        </div>
+                                    </div>
+    
+                                </div>
                             </div>
 
 
@@ -541,7 +539,7 @@
 
                             <!-- new table layout -->
                             <!-- flex -->
-                            <div style="display: none;flex-direction: column;margin-top: 20px;">
+                            <div style="display: block;flex-direction: column;margin-top: 20px;">
 
                                 <!-- heading row -->
                                 <div class="tableHeadingRow tableRow">
@@ -715,7 +713,7 @@
 
                                 <div id="noBountiesTooltip">You don't have any bounties on this character.</div>
                                 <div id="bountyItems"></div>
-                                <div id="recommendationTooltip">Note: It is recommended that you have ~20 (completable) bounties.</div>
+                                <div id="recommendationTooltip">Note: It's recommended to have ~20 completable bounties.</div>
                             </div>
                             <div id="seasonalChallengesContainer">
 

@@ -244,6 +244,8 @@ export const pveActivityModes = [
     'Expedition', //10
     'Vanguard', //11
     'Battlegrounds', //12
+    'Salvage', //13
+    'DeepDive', //14
 ];
 
 // Add specified for vanguard activities
@@ -296,7 +298,7 @@ export const ActivityMode = [
     'Story', //16
     'Trials', //17
     'Explore', //18
-    'DaresOfEternity', //19 - Dares of Eternity
+    'DaresOfEternity', //19
     'Raid', //20
     'Clash', //21
     'Momentum', //22
@@ -311,6 +313,8 @@ export const ActivityMode = [
     'DefiantBattleground', //31
     'TerminalOverload', //32
     'VexIncursionZone', //33
+    'Salvage', //34
+    'DeepDive', //35
 ];
 
 // Damage types

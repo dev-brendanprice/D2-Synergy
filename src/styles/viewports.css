@@ -3,6 +3,13 @@
  *
  * Style for various viewports
  */
+@media screen and (max-width: 1885px) {
+    .chunkPage {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 10px;
+    }
+}
+
 @media screen and (max-width: 1729px) {
     #brightEngram {
         margin-top: 20px;
@@ -13,6 +20,20 @@
     .chunkPage {
         grid-template-columns: repeat(1, 1fr);
         gap: 10px;
+    }
+}
+
+@media screen and (max-width: 1470px) {
+    #contentDisplayGridLayout {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .contentDisplaySegment {
+        width: unset;
+        height: fit-content;
+        max-height: 80vh;
     }
 }
 
@@ -39,18 +60,6 @@
 }
 
 @media screen and (max-width: 1070px) {
-    #contentDisplayGridLayout {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .contentDisplaySegment {
-        width: unset;
-        height: fit-content;
-        max-height: 80vh;
-    }
-
     #recommendationTooltip {
         margin-bottom: 50px;
     }
@@ -183,7 +192,16 @@
 
     #dropdownsContainer {
         margin: 0 auto;
-        width: 90vw;
+        /* width: 90vw; */
+    }
+
+    #relationSquares {
+        margin: auto;
+        flex-wrap: wrap;
+    }
+
+    #secondDropdown {
+        width: unset;
     }
 
     #contentDisplay {
@@ -201,6 +219,18 @@
 
     #bottomMiddleNavBarItems {
         display: flex;
+    }
+
+    .characterClassIco {
+        margin-right: 80px !important;
+        margin-top: -15px !important;
+        width: 20% !important;
+    }
+
+    #defaultCharacterSelect {
+        display: flex;
+        margin-top: -10px;
+        padding-right: 10px;
     }
 
     #settingsGrid {
@@ -248,10 +278,6 @@
         color: rgba(81, 81, 81, 0.3);
         left: 0;
         right: 0;
-    }
-
-    #defaultCharacterSelect {
-        display: none;
     }
 
     #notificationContainer {

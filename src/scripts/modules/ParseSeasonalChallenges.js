@@ -5,7 +5,7 @@ import {
     recordDefinitions,
     presentationNodeDefinitions,
     progressionDefinitions,
-    UserProfile 
+    UserProfile, log 
 } from '../user.js';
 
 /*
@@ -17,71 +17,60 @@ import {
 export async function ParseSeasonalChallenges(seasonHash, seasonProgressionInfo) {
 
     // Self function to add props onto a challenge
-    function addPropsToChallengeItem(seasonalChallenges) {
-        for (let challenge in seasonalChallenges) {
-            if (!seasonalChallenges[challenge].props) {
-                seasonalChallenges[challenge].props = [];
-            };
-            seasonalChallenges[challenge].props = stringMatchProgressionItem(seasonalChallenges[challenge]);
+    function addPropsToChallengeItem(challenge) {
+        if (!challenge.props) {
+            challenge.props = [];
         };
+        challenge.props = stringMatchProgressionItem(challenge);
     };
 
-    // Get the presentation node hash for the weekly challenges node
-    let seasonalChallengesNodeHash = presentationNodeDefinitions[seasonDefinitions[seasonHash].seasonalChallengesPresentationNodeHash].children.presentationNodes[0].presentationNodeHash;
-    let seasonalChallenges = {};
+    /*
+        - Get seasonal challenge weekly structure
+            -> season definition > seasonalChallengesPresentationNodeHash > children.presentationNodes[0] >
+            children.presentationNodes
 
-    // Get all the child presentation node hashes for the weekly challenges (upto current week)
-    let seasonPresentationNodes = presentationNodeDefinitions[seasonalChallengesNodeHash].children.presentationNodes;
-    let availableSeasonalChallenges = [];
+        - Boolean check on each week number if that number of weeks has passed since the season startDate
+
+        - Push all this into a formatted array for easy use
+    */
+
+    let challenges = {};
+    let seasonDefinition = seasonDefinitions[seasonHash];
+    let seasonStartDate = new Date(seasonDefinition.startDate);
+    let challengesNodeHash = seasonDefinition.seasonalChallengesPresentationNodeHash;
+    let challengeWeeklyNodeHash = presentationNodeDefinitions[challengesNodeHash].children.presentationNodes[0].presentationNodeHash;
+    let challengePresentation = presentationNodeDefinitions[challengeWeeklyNodeHash].children.presentationNodes;
+
+    for (let node of challengePresentation) {
+
+        let nodeDefinition = presentationNodeDefinitions[node.presentationNodeHash];
+
+        // node may be named "Seasonal" instead of "Week 1"
+        // offset by -one week to count the first week
+        let weekNumber = parseInt(nodeDefinition.displayProperties.name.split(' ')[1]) - 1;
+
+        // check if this week has passed, relative to season season startDate
+        let isPassed = new Date() > new Date(new Date(seasonDefinition.startDate).setDate(new Date(seasonDefinition.startDate).getDate() + weekNumber * 7));
+        challenges[nodeDefinition.displayProperties.name] = {
+            weekNumber: weekNumber,
+            isPassed: isPassed,
+            challenges: []
+        };
+
+        // push each challenge in this presentation node to array
+        for (let record of nodeDefinition.children.records) {
+
+            let recordDefinition = recordDefinitions[record.recordHash];
+            addPropsToChallengeItem(recordDefinition); // add synergy properties to seasonal challenge
+            challenges[nodeDefinition.displayProperties.name].challenges.push(recordDefinition);
+        };
+
+        // wild card for "Seasonal" node
+        if (nodeDefinition.displayProperties.name === 'Seasonal') {
+            challenges[nodeDefinition.displayProperties.name].isPassed = true;
+            challenges[nodeDefinition.displayProperties.name].weekNumber = null;
+        };
+    };
     
-    // Store the amount of available seasonal challenges in UserProfile (global)
-    UserProfile.AssignMisc('challengesCount', availableSeasonalChallenges.length);
-
-    let startDate = new Date(seasonProgressionInfo.startDate).getTime();
-    let todayDate = new Date().getTime();
-    let weeksPassed = Math.trunc(todayDate - startDate) / (24*3600*1000*7);
-
-    // Find the current (within the current week) seasonal challenges
-    for (let i=0; i<weeksPassed; i++) {
-
-        // Get current week based on index
-        let week = presentationNodeDefinitions[seasonPresentationNodes[i].presentationNodeHash];
-
-        // Push each challenge hash into availableSeasonalChallenges
-        for (let record of week.children.records) {
-            availableSeasonalChallenges.push(record.recordHash);
-        };
-    };
-    
-    // Loop through each weekly challenge node
-    for (let node in seasonPresentationNodes) {
-        
-        // Get the presentation node hash for each weekly challenges node
-        let presentationNodeHash = seasonPresentationNodes[node].presentationNodeHash;
-        let weekPresentationNodeDefinition = presentationNodeDefinitions[presentationNodeHash].children.records;
-
-        // Loop through each challenge in that week and add it to the seasonalChallenges object
-        for (let v in weekPresentationNodeDefinition) {
-
-            // Get record definition
-            let recordHash = weekPresentationNodeDefinition[v].recordHash;
-            let recordDefinition = recordDefinitions[recordHash];
-            let recordDescription = recordDefinitions[recordHash].displayProperties.description;
-
-            if (availableSeasonalChallenges.includes(recordHash)) {
-
-                // Check if progressionDescriptor has string variables to replace
-                if (recordDescription.includes('{')) {
-                    recordDefinitions[recordHash].displayProperties.description = ReplaceStringVariables(recordDescription);
-                };
-
-                seasonalChallenges[recordHash] = recordDefinition;
-            };
-        };
-    };
-
-    // Add props to each challenge
-    addPropsToChallengeItem(seasonalChallenges);
-
-    return seasonalChallenges;
+    return challenges;
 };
