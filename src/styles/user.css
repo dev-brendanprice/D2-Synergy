@@ -434,6 +434,8 @@ hr.tableRowSeperator {
 
 #noRelationsExistElement {
     display: none;
+    padding-top: 20px;
+    padding-bottom: 20px;
     width: 100%;
     background-color: rgba(255, 255, 255, 0.1);
     filter: blur(50%);
@@ -442,8 +444,7 @@ hr.tableRowSeperator {
 #noRelationsExistText {
     display: block;
     margin: 0 auto;
-    margin-top: 100px;
-    width: 80%;
+    width: 50%;
     text-align: center;
     justify-content: center;
 }

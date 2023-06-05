@@ -914,7 +914,7 @@ export async function BuildWorkspace() {
             console.error(error);
         });
 
-    }, 120_000);
+    }, (60_000) * 5);
     
     // Check if rememberLastPage is true
     await CacheReturnItem('isRememberLastPageToggled')
