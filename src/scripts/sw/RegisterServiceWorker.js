@@ -1,22 +1,38 @@
 import { log } from '../user.js';
 
+let serviceWorker;
+
+export async function PostMessage(data) {
+    serviceWorker.active.postMessage(data);
+};
+
+export function PostMessageSync(data) {
+    serviceWorker.active.postMessage(data);
+};
+
 // Register service worker to load definitions (non blocking)
-export const RegisterServiceWorker = async function () {
+export async function RegisterServiceWorker () {
 
     // Check if service worker is supported
     if ('serviceWorker' in navigator) {
-        const serviceWorker = await navigator.serviceWorker.register('./sw.js', { scope: './', type: 'module' });
 
         log('🥝 Installing Service Worker');
-        if (serviceWorker.active) {
-            log('🥝 Service Worker Active');
-    
-            serviceWorker.active.postMessage('🥝 HELLO FROM MAIN');
-    
-            // Listen for messages from service worker
-            navigator.serviceWorker.addEventListener('message', (event) => {
-                log('🥝', event.data);
-            });
+
+        try {
+
+            serviceWorker = await navigator.serviceWorker.register('./sw.js', { scope: '../../', type: 'module' });
+            if (serviceWorker.active) {
+
+                log('🥝 Service Worker Active');
+        
+                // Listen for messages from service worker
+                navigator.serviceWorker.addEventListener('message', (event) => {
+                    log(event.data);
+                });
+            };
+        }
+        catch (err) {
+            console.error(err);
         };
 
         return;

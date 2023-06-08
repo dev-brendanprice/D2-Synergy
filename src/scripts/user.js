@@ -24,6 +24,7 @@ import { LoadPrimaryCharacter } from './modules/LoadPrimaryCharacter.js';
 import { CacheChangeItem } from './modules/CacheChangeItem.js';
 import { StopLoad } from './modules/StopLoad.js';
 import { StartLoad } from './modules/StartLoad.js';
+// import { PostMessage, PostMessageSync, RegisterServiceWorker } from './sw/RegisterServiceWorker.js';
 
 console.log(`%cD2 SYNERGY ${import.meta.env.version}`, 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
@@ -320,7 +321,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Build definitions using service worker
-    // RegisterServiceWorker()
+    // await RegisterServiceWorker()
     // .catch((error) => {
     //     console.error(`🥝 Service Worker Error: ${error}`);
     // });
