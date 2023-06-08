@@ -111,7 +111,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         totalSeasonalChallenges += fubar.length;
 
         for (let challenge of fubar) {
-            log(challenge);
+
             let challengeHash = challenge.hash;
 
             // Create HTML element for challenge
@@ -656,6 +656,46 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
         document.getElementById('checkboxUseModifiers').checked = res;
         yieldsData.useModifiers = res;
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+    /*
+        Profile-Wide Checkbox
+        1. Changes local storage value
+        2. Value is checked on load to see if all characters should be loaded (True) or just the primary one (False)
+        i. When value is changed > passive reloading
+    */
+
+    // Listen for checkbox change
+    AddListener('checkboxUseProfileWide', 'change', async function() {
+
+        // if
+        if (this.checked) {
+            CacheChangeItem('userProfileWide', true);
+            return;
+        };
+
+        // else
+        CacheChangeItem('userProfileWide', false);
+    });
+
+    // Check for cache item
+    await CacheReturnItem('userProfileWide')
+    .then((res) => {
+        
+        // Check if val doesnt exist
+        if (res === undefined) {
+            CacheChangeItem('userProfileWide', true); // Default
+            document.getElementById('userProfileWide').checked = true;
+            // ..
+            return;
+        };
+
+        // else
+        document.getElementById('userProfileWide').checked = res;
+        // ..
     })
     .catch((error) => {
         console.error(error);

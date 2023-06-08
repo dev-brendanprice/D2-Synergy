@@ -7,7 +7,7 @@
 body {
     height: 100vh;
     overflow-y: hidden;
-    background: radial-gradient(rgb(45, 45, 45), #202020);
+    background: radial-gradient(#2d2d2d, #202020);
 }
 
 .contentHeading {
@@ -1004,12 +1004,12 @@ input:checked+.slider:before {
 }
 
 .pro {
-    max-height: 210px;
+    max-height: 250px;
     transition: max-height 0.20s ease-in-out;
 }
 
 .pre2 {
-    max-height: 210px;
+    max-height: 250px;
 }
 
 .pro2 {
@@ -1252,7 +1252,6 @@ hr.dropdownSubline {
 .dropdownContainer {
     display: flex;
     padding-top: 5px;
-    padding-bottom: 5px;
     gap: 8px;
     cursor: pointer;
     user-select: none;
