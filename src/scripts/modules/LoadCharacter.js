@@ -18,6 +18,7 @@ import { GetSeasonPassRewardsStructure } from './GetSeasonPassRewardsStructure.j
 import { relationsTable } from './relationsTable.js';
 import { ReturnSeasonPassLevelProgress } from './ReturnSeasonPassLevelProgress.js';
 import { artifactSteps } from './SynergyDefinitions.js';
+import { CacheReturnItem } from './CacheReturnItem.js';
 
 let characterLoadToggled = false; // Used to lockout character select during a load
 let characterRecords;
@@ -37,19 +38,32 @@ let seasonInfo = {};
 
 
 // Load character from specific index
-// @int {characterId}, @obj {characters}, @boolean {isFirstTimeLoad}
+// @string {characterId}, @obj {characters}, @boolean {isFirstTimeLoad}
 export async function LoadCharacter(characterId, characters, isFirstTimeLoad = true) {
 
     if (!characterLoadToggled) {
 
+        // Toggle character load
+        characterLoadToggled = true;
+
         log('-> LoadCharacter Called');
+
+        // Highlight selected character, in the character selection menu
+        let charactersFromDom = document.getElementsByClassName('characterSelect');
+        for (let element of charactersFromDom) {
+
+            let charId = element.getAttribute('data-character-id');
+            if (charId === characterId) {
+                element.style.border = '1px solid #ffea9f';
+            }
+            else {
+                element.style.border = '1px solid transparent';
+            };
+        };
 
         // Change notification label content
         document.getElementById('notificationTitle').innerHTML = 'Loading User Data';
         document.getElementById('notificationMessage').innerHTML = 'Parsing user data..';
-
-        // Toggle character load
-        characterLoadToggled = true;
 
         // Globals in this scope
         let CharacterProgressions,
@@ -79,6 +93,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
         // Check if first time load (build character selects if so etc)
         if (isFirstTimeLoad) {
 
+            // Clear character selects
             document.getElementById('defaultCharacterSelect').innerHTML = '';
 
             // Add characters to DOM
@@ -117,7 +132,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
                 Object.keys(itemPlugSet).forEach(v => {
 
                     let plugHash = itemPlugSet[v].plugHash;
-                    if (plugHash === 1820053069) { // Flickering Ligt - 2%
+                    if (plugHash === 1820053069) { // Flickering Light - 2%
                         ghostModBonusXp = 2;
                     }
                     else if (plugHash === 1820053068) { // Little Light - 3%

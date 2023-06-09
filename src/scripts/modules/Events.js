@@ -3,7 +3,8 @@ import {
     itemDisplay,
     accentColor,
     itemDefinitions,
-    UserProfile } from '../user.js';
+    UserProfile, 
+    profileWideData } from '../user.js';
 import { LoadCharacter } from './LoadCharacter.js';
 import { CacheChangeItem } from './CacheChangeItem.js';
 import { CacheReturnItem } from './CacheReturnItem.js';
@@ -748,6 +749,24 @@ export async function BuildWorkspace() {
     document.getElementById('navBarVersion').style.opacity = 100;
     document.getElementById('settingsFooterVersionField').innerHTML = `${import.meta.env.version}`;
     document.getElementById('popupVersion').innerHTML = `${import.meta.env.version}`;
+
+    // Check to see if all profiles should be loaded
+    // await CacheReturnItem('useProfileWide')
+    // .then((res) => {
+        
+    //     // Check if val doesnt exist
+    //     if (res === undefined) {
+    //         CacheChangeItem('useProfileWide', false); // Default
+    //         profileWideData.AssignProfilewideBool(false);
+    //         return;
+    //     };
+
+    //     // else
+    //     profileWideData.AssignProfilewideBool(res);
+    // })
+    // .catch((error) => {
+    //     console.error(error);
+    // });
 
     // Change popup top bar colour to what is saved in localStorage
     await CacheReturnItem('accentColor')

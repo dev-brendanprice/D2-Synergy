@@ -842,17 +842,23 @@ hr.contentHeadingSeperator {
     height: 50px;
     color: white;
     background-color: rgb(80, 80, 80, 0.6);
+    border: 1px solid transparent;
     align-items: center;
     cursor: pointer;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.characterSelect:hover {
+    border: 1px solid white !important;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
 }
 
 .characterSelect > div {
     z-index: 99;
-}
-
-.characterSelect:hover {
-    border: 1px solid white;
-    margin: unset;
 }
 
 .characterBg {
