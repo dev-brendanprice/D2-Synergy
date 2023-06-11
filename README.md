@@ -1,4 +1,4 @@
-# D2 Synergy - Alpha™
+# D2 Synergy - Alpha
 
 [![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)
 
