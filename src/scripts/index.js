@@ -63,24 +63,28 @@ function CheckForOutageViaParams() {
 window.addEventListener('DOMContentLoaded', function () {
 
     // Check for outage via the query params of a previous redirect
-    CheckForOutageViaParams();
+    // CheckForOutageViaParams();
 
     const stateCode = GenerateRandomString(128);
 
     // Put version number in navbar
-    document.getElementById('navBarVersion').innerHTML = `${import.meta.env.version}`;
+    document.getElementById('version-text').innerHTML = `${import.meta.env.version}`;
 
     // Redirect user to Bungie.net on a clean slate
-    document.getElementById('btnAuthorize').addEventListener('click', () => {
+    document.getElementById('button-authorize').addEventListener('click', () => {
+        localStorage.setItem('stateCode', stateCode);
+        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&randomqueryparam=${GenerateRandomString(128)}`;
+    });
+    document.getElementById('button-authorize2').addEventListener('click', () => {
         localStorage.setItem('stateCode', stateCode);
         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&randomqueryparam=${GenerateRandomString(128)}`;
     });
 
     // Check for server availability, else do error (error code inside MakeRequest too)
-    MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
-    .catch((error) => {
-        console.error(error);
-    });
+    // MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
+    // .catch((error) => {
+    //     console.error(error);
+    // });
 
     // Omit query params from URL on reload
     window.history.pushState({}, window.location.host, `${import.meta.env.HOME_URL}`);
