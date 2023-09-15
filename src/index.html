@@ -3,18 +3,19 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="styles/index.css">
-    <link rel="stylesheet" href="styles/src.css">
-    <link rel="stylesheet" href="styles/viewports.css">
+    <!-- <link rel="stylesheet" href="styles/src.css"> -->
+    <!-- <link rel="stylesheet" href="styles/viewports.css"> -->
     
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link rel="icon" href="./static/ico/icon.png">
     <link rel="shortcut icon" href="./static/ico/icon.png">
     <meta charset="UTF-8">
 
-    <title>D2Synergy</title>
+    <title>Synergy</title>
 
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#252525">
@@ -34,7 +35,7 @@
 
 <body>
 
-    <div id="topColorBar"></div>
+    <!-- <div id="topColorBar"></div>
     <div id="navBarContainer">
         <div id="navBarTitleContainer">
             <img id="navBarIcon" src="./static/ico/icon.png">
@@ -101,12 +102,50 @@
                 <div id="hyperlink" href="" onclick="window.open('https://twitter.com/_brendanprice', '_blank');">@_brendanprice</div>
             </div>
         </div>
+    </div> -->
+
+    <div class="bg"></div>
+
+    <div class="nav-con">
+        <div class="nav-icon-con">
+            <img class="nav-icon" src="static/ico/icon.svg">
+            <div class="nav-icon-text">Synergy</div>
+        </div>
+        <div class="nav-controls">
+            <a class="nav-control-text" href="https://github.com/brendanprice2003/D2-Synergy" target="_blank">
+                GitHub
+            </a>
+            <a class="nav-control-text" href="https://github.com/brendanprice2003/D2-Synergy/wiki/User-Guide" target="_blank">
+                Guide
+            </a>
+            <!-- <a class="nav-control-text" href="" target="_blank">Sponsor</a> -->
+            <div class="nav-control-textalt" id="button-authorize">Authenticate</div>
+        </div>
     </div>
 
+    <div>
+        <h1>Progressions made easy</h1>
+        <div class="header-underline"></div>
+
+        <p>Synergy group progressions together and gives recommendations for optimal progression.</p>
+
+        <div class="header-authenticate-con" id="button-authorize2">
+            <div>Authenticate</div>
+            <img class="header-authenticate-button-icon" src="static/ico/arrow-box.svg">
+        </div>
+    </div>
+    
+    <a class="version-text-con" id="version-text" href="https://github.com/brendanprice2003/D2-Synergy/releases" target="_blank">
+        Alpha 0.5.6
+    </a>
+
     <script type="module" src="scripts/index.js"></script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZMBD0LKPWR"></script>
     <script>
         window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());gtag('config', 'G-ZMBD0LKPWR');
     </script>
+
+    <noscript>Please enable JavaScript, or use a modern browser! Thanks. :)</noscript>
 </body>

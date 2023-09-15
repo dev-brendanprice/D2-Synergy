@@ -16,7 +16,7 @@
     <link rel="shortcut icon" href="./static/ico/icon.png">
     <meta charset="UTF-8">
 
-    <title>D2Synergy</title>
+    <title>Synergy</title>
 
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#252525">
@@ -230,25 +230,13 @@
 
                 <div id="accessibilitySettingsContainer" style="display: none;">
                     <h1 class="settingsHeading">Accessibility Settings</h1>
-                    <div style="margin-top: 5px;margin-left: 20px;margin-right: 20px;color: gray;font-size: var(--fontSizeTooltipSmall);">
+                    <div style="margin-top: 5px;margin-left: 20px;margin-right: 20px;color: gray;font-size: 12px;">
                         The default sizes are recommended as they give the best clarity for all screen sizes
                     </div>
                     <div class="settingSection" style="display: none;">
                         <div id="accessibilityTextDemo" style="padding: 10px;background-color: rgb(60, 60, 60);border-radius: 5px;border: 1px solid gray;">
                             Whether we wanted it or not, we've stepped into a war with the Cabal on Mars. So let's get to taking out their command, one by one.
                         </div>
-                    </div>
-                    <!-- <hr> -->
-                    <div class="settingSection" style="display: none;">
-                        <h2>Font Size</h2>
-                        <label class="labelRangeContainer">
-                            <input type="range" id="accessibilityFontSizeSlider" class="settingRange" min="0" max="2" value="0">
-                            <div>
-                                <div style="margin-top: 4px;float: left;">Aa</div>
-                                <div style="font-size: 22px;float: right;">Aa</div>
-                            </div>
-                        </label>
-                        <div class="settingsResetUIButton" id="accessibilityFontSizeReset">Reset</div>
                     </div>
                     <hr>
                     <div class="settingSection" style="min-height: 250px;max-height: 250px;">
@@ -261,7 +249,7 @@
                             </div>
                         </label>
                         <div style="margin-top: 20px;">
-                            <div style="font-weight: 600;font-size: var(--fontSizeContent);">Item Preview</div>
+                            <div style="font-weight: 600;font-size: 16px;">Item Preview</div>
                             <div style="display: flex;gap: 15px;">
                                 <img id="accessibilityImageDemo" src="./static/images/bounty_image.png">
                                 <div class="settingsResetUIButton" id="accessibilityImageDemoReset">Reset</div>
@@ -279,7 +267,7 @@
                             <div data-color="#932b93" class="settingsAccentColorButton" style="background-color: #932b93;"></div>
                         </div>
                         <div style="margin-top: 25px;">
-                            <div style="margin-bottom: 10px;font-style: italic;font-size: var(--fontSizeContent);">I want my own color!</div>
+                            <div style="margin-bottom: 10px;font-style: italic;font-size: 16px;">I want my own color!</div>
                             <label>
                                 <input type="color" id="settingCustomColorInput" value="#ED4D4D" style="cursor: pointer;">
                             </label>
@@ -296,7 +284,7 @@
                             <div class="generalButton" id="clearCacheSettingsButton" style="background-color: rgb(50, 50, 50);">Clear Cache</div>
                             <div class="generalButton" id="logoutSettingsButton" style="background-color: rgba(240, 70, 70, 0.8);">Logout</div>
                         </div>
-                        <div style="margin-top: 10px;color: gray;font-size: var(--fontSizeTooltipSmall);">
+                        <div style="margin-top: 10px;color: gray;font-size: 12px;">
                             Clearing cache will reset settings and clear definitions cache
                         </div>
                     </div>
@@ -397,7 +385,7 @@
                                         <div style="padding-top:1px;font-size: 13px;color: #858585;">Use modifiers</div>
                                     </div>
 
-                                    <div class="userToggleContainer" style="display: none;margin-bottom: 5px;"> <!-- display: flex; -->
+                                    <div class="userToggleContainer" style="display: flex;margin-bottom: 5px;"> <!-- display: flex; -->
                                         <label class="switchSmall">
                                             <input type="checkbox" id="checkboxUseProfileWide">
                                             <span class="slider round"></span>
@@ -407,14 +395,14 @@
 
                                     <div style="display: flex;gap: 5px;margin-bottom: 15px;padding-top: 10px;">
                                         <div>XP:</div>
-                                        <div class="dropdownNumber" id="xpWithModField">000,000,000</div>
+                                        <div class="dropdownNumber" id="xpWithModField">0</div>
                                     </div>
                                     
                                     <div style="margin-top: -6px;margin-left: -7px;background-color: gray;border-radius: 10px;width: 20px;height:2px;transform: rotate(90deg);"></div>
 
                                     <div style="display: flex;gap: 5px;margin-bottom: 15px;margin-top: 10px;">
                                         <div>Season Pass Levels:</div>
-                                        <div class="dropdownNumber" id="SeasonPassLevelsWithModField">000</div>
+                                        <div class="dropdownNumber" id="SeasonPassLevelsWithModField">0</div>
                                     </div>
 
                                     <div style="margin-top: -6px;margin-left: -7px;background-color: gray;border-radius: 10px;width: 20px;height:2px;transform: rotate(90deg);"></div>
@@ -430,7 +418,7 @@
                                         <div style="margin-top: 8px;padding-left: 16px;">
                                             <div>
                                                 <div>Power Bonus Levels:</div>
-                                                <div style="display: flex;">
+                                                <div style="display: flex;gap: 5px;">
                                                     <div class="dropdownNumber" id="artifactPowerBonusProgressField">0</div>
                                                     <div class="dropdownNumber" id="artifactPowerBonusCeilingField">0</div>
                                                 </div>
