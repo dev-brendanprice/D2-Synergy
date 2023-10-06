@@ -252,6 +252,7 @@ h1 {
 }
 
 .header-underline {
+    display: none;
     width: 100px;
     height: 5px;
     background-color: #f95f5f;
