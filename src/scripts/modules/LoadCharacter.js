@@ -19,6 +19,7 @@ import { relationsTable } from './relationsTable.js';
 import { ReturnSeasonPassLevelProgress } from './ReturnSeasonPassLevelProgress.js';
 import { artifactSteps } from './SynergyDefinitions.js';
 import { CacheReturnItem } from './CacheReturnItem.js';
+import { GetYieldData } from './GetYieldData.js'
 
 let characterLoadToggled = false; // Used to lockout character select during a load
 let characterRecords;
@@ -38,32 +39,33 @@ let seasonInfo = {};
 
 
 // Load character from specific index
-// @string {characterId}, @obj {characters}, @boolean {isFirstTimeLoad}
-export async function LoadCharacter(characterId, characters, isFirstTimeLoad = true) {
+// @string {characterId}, @obj {characters}, @boolean {isFirstTimeLoad}, @boolean {isAlternate}
+export async function LoadCharacter(characterId, characters, isFirstTimeLoad = true, isAlternate = false) {
 
     if (!characterLoadToggled) {
 
         // Toggle character load
         characterLoadToggled = true;
 
-        log('-> LoadCharacter Called');
+        if (!isAlternate) {
 
-        // Highlight selected character, in the character selection menu
-        let charactersFromDom = document.getElementsByClassName('characterSelect');
-        for (let element of charactersFromDom) {
+            log('-> LoadCharacter Called');
 
-            let charId = element.getAttribute('data-character-id');
-            if (charId === characterId) {
-                element.style.border = '1px solid #ffea9f';
-            }
-            else {
-                element.style.border = '1px solid transparent';
-            };
+            // Get fireteam data (shared wisdom modifier)
+            FetchUserTransistory();
+
+            // Change notification label content
+            document.getElementById('notificationTitle').innerHTML = 'Loading User Data';
+            document.getElementById('notificationMessage').innerHTML = 'Parsing user data..';
+
+            // Clear (emtpy fields that are going to change) DOM content
+            document.getElementById('seasonalChallengeItems').innerHTML = '';
+            document.getElementById('overlays').innerHTML = '';
+        }
+        else {
+            log(`--> LoadCharacter Called - ${characterId}`);
         };
 
-        // Change notification label content
-        document.getElementById('notificationTitle').innerHTML = 'Loading User Data';
-        document.getElementById('notificationMessage').innerHTML = 'Parsing user data..';
 
         // Globals in this scope
         let CharacterProgressions,
@@ -74,9 +76,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
             ItemSockets;
 
 
-        // Clear (emtpy fields that are going to change) DOM content
-        document.getElementById('seasonalChallengeItems').innerHTML = '';
-        document.getElementById('overlays').innerHTML = '';
 
         // Get chosen character via characterId
         for (let v in characters) {
@@ -110,6 +109,19 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
                 characterInfo.characterId = character.characterId;
 
                 MakeCharacterSelect(characterInfo);
+            };
+        };
+
+        // Highlight selected character, in the character selection menu
+        let charactersFromDom = document.getElementsByClassName('characterSelect');
+        for (let element of charactersFromDom) {
+
+            let charId = element.getAttribute('data-character-id');
+            if (charId === characterId) {
+                element.style.border = '1px solid #ffea9f';
+            }
+            else {
+                element.style.border = '1px solid transparent';
             };
         };
 
@@ -249,32 +261,44 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
             rewardsTrack[v.rewardedAtProgressionLevel].push(v.itemHash);
         });
 
-        // Get season pass rewards structure (rewards and their corresponding ranks)
-        GetSeasonPassRewardsStructure(rewardsTrack);
-        
-        // Get shared wisdom value (if any) from transistory data
-        await FetchUserTransistory();
+        if (!isAlternate) {
+            
+            // Get season pass rewards structure (rewards and their corresponding ranks)
+            GetSeasonPassRewardsStructure(rewardsTrack);
+        };
 
         // Get progressional items
         var progressionalItemsObj = await ParseProgressionalItems(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp, seasonalArtifactInfo);
+        GetYieldData(CharacterObjectives, CharacterInventories, characterId, characterRecords, seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack, ghostModBonusXp, seasonalArtifactInfo);
 
-        // Get relations for progressional items
-        var relations = await ParseProgressionalRelations(progressionalItemsObj);
+        if (!isAlternate) {
 
-        // Populate relations objects in global relationsTable object
-        relationsTable.relations.bounties = relations.bounties;
-        relationsTable.relations.challenges = relations.challenges;
-        relationsTable.relations.all = relations.all;
-        relationsTable.relations.averageRelationCount = relations.averageRelationCount;
+            // Get relations for progressional items
+            var relations = await ParseProgressionalRelations(progressionalItemsObj);
 
-        // Declare table div then build the table
-        relationsTable.div = document.getElementById('relationsTable');
-        relationsTable.BuildTable();
+            // Populate relations objects in global relationsTable object
+            relationsTable.relations.bounties = relations.bounties;
+            relationsTable.relations.challenges = relations.challenges;
+            relationsTable.relations.all = relations.all;
+            relationsTable.relations.averageRelationCount = relations.averageRelationCount;
 
-        // Stop loading sequence
-        CacheChangeItem('lastChar', characterId);
+            // Declare table div then build the table
+            relationsTable.div = document.getElementById('relationsTable');
+            relationsTable.BuildTable();
+
+            // Stop loading sequence
+            CacheChangeItem('lastChar', characterId);
+        };
+
         characterLoadToggled = false;
-        StopLoad();
     };
-    log('-> LoadCharacter Done');
+
+    if (!isAlternate) {
+        log('-> LoadCharacter Done');
+    }
+    else {
+        log(`--> LoadCharacter Done - ${characterId}`);
+    };
+
+    StopLoad();
 };

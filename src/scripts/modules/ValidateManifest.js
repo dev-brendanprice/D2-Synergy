@@ -79,6 +79,7 @@ export var ValidateManifest = async () => {
     manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
 
     // Check for new version, if so delete definitions and re-fetch, then do normal FixTables
+    log(localStorageManifestVersion, manifest.data.Response.version);
     if (localStorageManifestVersion !== manifest.data.Response.version) {
         log('📚 New manifest found');
         indexedDB.deleteDatabase('keyval-store'); // Delete definitions

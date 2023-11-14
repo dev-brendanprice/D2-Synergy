@@ -303,6 +303,16 @@
     }
 }
 
+@media screen and (max-width: 550px) {
+    .nav-controls {
+        display: none;
+    }
+
+    .header-github-link-con {
+        display: inline-block;
+    }
+}
+
 
 @media screen and (max-width: 480px) {
     .indexNotice {

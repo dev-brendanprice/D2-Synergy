@@ -40,7 +40,7 @@
     <div id="loadpopupBackplate"></div>
 
     <div id="loadpopupContainer">
-        <div id="colorBar"></div>
+        <div id="colorBar" class="barColor"></div>
 
         <div class="loadpopupContent">
             
@@ -100,15 +100,12 @@
         <div id="middleNavBarItems">
             <div class="middleNavbarItemContainer">
                 <div data-containerName="bountiesContainer" id="navBarBountiesButton">Bounties</div>
-                <!-- <img class="middleNavbarItemUi" src="./static/ico/ui_line.svg"> -->
             </div>
             <div class="middleNavbarItemContainer">
                 <div data-containerName="seasonalChallengesContainer" id="navBarChallengesButton">Seasonal Challenges</div>
-                <!-- <img class="middleNavbarItemUi" src="./static/ico/ui_dot.svg"> -->
             </div>
             <div class="middleNavbarItemContainer">
                 <div data-containerName="statisticsContainer" id="navBarStatisticsButton">Statistics</div>
-                <!-- <img class="middleNavbarItemUi" src="./static/ico/ui_line.svg"> -->
             </div>
         </div>
 
@@ -163,7 +160,7 @@
                     </div>
                     <div class="settingCategory" id="LogoutSettingsButton">
                         <div>Other</div>
-                        <div id="categorySubtext">Clear browser cache & <span style="color: #ed4d4dc3;">logout</span></div>
+                        <div id="categorySubtext">Clear cache & <span style="color: #ed4d4dc3;">logout</span></div>
                         <img id="categorySelectArrow" src="./static/ico/arrow_right.svg">
                     </div>
                     <div style="display: flex;gap: 10px;">
@@ -372,7 +369,7 @@
                             <div id="dropdownYield" class="dropdownContainer">
                                 <div style="color: gray;font-size: 14px;">Yield</div>
                                 <hr class="dropdownLine">
-                                <img src="./static/ico/arrow_down.svg" class="dropdownArrow" id="arrowYield">
+                                <!-- <img src="./static/ico/arrow_down.svg" class="dropdownArrow" id="arrowYield"> -->
                             </div>
                             <div id="yieldDropdownContainer">
                                 <div id="dropdownContentXpContainer">
@@ -385,7 +382,7 @@
                                         <div style="padding-top:1px;font-size: 13px;color: #858585;">Use modifiers</div>
                                     </div>
 
-                                    <div class="userToggleContainer" style="display: flex;margin-bottom: 5px;"> <!-- display: flex; -->
+                                    <div class="userToggleContainer" style="display: none;margin-bottom: 5px;"> <!-- display: flex; -->
                                         <label class="switchSmall">
                                             <input type="checkbox" id="checkboxUseProfileWide">
                                             <span class="slider round"></span>
@@ -398,36 +395,38 @@
                                         <div class="dropdownNumber" id="xpWithModField">0</div>
                                     </div>
                                     
-                                    <div style="margin-top: -6px;margin-left: -7px;background-color: gray;border-radius: 10px;width: 20px;height:2px;transform: rotate(90deg);"></div>
+                                    <div class="dropdownUiLineStyle"></div>
 
                                     <div style="display: flex;gap: 5px;margin-bottom: 15px;margin-top: 10px;">
                                         <div>Season Pass Levels:</div>
                                         <div class="dropdownNumber" id="SeasonPassLevelsWithModField">0</div>
                                     </div>
 
-                                    <div style="margin-top: -6px;margin-left: -7px;background-color: gray;border-radius: 10px;width: 20px;height:2px;transform: rotate(90deg);"></div>
+                                    <div class="dropdownUiLineStyle"></div>
                                         
                                     <div style="color: rgb(177, 177, 177);margin-top: 10px;">Artifact</div>
                                     <div style="display: flex;">
                                         <div>
-                                            <div style="position: absolute;margin-top: -1px;margin-left: 1px;width: 10px;height: 18px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
-                                            <div style="position: absolute;margin-top: -1px;margin-left: 1px;width: 10px;height: 36px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
-                                            <div style="position: absolute;margin-top: 30px;margin-left: 1px;width: 10px;height: 36px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
-                                            <div style="position: absolute;margin-top: 16px;margin-left: 1px;width: 10px;height: 65px;border-bottom-right-radius: 7px;border-bottom: 2px solid gray;border-right: 2px solid gray;transform: rotateY(180deg)"></div>
+                                            <div class="dropdownUiLineStyleCorner" style="margin-top: -1px;height: 20px;"></div>
+                                            <div class="dropdownUiLineStyleCorner" style="margin-top: 11px;height: 57px;"></div>
                                         </div>
-                                        <div style="margin-top: 8px;padding-left: 16px;">
+                                        <div style="display: flex;flex-direction: column;gap: 20px;margin-top: 10px;padding-left: 16px;width: 80%;">
                                             <div>
-                                                <div>Power Bonus Levels:</div>
-                                                <div style="display: flex;gap: 5px;">
-                                                    <div class="dropdownNumber" id="artifactPowerBonusProgressField">0</div>
-                                                    <div class="dropdownNumber" id="artifactPowerBonusCeilingField">0</div>
+                                                <div>Power Bonus Level:</div>
+                                                <div style="display: flex;margin-top: 2px;">
+                                                    <div class="dropdownStatProgressBarContainer">
+                                                        <div class="dropdownStatProgressBarLevel" id="powerBonusProgressBar"></div>
+                                                    </div>
+                                                    <div class="dropdownStatProgressBarSubtext" id="powerBonusProgressPercent">--</div>
                                                 </div>
                                             </div>
-                                            <div style="margin-top: 15px;">
-                                                <div>Mod Levels:</div>
-                                                <div style="display: flex;gap: 5px;">
-                                                    <div class="dropdownNumber" id="artifactModLevelsProgressField">0</div>
-                                                    <div class="dropdownNumber" id="artifactModLevelsCeilingField">0</div>
+                                            <div>
+                                                <div>Mod Level:</div>
+                                                <div style="display: flex;margin-top: 2px;">
+                                                    <div class="dropdownStatProgressBarContainer">
+                                                        <div class="dropdownStatProgressBarLevel" id="modLevelProgressBar" style="width: 75%;"></div>
+                                                    </div>
+                                                    <div class="dropdownStatProgressBarSubtext" id="modLevelProgressPercent">--</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -437,11 +436,11 @@
                             </div>
                         </div>
 
-                        <div style="width: 240px;">
+                        <div>
                             <div id="dropdownModifiers" class="dropdownContainer">
                                 <div style="color: gray;font-size: 14px;">Modifiers</div>
                                 <hr class="dropdownLine">
-                                <img src="./static/ico/arrow_down.svg" class="dropdownArrow" id="arrowModifiers">
+                                <!-- <img src="./static/ico/arrow_down.svg" class="dropdownArrow" id="arrowModifiers"> -->
                             </div>
                             <div id="modifiersDropdownContainer">
                                 <div id="dropdownContentContainer">
@@ -685,11 +684,64 @@
                         </div>
 
                         <div class="contentDisplaySegment mobileSecond">
+
+                            <div style="display: flex;justify-content: space-between;">
+
+                                <div class="dropdownModalContainer">
+                                    <div class="dropdownModal" id="sectionsDropdownModal">
+                                        <div style="display: flex;justify-content: space-between;">
+                                            <div class="dropdownModalText">Bounties</div>
+                                            <img class="dropdownModalIcon"src="static/ico/arrow_down.svg">
+                                        </div>
+                                    </div>
+                                    <div class="dropdownButtonsContainer" id="sectionsDropdownButtonsContainer">
+                                        <div class="dropdownButton">
+                                            <div data-section="bountiesContainer" data-sectionName="Bounties" class="dropdownButtonTextSections">Bounties</div>
+                                        </div>
+                                        <div class="dropdownButton">
+                                            <div data-section="seasonalChallengesContainer" data-sectionName="Challenges" class="dropdownButtonTextSections">Challenges</div>
+                                        </div>
+                                        <div class="dropdownButton">
+                                            <div data-section="statisticsContainer" data-sectionName="Statistics" class="dropdownButtonTextSections">Statistics</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="bountiesSubheadingStatistics">
+                                    <div class="subHeadingContainer">
+                                        <div id="bountiesTotalField">0</div>
+                                        <div>Bounties</div>
+                                    </div>
+                                    <img src="./static/ico/dot.svg" class="subHeadingDotUI">
+                                    <div class="subHeadingContainer">
+                                        <div id="bountiesCompletedField">0</div>
+                                        <div>Completed</div>
+                                    </div>
+                                    <img src="./static/ico/dot.svg" class="subHeadingDotUI">
+                                    <div class="subHeadingContainer">
+                                        <div id="bountiesExpiredField">0</div>
+                                        <div>Expired</div>
+                                    </div>
+                                </div>
+
+                                <div id="challengesSubheadingStatistics">
+                                    <div class="subHeadingContainer">
+                                        <div id="challengesTotalField">0</div>
+                                        <div>Challenges</div>
+                                    </div>
+                                    <img src="./static/ico/dot.svg" class="subHeadingDotUI">
+                                    <div class="subHeadingContainer">
+                                        <div id="challengesCompletedField">0</div>
+                                        <div>Completed</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
                             <div id="bountiesContainer">
 
-                                <div class="contentHeadingContainer">
-                                    <div class="contentHeading">Bounties</div>
-                                    <div style="display: flex;gap: 2px;">
+                                <div>
+                                    <div style="display: none;gap: 2px;right:0;">
                                         <div class="subHeadingContainer">
                                             <div id="bountiesTotalField">0</div>
                                             <div>Bounties</div>
@@ -713,11 +765,13 @@
                                 <div id="bountyItems"></div>
                                 <div id="recommendationTooltip">Note: It is recommended that you have ~20 (completable) bounties.</div>
                             </div>
-                            <div id="seasonalChallengesContainer">
+                            
 
-                                <div class="contentHeadingContainer">
-                                    <div class="contentHeading">Seasonal Challenges</div>
-                                    <div style="display: flex;gap: 2px;">
+                            <!-- DEPRECATED -->
+                            <div id="fubar">
+
+                                <div>
+                                    <div style="display: none;gap: 2px;">
                                         <div class="subHeadingContainer">
                                             <div id="challengesTotalField">0</div>
                                             <div>Challenges</div>
@@ -730,9 +784,9 @@
                                     </div>
                                 </div>
 
-                                <hr class="contentHeadingSeperator"></hr>
+                                <!-- <hr class="contentHeadingSeperator"></hr> -->
 
-                                <div class="seasonalChallengesUIContainer">
+                                <div class="seasonalChallengesUIContainer" style="display: none;">
                                     <div class="seasonalChallengePageButton" id="previousSeasonalChallengePageButton">
                                         <img class="seasonalChallengeButtonIcon" id="previousSeasonalChallengeArrow" src="./static/ico/arrow_down.png">
                                     </div>
@@ -745,6 +799,100 @@
                                 </div>
                                 
                             </div>
+                            <!-- DEPRECATED -->
+
+                            <div id="seasonalChallengesContainer">
+
+                                <hr class="contentHeadingSeperator"></hr>
+
+                                <div style="display: flex;gap: 5px;margin-bottom: 10px;">
+                                    
+                                    <div class="dropdownModalContainer">
+                                        <div class="dropdownModal" id="groupsDropdownModal">
+                                            <div style="display: flex;justify-content: space-between;">
+                                                <div class="dropdownModalText">All Challenges</div>
+                                                <img class="dropdownModalIcon"src="static/ico/arrow_down.svg">
+                                            </div>
+                                        </div>
+                                        <div class="dropdownButtonsContainer" id="groupsDropdownForChallenges">
+                                            <div class="dropdownButton">
+                                                <div data-groupName="All" class="groupsDropdownButtonTextSections">All Challenges</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="controlsContainer">
+                                        <div data-buttonType="btn_wide" class="buttonContainer">
+                                            <img class="buttonIconAlt" src="./static/ico/grid_icon.png">
+                                        </div>
+                                        <div data-buttonType="btn_compact" class="buttonContainer">
+                                            <img class="buttonIconAlt" src="./static/ico/rows_icon.png">
+                                        </div>
+                                        <div data-buttonType="btn_previous" class="buttonContainer">
+                                            <img class="buttonIcon" src="./static/ico/arrow_sharp_left.png">
+                                        </div>
+                                        <div data-buttonType="btn_next" class="buttonContainer">
+                                            <img class="buttonIcon" src="./static/ico/arrow_sharp_right.png">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="gridCompact"></div>
+
+                                <div class="gridWide" style="display: none;">
+
+                                    <!-- <div>
+
+                                        <div class="cell wide">
+                                            <div class="cellTopHalf_wide">
+                                                <img class="cellIconMain_wide" src="./static/ico/chall_icon.png">
+                                                <div class="cellHeaderContainer_wide">
+                                                    <div class="cellTextWrapper_wide">
+                                                        <div class="cellTextContent_wide">Standard Issue Ammunitions Long Title Goes Here</div>
+                                                    </div>
+                                                    <div class="cellTextWrapper_wide cellDescriptor_wide">
+                                                        <div class="cellTextContent_wide cellTextContentDescriptor_wide">Defeat targets in Gambit with Primary ammo. Bonus progress is granted for using Auto Rifles, Hand Cannons, and Scout Rifles.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cellBotHalf_wide">
+                                                
+                                                <div class="cellProgressContainer_wide">
+                                                    <div class="cellProgressBoxOuter_wide">
+                                                        <div class="cellProgressBoxSpacer_wide">
+                                                            <div class="cellProgressBoxInner_wide"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cellProgressBar_wide">
+                                                        <div>Progress</div>
+                                                        <div>0/100</div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="cellRewards_wide">
+                                                    <div class="rewardContainer_wide">
+                                                        <img class="rewardIcon_wide" src="./static/ico/xp_icon.png">
+                                                        <div>Challenger XP+</div>
+                                                    </div>
+                                                    <div class="rewardContainer_wide">
+                                                        <img class="rewardIcon_wide" src="./static/ico/bd_icon.png">
+                                                        <div>Large Bright Dust Pile</div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        
+                                    </div> -->
+
+                                </div>
+
+                            </div>
+
+
                             <div id="statisticsContainer">
                                 <div class="statsColumnContainer">
                                     <div class="statContainer">
@@ -983,6 +1131,7 @@
                                     <div id="toggleMetricHintsButtonText">Hide Hints</div>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
@@ -993,7 +1142,7 @@
     </div>
 
     <div id="notificationContainer">
-        <div id="notificationTopBgLine"></div>
+        <div class="barColor" id="notificationTopBgLine"></div>
         <div id="notificationContent">
             <div>
                 <div id="notificationTitle">Loading</div>

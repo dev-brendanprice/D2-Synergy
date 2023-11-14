@@ -17,8 +17,9 @@ import { relationsTable } from './relationsTable.js';
 
 // Misc
 const log = console.log.bind(console),
-      localStorage = window.localStorage;
-var secretCount = 0;
+      localStorage = window.localStorage,
+      sessionStorage = window.sessionStorage;
+let secretCount = 0;
 
 // Menu variables
 let currentSettingsMenu = 'generalSettingsContainer';
@@ -46,7 +47,7 @@ export const AddListener = function (elementName, event, callback, selectorType)
             return;
         };
 
-        if (selectorType === 'class' || selectorType === 'CLASS') {
+        if (selectorType || selectorType === 'class' || selectorType === 'CLASS') {
             for (let element of document.getElementsByClassName(`${elementName}`)) {
                 element.addEventListener(event, callback);
             };
@@ -116,7 +117,7 @@ export async function AddEventListeners() {
     AddListener('characterSelect', 'click', async function () {
         
         let characterId = this.getAttribute('data-character-id');
-        LoadCharacter(characterId, UserProfile.characters, false);
+        LoadCharacter(characterId, UserProfile.characters, false, false);
 
     }, 'class');
 
@@ -234,6 +235,7 @@ export async function AddEventListeners() {
     // Hide *orange* warning tooltip at bottom of page
     AddListener('warningTooltipCloseButton', 'click', function () {
         document.getElementById('warningTooltip').style.display = 'none';
+        sessionStorage.setItem('warningClosed', true);
     });
 
     // Help interface tooltip for enforce relation affinity
@@ -253,63 +255,63 @@ export async function AddEventListeners() {
     });
 
     // Bounties navbar control
-    AddListener('navBarBountiesButton', 'click', function () {
+    // AddListener('navBarBountiesButton', 'click', function () {
 
-        // Toggle settings page in the case that it is open (accessibility)
-        ToggleSettingsMenu();
+    //     // Toggle settings page in the case that it is open (accessibility)
+    //     ToggleSettingsMenu();
         
-        // Toggle corresponding pages
-        let containerName = this.getAttribute('data-containerName');
-        let containersToHide = containerNames.filter(x => x !== containerName);
+    //     // Toggle corresponding pages
+    //     let containerName = this.getAttribute('data-containerName');
+    //     let containersToHide = containerNames.filter(x => x !== containerName);
 
-        for (let container of containersToHide) {
-            document.getElementById(`${container}`).style.display = 'none';
-        };
-        document.getElementById(containerName).style.display = 'block';
+    //     for (let container of containersToHide) {
+    //         document.getElementById(`${container}`).style.display = 'none';
+    //     };
+    //     document.getElementById(containerName).style.display = 'block';
 
-        // Store the page as this is the page that was last visited (until it is changed)
-        CacheChangeItem('lastVisitedPage', containerName);
-    });
+    //     // Store the page as this is the page that was last visited (until it is changed)
+    //     CacheChangeItem('lastVisitedPage', containerName);
+    // });
 
 
     // Challenges navbar control
-    AddListener('navBarChallengesButton', 'click', function () {
+    // AddListener('navBarChallengesButton', 'click', function () {
 
-        // Toggle settings page in the case that it is open (accessibility)
-        ToggleSettingsMenu();
+    //     // Toggle settings page in the case that it is open (accessibility)
+    //     ToggleSettingsMenu();
         
-        // Toggle corresponding pages
-        let containerName = this.getAttribute('data-containerName');
-        let containersToHide = containerNames.filter(x => x !== containerName);
+    //     // Toggle corresponding pages
+    //     let containerName = this.getAttribute('data-containerName');
+    //     let containersToHide = containerNames.filter(x => x !== containerName);
 
-        for (let container of containersToHide) {
-            document.getElementById(`${container}`).style.display = 'none';
-        };
-        document.getElementById(containerName).style.display = 'block';
+    //     for (let container of containersToHide) {
+    //         document.getElementById(`${container}`).style.display = 'none';
+    //     };
+    //     document.getElementById(containerName).style.display = 'block';
 
-        // Store the page as this is the page that was last visited (until it is changed)
-        CacheChangeItem('lastVisitedPage', containerName);
-    });
+    //     // Store the page as this is the page that was last visited (until it is changed)
+    //     CacheChangeItem('lastVisitedPage', containerName);
+    // });
 
 
     // Statistics navbar control
-    AddListener('navBarStatisticsButton', 'click', function () {
+    // AddListener('navBarStatisticsButton', 'click', function () {
 
-        // Toggle settings page in the case that it is open (accessibility)
-        ToggleSettingsMenu();
+    //     // Toggle settings page in the case that it is open (accessibility)
+    //     ToggleSettingsMenu();
         
-        // Toggle corresponding pages
-        let containerName = this.getAttribute('data-containerName');
-        let containersToHide = containerNames.filter(x => x !== containerName);
+    //     // Toggle corresponding pages
+    //     let containerName = this.getAttribute('data-containerName');
+    //     let containersToHide = containerNames.filter(x => x !== containerName);
 
-        for (let container of containersToHide) {
-            document.getElementById(`${container}`).style.display = 'none';
-        };
-        document.getElementById(containerName).style.display = 'block';
+    //     for (let container of containersToHide) {
+    //         document.getElementById(`${container}`).style.display = 'none';
+    //     };
+    //     document.getElementById(containerName).style.display = 'block';
 
-        // Store the page as this is the page that was last visited (until it is changed)
-        CacheChangeItem('lastVisitedPage', containerName);
-    });
+    //     // Store the page as this is the page that was last visited (until it is changed)
+    //     CacheChangeItem('lastVisitedPage', containerName);
+    // });
 
 
     // Logout button
@@ -531,10 +533,17 @@ export async function AddEventListeners() {
         document.getElementById(this.value).style.display = 'block';
     });
 
+    // Secret var goes here
+    let secretCounter = 0;
 
     // Accent color change
     AddListener('settingsAccentColorButton', 'click', function () {
-        accentColor.UpdateAccentColor(this.getAttribute('data-color'));
+
+        let type = this.getAttribute('data-color');
+
+        // Change color of bar
+        accentColor.UpdateAccentColor(type);
+        
     }, 'class');
 
     
@@ -568,14 +577,6 @@ export async function AddEventListeners() {
     AddListener('accessibilityAccentColorReset', 'click', function () {
         accentColor.UpdateAccentColor('#ED4D4D');
         document.getElementById('settingCustomColorInput').value = '#ED4D4D';
-    });
-
-
-    // Accessibility font size range slider 
-    AddListener('accessibilityFontSizeSlider', 'input', function () {
-        // Change font size multiplier CSS variable
-        let root = document.querySelector(':root');
-        root.style.setProperty('--fontSizeMultiplier', `1.${this.value}`);
     });
 
 
@@ -621,39 +622,39 @@ export async function AddEventListeners() {
         document.getElementById(this.getAttribute('data-containerName')).style.display = 'block';
     });
 
-    // Dropdown selection for yields
-    AddListener('dropdownYield', 'click', function () {
+    // // Dropdown selection for yields
+    // AddListener('dropdownYield', 'click', function () {
 
-        // This boolean is an attempt to block on subsequent clicks whilst the dropdown is being toggled
-        var dropdownBoolean = {
-            isElementBeingDroppedDown: false,
-            toggleBoolean: function () {
-                this.isElementBeingDroppedDown = !this.isElementBeingDroppedDown;
-            }
-        };
+    //     // This boolean is an attempt to block on subsequent clicks whilst the dropdown is being toggled
+    //     var dropdownBoolean = {
+    //         isElementBeingDroppedDown: false,
+    //         toggleBoolean: function () {
+    //             this.isElementBeingDroppedDown = !this.isElementBeingDroppedDown;
+    //         }
+    //     };
 
-        let dropdownContent = document.getElementById('yieldDropdownContainer'),
-            arrow = document.getElementById('arrowYield');
+    //     let dropdownContent = document.getElementById('yieldDropdownContainer'),
+    //         arrow = document.getElementById('arrowYield');
 
-        AddDropdownEvent(dropdownContent, arrow, dropdownBoolean);
-    });
+    //     AddDropdownEvent(dropdownContent, arrow, dropdownBoolean);
+    // });
 
-    // Dropdown selecton for modifiers
-    AddListener('dropdownModifiers', 'click', function () {
+    // // Dropdown selecton for modifiers
+    // AddListener('dropdownModifiers', 'click', function () {
 
-        // This boolean is an attempt to block on subsequent clicks whilst the dropdown is being toggled
-        var dropdownBoolean = {
-            isElementBeingDroppedDown: false,
-            toggleBoolean: function () {
-                this.isElementBeingDroppedDown = !this.isElementBeingDroppedDown;
-            }
-        };
+    //     // This boolean is an attempt to block on subsequent clicks whilst the dropdown is being toggled
+    //     var dropdownBoolean = {
+    //         isElementBeingDroppedDown: false,
+    //         toggleBoolean: function () {
+    //             this.isElementBeingDroppedDown = !this.isElementBeingDroppedDown;
+    //         }
+    //     };
 
-        let dropdownContent = document.getElementById('modifiersDropdownContainer'),
-            arrow = document.getElementById('arrowModifiers');
+    //     let dropdownContent = document.getElementById('modifiersDropdownContainer'),
+    //         arrow = document.getElementById('arrowModifiers');
 
-        AddDropdownEvent(dropdownContent, arrow, dropdownBoolean);
-    });
+    //     AddDropdownEvent(dropdownContent, arrow, dropdownBoolean);
+    // });
 
     
     /*
@@ -728,11 +729,137 @@ export async function AddEventListeners() {
         // Uncheck = clean localStorage value
         CacheChangeItem('showPopup', false);
     });
+
+    // Modal menu for Bounties, seasonal challenges and statistics section
+    let sectionsModalOpen = false;
+    AddListener('sectionsDropdownModal', 'click', function () {
+
+        // Check for boolean, open/close accordingly
+        let container = document.getElementById('sectionsDropdownButtonsContainer');
+
+        if (sectionsModalOpen) {
+            container.style.display = 'none'; // Hide dropdown
+            sectionsModalOpen = false;
+        }
+        else {
+            container.style.display = 'flex'; // Show it
+            sectionsModalOpen = true;
+        };
+    });
+
+    // (above) Modal menu buttons
+    AddListener('dropdownButtonTextSections', 'click', function () {
+
+        // Get sections that are to be hidden
+        let sectionType = this.getAttribute('data-section');
+        let sectionName = this.getAttribute('data-sectionName');
+        let containersToHide = containerNames.filter(x => x !== sectionType);
+
+        // Loop over other sections and hide
+        for (let section of containersToHide) {
+            document.getElementById(`${section}`).style.display = 'none';
+        };
+        document.getElementById(sectionType).style.display = 'block';
+
+        // Change dropdown modal text
+        document.getElementsByClassName('dropdownModalText')[0].innerHTML = `${sectionName}`;
+
+        // Hide/show subheading statistics in all states
+        if (sectionType === 'bountiesContainer') {
+            document.getElementById('bountiesSubheadingStatistics').style.display = 'flex';
+            document.getElementById('challengesSubheadingStatistics').style.display = 'none';
+        }
+        else if (sectionType === 'seasonalChallengesContainer') {
+            document.getElementById('bountiesSubheadingStatistics').style.display = 'none';
+            document.getElementById('challengesSubheadingStatistics').style.display = 'flex';
+        }
+        else {
+            document.getElementById('bountiesSubheadingStatistics').style.display = 'none';
+            document.getElementById('challengesSubheadingStatistics').style.display = 'none';
+        };
+
+        // Cache section to, opens as default on load with correct settings
+        CacheChangeItem('lastVisitedPage', sectionType);
+
+        // Close modal dropdown, reverse boolean
+        document.getElementById('sectionsDropdownButtonsContainer').style.display = 'none';
+        sectionsModalOpen = false;
+
+    }, 'class');
+
+    // Modal menu for Bounties, seasonal challenges and statistics section
+    let challsFilterModalOpen = false;
+    AddListener('groupsDropdownModal', 'click', function () {
+
+        // Check for boolean, open/close accordingly
+        let container = document.getElementById('groupsDropdownForChallenges');
+
+        if (challsFilterModalOpen) {
+            container.style.display = 'none'; // Hide dropdown
+            challsFilterModalOpen = false;
+        }
+        else {
+            container.style.display = 'flex'; // Show it
+            challsFilterModalOpen = true;
+        };
+    });
+
+    let controlStates = {
+        currentGroup: 'compact_Week 1',
+        compact: true,
+        wide: false
+    };
+
+    // (above) Modal menu buttons
+    AddListener('groupsDropdownButtonTextSections', 'click', function () {
+
+        // Show corresponding group container, hide current one
+        let selectedGroup = this.getAttribute('data-groupname');
+        document.getElementById(controlStates.currentGroup).style.display = 'none';
+        document.getElementById(`compact_${selectedGroup}`).style.display = 'block';
+
+        // Save as previous group
+        controlStates.currentGroup = `compact_${selectedGroup}`;
+
+        // Close modal dropdown, reverse boolean
+        document.getElementById('groupsDropdownForChallenges').style.display = 'none';
+        challsFilterModalOpen = false;
+
+    }, 'class');
+
+    // Challenges UI controls
+    AddListener('buttonContainer', 'click', function () {
+
+        // Show corresponding layout, according to control
+        let controlType = this.getAttribute('data-buttonType');
+
+        if (controlType === 'btn_compact') {
+            document.getElementsByClassName('gridCompact')[0].style.display = 'none';
+            document.getElementsByClassName('gridWide')[0].style.display = 'block';
+            controlStates.compact = true;
+            controlStates.wide = false;
+        }
+        else if (controlType === 'btn_wide') {
+            document.getElementsByClassName('gridCompact')[0].style.display = 'block';
+            document.getElementsByClassName('gridWide')[0].style.display = 'none';
+            controlStates.compact = false;
+            controlStates.wide = true;
+        };
+
+        log(controlType);
+
+    }, 'class');
 };
 
 
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
+
+    // Check if alpha notice warning has been closed
+    let isAlphaNoticeClosed = sessionStorage.getItem('warningClosed');
+    if (isAlphaNoticeClosed) {
+        document.getElementById('warningTooltip').style.display = 'none';
+    };
 
     // Get time until weekly reset (timezone specific ofc)
     document.getElementById('timeUntilWeeklyReset').innerHTML = `Weekly Reset: ${getNextTuesday()}`;
@@ -749,6 +876,21 @@ export async function BuildWorkspace() {
     document.getElementById('navBarVersion').style.opacity = 100;
     document.getElementById('settingsFooterVersionField').innerHTML = `${import.meta.env.version}`;
     document.getElementById('popupVersion').innerHTML = `${import.meta.env.version}`;
+
+    // Change top bar colour to localStorage val
+    await CacheReturnItem('accentColor')
+    .then((result) => {
+        if (result !== undefined) {
+            accentColor.UpdateAccentColor(result);
+        }
+        else {
+            CacheChangeItem('accentColor', '#ED4D4D');
+            accentColor.UpdateAccentColor('#ED4D4D');
+        };
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 
     // Check to see if all profiles should be loaded
     // await CacheReturnItem('useProfileWide')
@@ -767,17 +909,6 @@ export async function BuildWorkspace() {
     // .catch((error) => {
     //     console.error(error);
     // });
-
-    // Change popup top bar colour to what is saved in localStorage
-    await CacheReturnItem('accentColor')
-    .then((result) => {
-        accentColor.UpdateAccentColor(result);
-    })
-    .catch((error) => {
-        // console.error(error);
-        CacheChangeItem('accentColor', '#ED4D4D');
-        accentColor.UpdateAccentColor('#ED4D4D');
-    });
 
     // Check if load is first time load on this version
     await CacheReturnItem('storedVersion')
@@ -900,7 +1031,7 @@ export async function BuildWorkspace() {
     await CacheReturnItem('isRefreshOnIntervalToggled')
     .then((res) => {
 
-        // Check if this bool has been set, set default, which is true
+        // Check if this bool has been set, set default, which is false
         if (res === undefined || res) {
             CacheChangeItem('isRefreshOnIntervalToggled', true);
             document.getElementById('checkboxRefreshOnInterval').checked = true;
@@ -977,14 +1108,33 @@ export async function BuildWorkspace() {
     await CacheReturnItem('isRememberLastPageToggled')
     .then((result) => {
 
-        // If true, hide all pages (elegantly!) then show the last visited one
+        // If true, hide all pages then show the last visited one
         if (result) {
             CacheReturnItem('lastVisitedPage')
             .then((pageName) => {
+
+                // Hide all sections
                 document.getElementById('bountiesContainer').style.display = 'none';
                 document.getElementById('seasonalChallengesContainer').style.display = 'none';
                 document.getElementById('statisticsContainer').style.display = 'none';
                 document.getElementById(pageName).style.display = 'block';
+
+                // Hide/show subheading statistics
+                if (pageName == 'bountiesContainer') {
+                    document.getElementById('bountiesSubheadingStatistics').style.display = 'flex';
+                    document.getElementById('challengesSubheadingStatistics').style.display = 'none';
+                    document.getElementsByClassName('dropdownModalText')[0].innerHTML = 'Bounties';
+                }
+                else if (pageName == 'seasonalChallengesContainer') {
+                    document.getElementById('bountiesSubheadingStatistics').style.display = 'none';
+                    document.getElementById('challengesSubheadingStatistics').style.display = 'flex';
+                    document.getElementsByClassName('dropdownModalText')[0].innerHTML = 'Challenges';
+                }
+                else {
+                    document.getElementById('bountiesSubheadingStatistics').style.display = 'none';
+                    document.getElementById('challengesSubheadingStatistics').style.display = 'none';
+                    document.getElementsByClassName('dropdownModalText')[0].innerHTML = 'Statistics';
+                };
             })
             .catch((error) => {
                 return error;
@@ -995,22 +1145,22 @@ export async function BuildWorkspace() {
         console.error(error);
     });
 
-    // Unfold Yield dropdown
-    let yieldDropdownContainer = document.getElementById('yieldDropdownContainer'),
-        yieldDropdownArrow = document.getElementById('arrowYield');
+    // // Unfold Yield dropdown
+    // let yieldDropdownContainer = document.getElementById('yieldDropdownContainer'),
+    //     yieldDropdownArrow = document.getElementById('arrowYield');
 
-    yieldDropdownContainer.style.display = 'block'
-    yieldDropdownContainer.className = 'pre';
-    yieldDropdownContainer.className += ' pro';
-    yieldDropdownArrow.style.transform = 'rotate(0deg)';
+    // yieldDropdownContainer.style.display = 'block'
+    // yieldDropdownContainer.className = 'pre';
+    // yieldDropdownContainer.className += ' pro';
+    // yieldDropdownArrow.style.transform = 'rotate(0deg)';
 
-    // Unfold Modifiers dropdown
-    let modifiersDropdownContainer = document.getElementById('modifiersDropdownContainer'),
-        modifiersDropdownArrow = document.getElementById('arrowModifiers');
+    // // Unfold Modifiers dropdown
+    // let modifiersDropdownContainer = document.getElementById('modifiersDropdownContainer'),
+    //     modifiersDropdownArrow = document.getElementById('arrowModifiers');
 
-    modifiersDropdownContainer.style.display = 'flex';
-    modifiersDropdownContainer.className = 'pre';
-    modifiersDropdownContainer.className += ' pro';
-    modifiersDropdownArrow.style.transform = 'rotate(0deg)';
+    // modifiersDropdownContainer.style.display = 'flex';
+    // modifiersDropdownContainer.className = 'pre';
+    // modifiersDropdownContainer.className += ' pro';
+    // modifiersDropdownArrow.style.transform = 'rotate(0deg)';
 
 };

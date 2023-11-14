@@ -6,25 +6,8 @@
 
 :root {
     --SegoeUIFont:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    --TabularNumsFont:'Inter', sans-serif;
     --UIFont:'SF Pro Display', sans-serif;
-
-    /* Deprecated */
-    --blurFilterAmount:3px;
-
-    /* Colors */
     --accentColor:#ED4D4D; /* Default */
-
-    --fontSize:15px;
-    --fontSizeMultiplier:1.0; /* Decimal place = % increase */
-
-    --fontSizeTooltipSmall:calc(var(--fontSizeMultiplier) * 12px);
-    --fontSizeControl:calc(var(--fontSizeMultiplier) * 14px);
-    --fontSizeTooltip:calc(var(--fontSizeMultiplier) * 15px);
-    --fontSizeContent:calc(var(--fontSizeMultiplier) * 16px);
-    --fontSizeSubheading:calc(var(--fontSizeMultiplier) * 20px);
-    --fontSizeHeading:calc(var(--fontSizeMultiplier) * 24px);
-    --fontSizeLargeHeading:calc(var(--fontSizeMultiplier) * 32px);
 }
 
 body {
@@ -45,11 +28,11 @@ body {
 h1.settingsHeading {
     margin-left: 20px;
     margin-right: 20px;
-    font-size: var(--fontSizeLargeHeading);
+    font-size: 32px;
 }
 
 h2 {
-    font-size: var(--fontSizeHeading);
+    font-size: 24px;
 }
 
 
@@ -149,7 +132,7 @@ h2 {
 }
 
 #middleNavBarItems {
-    display: flex;
+    display: none; /* flex */
     margin-top: -2px;
     margin-right: 180px;
     gap: 40px;
@@ -295,10 +278,46 @@ h2 {
     z-index: 199;
 }
 
-#notificationContainer.fade-out {
+.barColor {
+    background-color: rgba(237, 77, 77, 0.8);
+    box-shadow: 0px 0px 10px 1px #ED4D4D;
+}
+
+.rainbowBarColor {
+    background: linear-gradient(124deg, #ED4D4D, #e8b71d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+    /* box-shadow: 0px 0px 10px 1px #ED4D4D; */
+    -webkit-animation: rainbow 18s ease infinite;
+    -z-animation: rainbow 18s ease infinite;
+    -o-animation: rainbow 18s ease infinite;
+    animation: rainbow 18s ease infinite;
+    background-size: 1800% 1800%;
+}
+
+@-webkit-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@-moz-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@-o-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@keyframes rainbow { 
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+
+/* #notificationContainer.fade-out {
     opacity: 0;
     transition: all 0.4s linear;
-}
+} */
 
 #notificationContent {
     display: flex;
@@ -318,8 +337,6 @@ h2 {
 #notificationTopBgLine {
     width: 100%;
     height: 2px;
-    background-color: red;
-    box-shadow: 0px 0px 10px 1px #ED4D4D;
 }
 
 #notificationCheckmark {

@@ -1,4 +1,4 @@
-import { itemDefinitions, log } from '../user.js';
+import { itemDefinitions } from '../user.js';
 
 // Return season pass progressional statistics
 // @object {seasonProgressionInfo}, @object {prestigeInfo}, @object {rewardsTrack}, @object {itemDefinitions}

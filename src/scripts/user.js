@@ -20,11 +20,11 @@ import { CheckUserAuthState } from './oauth/CheckUserAuthState.js';
 import { FetchBungieUser } from './oauth/FetchBungieUser.js';
 import { ParsePropertyNameIntoWord } from './modules/ParsePropertyNameIntoWord.js';
 import { VerifyState } from './oauth/VerifyState.js';
-import { LoadPrimaryCharacter } from './modules/LoadPrimaryCharacter.js';
+import { LoadCharacters } from './modules/LoadCharacters.js';
 import { CacheChangeItem } from './modules/CacheChangeItem.js';
 import { StopLoad } from './modules/StopLoad.js';
 import { StartLoad } from './modules/StartLoad.js';
-// import { PostMessage, PostMessageSync, RegisterServiceWorker } from './sw/RegisterServiceWorker.js';
+// import { PostMessage, PostMessageFSync, RegisterServiceWorker } from './sw/RegisterServiceWorker.js';
 
 console.log(`%cD2 SYNERGY ${import.meta.env.version}`, 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
@@ -211,7 +211,7 @@ export var accentColor = {
         this.currentAccentColor = color;
         CacheChangeItem('accentColor', color);
 
-        // Update dom content
+        // Change DOM elements
         document.getElementById('topColorBar').style.backgroundColor = color;
         document.getElementById('topColorBar').style.boxShadow = `0px 0px 10px 1px ${color}`;
         document.getElementById('notificationTopBgLine').style.backgroundColor = color;
@@ -222,6 +222,7 @@ export var accentColor = {
         for (let element of document.getElementsByClassName('settingRange')) {
             element.style.accentColor = color;
         };
+        
         // Checkboxes
         for (let element of document.getElementsByClassName('settingCheckbox')) {
             element.style.accentColor = color;
@@ -249,8 +250,29 @@ export var userTrasistoryData = {
     }
 };
 
+// Profile wide class
+export var profileWideData = {
 
-// Anonymous function for main
+    allYieldData: {
+        artifact: {},
+        xp: 0,
+        seasonPassLevels: 0,
+        artifactPowerBonusLevels: 0,
+        artifactModLevels: 0
+    },
+
+    storedChars: [],
+
+    AddYieldData: function(keyname, data) {
+        this.allYieldData[keyname] += data;
+    },
+    AddStoredChar: function(id) {
+        this.storedChars.push(id);
+    }
+};
+
+
+// First point of entry
 // @boolean {isPassiveReload}
 export async function MainEntryPoint(isPassiveReload) {
 
@@ -286,7 +308,7 @@ export async function MainEntryPoint(isPassiveReload) {
     presentationNodeDefinitions = await ReturnEntry('DestinyPresentationNodeDefinition');
 
     // Load first char on profile/last loaded char
-    await LoadPrimaryCharacter(UserProfile.characters);
+    await LoadCharacters(UserProfile.characters);
 
     // Check for passive reload
     if (isPassiveReload) {

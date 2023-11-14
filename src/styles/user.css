@@ -6,7 +6,7 @@
 
 body {
     height: 100vh;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
     background: radial-gradient(#2d2d2d, #202020);
 }
 
@@ -63,16 +63,6 @@ body {
 	filter: invert(1) brightness(1);
 }
 
-#backButtonText {
-	position: absolute;
-	display: inline-block;
-	margin-top: 1px;
-	margin-left: 10px;
-	font-size: 16px;
-	font-family: var(--SegoeUIFont);
-	color: white;
-}
-
 .toggleTableTypeButton {
     display: flex;
     gap: 3px;
@@ -80,91 +70,6 @@ body {
     border-radius: 5px;
     border: 1px rgb(131, 150, 236) solid;
     cursor: pointer;
-}
-
-#availableVendorStatus {
-    margin-top: 12px;
-    padding: 5px;
-    padding-bottom: 7px;
-    font-family: var(--SegoeUIFont);
-    border-radius: 5px;
-    border: 1px solid #9A5C15;
-    background-color: rgba(255, 143, 15, 0.681);
-    
-}
-
-#availableVendorNoteText {
-    display: inline-block;
-    font-weight: 600;
-}
-
-#availableVendorSeeHerePrompt {
-    display: inline-block;
-    font-style: italic;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-#availableVendorPopupCanvas {
-    position: fixed;
-    display: none;
-    margin: 0;
-    padding: 0;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(66, 66, 66, 0.5);
-    z-index: 99; /* Make sure this is always on top, but below availableVendorPopup */
-}
-
-#availableVendorPopup {
-    position: absolute;
-    display: none;
-    width: 500px;
-    height: auto;
-    margin-top: 150px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 12px;
-    padding-left: 16px;
-    padding-right: 16px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    border: 1px solid #9C9C9C;
-    border-radius: 5px;
-    background-color: #424242;
-    color: white;
-    font-family: var(--SegoeUIFont);
-    z-index: 100; /* Make sure this is always on top */
-}
-
-#availableVendorContainer {
-    text-align: left;
-}
-
-#availableVendorContentTitle {
-    margin-bottom: 3px;
-    font-size: 19px;
-    font-weight: 600;
-}
-
-#availableVendorPopupClose {
-    margin-bottom: 10px;
-    padding: 4px;
-    padding-left: 6px;
-    padding-right: 6px;
-    bottom: 0;
-    background-color: #292929;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.1s ease-in-out;
-}
-
-#availableVendorPopupClose:hover {
-    background-color: #5B5B5B;
-    transition: all 0.1s ease-in-out;
 }
 
 #settingsBackButtonContainer, #settingsSubMenuBackButtonContainer {
@@ -219,7 +124,7 @@ body {
 
 #settingsBackArrowSubtext {
     margin-top: 3.5px;
-    font-size: var(--fontSizeControl);
+    font-size: 14px;
     color: #ACACAC;
 }
 
@@ -235,7 +140,7 @@ body {
     display: flex;
     gap: 5px;
     width: fit-content;
-    font-size: var(--fontSizeContent);
+    font-size: 16px;
 }
 
 #defaultViewDropdownContainer {
@@ -245,19 +150,19 @@ body {
 
 .labelRangeContainer {
     width: 90%;
-    font-size: var(--fontSizeContent);
+    font-size: 16px;
 }
 
 .settingsResetUIButton {
     margin-top: 20px;
     width: fit-content;
-    font-size: var(--fontSizeControl);
+    font-size: 14px;
     color: lightslategrey;
     cursor: pointer;
 }
 
 #accessibilityTextDemo {
-    font-size: var(--fontSizeContent);
+    font-size: 16px;
 }
 
 #settingsContainerMobile {
@@ -307,11 +212,17 @@ body {
 }
 
 .contentDisplaySegment {
-    position: relative;
     padding-left: 15px;
     padding-right: 15px;
-    height: 90vh;
+    height: fit-content;
     width: 50vw;
+}
+
+#bountiesSubheadingStatistics, #challengesSubheadingStatistics {
+    display: none; /* flex */
+    padding-bottom: 2px;
+    gap: 2px;
+    align-self: end;
 }
 
 #relationsTableContent {
@@ -473,7 +384,7 @@ hr.tableRowSeperator {
 }
 
 .affinitiesContainer {
-    display: flex;
+    display: none; /* flex */
     margin-top: 17px;
     width: 100%;
     flex-direction: column;
@@ -607,6 +518,7 @@ tr:nth-child(even) {
 
 .dropdownNumber {
     font-size: 85%;
+    font-variant-numeric: tabular-nums;
     color: rgb(190, 255, 255);
 }
 
@@ -662,7 +574,7 @@ tr:nth-child(even) {
     padding: 10px;
     border-radius: 5px;
     width: fit-content;
-    font-size: var(--fontSizeContent);
+    font-size: 16px;
     color: white;
     border: 1px solid rgb(150, 150, 150);
     cursor: pointer;
@@ -685,7 +597,7 @@ tr:nth-child(even) {
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 12px;
-    font-size: var(--fontSizeContent);
+    font-size: 16px;
     cursor: pointer;
 }
 
@@ -702,7 +614,7 @@ tr:nth-child(even) {
 #categorySubtext {
     margin-top: 3px;
     margin-left: 10px;
-    font-size: var(--fontSizeTooltipSmall);
+    font-size: 12px;
     color: #969696;
 }
 
@@ -711,7 +623,7 @@ tr:nth-child(even) {
     margin-top: 10px;
     background-color: #3A3A3A;
     border: 1px solid #8C8C8C;
-    font-size: var(--fontSizeContent);
+    font-size: 16px;
     color: white;
     text-decoration: none;
     cursor: pointer;
@@ -736,7 +648,7 @@ tr:nth-child(even) {
     flex-direction: column;
     width: fit-content;
     text-align: center;
-    font-size: var(--fontSizeContent);
+    font-size: 16px;
 }
 
 hr.contentHeadingSeperator {
@@ -962,6 +874,116 @@ input:checked+.slider:before {
     border-radius: 50%;
 }
 
+.dropdownModalContainer {
+    width: fit-content;
+}
+
+.dropdownButtonsContainer {
+    position: absolute;
+    display: none;
+    margin-top: 2px;
+    flex-direction: column;
+    z-index: 999;
+}
+
+.dropdownModal {
+    display: table-cell;
+    width: 180px;
+    height: 35px;
+    vertical-align: middle;
+    background-color: #414141;
+    color: #C3C3C3;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.dropdownModal:hover {
+    box-shadow: 0 0 0 1px white;
+}
+
+.dropdownButton {
+    display: flex;
+    width: 180px;
+    height: 35px;
+    align-items: center;
+    background-color: #414141;
+    color: #C3C3C3;
+    border: 1px solid #676767;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.dropdownButton:hover {
+    border: 1px solid white;
+}
+
+.dropdownModalText {
+    margin-left: 15px;
+    font-size: 18px;
+}
+
+.dropdownButtonTextSections {
+    padding-top: 10px;
+    padding-left: 15px;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+}
+
+.groupsDropdownButtonTextSections {
+    padding-top: 10px;
+    padding-left: 15px;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+}
+
+.dropdownModalIcon {
+    margin-right: 10px;
+    width: 14px;
+    filter: invert(90%);
+}
+
+.dropdownUiLineStyle {
+    margin-top: -6px;
+    margin-left: -7px;
+    background-color: gray;
+    border-radius: 10px;
+    width: 20px;
+    height:2px;
+    transform: rotate(90deg);
+}
+
+.dropdownUiLineStyleCorner {
+    position: absolute;
+    margin-left: 1px;
+    width: 5px;
+    border-bottom: 2px solid gray;
+    border-right: 2px solid gray;
+    transform: rotateY(180deg);
+}
+
+.dropdownStatProgressBarSubtext {
+    position: absolute;
+    margin-top: 8px;
+    color: #B7F5F5;
+    font-size: 12px;
+}
+
+.dropdownStatProgressBarContainer {
+    background-color: #7B7B7B;
+    width: 100%;
+    height: 7px;
+    border-radius: 5px;
+}
+
+.dropdownStatProgressBarLevel {
+    background-color: #B7F5F5;
+    width: 0%;
+    height: 7px;
+    border-radius: 5px;
+}
+
 .dropdownArrow {
     width: 12px;
     filter: invert(100%) brightness(50%);
@@ -983,21 +1005,22 @@ input:checked+.slider:before {
 
 #dropdownsContainer {
     margin-top: -10px;
+    width: 240px;
 }
 
 #yieldDropdownContainer {
     padding-left: 10px;
     padding-bottom: 30px;
     height: fit-content;
-    clip-path: inset(0px 0px 0px 0px);
+    /* clip-path: inset(0px 0px 0px 0px); */
     color: gray;
 }
 
 #modifiersDropdownContainer {
+    padding-top: 5px;
     padding-left: 10px;
-    padding-bottom: 10px;
     height: fit-content;
-    clip-path: inset(0px 0px 0px 0px);
+    /* clip-path: inset(0px 0px 0px 0px); */
     color: gray;
 }
 
@@ -1147,6 +1170,10 @@ input:checked+.slider:before {
     font-family: var(--UIFont);
 }
 
+#statisticsContainer {
+    margin-top: 5px;
+}
+
 .subHeadingDotUI {
     margin-top: 3px;
     width: 12px;
@@ -1199,13 +1226,13 @@ input:checked+.slider:before {
 }
 
 .challengeContainerComplete {
-    border: 2px solid #3798a9;
-    background-color: #1c5863;
+    border: 2px solid #27D4F3;
+    background-color: #1b424b;
 }
 
 .challengeContainerCompletedNotClaimed {
-    border: 2px solid #a4dbcc;
-    background-color: #314b47;
+    border: 2px solid #7BDCC1;
+    background-color: #2e4743;
 }
 
 .challengeHeadingContainer {
@@ -1259,7 +1286,6 @@ hr.dropdownSubline {
     display: flex;
     padding-top: 5px;
     gap: 8px;
-    cursor: pointer;
     user-select: none;
 }
 
@@ -1781,4 +1807,225 @@ hr.dropdownSubline {
     15% {background-color: rgba(190, 190, 190, 0.3);}
     30% {background-color: rgba(147, 147, 147, 0.3);}
     100% {background-color: rgba(147, 147, 147, 0.3);}
+}
+
+
+/* Seasonal Challenge UI Section */
+/* Section Controls */
+.controlsContainer {
+    display: flex;
+    gap: 5px;
+}
+
+.buttonContainer {
+    background-color: #3B3B3B;
+    width: 31px;
+    height: 31px;
+    cursor: pointer;
+    border: 2px solid gray;
+}
+
+.buttonContainer:hover {
+    border: 2px solid white;
+}
+
+.buttonIcon {
+    display: flex;
+    margin: 0 auto;
+    padding-top: 7px;
+    width: 10px;
+}
+
+.buttonIconAlt {
+    display: flex;
+    width: 20px;
+    margin: 0 auto;
+    padding-top: 6px;
+}
+
+/* Types of Grid Cells */
+.cell {
+    border: 2px solid #676767;
+    background-color: #383838;
+}
+
+.cellClaimable {
+    border: 2px solid #7BDCC1;
+    background-color: #2A433F;
+}
+
+.cellCompleted {
+    border: 2px solid #27D4F3;
+    background-color: #17434C;
+}
+
+/* Compact Grid */
+.compact {
+    display: inline-block;
+    padding-top: 2px;
+    padding-left: 2px;
+    margin-top: 5px;
+    margin-left: 2px;
+    width: 270px;
+    height: 45px;
+}
+
+.cellBarBackground_compact {
+    margin-top: -5px;
+    margin-left: -2px;
+    height: 5px;
+    background-color: #2F2F2F;
+}
+
+.cellBarProgress_compact {
+    height: 5px;
+    background-color: #5AA366;
+    width: 50%;
+}
+
+.cellIconMain_compact {
+    padding-top: 2px;
+    padding-left: 5px;
+    width: 35px;
+    height: 35px;
+}
+
+.cellOuter_compact {
+    display: flex;
+    height: 100%;
+}
+
+.cellInner_compact {
+    display: flex;
+    margin-left: 5px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.cellInnerTextWrapper_compact {
+    max-width: 75%;
+}
+
+.cellInnerTextContent_compact {
+    margin-top: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.cellIconsContainer_compact {
+    display: flex;
+    margin-top: 12px;
+    margin-right: 5px;
+}
+
+.icon_compact {
+    height: 16px;
+    width: 16px;
+}
+
+/* Expanded Grid */
+.wide {
+    display: inline-block;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 6px;
+    margin-left: 2px;
+    width: 330px;
+    height: 180px;
+}
+
+.cellTopHalf_wide {
+    display: flex;
+    gap: 8px;
+}
+
+.cellIconMain_wide {
+    height: 50px;
+    width: 50px;
+}
+
+.cellHeaderContainer_wide {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cellTextWrapper_wide {
+    font-size: 19px;
+    max-width: 60%;
+}
+
+.cellDescriptor_wide {
+    font-size: 13px;
+    color: #AAAAAA;
+}
+
+.cellTextContent_wide {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.cellTextContentDescriptor_wide {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    white-space: wrap;
+}
+
+.cellBotHalf_wide {
+    margin-top: 10px;
+}
+
+.cellProgressContainer_wide {
+    display: flex;
+    gap: 5px;
+}
+
+.cellProgressBoxOuter_wide {
+    border: 1px solid white;
+    width: 16px;
+    height: 16px;
+}
+
+.cellProgressBoxSpacer_wide {
+    border: 2px solid transparent;
+}
+
+.cellProgressBoxInner_wide {
+    background-color: white;
+    opacity: 15%;
+    width: 12px;
+    height: 12px;
+}
+
+.cellProgressBar_wide {
+    display: flex;
+    padding-left: 7px;
+    padding-right: 7px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    color: #AAAAAA;
+    font-size: 12px;
+    background-color: rgba(255,255,255, 0.2);
+}
+
+.cellRewards_wide {
+    margin-top: 8px;
+}
+
+.rewardContainer_wide {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: #AAAAAA;
+    font-size: 12px;
+}
+
+.rewardIcon_wide {
+    width: 16px;
+    height: 16px;
 }

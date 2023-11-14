@@ -1,0 +1,18 @@
+/**
+ * #.# Viewports style
+ *
+ * Style for various viewports
+ */
+@media screen and (max-width: 550px) {
+    .nav-controls {
+        display: none;
+    }
+
+    .github-button-container {
+        display: block;
+    }
+
+    .nav-icon-con {
+        margin-left: 20px;
+    }
+}

@@ -243,11 +243,14 @@ body {
 }
 
 h1 {
-    font-family: 'Montserrat', sans-serif;
-    width: 50%;
     margin: 0 auto;
-    text-align: center;
     margin-top: 150px;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: fit-content;
+    text-align: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
     font-size: 32pt;
 }
 
@@ -282,6 +285,20 @@ h1 {
 .header-authenticate-button-icon {
     width: 13px;
     height: 13px;
+}
+
+.github-button-container {
+    display: none;
+    margin: 0 auto;
+    width: fit-content;
+    margin-top: 30px;
+}
+
+.github-button-icon {
+    width: 24px;
+    height: 24px;
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
 }
 
 p {
@@ -320,4 +337,9 @@ p {
     font-size: 13px;
     cursor: pointer;
     text-decoration: none;
+}
+
+.page-content-container {
+    height: 50000px;
+    background-color: rgb(10,10,10);
 }
