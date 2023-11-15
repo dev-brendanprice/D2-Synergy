@@ -13,11 +13,11 @@ const requiredManifestTables = [
     'DestinyPresentationNodeDefinition'
 ];
 
-var manifest;
+let manifest;
 
 
 // Return manifest components
-var ReturnComponentSuffix = async (entry) => {
+const ReturnComponentSuffix = async (entry) => {
 
     if (!manifest) {
         manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
@@ -29,46 +29,51 @@ var ReturnComponentSuffix = async (entry) => {
 
 
 // Check if each (required) table exists
-var FixTables = async (uiCounter=0) => {
+const FixTables = async (uiCounter=0) => {
 
     // Change notification label content
     document.getElementById('notificationTitle').innerHTML = 'Loading Definitions';
     document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${uiCounter}/${requiredManifestTables.length}`;
 
-    for (let table of requiredManifestTables) {
+    // Omit API key from request
+    delete axios.defaults.headers.common['X-API-Key'];
 
-        let entry = await get(table);
-        if (!entry) {
+    // Form promises
+    let requests = [];
 
-            // Omit API key from request
-            delete axios.defaults.headers.common['X-API-Key'];
+    // Build requests
+    for (let def of requiredManifestTables) {
 
-            // Request/Set new table
-            let suffix = await ReturnComponentSuffix(table);
-            let newTable;
+        // Get request url
+        let suffix = await ReturnComponentSuffix(def);
+        let url = `https://www.bungie.net${suffix}`;
 
-            // Bypass cache to avoid expired definitions
-            newTable = await axios.get(`https://www.bungie.net${suffix}?cachereset=${GenerateRandomString(4)}`)
-                .then((res) => {
-                    return res;
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+        // Push new promise
+        requests.push(
+            new Promise((resolve, reject) => {
+                axios.get(url)
+                    .then((res) => { resolve(res) })
+                    .catch((err) => { reject(err)})
+            })
+        );
+        // requests.push(axios.get(url));
+    };
 
-            // Store the response in idb using idb-keyval
-            set(table, newTable.data);
-        };
+    // Make request
+    let result = await Promise.all(requests);
 
-        // Increment notification load counter
+    // Push to idb
+    for (let i=0; i<requiredManifestTables.length; i++) {
+        set(requiredManifestTables[i], result[i].data);
         uiCounter++;
         document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${uiCounter}/${requiredManifestTables.length}`;
     };
+
 };
 
 
 // Check manifest version
-export var ValidateManifest = async () => {
+export const ValidateManifest = async () => {
 
     log('-> ValidateManifest Called');
 
@@ -95,7 +100,7 @@ export var ValidateManifest = async () => {
 
 
 // Return passed component
-export var ReturnEntry = async (entry) => {
+export const ReturnEntry = async (entry) => {
 
     let res = await get(entry);
     if (!res) {
