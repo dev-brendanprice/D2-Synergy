@@ -7,9 +7,6 @@
 # Ignore environment variables
 /.env
 
-# Is not required for Synergy to run
-/manifestCheck
-
 # Node 
 /package-lock.json
 /node_modules
