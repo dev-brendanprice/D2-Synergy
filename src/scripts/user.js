@@ -284,7 +284,7 @@ export async function MainEntryPoint(isPassiveReload) {
 
     // Change notification label content
     document.getElementById('notificationTitle').innerHTML = 'Loading Bungie Data';
-    document.getElementById('notificationMessage').innerHTML = 'Waiting for Bungie.net..';
+    document.getElementById('notificationMessage').innerHTML = 'Waiting for Bungie.net';
 
     // OAuth Flow
     await CheckUserAuthState();

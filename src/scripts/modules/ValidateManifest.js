@@ -29,11 +29,11 @@ const ReturnComponentSuffix = async (entry) => {
 
 
 // Check if each (required) table exists
-const FixTables = async (uiCounter=0) => {
+const FixTables = async () => {
 
     // Change notification label content
     document.getElementById('notificationTitle').innerHTML = 'Loading Definitions';
-    document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${uiCounter}/${requiredManifestTables.length}`;
+    document.getElementById('notificationMessage').innerHTML = `Parsing definitions`;
 
     // Omit API key from request
     delete axios.defaults.headers.common['X-API-Key'];
@@ -52,11 +52,12 @@ const FixTables = async (uiCounter=0) => {
         requests.push(
             new Promise((resolve, reject) => {
                 axios.get(url)
-                    .then((res) => { resolve(res) })
+                    .then((res) => {
+                        resolve(res);
+                    })
                     .catch((err) => { reject(err)})
             })
         );
-        // requests.push(axios.get(url));
     };
 
     // Make request
@@ -65,8 +66,6 @@ const FixTables = async (uiCounter=0) => {
     // Push to idb
     for (let i=0; i<requiredManifestTables.length; i++) {
         set(requiredManifestTables[i], result[i].data);
-        uiCounter++;
-        document.getElementById('notificationMessage').innerHTML = `Parsing definitions ${uiCounter}/${requiredManifestTables.length}`;
     };
 
 };
