@@ -5,8 +5,6 @@ import { itemDefinitions, objectiveDefinitions, log } from '../user.js';
 //      it will then append both to the corresponding hierarchies
 export function CreateSeasonalChallenge(challengeData, weekString) {
 
-    // log(challengeData);
-
     // Create a compact (UI) challenge
     function createCompactChallenge(challengeData, weekString) {
 
@@ -90,9 +88,6 @@ export function CreateSeasonalChallenge(challengeData, weekString) {
     // Create a wide (UI) challenge
     function createWideChallenge(challengeData, weekString) {
 
-        // ..
-        log(challengeData, weekString);
-
         // Create new elements (excluding ones that might occur more than once)
         const cellContainer = document.createElement('div');
         const cellTopHalf = document.createElement('div');
@@ -168,8 +163,24 @@ export function CreateSeasonalChallenge(challengeData, weekString) {
             cellProgressBarLeftText.innerHTML = objectiveDefinition.progressDescription;
             cellProgressBarRightText.innerHTML = `${objective.progress}/${objective.completionValue}`;
 
-            // ..
+            // Check if objective progressDescription is empty
+            if (objectiveDefinition.progressDescription === '') {
+                cellProgressBarLeftText.innerHTML = 'Progress';
+            };
 
+            // Check if objective is complete
+            if (objective.progress >= objective.completionValue) {
+
+                // Change progress box style
+                cellProgressBoxInner.style.backgroundColor = '#3A826E';
+                cellProgressBoxOuter.style.border = '1px solid #9A9A9A';
+            }
+            else if (!(objective.progress >= objective.comletionValue)) {
+                
+                // Change text style
+                cellProgressBarLeftText.style.color = 'white';
+                cellProgressBarRightText.style.color = 'white';
+            };
 
             // Form hierachy, add to hierarchy
             cellProgressBoxSpacer.appendChild(cellProgressBoxInner);
@@ -179,23 +190,30 @@ export function CreateSeasonalChallenge(challengeData, weekString) {
             cellBotHalf.appendChild(cellProgressContainer);
         };
 
-        // Append each to their own on hierarchy
+        // Change style of cell container, based on isClaimed property
+        if (!challengeData.isClaimed && challengeData.isComplete) {
+            cellContainer.classList = 'cellClaimable wide';
+        }
+        else if (challengeData.isClaimed && challengeData.isComplete) {
+            cellContainer.classList = 'cellCompleted wide';
+        };
+
+        // Build top section with main icon, name and descriptor
+        cellTextTitleWrapper.append(cellTextTitleContent);
+        cellTextDescriptorWrapper.append(cellTextDescriptorContent);
+        cellHeaderContainer.append(cellTextTitleWrapper, cellTextDescriptorWrapper);
+
+        // Append each sub container to cell
         cellTopHalf.append(cellMainIcon, cellHeaderContainer);
         cellBotHalf.append(cellRewardsContainer);
-        cellHeaderContainer.append(cellTextTitleWrapper, cellTextDescriptorWrapper);
-        cellTextTitleWrapper.appendChild(cellTextTitleContent);
-        cellTextDescriptorWrapper.appendChild(cellTextDescriptorContent);
         cellContainer.append(cellTopHalf, cellBotHalf);
 
-
-
-        // dev
+        // Add cell to designated group
         document.getElementById(`wide_${weekString}`).appendChild(cellContainer);
-        // document.getElementsByClassName('gridWide')[0].appendChild(cellContainer);
-        log(cellContainer);
+
     };
 
-
+    // Run functions
     createWideChallenge(challengeData, weekString);
     createCompactChallenge(challengeData, weekString);
 };

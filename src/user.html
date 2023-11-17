@@ -687,7 +687,7 @@
                                 <div class="dropdownModalContainer">
                                     <div class="dropdownModal" id="sectionsDropdownModal">
                                         <div style="display: flex;justify-content: space-between;">
-                                            <div class="dropdownModalText">Bounties</div>
+                                            <div class="dropdownModalText" id="sectionTypeModalText">Bounties</div>
                                             <img class="dropdownModalIcon"src="static/ico/arrow_down.svg">
                                         </div>
                                     </div>
@@ -807,7 +807,7 @@
                                     <div class="dropdownModalContainer">
                                         <div class="dropdownModal" id="groupsDropdownModal">
                                             <div style="display: flex;justify-content: space-between;">
-                                                <div class="dropdownModalText">All Challenges</div>
+                                                <div class="dropdownModalText" id="groupsDropdownText">All Challenges</div>
                                                 <img class="dropdownModalIcon"src="static/ico/arrow_down.svg">
                                             </div>
                                         </div>
@@ -819,17 +819,19 @@
                                     </div>
 
                                     <div class="controlsContainer">
-                                        <div data-buttonType="btn_wide" class="buttonContainer">
+                                        <div data-buttonType="btn_wide" class="challengeSectionButtonsTop" id="btnWide">
                                             <img class="buttonIconAlt" src="./static/ico/grid_icon.png">
                                         </div>
-                                        <div data-buttonType="btn_compact" class="buttonContainer">
+                                        <div data-buttonType="btn_compact" class="challengeSectionButtonsTop" id="btnCompact">
                                             <img class="buttonIconAlt" src="./static/ico/rows_icon.png">
                                         </div>
-                                        <div data-buttonType="btn_previous" class="buttonContainer">
-                                            <img class="buttonIcon" src="./static/ico/arrow_sharp_left.png">
-                                        </div>
-                                        <div data-buttonType="btn_next" class="buttonContainer">
-                                            <img class="buttonIcon" src="./static/ico/arrow_sharp_right.png">
+                                        <div style="display: none;">
+                                            <div data-buttonType="btn_previous" class="buttonContainer challengeSectionButtonsTop">
+                                                <img class="buttonIcon" src="./static/ico/arrow_sharp_left.png">
+                                            </div>
+                                            <div data-buttonType="btn_next" class="buttonContainer challengeSectionButtonsTop">
+                                                <img class="buttonIcon" src="./static/ico/arrow_sharp_right.png">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -837,55 +839,7 @@
 
                                 <div class="gridCompact"></div>
 
-                                <div class="gridWide" style="display: none;">
-
-                                    <!-- <div>
-
-                                        <div class="cell wide">
-                                            <div class="cellTopHalf_wide">
-                                                <img class="cellIconMain_wide" src="./static/ico/chall_icon.png">
-                                                <div class="cellHeaderContainer_wide">
-                                                    <div class="cellTextWrapper_wide">
-                                                        <div class="cellTextContent_wide">Standard Issue Ammunitions Long Title Goes Here</div>
-                                                    </div>
-                                                    <div class="cellTextWrapper_wide cellDescriptor_wide">
-                                                        <div class="cellTextContent_wide cellTextContentDescriptor_wide">Defeat targets in Gambit with Primary ammo. Bonus progress is granted for using Auto Rifles, Hand Cannons, and Scout Rifles.</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="cellBotHalf_wide">
-                                                
-                                                <div class="cellProgressContainer_wide">
-                                                    <div class="cellProgressBoxOuter_wide">
-                                                        <div class="cellProgressBoxSpacer_wide">
-                                                            <div class="cellProgressBoxInner_wide"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="cellProgressBar_wide">
-                                                        <div>Progress</div>
-                                                        <div>0/100</div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="cellRewards_wide">
-                                                    <div class="rewardContainer_wide">
-                                                        <img class="rewardIcon_wide" src="./static/ico/xp_icon.png">
-                                                        <div>Challenger XP+</div>
-                                                    </div>
-                                                    <div class="rewardContainer_wide">
-                                                        <img class="rewardIcon_wide" src="./static/ico/bd_icon.png">
-                                                        <div>Large Bright Dust Pile</div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                        
-                                    </div> -->
-
-                                </div>
+                                <div class="gridWide" style="display: none;"></div> <!-- Toggle off by default -->
 
                             </div>
 

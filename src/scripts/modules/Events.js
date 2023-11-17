@@ -37,6 +37,13 @@ const ToggleSettingsMenu = function () {
 };
 
 
+// Control states for challenges section
+let controlStates = { // defaults
+    curGrpName: 'Week 1',
+    curDrpName: 'Week_1'
+};
+
+
 // Event listener wrapper
 export const AddListener = function (elementName, event, callback, selectorType) {
 
@@ -783,6 +790,7 @@ export async function AddEventListeners() {
 
         // Close modal dropdown, reverse boolean
         document.getElementById('sectionsDropdownButtonsContainer').style.display = 'none';
+        document.getElementById('sectionTypeModalText').innerHTML = sectionName;
         sectionsModalOpen = false;
 
     }, 'class');
@@ -793,7 +801,7 @@ export async function AddEventListeners() {
 
         // Check for boolean, open/close accordingly
         let container = document.getElementById('groupsDropdownForChallenges');
-
+        log(challsFilterModalOpen);
         if (challsFilterModalOpen) {
             container.style.display = 'none'; // Hide dropdown
             challsFilterModalOpen = false;
@@ -804,49 +812,59 @@ export async function AddEventListeners() {
         };
     });
 
-    let controlStates = {
-        currentGroup: 'compact_Week 1',
-        compact: true,
-        wide: false
-    };
-
-    // (above) Modal menu buttons
+    // Dropdown for challenge groups (week 1,2,3 or all)
     AddListener('groupsDropdownButtonTextSections', 'click', function () {
 
         // Show corresponding group container, hide current one
         let selectedGroup = this.getAttribute('data-groupname');
-        document.getElementById(controlStates.currentGroup).style.display = 'none';
+        let previousGroup = controlStates.curGrpName;
+
+        // Hide previously selected groups
+        document.getElementById(`compact_${previousGroup}`).style.display = 'none';
+        document.getElementById(`wide_${previousGroup}`).style.display = 'none';
+
+        // Show new groups
         document.getElementById(`compact_${selectedGroup}`).style.display = 'block';
+        document.getElementById(`wide_${selectedGroup}`).style.display = 'block';
 
-        // Save as previous group
-        controlStates.currentGroup = `compact_${selectedGroup}`;
+        // Update controlStates arr
+        controlStates.curGrpName = `${selectedGroup}`;
 
-        // Close modal dropdown, reverse boolean
+        // Hide dropdown list again, change dropdown text, reverse dropdown boolean
         document.getElementById('groupsDropdownForChallenges').style.display = 'none';
+        document.getElementById('groupsDropdownText').innerHTML = selectedGroup;
         challsFilterModalOpen = false;
 
     }, 'class');
 
-    // Challenges UI controls
-    AddListener('buttonContainer', 'click', function () {
+    // Controls for next, prev page, different table views/layouts, filter
+    AddListener('challengeSectionButtonsTop', 'click', function () {
 
         // Show corresponding layout, according to control
-        let controlType = this.getAttribute('data-buttonType');
+        let buttonType = this.getAttribute('data-buttonType');
+        let layoutSplc = buttonType.split('_')[1] || buttonType;
 
-        if (controlType === 'btn_compact') {
-            document.getElementsByClassName('gridCompact')[0].style.display = 'none';
-            document.getElementsByClassName('gridWide')[0].style.display = 'block';
-            controlStates.compact = true;
-            controlStates.wide = false;
-        }
-        else if (controlType === 'btn_wide') {
+        // Check button type
+        if (layoutSplc === 'compact') {
+
             document.getElementsByClassName('gridCompact')[0].style.display = 'block';
             document.getElementsByClassName('gridWide')[0].style.display = 'none';
-            controlStates.compact = false;
-            controlStates.wide = true;
-        };
 
-        log(controlType);
+            // Retain border:hover style until opposite button is pressed
+            document.getElementById('btnCompact').style.border = '2px solid white';
+            document.getElementById('btnWide').style.border = '2px solid gray';
+        }
+
+        else if (layoutSplc === 'wide') {
+
+            document.getElementsByClassName('gridWide')[0].style.display = 'block';
+            document.getElementsByClassName('gridCompact')[0].style.display = 'none';
+
+            // Retain border:hover style until opposite button is pressed
+            document.getElementById('btnWide').style.border = '2px solid white';
+            document.getElementById('btnCompact').style.border = '2px solid gray';
+        };
+        
 
     }, 'class');
 };

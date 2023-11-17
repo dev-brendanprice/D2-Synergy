@@ -6,7 +6,7 @@
 
 body {
     height: 100vh;
-    /* overflow-y: hidden; */
+    /* overflow-y: scroll; */
     background: radial-gradient(#2d2d2d, #202020);
 }
 
@@ -23,6 +23,7 @@ body {
 #userMainContainer {
     margin-top: 60px;
     z-index: 0;
+    overflow-y: scroll;
 }
 
 #githubIcon {
@@ -1829,6 +1830,22 @@ hr.dropdownSubline {
     border: 2px solid white;
 }
 
+#btnCompact, #btnWide {
+    background-color: #3B3B3B;
+    width: 31px;
+    height: 31px;
+    cursor: pointer;
+    border: 2px solid gray;
+}
+
+#btnCompact {
+    border: 2px solid white;
+}
+
+#btnCompact:hover, #btnWide:hover {
+    border: 2px solid white;
+}
+
 .buttonIcon {
     display: flex;
     margin: 0 auto;
@@ -1934,6 +1951,7 @@ hr.dropdownSubline {
     margin-left: 2px;
     width: 330px;
     height: 180px;
+    overflow: hidden;
 }
 
 .cellTopHalf_wide {
@@ -1954,7 +1972,7 @@ hr.dropdownSubline {
 
 .cellTextWrapper_wide {
     font-size: 19px;
-    max-width: 60%;
+    max-width: 80%;
 }
 
 .cellDescriptor_wide {
@@ -1976,6 +1994,9 @@ hr.dropdownSubline {
 }
 
 .cellBotHalf_wide {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     margin-top: 10px;
 }
 
@@ -1995,8 +2016,7 @@ hr.dropdownSubline {
 }
 
 .cellProgressBoxInner_wide {
-    background-color: white;
-    opacity: 15%;
+    background-color: rgba(170, 170, 170, 0.5);
     width: 12px;
     height: 12px;
 }

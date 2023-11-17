@@ -125,9 +125,10 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
             listItemContent.setAttribute('data-groupname', weekString); // Set data attr
             listItemContent.innerHTML = weekString; // Add innerHTML
 
-            // Add classes
+            // Add classes an ids
             listItemContainer.classList.add('dropdownButton');
             listItemContent.classList.add('groupsDropdownButtonTextSections');
+            listItemContent.id = `${weekString.split(' ')[0]}_${weekString.split(' ')[1]}`;
 
             // Append hierarchy
             listItemContainer.appendChild(listItemContent);
@@ -181,11 +182,18 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
                     challengeData.progressionPercent = 100;
                     completeChallengesCounter++; // Increment completed challengers counter
 
-                    // Get claimed state (if challenge has been claimed)
+                    // Get claimed state
                     let stateInfo = characterRecords[challengeData.hash];
-                    challengeData.isClaimed = false;
-                    if (stateInfo.state === 1) {
-                        challengeData.isClaimed = true;
+
+                    if (stateInfo) {
+
+                        // Get enum val from state enum
+                        let state = Boolean(stateInfo.state & 1);
+
+                        challengeData.isClaimed = false;
+                        if (state) { // Compare
+                            challengeData.isClaimed = true;
+                        };
                     };
                 };
 
