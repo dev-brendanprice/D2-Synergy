@@ -142,20 +142,6 @@ h1 {
     height: 13px;
 }
 
-.github-button-container {
-    display: none;
-    margin: 0 auto;
-    width: fit-content;
-    margin-top: 30px;
-}
-
-.github-button-icon {
-    width: 24px;
-    height: 24px;
-    -webkit-filter: invert(100%);
-    filter: invert(100%);
-}
-
 p {
     text-align: center;
     margin: 0 auto;
@@ -197,4 +183,115 @@ p {
 .page-content-container {
     height: 50000px;
     background-color: rgb(10,10,10);
+}
+
+.supportbox-dialogue-main-container {
+    display: flex;
+    margin: auto;
+    margin-top: 350px;
+    padding: 15px;
+    width: fit-content;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.supportbox-dialogue-main-container:hover {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+.supportbox-dialogue-goback-container {
+    display: flex;
+    margin: auto;
+    margin-top: 205px;
+    padding: 15px;
+    width: fit-content;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.supportbox-dialogue-goback-container:hover {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+.supportbox-dialogue-main-title {
+    margin-top: 5px;
+    margin-bottom: 3px;
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
+
+.supportbox-dialogue-main-subtext {
+    width: 200px;
+    font-style: italic;
+    color: #aaa;
+    font-size: 13px;
+}
+
+.supportbox-main-image {
+    margin: 0 auto;
+    margin-top: 15px;
+    width: 18px;
+}
+
+.supportbox-goback-image {
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 18px;
+    rotate: 180deg;
+}
+
+#center-support {
+    display: none;
+    margin: 0 auto;
+    margin-top: 80px;
+    gap: 20px;
+    flex-direction: column;
+    width: fit-content;
+    text-align: center;
+    justify-content: center;
+    color: #aaa;
+}
+
+.support-page-grid-container {
+    display: flex;
+    margin: 0 auto;
+    width: 510px;
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+
+.support-page-text {
+    width: 500px;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.support-socials-container {
+    display: flex;
+    margin: 0 auto;
+    width: fit-content;
+    gap: 5px;
+}
+
+.support-social-icon {
+    width: 32px;
+    cursor: pointer;
+}
+
+.support-cell {
+    width: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    user-select: none;
+}
+
+.support-cell:hover {
+    border: 1px solid white;
+    cursor: help;
 }
