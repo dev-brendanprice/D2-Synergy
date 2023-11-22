@@ -75,7 +75,8 @@ async function loadSupportPageContent() {
         else {
 
             // Request user (partial) data
-            let profile = LoadPartialProfile(playerids[playeridCounter]);
+            let profile = await LoadPartialProfile(playerids[playeridCounter]);
+            log(profile);
             playeridCounter++;
         };
     };
