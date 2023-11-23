@@ -5,24 +5,21 @@ import { ReturnSeasonPassLevel } from './ReturnSeasonPassLevel.js';
 const log = console.log.bind(console);
 const requestHeaders = { headers: { "X-API-Key": import.meta.env.API_KEY } };
 
-export async function LoadPartialProfile(memship) {
+export async function LoadPartialProfile(memship, definitions) {
+
+    // Parse defs
+    const {
+        seasonDefinitions,
+        seasonPassDefinitions,
+        commendationsNodeDefinitions,
+        recordDefinitions
+    } = definitions;
 
     // Get correct memship type
     let memshipType = await FetchPrimaryUserMembership(memship)
     .then((res) => {
         return res.membershipType;
     }).catch(e => console.error(e));
-
-
-    // Request definitions objects (one-off thing, does not affect user.js)
-    let navlang = window.navigator.language.split('-')[0];
-    let manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-    let components = manifest.data.Response.jsonWorldComponentContentPaths[navlang];
-
-    let seasonDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonDefinition}`);
-    seasonDefinitions = seasonDefinitions.data;
-    let seasonPassDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonPassDefinition}`);
-    seasonPassDefinitions = seasonPassDefinitions.data;
 
 
     // Get user clan name
@@ -36,10 +33,10 @@ export async function LoadPartialProfile(memship) {
     .then((res) => {
         return res.data.Response;
     }).catch(e => console.error(e));
-    log(user);
 
 
     // Get current season/season pass -> Get user season rank
+    let pchar = Object.values(user.characters.data)[0];
     let season = seasonDefinitions[user.profile.data.currentSeasonHash];
     let seasonpass = seasonPassDefinitions[season.seasonPassHash];
 
@@ -50,22 +47,47 @@ export async function LoadPartialProfile(memship) {
     let prestigeSeasonProgression = Object.values(user.characterProgressions.data)[0].progressions[prestigeSeasonProgressionHash];
 
 
-    // Get all commendations values
-
-
+    // Get all commendation node values -> sent/received and total
+    const { totalScore, scoreDetailValues: [sent, received] } = user.profileCommendations.data;
+    let objs = user.profileCommendations.data.commendationNodePercentagesByHash;
+    let nodesArr = [];
+    for (let nodeHash in objs) {
+        
+        let commendationPercent = objs[nodeHash];
+        let def = commendationsNodeDefinitions[nodeHash];
+        nodesArr.push([ def.displayProperties.name, commendationPercent ]);
+    };
 
     
+    // Get equipped title (if exists)
+    let titleHash = null;
+    if (pchar.titleRecordHash) {
+        titleHash = pchar.titleRecordHash;
+    };
+
+
+
     // Return all required profile info
-    let pchar = Object.values(user.characters.data)[0];
     return {
-        cname: clan.name,
-        uname: user.profile.data.userInfo.displayName,
+        memship: memship,
+        uname: user.profile.data.userInfo.bungieGlobalDisplayName,
         displayCode: user.profile.data.userInfo.bungieGlobalDisplayNameCode,
         light: pchar.light,
+        emblemPath: pchar.emblemPath,
         emblemBackgroundPath: pchar.emblemBackgroundPath,
         guardianRank: user.profile.data.currentGuardianRank,
         tscore: user.profileRecords.data.activeScore,
-        splevel: await ReturnSeasonPassLevel(seasonProgression, prestigeSeasonProgression)
+        splevel: await ReturnSeasonPassLevel(seasonProgression, prestigeSeasonProgression),
+        cname: clan.name,
+        comms: {
+            totalScore: totalScore,
+            nodes: nodesArr,
+            details: {
+                sent: sent,
+                received: received
+            }
+        },
+        titleName: recordDefinitions[titleHash] ? recordDefinitions[titleHash].titleInfo.titlesByGender.Male : null // If no title, populate with null instead of hash
     };
 
 };
