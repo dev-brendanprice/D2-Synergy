@@ -36,7 +36,7 @@ export async function LoadPartialProfile(memship, definitions) {
 
 
     // Get current season/season pass -> Get user season rank
-    let pchar = Object.values(user.characters.data)[0];
+    let pchar = Object.values(user.characters.data).sort((a,b) => new Date(b.dateLastPlayed) - new Date(a.dateLastPlayed))[0]; // Get primary character by date last played
     let season = seasonDefinitions[user.profile.data.currentSeasonHash];
     let seasonpass = seasonPassDefinitions[season.seasonPassHash];
 
@@ -60,11 +60,18 @@ export async function LoadPartialProfile(memship, definitions) {
 
     
     // Get equipped title (if exists)
-    let titleHash = null;
+    let title = false;
+    let gild = false;
     if (pchar.titleRecordHash) {
-        titleHash = pchar.titleRecordHash;
-    };
 
+        // Get title
+        let titleHash = pchar.titleRecordHash;
+        title = recordDefinitions[titleHash];
+
+        // Check if title is gilded
+        gild = title.titleInfo.gildingTrackingRecordHash ? title.titleInfo.gildingTrackingRecordHash : gild;
+        title = title.titleInfo.titlesByGender.Male;
+    };
 
 
     // Return all required profile info
@@ -87,7 +94,8 @@ export async function LoadPartialProfile(memship, definitions) {
                 received: received
             }
         },
-        titleName: recordDefinitions[titleHash] ? recordDefinitions[titleHash].titleInfo.titlesByGender.Male : null // If no title, populate with null instead of hash
+        titleName: title, // If no title, return false
+        isTitleGilded: gild // If no gild, return false
     };
 
 };

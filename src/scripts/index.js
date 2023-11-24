@@ -4,7 +4,11 @@ import { createCellDat } from './modules/CreateCellData.js';
 import axios from 'axios';
 
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
-console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
+console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice on Twitter.');
+
+// DEV ONLY --- REMOVE BEFORE PUSH
+document.getElementById('center-con').style.display = 'none';
+document.getElementById('center-support').style.display = 'flex';
 
 const log = console.log.bind(console);
 const localStorage = window.localStorage;
@@ -67,14 +71,16 @@ async function CheckSession() {
 // Load support page DOM content
 async function loadSupportPageContent(definitions) {
 
-    // Count of cells on grid
-    let n = 119;
+    // Count of rows on grid
+    let rows = 6; // Edit this value to change cell count
+    let n = rows * 17;
 
     // List of bungiememship ids of players 
     let playerids = [
         '4611686018482180535',
         '4611686018447977370',
-        '4611686018474337076'
+        '4611686018474337076',
+        '4611686018471667515'
     ];
 
     let playeridCounter = 0; // Count index of current playerid
@@ -82,7 +88,15 @@ async function loadSupportPageContent(definitions) {
     // Arr with numbers, denoting to random coords on the grid
     let ranarr = [];
     for (let i=0; i<playerids.length; i++) {
-        ranarr.push(Math.floor(Math.random() * n));
+
+        // Ensure that no duplicate numbers are pushed
+        function addInt() {
+            let ranint = Math.floor(Math.random() * n);
+            if (ranarr.includes(ranint)) {
+                addInt();
+            } else ranarr.push(ranint);
+        };
+        addInt();
     };
 
 
@@ -112,7 +126,6 @@ async function loadSupportPageContent(definitions) {
             
             if (!memshipArr.includes(playerid)) {
 
-                log('DOES NOT INCLUDE');
                 // Request profile
                 const profile = await LoadPartialProfile(playerid, definitions);
                 
@@ -128,7 +141,6 @@ async function loadSupportPageContent(definitions) {
             }
             else {
 
-                log('DOES INCLUDE');
                 // Find corresponding profile object in cache
                 let cache = Object.values(JSON.parse(localStorage.getItem('cachedprofiles')));
                 let profile = cache.filter(v => v.profile.memship === playerid)[0].profile;
