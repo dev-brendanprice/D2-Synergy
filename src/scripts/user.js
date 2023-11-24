@@ -27,7 +27,7 @@ import { StartLoad } from './modules/StartLoad.js';
 // import { PostMessage, PostMessageFSync, RegisterServiceWorker } from './sw/RegisterServiceWorker.js';
 
 console.log(`%cD2 SYNERGY ${import.meta.env.version}`, 'font-weight: bold;font-size: 40px;color: white;');
-console.log('// Welcome to D2Synergy, Please report any errors to @_devbrendan on Twitter.');
+console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice on Twitter.');
 
 // Validate state parameter + start load animation
 VerifyState();

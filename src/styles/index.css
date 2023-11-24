@@ -12,6 +12,10 @@ body {
     user-select: none;
 }
 
+#hoverElements {
+    position: absolute;
+}
+
 .bg {
     position: absolute;
     width: 100%;
@@ -142,20 +146,6 @@ h1 {
     height: 13px;
 }
 
-.github-button-container {
-    display: none;
-    margin: 0 auto;
-    width: fit-content;
-    margin-top: 30px;
-}
-
-.github-button-icon {
-    width: 24px;
-    height: 24px;
-    -webkit-filter: invert(100%);
-    filter: invert(100%);
-}
-
 p {
     text-align: center;
     margin: 0 auto;
@@ -197,4 +187,339 @@ p {
 .page-content-container {
     height: 50000px;
     background-color: rgb(10,10,10);
+}
+
+.supportbox-dialogue-main-container {
+    display: flex;
+    gap: 10px;
+    margin: 0 auto;
+    padding: 15px;
+    width: 200px;
+    height: 100px;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.supportbox-dialogue-main-container:hover {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+.supportbox-dialogue-goback-container {
+    display: none;
+    gap: 10px;
+    margin: 0 auto;
+    padding: 15px;
+    width: 200px;
+    height: 100px;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.supportbox-dialogue-goback-container:hover {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+.supportbox-dialogue-main-title {
+    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
+
+.supportbox-dialogue-main-subtext {
+    width: 200px;
+    font-style: italic;
+    color: #aaa;
+    font-size: 13px;
+}
+
+.supportbox-main-image {
+    margin: 0 auto;
+    width: 18px;
+}
+
+.supportbox-goback-image {
+    margin: 0 auto;
+    width: 18px;
+    rotate: 180deg;
+}
+
+.supportbox-absolute-container {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+#center-con {
+    display: flex;
+    flex-direction: column;
+}
+
+#center-support {
+    display: none;
+    margin: 0 auto;
+    margin-top: 50px;
+    gap: 20px;
+    text-align: center;
+    width: fit-content;
+    flex-direction: column;
+    color: #aaa;
+}
+
+.support-page-grid-container {
+    display: flex;
+    margin: 0 auto;
+    width: 510px;
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+
+.support-page-text {
+    width: 500px;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.support-socials-container {
+    display: flex;
+    margin: 0 auto;
+    width: fit-content;
+    gap: 10px;
+}
+
+.support-social-icon {
+    width: 25px;
+    cursor: pointer;
+}
+
+.support-cell {
+    width: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    user-select: none;
+}
+
+.support-cell:hover {
+    border: 1px solid #aaa;
+}
+
+.support-cell-player {
+    width: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    user-select: none;
+}
+
+.support-cell-player:hover {
+    border: 1px solid white;
+    cursor: help;
+}
+
+/* On hover cell container styles */
+.onhoverContainer {
+    width: 375px;
+    height: fit-content;
+    padding-bottom: 10px;
+    background-color: black;
+    box-shadow: 0px 0px 50px black;
+}
+
+.containerForOverlay {
+    display: none;
+    position: absolute;
+    pointer-events: none;
+}
+
+.onhoverEmblemIcon {
+    width: 100%;
+}
+
+.onhoverEmblemContainer {
+    margin-top: -47px;
+}
+
+.onhoverTopContentContainer {
+    position: relative;
+}
+
+.onhoverTopTextContainer {
+    position: absolute;
+    display: flex;
+    margin-top: 10px;
+    color: white;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.onhoverTopTextMain {
+    padding-left: 70px;
+    width: 53%;
+}
+
+.onhoverTopUser {
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 22px;
+    width: 100%;
+    overflow-x: hidden; /* temp fix */
+    text-wrap: nowrap;
+}
+
+.onhoverTopClan {
+    color: #E3E3E3;
+    font-size: 13px;
+}
+
+.onhoverTopPowerCon {
+    display: flex;
+    margin-top: -5px;
+    padding-right: 20px;
+}
+
+.powericon {
+    margin-top: -20px;
+    width: 12px;
+}
+
+.powerText {
+    font-size: 30px;
+    font-weight: bolder;
+    color: #E5D163;
+}
+
+.onhoverSealContainer {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 10px;
+}
+
+.onhoverSealBg {
+    display: flex;
+    gap: 2px;
+    flex-direction: column;
+}
+
+.onhoverSealBgWrapBars {
+    background-color: #502D60;
+    width: 100%;
+    height: 2px;
+}
+
+.onhoverSealContentBg {
+    background-color: #221629;
+    width: 100%;
+    height: 25px;
+}
+
+.onhoverSealContent {
+    display: flex;
+    position: absolute;
+    padding-left: 5px;
+    margin-top: 4px;
+    color: #914CAD;
+    align-items: center;
+    gap: 10px;
+}
+
+.onhoverSealContentText {
+    font-size: 14px;
+    font-style: italic;
+}
+
+.onhoverDividerLine {
+    margin-top: 12px;
+    width: 100%;
+    height: 1px;
+    background-color: #393939;
+}
+
+.onhoverCommendationsContainer {
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 15px;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.onhoverCommendationsTop {
+    display: flex;
+    justify-content: space-between;
+}
+
+.onhoverCommendationsRatioBars {
+    display: flex;
+    gap: 3px;
+}
+
+.onhoverCommendationsTopSubText {
+    color: #8F8F8F;
+}
+
+.onhoverCommendationsTopText {
+    display: flex;
+    gap: 3px;
+    font-size: 11px;
+}
+
+.onhoverCommendationsTotalText {
+    margin-top: 3px;
+    font-size: 19px;
+}
+
+.onhoverCommendationsRatioNumbers {
+    display: flex;
+    gap: 3px;
+    font-size: 10px;
+    margin-top: -8px;
+}
+
+.onhoverUserRecordsContainer {
+    display: flex;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 10px;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.onhoverRecordCon {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.onhoverBungienameContainer {
+    display: flex;
+    margin-top: 10px;
+    gap: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 14px;
+}
+
+.onhoverBungienameTextCon {
+    display: flex;
+    align-items: center;
+}
+
+.onhoverUserMessageContainer {
+    display: flex;
+    margin-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    gap: 5px;
+    align-items: center;
+}
+
+.onhoverUserMessageText {
+    font-size: 13px;
+    color: #8F8F8F;
+    font-style: italic;
 }
