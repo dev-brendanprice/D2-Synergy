@@ -7,10 +7,6 @@ import axios from 'axios';
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice on Twitter.');
 
-// DEV ONLY --- REMOVE BEFORE PUSH
-document.getElementById('center-con').style.display = 'none';
-document.getElementById('center-support').style.display = 'flex';
-
 const log = console.log.bind(console);
 const localStorage = window.localStorage;
 const clientId = import.meta.env.CLIENT_ID;
