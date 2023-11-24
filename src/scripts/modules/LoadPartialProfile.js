@@ -34,7 +34,7 @@ export async function LoadPartialProfile(memship, definitions) {
         return res.data.Response;
     }).catch(e => console.error(e));
 
-
+    log(user);
     // Get current season/season pass -> Get user season rank
     let pchar = Object.values(user.characters.data).sort((a,b) => new Date(b.dateLastPlayed) - new Date(a.dateLastPlayed))[0]; // Get primary character by date last played
     let season = seasonDefinitions[user.profile.data.currentSeasonHash];
@@ -43,12 +43,18 @@ export async function LoadPartialProfile(memship, definitions) {
     let seasonProgressionHash = season.seasonPassProgressionHash; // Get required progression hashes
     let prestigeSeasonProgressionHash = seasonpass.prestigeProgressionHash;
 
-    let seasonProgression = Object.values(user.characterProgressions.data)[0].progressions[seasonProgressionHash]; // Get progression data
-    let prestigeSeasonProgression = Object.values(user.characterProgressions.data)[0].progressions[prestigeSeasonProgressionHash];
+    // Check if profile is private by proxy
+    let seasonProgression = null;
+    let prestigeSeasonProgression = null;
+    if (user.characterProgressions.data) {
+        seasonProgression = Object.values(user.characterProgressions.data)[0].progressions[seasonProgressionHash]; // Get progression data
+        prestigeSeasonProgression = Object.values(user.characterProgressions.data)[0].progressions[prestigeSeasonProgressionHash];
+    };
 
 
+    // Check if profile is private by proxy
     // Get all commendation node values -> sent/received and total
-    const { totalScore, scoreDetailValues: [sent, received] } = user.profileCommendations.data;
+    const { totalScore, scoreDetailValues: [sent, received] } = user.profileCommendations.data
     let objs = user.profileCommendations.data.commendationNodePercentagesByHash;
     let nodesArr = [];
     for (let nodeHash in objs) {
@@ -58,18 +64,37 @@ export async function LoadPartialProfile(memship, definitions) {
         nodesArr.push([ def.displayProperties.name, commendationPercent ]);
     };
 
+
     
-    // Get equipped title (if exists)
+    // Check if a title is equipped
     let title = false;
     let gild = false;
     if (pchar.titleRecordHash) {
 
-        // Get title
+        // Get title and title hash
         let titleHash = pchar.titleRecordHash;
         title = recordDefinitions[titleHash];
 
-        // Check if title is gilded
-        gild = title.titleInfo.gildingTrackingRecordHash ? title.titleInfo.gildingTrackingRecordHash : gild;
+        // Check if title can be gilded
+        if (title.titleInfo.gildingTrackingRecordHash) {
+            
+            // Check if gild is complete
+            let gildRecord = user.profileRecords.data.records[title.titleInfo.gildingTrackingRecordHash];
+            if (gildRecord.objectives[0].complete) {
+
+                // log(gildRecord);
+                // log(!!(gildRecord.state & 1));
+
+                // Check if gild has been claimed
+                // let state = Boolean(gildRecord.state & 1);
+                // log(gildRecord.state);
+                // if (state) {
+                //     gild = true;
+                // };
+            };
+        };
+
+        // Get title name (fix gender)
         title = title.titleInfo.titlesByGender.Male;
     };
 

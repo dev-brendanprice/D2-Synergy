@@ -1,6 +1,7 @@
 import { MakeRequest } from './modules/MakeRequest.js';
 import { LoadPartialProfile } from './modules/LoadPartialProfile.js';
 import { createCellDat } from './modules/CreateCellData.js';
+import { playerids } from '.././data/supporterMessages.js';
 import axios from 'axios';
 
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
@@ -74,14 +75,6 @@ async function loadSupportPageContent(definitions) {
     // Count of rows on grid
     let rows = 6; // Edit this value to change cell count
     let n = rows * 17;
-
-    // List of bungiememship ids of players 
-    let playerids = [
-        '4611686018482180535',
-        '4611686018447977370',
-        '4611686018474337076',
-        '4611686018471667515'
-    ];
 
     let playeridCounter = 0; // Count index of current playerid
 

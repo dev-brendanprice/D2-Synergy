@@ -1,7 +1,6 @@
-import messages from '../../data/supporterMessages.js';
+import { messages } from '../../data/supporterMessages.js';
 
 const log = console.log.bind(console);
-log(messages);
 
 export function createCellDat(profile) {
 
@@ -306,17 +305,13 @@ export function createCellDat(profile) {
         bnameTextWrapper.append(bnameUsername, bnameDisplaycode);
         bnameContainer.append(bnameIcon, bnameTextWrapper);
 
-        // Create and append divider line
-        const divider = document.createElement('div');
-        divider.classList = 'onhoverDividerLine';
-
-        hoverContainer.append(bnameContainer, divider);
+        hoverContainer.append(bnameContainer);
     };
 
 
     // Check if a message exists for this user
     if (messages[memship].msg) {
-        
+
         let dat = messages[memship];
 
         // Create container for user message & add content
@@ -330,7 +325,12 @@ export function createCellDat(profile) {
         messageIcon.src = `//${dat.ico}`;
         messageText.innerHTML = `"${dat.msg}"`;
         messageContainer.append(messageIcon, messageText);
-        hoverContainer.append(messageContainer);
+
+        // Create and append divider line
+        const divider = document.createElement('div');
+        divider.classList = 'onhoverDividerLine';
+
+        hoverContainer.append(divider, messageContainer);
     };
 
 
