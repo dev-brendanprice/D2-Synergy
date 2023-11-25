@@ -178,7 +178,7 @@ if (document.readyState !== 'loading') {
     // Check for outage via the query params of a previous redirect
     // CheckForOutageViaParams();
     // Put version number in navbar
-    document.getElementById('version-text').innerHTML = `Alpha ${import.meta.env.version}`;
+    document.getElementById('version-text').innerHTML = `${import.meta.env.version}`;
 
     // Redirect user to bungie.net sign in portal
     const stateCode = GenerateRandomString(128);
