@@ -171,25 +171,46 @@ function CheckForOutageViaParams() {
 };
 
 
-// Listen for DOM load
-window.addEventListener('DOMContentLoaded', function () {
+// Listen for page ready state
+log(document.readyState !== 'loading' ? 'Ready' : 'Unready');
+if (document.readyState !== 'loading') {
 
     // Check for outage via the query params of a previous redirect
     // CheckForOutageViaParams();
-
-    const stateCode = GenerateRandomString(128);
-
     // Put version number in navbar
     document.getElementById('version-text').innerHTML = `Alpha ${import.meta.env.version}`;
 
-    // Redirect user to Bungie.net on a clean slate
-    document.getElementById('button-authorize').addEventListener('click', () => {
-        localStorage.setItem('stateCode', stateCode);
-        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&randomqueryparam=${GenerateRandomString(128)}`;
+    // Redirect user to bungie.net sign in portal
+    const stateCode = GenerateRandomString(128);
+    const authButtons = document.getElementsByClassName('auth-button');
+    for (let btn of authButtons) {
+        btn.addEventListener('click', () => {
+            localStorage.setItem('stateCode', stateCode);
+            window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&randomqueryparam=${GenerateRandomString(128)}`;
+        });
+    };
+
+
+    // Support/Home page nav button (vice versa)
+    document.getElementsByClassName('supportbox-dialogue-main-container')[0].addEventListener('click', function() {
+
+        // Hide content container
+        document.getElementById('center-con').style.display = 'none';
+        document.getElementById('center-support').style.display = 'flex';
+
+        // Show/hide buttons
+        document.getElementsByClassName('supportbox-dialogue-main-container')[0].style.display = 'none';
+        document.getElementsByClassName('supportbox-dialogue-goback-container')[0].style.display = 'flex';
     });
-    document.getElementById('button-authorize2').addEventListener('click', () => {
-        localStorage.setItem('stateCode', stateCode);
-        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&randomqueryparam=${GenerateRandomString(128)}`;
+    document.getElementsByClassName('supportbox-dialogue-goback-container')[0].addEventListener('click', function() {
+
+        // Hide content container
+        document.getElementById('center-con').style.display = 'flex';
+        document.getElementById('center-support').style.display = 'none';
+
+        // Show/hide buttons
+        document.getElementsByClassName('supportbox-dialogue-goback-container')[0].style.display = 'none';
+        document.getElementsByClassName('supportbox-dialogue-main-container')[0].style.display = 'flex';
     });
 
     // Check for server availability, else do error (error code inside MakeRequest too)
@@ -200,26 +221,4 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // Omit query params from URL on reload
     window.history.pushState({}, window.location.host, `${import.meta.env.HOME_URL}`);
-});
-
-// Support page button toggles (vice versa)
-document.getElementsByClassName('supportbox-dialogue-main-container')[0].addEventListener('click', function() {
-
-    // Hide content container
-    document.getElementById('center-con').style.display = 'none';
-    document.getElementById('center-support').style.display = 'flex';
-
-    // Show/hide buttons
-    document.getElementsByClassName('supportbox-dialogue-main-container')[0].style.display = 'none';
-    document.getElementsByClassName('supportbox-dialogue-goback-container')[0].style.display = 'flex';
-});
-document.getElementsByClassName('supportbox-dialogue-goback-container')[0].addEventListener('click', function() {
-
-    // Hide content container
-    document.getElementById('center-con').style.display = 'flex';
-    document.getElementById('center-support').style.display = 'none';
-
-    // Show/hide buttons
-    document.getElementsByClassName('supportbox-dialogue-goback-container')[0].style.display = 'none';
-    document.getElementsByClassName('supportbox-dialogue-main-container')[0].style.display = 'flex';
-});
+};
