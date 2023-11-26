@@ -176,7 +176,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
             
         };
 
-        log(challengesCounter, completeChallengesCounter);
         // Push HTML fields for challenges header stats
         document.getElementById('challengesTotalField').innerHTML = `${challengesCounter}`;
         document.getElementById('challengesCompletedField').innerHTML = `${completeChallengesCounter}`;

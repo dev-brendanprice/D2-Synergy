@@ -741,13 +741,12 @@ hr.contentHeadingSeperator {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding-bottom: 25px;
+    margin-bottom: 25px;
 }
 
 .characterSelect {
     position: relative;
     display: grid;
-    padding-left: 10px;
     margin: 1px;
     gap: 1rem;
     grid-template-columns: 36px 1fr 75px;
@@ -964,14 +963,15 @@ input:checked+.slider:before {
 }
 
 .dropdownStatProgressBarSubtext {
-    position: absolute;
-    margin-top: 8px;
+    min-width: fit-content;
     color: #B7F5F5;
     font-size: 12px;
+    text-align: left;
 }
 
 .dropdownStatProgressBarContainer {
-    background-color: #7B7B7B;
+    display: flex;
+    background-color: #404040;
     width: 100%;
     height: 7px;
     border-radius: 5px;

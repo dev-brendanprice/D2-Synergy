@@ -66,10 +66,7 @@
                 </div>
                 <div style="margin-top: 5px;font-size: 16px;">
                     <ul id="whatsNewFeaturesList">
-                        <li>Re-designed the seasonal challenges UI</li>
-                        <li>Removed some *useless* UI</li>
-                        <li>Changed how the yield statistics are displayed for easier reading</li>
-                        <li>A new PWA is available that you can download via any browser on all platforms!</li>
+                        <li>New supporters section on home page! (logout to see it)</li>
                         <li>🛠️ Bug fixes</li>
                     </ul>
                     <em>View previous updates <a href="https://github.com/dev-brendanprice/D2-Synergy/commits/main" target="_blank">here</a></em>
@@ -408,23 +405,31 @@
                                             <div class="dropdownUiLineStyleCorner" style="margin-top: -1px;height: 20px;"></div>
                                             <div class="dropdownUiLineStyleCorner" style="margin-top: 11px;height: 57px;"></div>
                                         </div>
-                                        <div style="display: flex;flex-direction: column;gap: 20px;margin-top: 10px;padding-left: 16px;width: 80%;">
+                                        <div style="display: flex;flex-direction: column;gap: 8px;margin-top: 10px;padding-left: 16px;width: 80%;">
                                             <div>
                                                 <div>Power Bonus Level:</div>
-                                                <div style="display: flex;margin-top: 2px;">
+                                                <div style="display: flex;margin-top: 2px;flex-direction: column;">
                                                     <div class="dropdownStatProgressBarContainer">
                                                         <div class="dropdownStatProgressBarLevel" id="powerBonusProgressBar"></div>
+                                                        <div class="dropdownStatProgressBarLevel" id="powerBonusYieldProgressBar" style="background-color: #0F8989;"></div>
                                                     </div>
-                                                    <div class="dropdownStatProgressBarSubtext" id="powerBonusProgressPercent">--</div>
+                                                    <div style="display: flex;">
+                                                        <div class="dropdownStatProgressBarSubtext" id="powerBonusProgressPercent">0%</div>
+                                                        <div class="dropdownStatProgressBarSubtext" id="powerBonusYieldProgressPercent" style="display: none;color: #0F8989;">0%</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div>
                                                 <div>Mod Level:</div>
-                                                <div style="display: flex;margin-top: 2px;">
+                                                <div style="display: flex;margin-top: 2px;flex-direction: column;">
                                                     <div class="dropdownStatProgressBarContainer">
-                                                        <div class="dropdownStatProgressBarLevel" id="modLevelProgressBar" style="width: 75%;"></div>
+                                                        <div class="dropdownStatProgressBarLevel" id="modLevelProgressBar"></div>
+                                                        <div class="dropdownStatProgressBarLevel" id="modLevelYieldProgressBar" style="background-color: #0F8989;"></div>
                                                     </div>
-                                                    <div class="dropdownStatProgressBarSubtext" id="modLevelProgressPercent">--</div>
+                                                    <div style="display: flex;">
+                                                        <div class="dropdownStatProgressBarSubtext" id="modLevelProgressPercent">--</div>
+                                                        <div class="dropdownStatProgressBarSubtext" id="modLevelYieldProgressPercent" style="display: none;color: #0F8989;">0%</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

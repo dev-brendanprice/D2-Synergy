@@ -889,6 +889,7 @@ export async function BuildWorkspace() {
     // Change top bar colour to localStorage val
     await CacheReturnItem('accentColor')
     .then((result) => {
+
         if (result !== undefined) {
             accentColor.UpdateAccentColor(result);
         }
@@ -905,7 +906,6 @@ export async function BuildWorkspace() {
     await CacheReturnItem('isFirstTimeVisit')
     .then((result) => {
 
-        log(`isFirstTimeVisit: ${result}`);
         if (result === undefined) {
             document.getElementById('loadpopupContainer').style.display = 'block';
             document.getElementById('loadpopupBackplate').style.display = 'block';
@@ -923,7 +923,6 @@ export async function BuildWorkspace() {
     await CacheReturnItem('storedVersion')
     .then((result) => {
 
-        log(`storedVersion: ${result}`);
         if (result == undefined) {
             CacheChangeItem('storedVersion', import.meta.env.version); // Update cache
         }
@@ -1137,7 +1136,6 @@ export async function BuildWorkspace() {
     await CacheReturnItem('showPopup')
     .then((result) => {
 
-        log(`showPopup: ${result}`);
         // If result true or undefined (not been set before)
         if (result || result === undefined) {
             document.getElementById('checkboxShowPopup').checked = true; // Check the box by default
