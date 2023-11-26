@@ -13,7 +13,7 @@ import {
     UserProfile,
     profileWideData,
     userTrasistoryData,
-    seasonPassLevelStructure, log } from '../user.js';
+    seasonPassLevelStructure, accentColor, log } from '../user.js';
 import { MakeBountyElement } from './MakeBountyElement.js';
 import { ParseSeasonalChallenges } from './ParseSeasonalChallenges.js';
 import { ReturnSeasonPassProgressionStats } from './ReturnSeasonPassProgressionStats.js';
@@ -488,29 +488,33 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
             CacheChangeItem('useModifiers', true);
             yieldsData.useModifiers = true;
             await AddYieldValues(yieldsData);
+            document.getElementById('checkboxUseModifiersSlider').style.backgroundColor = accentColor.currentAccentColor; // Change slider color
             return;
         };
 
         CacheChangeItem('useModifiers', false);
         yieldsData.useModifiers = false;
+        document.getElementById('checkboxUseModifiersSlider').style.backgroundColor = '#1b1c1c';
         await AddYieldValues(yieldsData);
     });
 
     // Check for cache item
     await CacheReturnItem('useModifiers')
-    .then((res) => {
+    .then((result) => {
         
-        // Check if val doesnt exist
-        if (res === undefined) {
+        // Check of result is true or undefined (hasnt been set yet)
+        if (result || result === undefined) {
             CacheChangeItem('useModifiers', true); // Default
             document.getElementById('checkboxUseModifiers').checked = true;
+            document.getElementById('checkboxUseModifiersSlider').style.backgroundColor = accentColor.currentAccentColor; // Change slider color
             yieldsData.useModifiers = true;
             return;
         };
 
-        // else
-        document.getElementById('checkboxUseModifiers').checked = res;
-        yieldsData.useModifiers = res;
+        // Else, set to false
+        document.getElementById('checkboxUseModifiersSlider').style.backgroundColor = '#1b1c1c'; // Change slider color
+        document.getElementById('checkboxUseModifiers').checked = false;
+        yieldsData.useModifiers = false;
     })
     .catch((error) => {
         console.error(error);

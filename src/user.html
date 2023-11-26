@@ -72,6 +72,7 @@
                         <li>A new PWA is available that you can download via any browser on all platforms!</li>
                         <li>🛠️ Bug fixes</li>
                     </ul>
+                    <em>View previous updates <a href="https://github.com/dev-brendanprice/D2-Synergy/commits/main" target="_blank">here</a></em>
                 </div>
             </div>
 
@@ -157,7 +158,7 @@
                     </div>
                     <div class="settingCategory" id="LogoutSettingsButton">
                         <div>Other</div>
-                        <div id="categorySubtext">Clear cache & <span style="color: #ed4d4dc3;">logout</span></div>
+                        <div id="categorySubtext">Clear cache & <span style="color: #ed4d4dc3;" id="logoutTextInSettings">logout</span></div>
                         <img id="categorySelectArrow" src="./static/ico/arrow_right.svg">
                     </div>
                     <div style="display: flex;gap: 10px;">
@@ -192,7 +193,7 @@
                                 <div class="checkboxLabel">Refresh data every 5 minutes</div>
                             </label>
                             <label class="labelContainer" id="defaultViewDropdownContainer">
-                                Default Page
+                                Default Section on page load
                                 <select id="defaultViewDropdown">
                                     <option value="bountiesContainer">Bounties</option>
                                     <option value="seasonalChallengesContainer">Seasonal Challenges</option>
@@ -201,7 +202,7 @@
                             </label>
                             <label class="labelContainer">
                                 <input type="checkbox" id="checkboxRememberLastpage" class="settingCheckbox">
-                                <div class="checkboxLabel">Remember last visited page</div>
+                                <div class="checkboxLabel">Remember last visited section</div>
                             </label>
                             <label class="labelContainer" style="margin-top: 15px;">
                                 <input type="checkbox" id="checkboxShowPopup" class="settingCheckbox">
@@ -374,7 +375,7 @@
                                     <div class="userToggleContainer" style="display: flex;margin-bottom: 5px;">
                                         <label class="switchSmall">
                                             <input type="checkbox" id="checkboxUseModifiers">
-                                            <span class="slider round"></span>
+                                            <span class="slider round" id="checkboxUseModifiersSlider"></span>
                                         </label>
                                         <div style="padding-top:1px;font-size: 13px;color: #858585;">Use modifiers</div>
                                     </div>
@@ -812,7 +813,7 @@
                                             </div>
                                         </div>
                                         <div class="dropdownButtonsContainer" id="groupsDropdownForChallenges">
-                                            <div class="dropdownButton">
+                                            <div class="dropdownButton" style="display: none;">
                                                 <div data-groupName="All" class="groupsDropdownButtonTextSections">All Challenges</div>
                                             </div>
                                         </div>

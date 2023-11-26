@@ -825,7 +825,6 @@ hr.contentHeadingSeperator {
 .powerIcon {
     margin-top: -5px;
     width: 13px;
-    filter: invert(91%) sepia(18%) saturate(1236%) hue-rotate(356deg) brightness(94%) contrast(91%);
 }
 
 .characterSelectSlim {
@@ -947,7 +946,7 @@ input:checked+.slider:before {
 
 .dropdownUiLineStyle {
     margin-top: -6px;
-    margin-left: -7px;
+    margin-left: -8px;
     background-color: gray;
     border-radius: 10px;
     width: 20px;

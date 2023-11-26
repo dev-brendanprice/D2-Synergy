@@ -19,7 +19,6 @@ import { relationsTable } from './relationsTable.js';
 const log = console.log.bind(console),
       localStorage = window.localStorage,
       sessionStorage = window.sessionStorage;
-let secretCount = 0;
 
 // Menu variables
 let currentSettingsMenu = 'generalSettingsContainer';
@@ -114,6 +113,8 @@ const AddDropdownEvent = function (dropwdownContent, dropdownArrow, dropdownBool
         };
     };
 };
+
+
 
 
 // Add all event listeners
@@ -367,16 +368,6 @@ export async function AddEventListeners() {
     });
 
 
-    // Title button (secret setting activation)
-    // AddListener('navBarTitle', 'click', function () {
-    //     secretCount++;
-    //     if (secretCount >= 7) {
-    //         document.getElementById('settingsSecretContainer').style.display = 'block';
-    //         CacheChangeItem('isSecretOn', true);
-    //     };
-    // });
-
-
     // General settings button
     AddListener('GeneralSettingsButton', 'click', function () {
         document.getElementById(`${currentSettingsMenu}`).style.display = 'none';
@@ -539,9 +530,6 @@ export async function AddEventListeners() {
         CacheChangeItem('defaultContentView', this.value);
         document.getElementById(this.value).style.display = 'block';
     });
-
-    // Secret var goes here
-    let secretCounter = 0;
 
     // Accent color change
     AddListener('settingsAccentColorButton', 'click', function () {
@@ -716,18 +704,21 @@ export async function AddEventListeners() {
     AddListener('popupDismissButton', 'click', function () {
         document.getElementById('loadpopupContainer').style.display = 'none';
         document.getElementById('loadpopupBackplate').style.display = 'none';
+        document.getElementById('firstTimeLoadPopupContent').style.display = 'none';
     });
 
     // Click on whitespace to close popup
     AddListener('loadpopupBackplate', 'click', function () {
         document.getElementById('loadpopupContainer').style.display = 'none';
         document.getElementById('loadpopupBackplate').style.display = 'none';
+        document.getElementById('firstTimeLoadPopupContent').style.display = 'none';
     });
 
     // Show "What's New" popup
     AddListener('checkboxShowPopup', 'change', function () {
 
         // Toggle boolean
+        log(this.checked);
         if (this.checked) {
             CacheChangeItem('showPopup', true);
             return;
@@ -870,6 +861,10 @@ export async function AddEventListeners() {
 };
 
 
+
+
+
+
 // Configure defaults/Loads data from localStorage
 export async function BuildWorkspace() {
 
@@ -881,10 +876,6 @@ export async function BuildWorkspace() {
 
     // Get time until weekly reset (timezone specific ofc)
     document.getElementById('timeUntilWeeklyReset').innerHTML = `Weekly Reset: ${getNextTuesday()}`;
-
-    let rangeSlider = document.getElementById('accessibilityImageSizeSlider');
-    let bountyImage = document.getElementById('accessibilityImageDemo');
-    let showPopupBool = false; // default
 
     // Scroll to top of page (idk but it wasn't sticking to the top)
     window.scrollTo(0, 0);
@@ -910,6 +901,55 @@ export async function BuildWorkspace() {
         console.error(error);
     });
 
+    // Check if first time load using cache
+    await CacheReturnItem('isFirstTimeVisit')
+    .then((result) => {
+
+        log(`isFirstTimeVisit: ${result}`);
+        if (result === undefined) {
+            document.getElementById('loadpopupContainer').style.display = 'block';
+            document.getElementById('loadpopupBackplate').style.display = 'block';
+            document.getElementById('firstTimeLoadPopupContent').style.display = 'block'; // Show corresponding content
+            CacheChangeItem('isFirstTimeVisit', false); // Change cache object
+            CacheChangeItem('showPopup', false); // Change cache object
+        };
+
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+    // Check for new (different) version number
+    await CacheReturnItem('storedVersion')
+    .then((result) => {
+
+        log(`storedVersion: ${result}`);
+        if (result == undefined) {
+            CacheChangeItem('storedVersion', import.meta.env.version); // Update cache
+        }
+        else if (result) {
+            
+            // Check if the stored version is outdated
+            let newVersion = import.meta.env.version;
+            let curVersion = result;
+            if (newVersion !== curVersion) {
+
+                // Show "What's New" container
+                document.getElementById('loadpopupContainer').style.display = 'block';
+                document.getElementById('loadpopupBackplate').style.display = 'block';
+
+                // Update cache
+                CacheChangeItem('storedVersion', newVersion);
+            };
+        };
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+
+
+
     // Check to see if all profiles should be loaded
     // await CacheReturnItem('useProfileWide')
     // .then((res) => {
@@ -927,76 +967,6 @@ export async function BuildWorkspace() {
     // .catch((error) => {
     //     console.error(error);
     // });
-
-    // Check if load is first time load on this version
-    await CacheReturnItem('storedVersion')
-    .then((result) => {
-
-        // set if undefined
-        if (result === undefined) {
-            showPopupBool = true;
-            CacheChangeItem('storedVersion', import.meta.env.version);
-        }
-
-        // if current version does not match stored version
-        else if (result !== import.meta.env.version) {
-            showPopupBool = true;
-            CacheChangeItem('storedVersion', import.meta.env.version);
-        };
-
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-
-    // Check if its first time visit
-    await CacheReturnItem('isFirstTimeVisit')
-    .then((result) => {
-
-        // Is first time load
-        if (result === undefined) {
-
-            // Show corresponding content in popup
-            document.getElementById('firstTimeLoadPopupContent').style.display = 'block';
-
-            // Toggle boolean
-            CacheChangeItem('isFirstTimeVisit', false);
-            return;
-        };
-
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-
-    // Check if popup should be shown
-    await CacheReturnItem('showPopup')
-    .then((result) => {
-
-        // Show popup container
-        if (result) {
-            if (showPopupBool) {
-                document.getElementById('loadpopupContainer').style.display = 'block';
-                document.getElementById('loadpopupBackplate').style.display = 'block';
-            };
-            document.getElementById('checkboxShowPopup').checked = true;
-            return;
-        };
-
-        if (result === undefined) {
-
-            // If it has not been set, use defaults
-            document.getElementById('checkboxShowPopup').checked = true;
-            CacheChangeItem('showPopup', true);
-            return;
-        };
-
-        // If result is false, set .checked to false
-        document.getElementById('checkboxShowPopup').checked = false;
-    })
-    .catch((error) => {
-        console.error(error);
-    });
     
     // Push cache results for itemDisplaySize to variables
     await CacheReturnItem('itemDisplaySize')
@@ -1030,27 +1000,27 @@ export async function BuildWorkspace() {
         document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = result;
     });
 
-    // Slider section values
-    rangeSlider.value = itemDisplay.itemDisplaySize;
-    bountyImage.style.width = `${itemDisplay.itemDisplaySize}px`;
+    // Setings slider saved values (item/image size slider)
+    document.getElementById('accessibilityImageSizeSlider').value = itemDisplay.itemDisplaySize;
+    document.getElementById('accessibilityImageDemo').style.width = `${itemDisplay.itemDisplaySize}px`;
 
-    // Set checkboxes to chosen state, from localStorage (userCache)
-    // Using ternary in the case that a boolean is not returned from CacheReturnItem
-    document.getElementById('toggleTypePVP').checked = await CacheReturnItem('includePvpInTable') ? true : false;
-    document.getElementById('toggleTypePVE').checked = await CacheReturnItem('includePveInTable') ? true : false;
-    document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled') ? true : false;
-    document.getElementById('checkboxIncludeExpiredBountiesInYield').checked = await CacheReturnItem('includeExpiredBountiesInYield') ? true : false;
-    document.getElementById('checkboxIncludeExpiredBountiesInTable').checked = await CacheReturnItem('includeExpiredBountiesInTable') ? true : false;
-    document.getElementById('checkboxIncludeSeasonalChallengesInYield').checked = await CacheReturnItem('includeSeasonalChallengesInYield') ? true : false;
-    document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = await CacheReturnItem('includeSeasonalChallengesInTable') ? true : false;
+    // Set checkboxes to chosen state, from localStorage (userCache),
+    //    using nullish coalescing in the case that a boolean is not returned from CacheReturnItem
+    document.getElementById('toggleTypePVP').checked = await CacheReturnItem('includePvpInTable') ?? false;
+    document.getElementById('toggleTypePVE').checked = await CacheReturnItem('includePveInTable') ?? false;
+    document.getElementById('checkboxRefreshWhenFocused').checked = await CacheReturnItem('isRefreshOnFocusToggled') ?? false;
+    document.getElementById('checkboxIncludeExpiredBountiesInYield').checked = await CacheReturnItem('includeExpiredBountiesInYield') ?? false;
+    document.getElementById('checkboxIncludeExpiredBountiesInTable').checked = await CacheReturnItem('includeExpiredBountiesInTable') ?? false;
+    document.getElementById('checkboxIncludeSeasonalChallengesInYield').checked = await CacheReturnItem('includeSeasonalChallengesInYield') ?? false;
+    document.getElementById('checkboxIncludeSeasonalChallengesInTable').checked = await CacheReturnItem('includeSeasonalChallengesInTable') ?? false;
 
 
     // Check if boolean has been set for refreshing on interval
     await CacheReturnItem('isRefreshOnIntervalToggled')
-    .then((res) => {
+    .then((result) => {
 
         // Check if this bool has been set, set default, which is false
-        if (res === undefined || res) {
+        if (result === undefined || result) {
             CacheChangeItem('isRefreshOnIntervalToggled', true);
             document.getElementById('checkboxRefreshOnInterval').checked = true;
             return;
@@ -1067,10 +1037,10 @@ export async function BuildWorkspace() {
     setInterval( async function() {
 
         await CacheReturnItem('isRefreshOnIntervalToggled')
-        .then((res) => {
+        .then((result) => {
 
             // true = passive refresh
-            if (res) {
+            if (result) {
                 MainEntryPoint(true)
                 .catch((error) => {
                     console.error(error);
@@ -1163,22 +1133,20 @@ export async function BuildWorkspace() {
         console.error(error);
     });
 
-    // // Unfold Yield dropdown
-    // let yieldDropdownContainer = document.getElementById('yieldDropdownContainer'),
-    //     yieldDropdownArrow = document.getElementById('arrowYield');
+    // Check if "Show What's New popup" is checked
+    await CacheReturnItem('showPopup')
+    .then((result) => {
 
-    // yieldDropdownContainer.style.display = 'block'
-    // yieldDropdownContainer.className = 'pre';
-    // yieldDropdownContainer.className += ' pro';
-    // yieldDropdownArrow.style.transform = 'rotate(0deg)';
-
-    // // Unfold Modifiers dropdown
-    // let modifiersDropdownContainer = document.getElementById('modifiersDropdownContainer'),
-    //     modifiersDropdownArrow = document.getElementById('arrowModifiers');
-
-    // modifiersDropdownContainer.style.display = 'flex';
-    // modifiersDropdownContainer.className = 'pre';
-    // modifiersDropdownContainer.className += ' pro';
-    // modifiersDropdownArrow.style.transform = 'rotate(0deg)';
+        log(`showPopup: ${result}`);
+        // If result true or undefined (not been set before)
+        if (result || result === undefined) {
+            document.getElementById('checkboxShowPopup').checked = true; // Check the box by default
+            CacheChangeItem('showPopup', true); // Change/Add cache reference
+        }
+        else if (!result) {
+            document.getElementById('checkboxShowPopup').checked = false;
+            CacheChangeItem('showPopup', false); // Change/Add cache reference
+        };
+    });
 
 };

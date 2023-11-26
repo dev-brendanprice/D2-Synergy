@@ -217,6 +217,10 @@ export var accentColor = {
         document.getElementById('notificationTopBgLine').style.backgroundColor = color;
         document.getElementById('notificationTopBgLine').style.boxShadow = `0px 0px 10px 1px ${color}`;
         document.getElementById('colorBar').style.backgroundColor = color;
+        document.getElementById('colorBar').style.boxShadow = `0px 0px 10px 1px ${color}`;
+        document.getElementById('checkboxUseModifiersSlider').style.backgroundColor = color;
+        document.getElementById('logoutTextInSettings').style.color = color;
+        document.getElementById('logoutSettingsButton').style.backgroundColor = color;
         
         // Range sliders
         for (let element of document.getElementsByClassName('settingRange')) {
