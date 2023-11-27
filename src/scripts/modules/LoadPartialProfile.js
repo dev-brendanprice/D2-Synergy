@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { FetchPrimaryUserMembership } from './FetchPrimaryUserMembership.js';
 import { ReturnSeasonPassLevel } from './ReturnSeasonPassLevel.js';
+import { ParseGender } from './ParseGender.js';
 
 const log = console.log.bind(console);
 const requestHeaders = { headers: { "X-API-Key": import.meta.env.API_KEY } };
@@ -40,26 +41,32 @@ export async function LoadPartialProfile(memship, definitions) {
     let season = seasonDefinitions[user.profile.data.currentSeasonHash];
     let seasonpass = seasonPassDefinitions[season.seasonPassHash];
 
-    let seasonProgressionHash = season.seasonPassProgressionHash; // Get required progression hashes
+    // Get required progression hashes
+    let seasonProgressionHash = season.seasonPassProgressionHash;
     let prestigeSeasonProgressionHash = seasonpass.prestigeProgressionHash;
 
     // Check if profile is private by proxy
-    let seasonProgression = null;
-    let prestigeSeasonProgression = null;
+    let seasonProgression = 0;
+    let prestigeSeasonProgression = 0;
     if (user.characterProgressions.data) {
-        seasonProgression = Object.values(user.characterProgressions.data)[0].progressions[seasonProgressionHash]; // Get progression data
+
+        // Get progression data
+        seasonProgression = Object.values(user.characterProgressions.data)[0].progressions[seasonProgressionHash];
         prestigeSeasonProgression = Object.values(user.characterProgressions.data)[0].progressions[prestigeSeasonProgressionHash];
     };
 
 
-    // Check if profile is private by proxy
-    // Get all commendation node values -> sent/received and total
-    const { totalScore, scoreDetailValues: [sent, received] } = user.profileCommendations.data
-    let objs = user.profileCommendations.data.commendationNodePercentagesByHash;
+    // Get all commendation node values -> sent/received and total (w/ private profiles in mind)
+    const profileComms = user.profileCommendations.data;
+    const totalScore = profileComms.totalScore ? profileComms.totalScore : 0;
+    const sent = profileComms.scoreDetailValues ? profileComms.scoreDetailValues[0] : 0;
+    const received = profileComms.scoreDetailValues ? profileComms.scoreDetailValues[1]: 0;
+    const pctsByHash = profileComms.commendationNodePercentagesByHash;
     let nodesArr = [];
-    for (let nodeHash in objs) {
+
+    for (let nodeHash in pctsByHash) {
         
-        let commendationPercent = objs[nodeHash];
+        let commendationPercent = pctsByHash[nodeHash];
         let def = commendationsNodeDefinitions[nodeHash];
         nodesArr.push([ def.displayProperties.name, commendationPercent ]);
     };
@@ -94,8 +101,9 @@ export async function LoadPartialProfile(memship, definitions) {
             };
         };
 
-        // Get title name (fix gender)
-        title = title.titleInfo.titlesByGender.Male;
+        // Get title name, via character gender (localization purposes)
+        let charGender = ParseGender(pchar.genderType);
+        title = title.titleInfo.titlesByGender[charGender];
     };
 
 
@@ -108,7 +116,7 @@ export async function LoadPartialProfile(memship, definitions) {
         emblemPath: pchar.emblemPath,
         emblemBackgroundPath: pchar.emblemBackgroundPath,
         guardianRank: user.profile.data.currentGuardianRank,
-        tscore: user.profileRecords.data.activeScore,
+        tscore: user.profileRecords.data ? user.profileRecords.data.activeScore : 0,
         splevel: await ReturnSeasonPassLevel(seasonProgression, prestigeSeasonProgression),
         cname: clan.name,
         comms: {

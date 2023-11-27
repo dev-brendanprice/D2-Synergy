@@ -12,8 +12,6 @@ export function ParseRace(raceType, isReverse = false) {
                 return 1;
             case 'Exo':
                 return 2;
-            case 'Unknown':
-                return 3;
         };
     };
 
@@ -25,7 +23,5 @@ export function ParseRace(raceType, isReverse = false) {
             return 'Awoken';
         case 2:
             return 'Exo';
-        case 3:
-            return 'Unknown';
     };
 };

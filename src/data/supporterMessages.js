@@ -10,7 +10,7 @@ export const messages =  {
     '4611686018476226793': { ico: 'cdn.d2synergy.com/images/i5.png', msg: 'meow' },
     '4611686018449662397': { ico: 'cdn.d2synergy.com/images/i4.png', msg: 'I like beans' },
     '4611686018466119390': {},
-    // '4611686018490363503': { ico: 'cdn.d2synergy.com/images/i6.png', msg: "It's only game. Why you khave to be mad?" },
+    '4611686018490363503': { ico: 'cdn.d2synergy.com/images/i6.png', msg: "It's only game. Why you khave to be mad?" },
     '4611686018475887678': { ico: 'cdn.d2synergy.com/images/i7.png', msg: "SPC ASL INTP '24" }
 }; // i6 is private profile
 
@@ -25,6 +25,6 @@ export const playerids = [
     '4611686018476226793',
     '4611686018449662397',
     '4611686018466119390',
-    // '4611686018490363503', // Private profile
+    '4611686018490363503', // Private profile
     '4611686018475887678'
 ].sort(() => { return .5 - Math.random(); }); // Shuffle array because i am cool
