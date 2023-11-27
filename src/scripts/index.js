@@ -142,62 +142,6 @@ async function loadSupportPageContent(definitions) {
             document.getElementsByClassName('support-page-grid-container')[0].append(img);
         };
     };
-
-
-    // Build grid, checking if i (ranarr[i]) is a populated cell
-    // for (let i=0; i<n; i++) {
-
-    //     if (!ranarr.includes(i)) {
-
-    //         // Create element
-    //         let img = document.createElement('img');
-
-    //         // Add style and content to element
-    //         img.classList = 'support-cell';
-    //         img.src = './static/images/UI/non_loaded_cell.png';
-
-    //         // Add element to DOM
-    //         document.getElementsByClassName('support-page-grid-container')[0].append(img);
-    //     }
-    //     else {
-
-    //         // Request user (partial) data
-    //         const playerid = playerids[playeridCounter];
-
-    //         // Check if user is in cache, if not -> add to cache
-    //         const cacheArr = JSON.parse(localStorage.getItem('cachedprofiles'));
-    //         const memshipArr = cacheArr.map(v => v.profile.memship);
-            
-    //         if (!memshipArr.includes(playerid)) {
-
-    //             // Request profile
-    //             const profile = await LoadPartialProfile(playerid, definitions);
-                
-    //             // Add user to cache
-    //             const newcacheArr = [
-    //                 ...JSON.parse(localStorage.getItem('cachedprofiles') ?? '[]'),
-    //                 {profile}
-    //             ];
-    //             localStorage.setItem('cachedprofiles', JSON.stringify(newcacheArr));
-
-    //             // Create cell data (DOM elements: Cells, onHover)
-    //             createCellDat(profile);
-    //         }
-    //         else {
-
-    //             // Find corresponding profile object in cache
-    //             let cache = Object.values(JSON.parse(localStorage.getItem('cachedprofiles')));
-    //             let profile = cache.filter(v => v.profile.memship === playerid)[0].profile;
-
-    //             // Create cell data (DOM elements: Cells, onHover)
-    //             createCellDat(profile);
-    //         };
-
-    //         playeridCounter++; // Increment playerid counter
-    //     };
-
-    // };
-
 };
 
 
@@ -246,26 +190,50 @@ if (document.readyState !== 'loading') {
     };
 
 
+    // Toggle home/supporters containers
+    function toggleContainers(goHome = false) {
+
+        const supportersContainer = document.getElementById('center-con');
+        const homepageContainer = document.getElementById('center-support');
+        const supportersButton = document.getElementsByClassName('supportbox-dialogue-main-container')[0];
+        const homepageButton = document.getElementsByClassName('supportbox-dialogue-goback-container')[0];
+
+        // If nav icon button is clicked
+        if (goHome) {
+            homepageContainer.style.display = 'none'; // Toggle containers
+            supportersContainer.style.display = 'flex';
+            homepageButton.style.display = 'none';
+            supportersButton.style.display = 'flex';
+            return;
+        };
+
+        // Home page is the one that is being shown
+        if (homepageContainer.style.display === 'flex') {
+            homepageContainer.style.display = 'none'; // Toggle containers
+            supportersContainer.style.display = 'flex';
+            homepageButton.style.display = 'none';
+            supportersButton.style.display = 'flex';
+        }
+        else {
+            homepageContainer.style.display = 'flex'; // Toggle containers
+            supportersContainer.style.display = 'none';
+            homepageButton.style.display = 'flex';
+            supportersButton.style.display = 'none';
+        };
+    };
+
+
     // Support/Home page nav button (vice versa)
     document.getElementsByClassName('supportbox-dialogue-main-container')[0].addEventListener('click', function() {
-
-        // Hide content container
-        document.getElementById('center-con').style.display = 'none';
-        document.getElementById('center-support').style.display = 'flex';
-
-        // Show/hide buttons
-        document.getElementsByClassName('supportbox-dialogue-main-container')[0].style.display = 'none';
-        document.getElementsByClassName('supportbox-dialogue-goback-container')[0].style.display = 'flex';
+        toggleContainers();
     });
     document.getElementsByClassName('supportbox-dialogue-goback-container')[0].addEventListener('click', function() {
+        toggleContainers();
+    });
 
-        // Hide content container
-        document.getElementById('center-con').style.display = 'flex';
-        document.getElementById('center-support').style.display = 'none';
-
-        // Show/hide buttons
-        document.getElementsByClassName('supportbox-dialogue-goback-container')[0].style.display = 'none';
-        document.getElementsByClassName('supportbox-dialogue-main-container')[0].style.display = 'flex';
+    // Listen for nav icon container click, show home page container, instead of supporters container
+    document.getElementById('nav-icon').addEventListener('click', () => {
+        toggleContainers(true);
     });
 
     // Check for server availability, else do error (error code inside MakeRequest too)
