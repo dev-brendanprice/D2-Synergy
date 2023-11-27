@@ -250,7 +250,7 @@ export function createCellDat(profile) {
 
     // Append triumph score
     let tr = profile.tscore;
-    if (tr >= 0) {
+    if (tr >= 1) {
 
         recordCounter++; // Increment Counter
 

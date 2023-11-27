@@ -25,6 +25,6 @@ export const playerids = [
     '4611686018476226793',
     '4611686018449662397',
     '4611686018466119390',
-    '4611686018490363503', // Private profile
+    '4611686018490363503',
     '4611686018475887678'
 ].sort(() => { return .5 - Math.random(); }); // Shuffle array because i am cool

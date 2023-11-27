@@ -35,7 +35,7 @@ export async function LoadPartialProfile(memship, definitions) {
         return res.data.Response;
     }).catch(e => console.error(e));
 
-    log(user);
+    // log(user);
     // Get current season/season pass -> Get user season rank
     let pchar = Object.values(user.characters.data).sort((a,b) => new Date(b.dateLastPlayed) - new Date(a.dateLastPlayed))[0]; // Get primary character by date last played
     let season = seasonDefinitions[user.profile.data.currentSeasonHash];

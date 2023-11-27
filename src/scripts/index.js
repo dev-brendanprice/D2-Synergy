@@ -73,6 +73,7 @@ async function loadSupportPageContent(definitions) {
     let n = rows * 17;
 
     let playeridCounter = 0; // Count index of current playerid
+    let promiseArr = [];
 
     // Arr with numbers, denoting to random coords on the grid
     let ranarr = [];
@@ -89,10 +90,46 @@ async function loadSupportPageContent(definitions) {
     };
 
 
-    // Build grid, checking if i (ranarr[i]) is a populated cell
+    // Check if user is in cache, if not -> add to cache
+    const cacheArr = JSON.parse(localStorage.getItem('cachedprofiles'));
+    const memshipArr = cacheArr.map(v => v.profile.memship);
+    for (let memship of playerids) {
+
+        if (memshipArr.includes(memship)) {
+            let profile = cacheArr.filter(v => v.profile.memship === memship)[0].profile;
+            promiseArr.push(profile);
+        }
+        else {
+            promiseArr.push(LoadPartialProfile(memship, definitions)); // Load profile
+        };
+    };
+
+    // Loop over promise result array
+    let result = await Promise.all(promiseArr);
     for (let i=0; i<n; i++) {
 
-        if (!ranarr.includes(i)) {
+        // Check if i is in the random integer array
+        if (ranarr.includes(i)) {
+
+            // Get profile and create cell
+            const profile = result.filter(v => v.memship === playerids[playeridCounter])[0];
+            createCellDat(profile);
+
+
+            // Check if memship exists in cache
+            let cache = JSON.parse(localStorage.getItem('cachedprofiles')).filter(v => v.profile.memship === playerids[playeridCounter]);
+            if (!cache[0]) {
+
+                // Push to cache
+                localStorage.setItem('cachedprofiles', JSON.stringify([
+                    ...JSON.parse(localStorage.getItem('cachedprofiles') ?? '[]'),
+                    { profile }
+                ]));
+            };
+
+            playeridCounter++; // Increment playeridCounter
+        }
+        else {
 
             // Create element
             let img = document.createElement('img');
@@ -103,45 +140,63 @@ async function loadSupportPageContent(definitions) {
 
             // Add element to DOM
             document.getElementsByClassName('support-page-grid-container')[0].append(img);
-        }
-        else {
-
-            // Request user (partial) data
-            const playerid = playerids[playeridCounter];
-
-            // Check if user is in cache, if not -> add to cache
-            const cacheArr = JSON.parse(localStorage.getItem('cachedprofiles'));
-            const memshipArr = cacheArr.map(v => v.profile.memship);
-            
-            if (!memshipArr.includes(playerid)) {
-
-                // Request profile
-                const profile = await LoadPartialProfile(playerid, definitions);
-                
-                // Add user to cache
-                const newcacheArr = [
-                    ...JSON.parse(localStorage.getItem('cachedprofiles') ?? '[]'),
-                    {profile}
-                ];
-                localStorage.setItem('cachedprofiles', JSON.stringify(newcacheArr));
-
-                // Create cell data (DOM elements: Cells, onHover)
-                createCellDat(profile);
-            }
-            else {
-
-                // Find corresponding profile object in cache
-                let cache = Object.values(JSON.parse(localStorage.getItem('cachedprofiles')));
-                let profile = cache.filter(v => v.profile.memship === playerid)[0].profile;
-
-                // Create cell data (DOM elements: Cells, onHover)
-                createCellDat(profile);
-            };
-
-            playeridCounter++; // Increment playerid counter
         };
-
     };
+
+
+    // Build grid, checking if i (ranarr[i]) is a populated cell
+    // for (let i=0; i<n; i++) {
+
+    //     if (!ranarr.includes(i)) {
+
+    //         // Create element
+    //         let img = document.createElement('img');
+
+    //         // Add style and content to element
+    //         img.classList = 'support-cell';
+    //         img.src = './static/images/UI/non_loaded_cell.png';
+
+    //         // Add element to DOM
+    //         document.getElementsByClassName('support-page-grid-container')[0].append(img);
+    //     }
+    //     else {
+
+    //         // Request user (partial) data
+    //         const playerid = playerids[playeridCounter];
+
+    //         // Check if user is in cache, if not -> add to cache
+    //         const cacheArr = JSON.parse(localStorage.getItem('cachedprofiles'));
+    //         const memshipArr = cacheArr.map(v => v.profile.memship);
+            
+    //         if (!memshipArr.includes(playerid)) {
+
+    //             // Request profile
+    //             const profile = await LoadPartialProfile(playerid, definitions);
+                
+    //             // Add user to cache
+    //             const newcacheArr = [
+    //                 ...JSON.parse(localStorage.getItem('cachedprofiles') ?? '[]'),
+    //                 {profile}
+    //             ];
+    //             localStorage.setItem('cachedprofiles', JSON.stringify(newcacheArr));
+
+    //             // Create cell data (DOM elements: Cells, onHover)
+    //             createCellDat(profile);
+    //         }
+    //         else {
+
+    //             // Find corresponding profile object in cache
+    //             let cache = Object.values(JSON.parse(localStorage.getItem('cachedprofiles')));
+    //             let profile = cache.filter(v => v.profile.memship === playerid)[0].profile;
+
+    //             // Create cell data (DOM elements: Cells, onHover)
+    //             createCellDat(profile);
+    //         };
+
+    //         playeridCounter++; // Increment playerid counter
+    //     };
+
+    // };
 
 };
 
