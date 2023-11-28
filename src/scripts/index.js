@@ -11,44 +11,12 @@ const log = console.log.bind(console);
 const localStorage = window.localStorage;
 const clientId = import.meta.env.CLIENT_ID;
 const apiKey = import.meta.env.API_KEY;
-
-// Check for a pre-existing session
-CheckSession();
-
+let serverDown = false;
 
 // Check for empty cached profiles object in localStorage cache
 if (!JSON.parse(localStorage.getItem('cachedprofiles'))) {
     localStorage.setItem('cachedprofiles', '[]');
 };
-
-
-// Request definitions objects (one-off thing, does not affect user.js)
-let navlang = window.navigator.language.split('-')[0];
-let manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
-let components = manifest.data.Response.jsonWorldComponentContentPaths[navlang];
-
-let seasonDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonDefinition}`);
-seasonDefinitions = seasonDefinitions.data;
-let seasonPassDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonPassDefinition}`);
-seasonPassDefinitions = seasonPassDefinitions.data;
-let commendationsNodeDefinitions = await axios.get(`https://www.bungie.net${components.DestinySocialCommendationNodeDefinition}`);
-commendationsNodeDefinitions = commendationsNodeDefinitions.data;
-let recordDefinitions = await axios.get(`https://www.bungie.net${components.DestinyRecordDefinition}`);
-recordDefinitions = recordDefinitions.data;
-
-// Make obj
-let definitions = {
-    seasonDefinitions: seasonDefinitions,
-    seasonPassDefinitions: seasonPassDefinitions,
-    commendationsNodeDefinitions: commendationsNodeDefinitions,
-    recordDefinitions: recordDefinitions
-};
-
-
-// Load support page DOM content
-loadSupportPageContent(definitions);
-
-
 
 // Check localStorage to determine if user has signed in already
 async function CheckSession() {
@@ -64,13 +32,12 @@ async function CheckSession() {
     };
 };
 
+// Count of rows on grid
+let rows = 6; // Edit this value to change cell count
+let n = rows * 17;
 
 // Load support page DOM content
 async function loadSupportPageContent(definitions) {
-
-    // Count of rows on grid
-    let rows = 6; // Edit this value to change cell count
-    let n = rows * 17;
 
     let playeridCounter = 0; // Count index of current playerid
     let promiseArr = [];
@@ -131,19 +98,35 @@ async function loadSupportPageContent(definitions) {
         }
         else {
 
-            // Create element
+            // Create cell
             let img = document.createElement('img');
 
-            // Add style and content to element
+            // Add style and content to cell
             img.classList = 'support-cell';
             img.src = './static/images/UI/non_loaded_cell.png';
 
-            // Add element to DOM
+            // Add cell to DOM
             document.getElementsByClassName('support-page-grid-container')[0].append(img);
         };
     };
 };
 
+// Load support page grid (when server is down its empty)
+async function loadEmptySupportPageGrid() {
+
+    for (let i=0; i<n; i++) {
+
+        // Create cell
+        let img = document.createElement('img');
+
+        // Add style and content to cell
+        img.classList = 'support-cell';
+        img.src = './static/images/UI/non_loaded_cell.png';
+
+        // Add cell to DOM
+        document.getElementsByClassName('support-page-grid-container')[0].append(img);
+    };
+};
 
 // Generate a random string for state code
 // @int {len}
@@ -157,15 +140,16 @@ function GenerateRandomString(len) {
     return result;
 };
 
-
-// Check for outage from previous redirect using the isOutage query
-function CheckForOutageViaParams() {
-
-    let urlParams = new URLSearchParams(window.location.search);
-    let isOutage = urlParams.get('isOutage');
-
-    if (isOutage) {
-        document.getElementById('serverDeadContainer').style.display = 'block';
+// Clone given element (clears event listeners)
+// @HTMLElement {el}, @Boolean {withChildren}
+function recreateNode(el, withChildren) {
+    if (withChildren) {
+        el.parentNode.replaceChild(el.cloneNode(true), el);
+    }
+    else {
+        var newEl = el.cloneNode(false);
+        while (el.hasChildNodes()) newEl.appendChild(el.firstChild);
+        el.parentNode.replaceChild(newEl, el);
     };
 };
 
@@ -174,21 +158,8 @@ function CheckForOutageViaParams() {
 log(document.readyState !== 'loading' ? 'Ready' : 'Unready');
 if (document.readyState !== 'loading') {
 
-    // Check for outage via the query params of a previous redirect
-    // CheckForOutageViaParams();
     // Put version number in navbar
     document.getElementById('version-text').innerHTML = `${import.meta.env.version}`;
-
-    // Redirect user to bungie.net sign in portal
-    const stateCode = GenerateRandomString(128);
-    const authButtons = document.getElementsByClassName('auth-button');
-    for (let btn of authButtons) {
-        btn.addEventListener('click', () => {
-            localStorage.setItem('stateCode', stateCode);
-            window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&randomqueryparam=${GenerateRandomString(128)}`;
-        });
-    };
-
 
     // Toggle home/supporters containers
     function toggleContainers(goHome = false) {
@@ -222,7 +193,6 @@ if (document.readyState !== 'loading') {
         };
     };
 
-
     // Support/Home page nav button (vice versa)
     document.getElementsByClassName('supportbox-dialogue-main-container')[0].addEventListener('click', function() {
         toggleContainers();
@@ -237,10 +207,68 @@ if (document.readyState !== 'loading') {
     });
 
     // Check for server availability, else do error (error code inside MakeRequest too)
-    // MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
-    // .catch((error) => {
-    //     console.error(error);
-    // });
+    await MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
+    .catch((error) => {
+        console.error(error);
+        if (error.ErrorCode === 5) {
+            serverDown = true;
+        };
+    });
+
+    if (!serverDown) {
+
+        // Request definitions objects (one-off thing, does not affect user.js)
+        let navlang = window.navigator.language.split('-')[0];
+        let manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
+        let components = manifest.data.Response.jsonWorldComponentContentPaths[navlang];
+
+        let seasonDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonDefinition}`);
+        seasonDefinitions = seasonDefinitions.data;
+        let seasonPassDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonPassDefinition}`);
+        seasonPassDefinitions = seasonPassDefinitions.data;
+        let commendationsNodeDefinitions = await axios.get(`https://www.bungie.net${components.DestinySocialCommendationNodeDefinition}`);
+        commendationsNodeDefinitions = commendationsNodeDefinitions.data;
+        let recordDefinitions = await axios.get(`https://www.bungie.net${components.DestinyRecordDefinition}`);
+        recordDefinitions = recordDefinitions.data;
+
+        // Make obj
+        let definitions = {
+            seasonDefinitions: seasonDefinitions,
+            seasonPassDefinitions: seasonPassDefinitions,
+            commendationsNodeDefinitions: commendationsNodeDefinitions,
+            recordDefinitions: recordDefinitions
+        };
+
+        // Check for a pre-existing session
+        CheckSession();
+
+        // Load support page DOM content
+        loadSupportPageContent(definitions);
+
+        // Redirect user to bungie.net sign in portal on auth button click
+        const stateCode = GenerateRandomString(128);
+        const authButtons = document.getElementsByClassName('auth-button');
+        for (let btn of authButtons) {
+            btn.addEventListener('click', () => {
+                localStorage.setItem('stateCode', stateCode);
+                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&randomqueryparam=${GenerateRandomString(128)}`;
+            });
+        };
+    }
+    else {
+
+        // Show server out container
+        document.getElementsByClassName('server-out-container')[0].style.display = 'flex';
+
+        // Remove event listeners from authenticate buttons
+        const authButtons = document.getElementsByClassName('auth-button');
+        for (let btn of authButtons) {
+            recreateNode(btn, true);
+        };
+
+        // Load empty support page grid when server down
+        loadEmptySupportPageGrid();
+    };
 
     // Omit query params from URL on reload
     window.history.pushState({}, window.location.host, `${import.meta.env.HOME_URL}`);

@@ -8,8 +8,6 @@
 
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/index_viewports.css">
-    <!-- <link rel="stylesheet" href="styles/src.css"> -->
-    <!-- <link rel="stylesheet" href="styles/viewports.css"> -->
     
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link rel="icon" href="./static/ico/icon.png">
@@ -51,8 +49,7 @@
             <a class="nav-control-text" href="https://github.com/brendanprice2003/D2-Synergy/wiki/User-Guide" target="_blank">
                 Guide
             </a>
-            <!-- <a class="nav-control-text" href="" target="_blank">Sponsor</a> -->
-            <div class="nav-control-textalt auth-button">Authenticate</div>
+            <div class="nav-control-textalt auth-button" id="auth-button">Authenticate</div>
         </div>
     </div>
 
@@ -63,9 +60,18 @@
 
         <p>Synergy groups progressions together and gives recommendations for optimal progression.</p>
 
-        <div class="header-authenticate-con auth-button">
+        <div class="header-authenticate-con auth-button" id="auth-buttonmain">
             <div>Authenticate</div>
             <img class="header-authenticate-button-icon" src="static/ico/arrow-box.svg">
+        </div>
+
+        <div class="server-out-container">
+            <img src="./static/ico/warn_icon.svg">
+            <div style="display: flex;flex-direction: column;">
+                <div>Bungie.net API is current down for maintenance.</div>
+                <em style="font-size: 12px;">Status: Calamitous</em>
+                <em style="font-size: 12px;">Stay Updated: <a href="https://twitter.com/bungiehelp?s=11&t=yj3CecDW8k_U0nB_kxsFJw">@BungieHelp</a></em>
+            </div>
         </div>
 
     </div>
@@ -117,14 +123,12 @@
             <div class="supportbox-dialogue-main-subtext">Go back to the homepage. \_(.-.)_/</div>
         </div>
     </div>
-
     
     <a class="version-text-con" id="version-text" href="https://github.com/brendanprice2003/D2-Synergy/releases" target="_blank">
         Alpha v0.5.9
     </a>
 
     <div id="overlays"></div>
-    
 
     <script type="module" src="scripts/index.js"></script>
 

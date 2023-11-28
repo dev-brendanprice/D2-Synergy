@@ -15,9 +15,20 @@ export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user'
                 // Check for server down on index page
                 if (utils.scriptOrigin === 'index') {
 
-                    document.getElementById('btnAuthorize').disabled = true;
-                    document.getElementById('btnAuthorize').innerHTML = 'BNet API Unavailable';
-                    document.getElementById('serverDeadContainer').style.display = 'block';
+                    // document.getElementById('btnAuthorize').innerHTML = 'BNet API Unavailable';
+                    // document.getElementById('serverDeadContainer').style.display = 'block';
+
+                    // Change style of nav authenticate button
+                    const navAuth = document.getElementById('auth-button');
+                    navAuth.classList.remove('nav-control-textalt');
+                    navAuth.classList.add('nav-control-textalt-off');
+
+                    // Change style of main authenticate button
+                    const btnAuth = document.getElementById('auth-buttonmain');
+                    btnAuth.classList.remove('header-authenticate-con');
+                    btnAuth.classList.add('header-authenticate-con-off');
+
+                    console.log('Bungie.net API is unavailable...');
                     
                     return error;
                 };

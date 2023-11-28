@@ -59,6 +59,13 @@ body {
     cursor: pointer;
 }
 
+.nav-control-textalt-off {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f95f5f54;
+    cursor: not-allowed;
+}
+
 .nav-control-textalt {
     font-size: 14px;
     font-weight: 600;
@@ -141,9 +148,37 @@ h1 {
     background-color: #5f5f5f80;
 }
 
+.header-authenticate-con-off {
+    display: flex;
+    gap: 10px;
+    margin: 0 auto;
+    margin-top: 70px;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 6px;
+    width: fit-content;
+    background-color: #47474752;
+    color: #aaa;
+    align-items: center;
+    cursor: not-allowed;
+}
+
 .header-authenticate-button-icon {
     width: 13px;
     height: 13px;
+}
+
+.server-out-container {
+    display: none;
+    gap: 10px;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding: 10px;
+    width: 50%;
+    background-color: #d8b26b99;
+    border-radius: 5px;
+    border: 1px solid rgb(216, 178, 107);
 }
 
 p {
