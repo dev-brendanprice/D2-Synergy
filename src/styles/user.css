@@ -498,7 +498,7 @@ tr:nth-child(even) {
     width: 50px;
     border-radius: 3px;
     border: 1px solid #515151;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .settingRange {
@@ -506,6 +506,21 @@ tr:nth-child(even) {
     flex-grow: 1;
     accent-color: #ff7070;
     cursor: pointer;
+}
+
+input[type="range"]::-moz-range-track { /* Firefox */
+    background: #3c3c3c;
+    height: fit-content;
+    border-radius: 3px;
+}
+input[type="range"]::-webkit-slider-runnable-track { /* Everything else */
+    background: #3c3c3c;
+    height: fit-content;
+    border-radius: 3px;
+}
+
+#rainbowColorSelector {
+    display: none;
 }
 
 .settingCheckbox {
@@ -686,7 +701,6 @@ hr.contentHeadingSeperator {
     margin: 0 auto;
     padding-left: 15px;
     width: 90vw;
-    overflow: hidden;
     color: white;
 }
 
@@ -2048,4 +2062,148 @@ hr.dropdownSubline {
 .rewardIcon_wide {
     width: 16px;
     height: 16px;
+}
+
+.rainbow {
+    animation: rainbow-bg 6s ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.rainbow-text {
+    animation: rainbow-text 6s ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.rainbow-accent {
+    animation: rainbow-accent 6s ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+@keyframes rainbow-bg{
+    100%,0%{
+        background-color: #ED4D4D;
+        box-shadow: 0px 0px 10px 1px #ED4D4D;
+    }
+    8%{
+        background-color: #ff7f00;
+        box-shadow: 0px 0px 10px 1px #ff7f00;
+    }
+    16%{
+        background-color: #ffff5b;
+        box-shadow: 0px 0px 10px 1px #ffff5b;
+    }
+    25%{
+        background-color: #7fff00;
+        box-shadow: 0px 0px 10px 1px #7fff00;
+    }
+    33%{
+        background-color: #5fdf5f;
+        box-shadow: 0px 0px 10px 1px #5fdf5f;
+    }
+    41%{
+        background-color: #34d685;
+        box-shadow: 0px 0px 10px 1px #34d685;
+    }
+    50%{
+        background-color: #34e9e9;
+        box-shadow: 0px 0px 10px 1px #34e9e9;
+    }
+    58%{
+        background-color: #007fff;
+        box-shadow: 0px 0px 10px 1px #007fff;
+    }
+    66%{
+        background-color: #2d2de3;
+        box-shadow: 0px 0px 10px 1px #2d2de3;
+    }
+    75%{
+        background-color: #8d24f5;
+        box-shadow: 0px 0px 10px 1px #8d24f5;
+    }
+    83%{
+        background-color: #ff49ff;
+        box-shadow: 0px 0px 10px 1px #ff49ff;
+    }
+    91%{
+        background-color: #eb5b7f;
+        box-shadow: 0px 0px 10px 1px #eb5b7f;
+    }
+}
+
+@keyframes rainbow-text {
+    100%,0%{
+        color: #ED4D4D;
+    }
+    8%{
+        color: #ff7f00;
+    }
+    16%{
+        color: #ffff5b;
+    }
+    25%{
+        color: #7fff00;
+    }
+    33%{
+        color: #5fdf5f;
+    }
+    41%{
+        color: #34d685;
+    }
+    50%{
+        color: #34e9e9;
+    }
+    58%{
+        color: #007fff;
+    }
+    66%{
+        color: #2d2de3;
+    }
+    75%{
+        color: #8d24f5;
+    }
+    83%{
+        color: #ff49ff;
+    }
+    91%{
+        color: #eb5b7f;
+    }
+}
+
+@keyframes rainbow-accent {
+    100%,0%{
+        accent-color: #ED4D4D;
+    }
+    8%{
+        accent-color: #ff7f00;
+    }
+    16%{
+        accent-color: #ffff5b;
+    }
+    25%{
+        accent-color: #7fff00;
+    }
+    33%{
+        accent-color: #5fdf5f;
+    }
+    41%{
+        accent-color: #34d685;
+    }
+    50%{
+        accent-color: #34e9e9;
+    }
+    58%{
+        accent-color: #007fff;
+    }
+    66%{
+        accent-color: #2d2de3;
+    }
+    75%{
+        accent-color: #8d24f5;
+    }
+    83%{
+        accent-color: #ff49ff;
+    }
+    91%{
+        accent-color: #eb5b7f;
+    }
 }

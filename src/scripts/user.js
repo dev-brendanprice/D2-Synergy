@@ -207,6 +207,48 @@ export var accentColor = {
     currentAccentColor: '#ED4D4D', // Default
     UpdateAccentColor: function(color) {
 
+        // Check for rainbow accent style (CSS animation)
+        if (color === 'Rainbow') {
+
+            // Add rainbow classes to all required elements
+            document.getElementById('topColorBar').classList.add('rainbow'); // Change top color bar class
+            document.getElementById('notificationTopBgLine').classList.add('rainbow'); // Notifcation top color bar
+            document.getElementById('colorBar').classList.add('rainbow'); // Popup color bar
+            document.getElementById('checkboxUseModifiersSlider').classList.add('rainbow'); // Checkbox bg
+            document.getElementById('logoutTextInSettings').classList.add('rainbow-text'); // Settings "logout" subtext
+            document.getElementById('logoutSettingsButton').classList.add('rainbow'); // Settings logout button
+
+            // Range sliders
+            for (const element of document.getElementsByClassName('settingRange')) {
+                element.classList.add('rainbow-accent');
+            };
+
+            // Checkboxes
+            for (const element of document.getElementsByClassName('settingCheckbox')) {
+                element.classList.add('rainbow-accent');
+            };
+        }
+        else {
+
+            // Remove rainbow classes from all required elements
+            document.getElementById('topColorBar').classList.remove('rainbow'); // Remove top color bar class
+            document.getElementById('notificationTopBgLine').classList.remove('rainbow'); // Notifcation top color bar
+            document.getElementById('colorBar').classList.remove('rainbow'); // Popup color bar
+            document.getElementById('checkboxUseModifiersSlider').classList.remove('rainbow'); // Checkbox bg
+            document.getElementById('logoutTextInSettings').classList.remove('rainbow-text'); // Settings "logout" subtext
+            document.getElementById('logoutSettingsButton').classList.remove('rainbow'); // Settings logout button
+
+            // Range sliders
+            for (const element of document.getElementsByClassName('settingRange')) {
+                element.classList.remove('rainbow-accent');
+            };
+
+            // Checkboxes
+            for (const element of document.getElementsByClassName('settingCheckbox')) {
+                element.classList.remove('rainbow-accent');
+            };
+        };
+
         // Update global & cache
         this.currentAccentColor = color;
         CacheChangeItem('accentColor', color);

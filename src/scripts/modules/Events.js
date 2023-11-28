@@ -541,6 +541,16 @@ export async function AddEventListeners() {
         
     }, 'class');
 
+    // Secret counter and show rainbow button event
+    let secretCounter = 0;
+    AddListener('navBarIcon', 'click', function () {
+        secretCounter++;
+        if (secretCounter >= 7) { // 7 is the magic number yall
+            document.getElementById('rainbowColorSelector').style.display = 'block'; // Show rainbow color button
+            CacheChangeItem('isSecretFound', true); // Store boolean in cache
+        };
+    });
+
     
     // Refresh on tab focus
     AddListener('window', 'focus', function () {
@@ -978,10 +988,10 @@ export async function BuildWorkspace() {
     });
 
     // Get state of secret setting
-    CacheReturnItem('isSecretOn')
+    CacheReturnItem('isSecretFound')
     .then((result) => {
         if (result) {
-            document.getElementById('settingsSecretContainer').style.display = 'block';
+            document.getElementById('rainbowColorSelector').style.display = 'block';
         };
     });
 
