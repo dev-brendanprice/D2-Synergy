@@ -131,6 +131,12 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
                 // Push objectives to challenge
                 let objectivesDat = characterRecords[challengeData.hash];
                 challengeData.objectives = [];
+
+                // Check if challenge is redacted
+                if (challengeData.redacted) {
+                    CreateSeasonalChallenge(challengeData, weekString, true);
+                    break;
+                };
                 
                 Array.prototype.push.apply(challengeData.objectives, objectivesDat.objectives);
 

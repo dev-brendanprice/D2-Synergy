@@ -1880,6 +1880,11 @@ hr.dropdownSubline {
     background-color: #383838;
 }
 
+.cellRedacted {
+    border: 2px solid #4a4a4a;
+    background-color: #39393999;
+}
+
 .cellClaimable {
     border: 2px solid #7BDCC1;
     background-color: #2A433F;

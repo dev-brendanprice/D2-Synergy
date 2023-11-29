@@ -3,10 +3,37 @@ import { itemDefinitions, objectiveDefinitions, log } from '../user.js';
 
 // Function creates two challenges, one in compact and the other wide
 //      it will then append both to the corresponding hierarchies
-export function CreateSeasonalChallenge(challengeData, weekString) {
+export function CreateSeasonalChallenge(challengeData, weekString, isRedacted) {
 
     // Create a compact (UI) challenge
-    function createCompactChallenge(challengeData, weekString) {
+    function createCompactChallenge(challengeData, weekString, isRedacted) {
+
+        // Check if challenge is redacted
+        if (isRedacted) {
+
+            // // Create elements
+            // const cellContainer = document.createElement('div');
+            // const outerContainer = document.createElement('div');
+            // const mainIcon = document.createElement('img');
+            // const innerTextContent = document.createElement('div');
+
+            // // Assign classes
+            // cellContainer.className = 'cellRedacted compact';
+            // outerContainer.className = 'cellOuter_compact';
+            // mainIcon.className = 'cellIconMain_compact';
+            // innerTextContent.className = 'cellInnerTextContent_compact';
+
+            // // Add content
+            // mainIcon.src = './static/ico/redacted.png';
+            // innerTextContent.innerHTML = challengeData.displayProperties.name;
+
+            // // Hierarchy
+            // outerContainer.append(mainIcon, innerTextContent);
+            // cellContainer.append(outerContainer);
+            // document.getElementById(`compact_${weekString}`).appendChild(cellContainer);
+
+            return;
+        };
 
         // Create elements
         const cellContainer = document.createElement('div');
@@ -86,7 +113,12 @@ export function CreateSeasonalChallenge(challengeData, weekString) {
 
 
     // Create a wide (UI) challenge
-    function createWideChallenge(challengeData, weekString) {
+    function createWideChallenge(challengeData, weekString, isRedacted) {
+
+        // Check if challenge is redacted
+        if (isRedacted) {
+            return;
+        };
 
         // Create new elements (excluding ones that might occur more than once)
         const cellContainer = document.createElement('div');
@@ -214,6 +246,6 @@ export function CreateSeasonalChallenge(challengeData, weekString) {
     };
 
     // Run functions
-    createWideChallenge(challengeData, weekString);
-    createCompactChallenge(challengeData, weekString);
+    createWideChallenge(challengeData, weekString, isRedacted);
+    createCompactChallenge(challengeData, weekString, isRedacted);
 };
