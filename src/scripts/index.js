@@ -222,8 +222,14 @@ if (document.readyState !== 'loading') {
         let manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
         let components = manifest.data.Response.jsonWorldComponentContentPaths[navlang];
 
-        let seasonDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonDefinition}`);
+        let seasonDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonDefinition}`)
+        .catch((error) => {
+            console.error(error);
+            return axios.get(`https://www.bungie.net${components.DestinySeasonDefinition}?state=${GenerateRandomString(16)}`); // Cache bust if CORS (wildcard error handling)
+        });
         seasonDefinitions = seasonDefinitions.data;
+
+        
         let seasonPassDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonPassDefinition}`);
         seasonPassDefinitions = seasonPassDefinitions.data;
         let commendationsNodeDefinitions = await axios.get(`https://www.bungie.net${components.DestinySocialCommendationNodeDefinition}`);
