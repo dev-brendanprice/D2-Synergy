@@ -16,3 +16,52 @@
         margin-left: 20px;
     }
 }
+
+@media screen and (max-height: 940px) {
+    #center-support {
+        margin-top: 10px;
+        width: 90vw;
+    }
+
+    .support-page-text {
+        width: 100%;
+    }
+
+    .support-page-grid-container {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .onhoverContainer {
+        display: none;
+    }
+}
+
+@media screen and (max-height: 760px) {
+    #center-con {
+        margin-top: -50px;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    #center-con {
+        margin-top: -60px;
+    }
+
+    p {
+        margin-top: 20px;
+        height: 20%;
+    }
+
+    .support-page-grid-container {
+        display: none;
+    }
+
+    #text-above-supporter-grid {
+        display: none;
+    }
+
+    .header-authenticate-con {
+        margin-top: 40px;
+    }
+}
