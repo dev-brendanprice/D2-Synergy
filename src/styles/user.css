@@ -1928,7 +1928,7 @@ hr.dropdownSubline {
 .cellBarProgress_compact {
     height: 5px;
     background-color: #5AA366;
-    width: 50%;
+    width: 0%;
 }
 
 .cellIconMain_compact {

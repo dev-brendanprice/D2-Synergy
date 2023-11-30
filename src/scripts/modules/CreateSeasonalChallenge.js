@@ -8,33 +8,6 @@ export function CreateSeasonalChallenge(challengeData, weekString, isRedacted) {
     // Create a compact (UI) challenge
     function createCompactChallenge(challengeData, weekString, isRedacted) {
 
-        // Check if challenge is redacted
-        if (isRedacted) {
-
-            // // Create elements
-            // const cellContainer = document.createElement('div');
-            // const outerContainer = document.createElement('div');
-            // const mainIcon = document.createElement('img');
-            // const innerTextContent = document.createElement('div');
-
-            // // Assign classes
-            // cellContainer.className = 'cellRedacted compact';
-            // outerContainer.className = 'cellOuter_compact';
-            // mainIcon.className = 'cellIconMain_compact';
-            // innerTextContent.className = 'cellInnerTextContent_compact';
-
-            // // Add content
-            // mainIcon.src = './static/ico/redacted.png';
-            // innerTextContent.innerHTML = challengeData.displayProperties.name;
-
-            // // Hierarchy
-            // outerContainer.append(mainIcon, innerTextContent);
-            // cellContainer.append(outerContainer);
-            // document.getElementById(`compact_${weekString}`).appendChild(cellContainer);
-
-            return;
-        };
-
         // Create elements
         const cellContainer = document.createElement('div');
         const outerContainer = document.createElement('div');
@@ -61,38 +34,42 @@ export function CreateSeasonalChallenge(challengeData, weekString, isRedacted) {
         mainIcon.src = `https://bungie.net${challengeData.displayProperties.icon}`;
         innerTextContent.innerHTML = challengeData.displayProperties.name;
 
-        // Loop over challenge rewards, do the same process
-        for (let reward of challengeData.rewardItems) {
-            
-            // Create elements
-            const rewardDefinition = itemDefinitions[reward.itemHash];
-            const compactIcon = document.createElement('img');
+        // Check if challenge is redacted, ignore all innerHTML vals that would otherwise be not falsy
+        if (!isRedacted) {
 
-            // Assign classes, Add content
-            compactIcon.className = 'icon_compact';
-            compactIcon.src = `https://bungie.net${rewardDefinition.displayProperties.icon}`;
+            // Loop over challenge rewards, do the same process
+            for (let reward of challengeData.rewardItems) {
+                
+                // Create elements
+                const rewardDefinition = itemDefinitions[reward.itemHash];
+                const compactIcon = document.createElement('img');
 
-            // Add to hierarchy
-            iconsContainer.appendChild(compactIcon);
-        };
+                // Assign classes, Add content
+                compactIcon.className = 'icon_compact';
+                compactIcon.src = `https://bungie.net${rewardDefinition.displayProperties.icon}`;
 
-        // Change style/width of progress bar, based on completion percent
-        if (challengeData.isComplete) {
-            progressBarProgress.style.width = '100%';
-            progressBarProgress.style.backgroundColor = '#33655E';
-        }
-        else {
-            progressBarProgress.style.width = `${challengeData.progressionPercent}%`;
-        };
+                // Add to hierarchy
+                iconsContainer.appendChild(compactIcon);
+            };
 
-        // Change style of progress bar, based on isClaimed property
-        if (!challengeData.isClaimed && challengeData.isComplete) {
-            progressBarProgress.style.backgroundColor = '#33655E';
-            cellContainer.className = 'cellClaimable compact';
-        }
-        else if (challengeData.isClaimed && challengeData.isComplete) {
-            progressBarProgress.style.backgroundColor = '#2D6A76';
-            cellContainer.className = 'cellCompleted compact';
+            // Change style/width of progress bar, based on completion percent
+            if (challengeData.isComplete) {
+                progressBarProgress.style.width = '100%';
+                progressBarProgress.style.backgroundColor = '#33655E';
+            }
+            else {
+                progressBarProgress.style.width = `${challengeData.progressionPercent}%`;
+            };
+
+            // Change style of progress bar, based on isClaimed property
+            if (!challengeData.isClaimed && challengeData.isComplete) {
+                progressBarProgress.style.backgroundColor = '#33655E';
+                cellContainer.className = 'cellClaimable compact';
+            }
+            else if (challengeData.isClaimed && challengeData.isComplete) {
+                progressBarProgress.style.backgroundColor = '#2D6A76';
+                cellContainer.className = 'cellCompleted compact';
+            };
         };
 
         // Build progress bar
@@ -114,11 +91,6 @@ export function CreateSeasonalChallenge(challengeData, weekString, isRedacted) {
 
     // Create a wide (UI) challenge
     function createWideChallenge(challengeData, weekString, isRedacted) {
-
-        // Check if challenge is redacted
-        if (isRedacted) {
-            return;
-        };
 
         // Create new elements (excluding ones that might occur more than once)
         const cellContainer = document.createElement('div');
@@ -149,85 +121,89 @@ export function CreateSeasonalChallenge(challengeData, weekString, isRedacted) {
         cellTextTitleContent.innerHTML = challengeData.displayProperties.name;
         cellTextDescriptorContent.innerHTML = challengeData.displayProperties.description;
 
-        // Loop over challenge rewards, do same process
-        for (let reward of challengeData.rewardItems) {
+        // Check if challenge is redacted, ignore all innerHTML vals that would otherwise be not falsy
+        if (!isRedacted) {
 
-            // Create elements
-            const rewardDefinition = itemDefinitions[reward.itemHash];
-            const rewardContainer = document.createElement('div');
-            const rewardIcon = document.createElement('img');
-            const rewardName = document.createElement('div');
+            // Loop over challenge rewards, do same process
+            for (let reward of challengeData.rewardItems) {
 
-            // Assign classes
-            rewardContainer.classList = 'rewardContainer_wide';
-            rewardIcon.classList = 'rewardIcon_wide';
-            
-            // Add content (src,href,innerHTML) to elements
-            rewardIcon.src = `https://bungie.net${rewardDefinition.displayProperties.icon}`;
-            rewardName.innerHTML = rewardDefinition.displayProperties.name;
+                // Create elements
+                const rewardDefinition = itemDefinitions[reward.itemHash];
+                const rewardContainer = document.createElement('div');
+                const rewardIcon = document.createElement('img');
+                const rewardName = document.createElement('div');
 
-            // Form hierarchy, add to hierachy
-            rewardContainer.append(rewardIcon, rewardName);
-            cellRewardsContainer.appendChild(rewardContainer);
-        };
-
-        // Loop over challenge objectives, do same process
-        for (let objective of challengeData.objectives) {
-
-            // Create elements
-            const objectiveDefinition = objectiveDefinitions[objective.objectiveHash];
-            const cellProgressContainer = document.createElement('div');
-            const cellProgressBoxOuter = document.createElement('div');
-            const cellProgressBoxSpacer = document.createElement('div');
-            const cellProgressBoxInner = document.createElement('div');
-            const cellProgressBarContainer = document.createElement('div');
-            const cellProgressBarLeftText = document.createElement('div');
-            const cellProgressBarRightText = document.createElement('div');
-
-            // Assign classes
-            cellProgressContainer.classList = 'cellProgressContainer_wide';
-            cellProgressBoxOuter.classList = 'cellProgressBoxOuter_wide';
-            cellProgressBoxSpacer.classList = 'cellProgressBoxSpacer_wide';
-            cellProgressBoxInner.classList = 'cellProgressBoxInner_wide';
-            cellProgressBarContainer.classList = 'cellProgressBar_wide';
-
-            // Add content (src,href,innerHTML) to elements
-            cellProgressBarLeftText.innerHTML = objectiveDefinition.progressDescription;
-            cellProgressBarRightText.innerHTML = `${objective.progress}/${objective.completionValue}`;
-
-            // Check if objective progressDescription is empty
-            if (objectiveDefinition.progressDescription === '') {
-                cellProgressBarLeftText.innerHTML = 'Progress';
-            };
-
-            // Check if objective is complete
-            if (objective.progress >= objective.completionValue) {
-
-                // Change progress box style
-                cellProgressBoxInner.style.backgroundColor = '#3A826E';
-                cellProgressBoxOuter.style.border = '1px solid #9A9A9A';
-            }
-            else if (!(objective.progress >= objective.comletionValue)) {
+                // Assign classes
+                rewardContainer.classList = 'rewardContainer_wide';
+                rewardIcon.classList = 'rewardIcon_wide';
                 
-                // Change text style
-                cellProgressBarLeftText.style.color = 'white';
-                cellProgressBarRightText.style.color = 'white';
+                // Add content (src,href,innerHTML) to elements
+                rewardIcon.src = `https://bungie.net${rewardDefinition.displayProperties.icon}`;
+                rewardName.innerHTML = rewardDefinition.displayProperties.name;
+
+                // Form hierarchy, add to hierachy
+                rewardContainer.append(rewardIcon, rewardName);
+                cellRewardsContainer.appendChild(rewardContainer);
             };
 
-            // Form hierachy, add to hierarchy
-            cellProgressBoxSpacer.appendChild(cellProgressBoxInner);
-            cellProgressBoxOuter.appendChild(cellProgressBoxSpacer);
-            cellProgressBarContainer.append(cellProgressBarLeftText, cellProgressBarRightText);
-            cellProgressContainer.append(cellProgressBoxOuter, cellProgressBarContainer);
-            cellBotHalf.appendChild(cellProgressContainer);
-        };
+            // Loop over challenge objectives, do same process
+            for (let objective of challengeData.objectives) {
 
-        // Change style of cell container, based on isClaimed property
-        if (!challengeData.isClaimed && challengeData.isComplete) {
-            cellContainer.classList = 'cellClaimable wide';
-        }
-        else if (challengeData.isClaimed && challengeData.isComplete) {
-            cellContainer.classList = 'cellCompleted wide';
+                // Create elements
+                const objectiveDefinition = objectiveDefinitions[objective.objectiveHash];
+                const cellProgressContainer = document.createElement('div');
+                const cellProgressBoxOuter = document.createElement('div');
+                const cellProgressBoxSpacer = document.createElement('div');
+                const cellProgressBoxInner = document.createElement('div');
+                const cellProgressBarContainer = document.createElement('div');
+                const cellProgressBarLeftText = document.createElement('div');
+                const cellProgressBarRightText = document.createElement('div');
+
+                // Assign classes
+                cellProgressContainer.classList = 'cellProgressContainer_wide';
+                cellProgressBoxOuter.classList = 'cellProgressBoxOuter_wide';
+                cellProgressBoxSpacer.classList = 'cellProgressBoxSpacer_wide';
+                cellProgressBoxInner.classList = 'cellProgressBoxInner_wide';
+                cellProgressBarContainer.classList = 'cellProgressBar_wide';
+
+                // Add content (src,href,innerHTML) to elements
+                cellProgressBarLeftText.innerHTML = objectiveDefinition.progressDescription;
+                cellProgressBarRightText.innerHTML = `${objective.progress}/${objective.completionValue}`;
+
+                // Check if objective progressDescription is empty
+                if (objectiveDefinition.progressDescription === '') {
+                    cellProgressBarLeftText.innerHTML = 'Progress';
+                };
+
+                // Check if objective is complete
+                if (objective.progress >= objective.completionValue) {
+
+                    // Change progress box style
+                    cellProgressBoxInner.style.backgroundColor = '#3A826E';
+                    cellProgressBoxOuter.style.border = '1px solid #9A9A9A';
+                }
+                else if (!(objective.progress >= objective.comletionValue)) {
+                    
+                    // Change text style
+                    cellProgressBarLeftText.style.color = 'white';
+                    cellProgressBarRightText.style.color = 'white';
+                };
+
+                // Form hierachy, add to hierarchy
+                cellProgressBoxSpacer.appendChild(cellProgressBoxInner);
+                cellProgressBoxOuter.appendChild(cellProgressBoxSpacer);
+                cellProgressBarContainer.append(cellProgressBarLeftText, cellProgressBarRightText);
+                cellProgressContainer.append(cellProgressBoxOuter, cellProgressBarContainer);
+                cellBotHalf.appendChild(cellProgressContainer);
+            };
+
+            // Change style of cell container, based on isClaimed property
+            if (!challengeData.isClaimed && challengeData.isComplete) {
+                cellContainer.classList = 'cellClaimable wide';
+            }
+            else if (challengeData.isClaimed && challengeData.isComplete) {
+                cellContainer.classList = 'cellCompleted wide';
+            };
         };
 
         // Build top section with main icon, name and descriptor
