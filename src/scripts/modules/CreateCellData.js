@@ -121,15 +121,7 @@ export function createCellDat(profile) {
         const commRecText = document.createElement('div');
         const commRecValue = document.createElement('div');
         const commRatioBarContainer = document.createElement('div');
-        const ratioOne = document.createElement('div');
-        const ratioTwo = document.createElement('div');
-        const ratioThree = document.createElement('div');
-        const ratioFour = document.createElement('div');
         const commRatioTextContainer = document.createElement('div');
-        const ratioTextOne = document.createElement('div');
-        const ratioTextTwo = document.createElement('div');
-        const ratioTextThree = document.createElement('div');
-        const ratioTextFour = document.createElement('div');
         commContainer.classList = 'onhoverCommendationsContainer';
         commTop.classList = 'onhoverCommendationsTop';
         commTotalWrapper.style = 'display: flex;gap: 5px;';
@@ -157,27 +149,73 @@ export function createCellDat(profile) {
         commTop.append(commTotalWrapper, commScoreSR);
 
         // Do commendation ratio bars
-        ratioOne.style = 'height: 7px;background: #36A389;';
-        ratioOne.style.width = `${commsArr.nodes[0][1]}%`;
-        ratioTwo.style = 'height: 7px;background: #CD7D2C;';
-        ratioTwo.style.width = `${commsArr.nodes[1][1]}%`;
-        ratioThree.style = 'height: 7px;background: #BE4F6A;';
-        ratioThree.style.width = `${commsArr.nodes[2][1]}%`;
-        ratioFour.style = 'height: 7px;background: #3288C1;';
-        ratioFour.style.width = `${commsArr.nodes[3][1]}%`;
-        commRatioBarContainer.append(ratioOne, ratioTwo, ratioThree, ratioFour);
+        const ratioOneVal = commsArr.nodes[0][1];
+        const ratioTwoVal = commsArr.nodes[1][1];
+        const ratioThreeVal = commsArr.nodes[2][1];
+        const ratioFourVal = commsArr.nodes[3][1];
 
-        // Do commendation ratio text for each bar
-        ratioTextOne.style = `width: ${commsArr.nodes[0][1]}%;color: #36A389;`;
-        ratioTextOne.innerHTML = commsArr.nodes[0][1];
-        ratioTextTwo.style = `width: ${commsArr.nodes[1][1]}%;color: #CD7D2C;`;
-        ratioTextTwo.innerHTML = commsArr.nodes[1][1];
-        ratioTextThree.style = `width: ${commsArr.nodes[2][1]}%;color: #BE4F6A;`;
-        ratioTextThree.innerHTML = commsArr.nodes[2][1];
-        ratioTextFour.style = `width: ${commsArr.nodes[3][1]}%;color: #3288C1;`;
-        ratioTextFour.innerHTML = commsArr.nodes[3][1];
-        commRatioTextContainer.append(ratioTextOne, ratioTextTwo, ratioTextThree, ratioTextFour);
+        // Create elements accordingly
+        let ratioOne;
+        let ratioTwo;
+        let ratioThree;
+        let ratioFour;
+
+        let ratioTextOne;
+        let ratioTextTwo;
+        let ratioTextThree;
+        let ratioTextFour;
+
+        let appendToBarContainer = [];
+        let appendToTextContainer = [];
+
+        // Check if each ratio value is above 0
+        if (ratioOneVal) {
+            ratioOne = document.createElement('div');
+            ratioTextOne = document.createElement('div');
+            ratioOne.style = 'height: 7px;background: #36A389;';
+            ratioOne.style.width = `${commsArr.nodes[0][1]}%`;
+            ratioTextOne.style = `width: ${commsArr.nodes[0][1]}%;color: #36A389;`;
+            ratioTextOne.innerHTML = commsArr.nodes[0][1];
+            appendToBarContainer.push(ratioOne);
+            appendToTextContainer.push(ratioTextOne);
+        };
+        if (ratioTwoVal) {
+            ratioTwo = document.createElement('div');
+            ratioTextTwo = document.createElement('div');
+            ratioTwo.style = 'height: 7px;background: #CD7D2C;';
+            ratioTwo.style.width = `${commsArr.nodes[1][1]}%`;
+            ratioTextTwo.style = `width: ${commsArr.nodes[1][1]}%;color: #CD7D2C;`;
+            ratioTextTwo.innerHTML = commsArr.nodes[1][1];
+            appendToBarContainer.push(ratioTwo);
+            appendToTextContainer.push(ratioTextTwo);
+        };
+        if (ratioThreeVal) {
+            ratioThree = document.createElement('div');
+            ratioTextThree = document.createElement('div');
+            ratioThree.style = 'height: 7px;background: #BE4F6A;';
+            ratioThree.style.width = `${commsArr.nodes[2][1]}%`;
+            ratioTextThree.style = `width: ${commsArr.nodes[2][1]}%;color: #BE4F6A;`;
+            ratioTextThree.innerHTML = commsArr.nodes[2][1];
+            appendToBarContainer.push(ratioThree);
+            appendToTextContainer.push(ratioTextThree);
+        };
+        if (ratioFourVal) {
+            ratioFour = document.createElement('div');
+            ratioTextFour = document.createElement('div');
+            ratioFour.style = 'height: 7px;background: #3288C1;';
+            ratioFour.style.width = `${commsArr.nodes[3][1]}%`;
+            ratioTextFour.style = `width: ${commsArr.nodes[3][1]}%;color: #3288C1;`;
+            ratioTextFour.innerHTML = commsArr.nodes[3][1];
+            appendToBarContainer.push(ratioFour);
+            appendToTextContainer.push(ratioTextFour);
+        };
+
+        // Append according content to the DOM
+        commRatioBarContainer.append(...appendToBarContainer);
+        commRatioTextContainer.append(...appendToTextContainer);
         
+
+
         // Append all to parent container
         commContainer.append(commTop, commRatioBarContainer, commRatioTextContainer);
 

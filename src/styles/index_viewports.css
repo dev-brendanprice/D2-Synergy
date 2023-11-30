@@ -20,7 +20,7 @@
 @media screen and (max-height: 940px) {
     #center-support {
         margin-top: 10px;
-        width: 90vw;
+        /* width: 90vw; */
     }
 
     .support-page-text {
