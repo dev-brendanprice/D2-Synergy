@@ -387,38 +387,20 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     let wellRestedLimit = 500_000;
     let wellRestedLeft = 500_000 - (weeklyProgress + totalXpYield);
 
-    // Check for progress
-    if (wellRestedLimit > wellRestedLeft) {
-        
-        // Check if well-rested is active
-        if (wellRestedLeft / 2 < 0) {
-
-            log('📚 Well rested expired');
-            // do normal modifier
-            totalXpYieldWithModifiers = totalXpYield * xpModifier;
-        }
-        else {
-
-            log('📚 Well rested active');
-            // do modifier + plus well-rested remainder
-            if (totalXpYield > 0 && wellRestedLeft > totalXpYield) {
-                totalXpYieldWithModifiers = (totalXpYield * xpModifier) * 2;
-            };
-        };
-    };
-
     // Check if weekly progress surpasses that of the well-rested buff
-    // weeklyProgress = 450_000; -- bonus xp in this case will 25_000
-    if (((500_000 - weeklyProgress) / 2) < 0) {
-        log('📚 Well rested expired');
-        totalXpYieldWithModifiers = (totalXpYield * xpModifier);
+    if ((500_000 - weeklyProgress) / 2 < 0) {
+
+        log('🍋 Well rested expired');
+
+        totalXpYieldWithModifiers = totalXpYield * xpModifier;
         document.getElementById('wellRestedCheckmarkIcon').src = './static/ico/crossmark.svg';
         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
-        AddValueToElementInner('wellRestedBonusField', `--`);
+        document.getElementById('wellRestedBonusField').innerHTML = '--';
         document.getElementById('wellRestedBonusText').style.textDecoration = 'line-through';
     }
     else {
-        log('📚 Well rested active');
+
+        log('🍋 Well rested active');
 
         /*
             if the upper limit is being met with the current xp on hand, do else
@@ -429,18 +411,18 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
         // check for well rested upper and lower limit
         if (wellRestedLimit >= (totalXpYield * xpModifier) * 2) {
-            totalXpYieldWithModifiers = totalXpYieldWithModifiers * 2;
+            totalXpYieldWithModifiers = (totalXpYield * xpModifier) * 2;
         }
         else {
             totalXpYieldWithModifiers = (totalXpYield * xpModifier) + ((500_000 - weeklyProgress) / 2);
         };
 
-
         document.getElementById('wellRestedCheckmarkIcon').src = './static/ico/checkmark.svg';
         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToMakeCheckmarkGreen;
-        AddValueToElementInner('wellRestedBonusField', `+100%`);
+        document.getElementById('wellRestedBonusField').innerHTML = '+100%';
         document.getElementById('wellRestedBonusText').style.textDecoration = 'unset';
     };
+
 
     // Truncate the result
     totalXpYieldWithModifiers = Math.trunc(totalXpYieldWithModifiers);

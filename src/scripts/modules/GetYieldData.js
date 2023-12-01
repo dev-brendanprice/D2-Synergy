@@ -20,7 +20,6 @@ export async function GetYieldData(CharacterObjectives, CharacterInventories, ch
     // Call function to get progressions for season pass XP and bonus stats
     seasonPassProgressionStats = await ReturnSeasonPassProgressionStats(seasonProgressionInfo, prestigeProgressionSeasonInfo, rewardsTrack);
     const artifact = UserProfileProgressions.ProfileProgressions.seasonalArtifact;
-    log(artifact);
 
     // Iterate over CharacterInventories[characterId].items
     let charInventory = CharacterInventories[characterId].items;
@@ -45,57 +44,9 @@ export async function GetYieldData(CharacterObjectives, CharacterInventories, ch
 
     // Calculate XP yield from (active) bounties
     let totalXpYield = 0;
-    let totalXpYieldWithModifiers = 0;
     totalXpYield = await CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYields);
 
-    // Format decimal to 1.x
-    let xpModifier = ((seasonPassProgressionStats.bonusXpValue + ghostModBonusXp) / 100) + 1;
-
-    // Get weekly progress -- If player is >= level 100 then it means they have "prestiged"
-    let weeklyProgress;
-    if (seasonPassProgressionStats.seasonPassLevel >= 100) {
-        weeklyProgress = prestigeProgressionSeasonInfo.weeklyProgress;
-    }
-    else {
-        weeklyProgress = seasonProgressionInfo.weeklyProgress;
-    };
-    
-    // Get headroom for well-rested
-    let wellRestedLimit = 500_000;
-    let wellRestedLeft = 500_000 - (weeklyProgress + totalXpYield);
-
-    // Check for progress
-    if (wellRestedLimit > wellRestedLeft) {
-        
-        // Check if well-rested is active
-        if (wellRestedLeft / 2 < 0) {
-
-            log('🧵📚 Well rested expired');
-            // do normal modifier
-            totalXpYieldWithModifiers = totalXpYield * xpModifier;
-        }
-        else {
-
-            log('🧵📚 Well rested active');
-            // do modifier + plus well-rested remainder
-            if (totalXpYield > 0 && wellRestedLeft > totalXpYield) {
-                totalXpYieldWithModifiers = (totalXpYield * xpModifier) * 2;
-            };
-        };
-    };
-
-    // Truncate the result
-    // totalXpYieldWithModifiers = Math.trunc(totalXpYieldWithModifiers);
-
-
-    // Use modifiers toggle
-    // let yieldsData = {
-    //     artifact: artifact,
-    //     base: totalXpYield,
-    //     modified: totalXpYieldWithModifiers,
-    //     useModifiers: null // Default
-    // };
-
+    // ..
     if (!profileWideData.storedChars.includes(characterId)) {
 
         profileWideData.AddStoredChar(characterId);
