@@ -1369,10 +1369,9 @@ hr.dropdownSubline {
     height: 200px;
     border: 1px solid #1E1E1E;
     background-color: #323134;
-    background-image: url("../static/images/UI/statistic_container_bg.svg");
-    background-size: 60%;
-    background-repeat: repeat;
-    background-position-y: -2px;
+    background-image: radial-gradient(#5d5d5d40 1px, transparent 0);
+    background-size: 14px 14px;
+    background-position: 0px -5px;
 }
 
 .statHeadingContainer {
@@ -1876,7 +1875,7 @@ hr.dropdownSubline {
 .cell {
     border: 2px solid #676767;
     background-color: #383838;
-    background-image: radial-gradient(rgb(93 93 93 / 25%) 1px, transparent 0);
+    background-image: radial-gradient(#5d5d5d40 1px, transparent 0);
     background-size: 14px 14px;
     background-position: 0px -5px;
 }
@@ -1884,7 +1883,7 @@ hr.dropdownSubline {
 .cellRedacted {
     border: 2px solid #4a4a4a;
     background-color: #39393999;
-    background-image: radial-gradient(rgb(93 93 93 / 25%) 1px, transparent 0);
+    background-image: radial-gradient(#5d5d5d40 1px, transparent 0);
     background-size: 14px 14px;
     background-position: 0px -5px;
 }
@@ -1892,7 +1891,7 @@ hr.dropdownSubline {
 .cellClaimable {
     border: 2px solid #7BDCC1;
     background-color: #2A433F;
-    background-image: radial-gradient(rgb(93 93 93 / 25%) 1px, transparent 0);
+    background-image: radial-gradient(#5d5d5d40 1px, transparent 0);
     background-size: 14px 14px;
     background-position: 0px -5px;
 }
@@ -1900,7 +1899,7 @@ hr.dropdownSubline {
 .cellCompleted {
     border: 2px solid #27D4F3;
     background-color: #17434C;
-    background-image: radial-gradient(rgb(93 93 93 / 25%) 1px, transparent 0);
+    background-image: radial-gradient(#5d5d5d40 1px, transparent 0);
     background-size: 14px 14px;
     background-position: 0px -5px;
 }
