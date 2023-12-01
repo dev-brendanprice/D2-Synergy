@@ -99,20 +99,20 @@ body {
     cursor: pointer;
 }
 
-#settingsBackArrowSubtext:hover {
-    color: #FFFFFF;
+#settingsBackButtonContainer:hover > #settingsBackArrowSubtext {
+    color: white;
 }
 
 #settingsBackButtonContainer:hover > #settingsBackArrow {
     filter: invert(100%);
 }
 
-#settingsBackButtonContainer:active > #settingsBackArrow {
-    filter: invert(70%);
+#settingsBackButtonContainer:active > #settingsBackArrowSubtext {
+    color: #aaa;
 }
 
-#settingsBackButtonContainer:active > #settingsBackArrowSubtext {
-    color: #ACACAC;
+#settingsBackButtonContainer:active > #settingsBackArrow {
+    filter: invert(70%);
 }
 
 #settingsBackArrow {
