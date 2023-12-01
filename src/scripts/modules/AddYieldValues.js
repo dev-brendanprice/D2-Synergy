@@ -1,5 +1,6 @@
 import { AddValueToElementInner } from './AddValueToElementInner.js';
 import { InsertSeperators } from './InsertSeperators.js';
+const log = console.log.bind(console);
 
 // Add yield values to all required fields in the yield section (under character selection)
 export async function AddYieldValues (yieldsData) {
@@ -27,18 +28,21 @@ export async function AddYieldValues (yieldsData) {
     // Get all required values for power bonus
     let pb = yieldsData.artifact.powerBonusProgression;
 
-    // Idek what this math is just dont question it
-    let pbCurrentProgressPct = parseInt(((pb.progressToNextLevel / pb.nextLevelAt) * 100).toFixed(0));
-    let pbProgressLeft = pb.nextLevelAt - pb.progressToNextLevel;
-    let pbProgressLeftPct = 100 - pbCurrentProgressPct;
-    let pbYieldProgressPct = parseInt(((parseInt(((gain / pbProgressLeft) * 100).toFixed(0)) / 100) * pbProgressLeftPct).toFixed(0)); // holy jesus
+    // Calculate percentages
+    let pbProgress = parseInt(pb.progressToNextLevel / pb.nextLevelAt * 100).toFixed(0);
+    let pbYieldProgress = parseInt(gain / pb.nextLevelAt * 100).toFixed(0);
 
+    // Cap value and store any overhead
+    if (pbYieldProgress > 100 - pbProgress) {
+        pbYieldProgress = 100 - pbProgress; // Cap value
+    };
 
+    
     // Change ratio bar
-    document.getElementById('powerBonusProgressBar').style.width = `${pbCurrentProgressPct}%`;
-    document.getElementById('powerBonusYieldProgressBar').style.width = `${pbYieldProgressPct}%`;
+    document.getElementById('powerBonusProgressBar').style.width = `${pbProgress}%`;
+    document.getElementById('powerBonusYieldProgressBar').style.width = `${pbYieldProgress}%`;
 
-    if (pbYieldProgressPct) {
+    if (pbYieldProgress) {
 
         // Ratio bar styles
         document.getElementById('powerBonusProgressBar').style.borderTopRightRadius = '0px';
@@ -48,10 +52,10 @@ export async function AddYieldValues (yieldsData) {
 
         // Ratio bar subtext styles
         document.getElementById('powerBonusYieldProgressPercent').style.display = 'block';
-        document.getElementById('powerBonusProgressPercent').style.width = `${pbCurrentProgressPct}%`;
-        document.getElementById('powerBonusYieldProgressPercent').style.width = `${pbYieldProgressPct}%`;
-        document.getElementById('powerBonusProgressPercent').innerHTML = `${pbCurrentProgressPct}%`;
-        document.getElementById('powerBonusYieldProgressPercent').innerHTML = `+${pbYieldProgressPct}%`;
+        document.getElementById('powerBonusProgressPercent').style.width = `${pbProgress}%`;
+        document.getElementById('powerBonusYieldProgressPercent').style.width = `${pbYieldProgress}%`;
+        document.getElementById('powerBonusProgressPercent').innerHTML = `${pbProgress}%`;
+        document.getElementById('powerBonusYieldProgressPercent').innerHTML = `+${pbYieldProgress}%`;
     }
     else {
 
@@ -69,17 +73,28 @@ export async function AddYieldValues (yieldsData) {
     // Get all required values for mod bonus
     let mb = yieldsData.artifact.pointProgression;
 
-    // Idek what this math is just dont question it
-    let mbCurrentProgressPct = parseInt(((mb.progressToNextLevel / mb.nextLevelAt) * 100).toFixed(0));
-    let mbProgressLeft = mb.nextLevelAt - mb.progressToNextLevel;
-    let mbProgressLeftPct = 100 - mbCurrentProgressPct;
-    let mbYieldProgressPct = parseInt(((parseInt(((gain / mbProgressLeft) * 100).toFixed(0)) / 100) * mbProgressLeftPct).toFixed(0)); // holy jesus
+    // Calculate percentages
+    let mbProgress = parseInt(mb.progressToNextLevel / mb.nextLevelAt * 100).toFixed(0);
+    let mbYieldProgress = parseInt(gain / mb.nextLevelAt * 100).toFixed(0);
+
+    // Cap value and store any overhead
+    let overheadxp = 0;
+    if (mbYieldProgress > 100 - mbProgress) {
+
+        let xpLeft = mb.nextLevelAt - mb.progressToNextLevel;
+        overheadxp = gain - xpLeft; // Store overhead
+        mbYieldProgress = 100 - mbProgress; // Cap value
+    };
+
+    // Use overheadxp to calculate how many levels are earned, past the current one
+    log(overheadxp);
+
 
     // Change ratio bar
-    document.getElementById('modLevelProgressBar').style.width = `${mbCurrentProgressPct}%`;
-    document.getElementById('modLevelYieldProgressBar').style.width = `${mbYieldProgressPct}%`;
+    document.getElementById('modLevelProgressBar').style.width = `${mbProgress}%`;
+    document.getElementById('modLevelYieldProgressBar').style.width = `${mbYieldProgress}%`;
 
-    if (mbYieldProgressPct) {
+    if (mbYieldProgress) {
 
         // Ratio bar styles
         document.getElementById('modLevelProgressBar').style.borderTopRightRadius = '0px';
@@ -89,10 +104,10 @@ export async function AddYieldValues (yieldsData) {
 
         // Ratio bar subtext styles
         document.getElementById('modLevelYieldProgressPercent').style.display = 'block';
-        document.getElementById('modLevelProgressPercent').style.width = `${mbCurrentProgressPct}%`;
-        document.getElementById('modLevelYieldProgressPercent').style.width = `${mbYieldProgressPct}%`;
-        document.getElementById('modLevelProgressPercent').innerHTML = `${mbCurrentProgressPct}%`;
-        document.getElementById('modLevelYieldProgressPercent').innerHTML = `+${mbYieldProgressPct}%`;
+        document.getElementById('modLevelProgressPercent').style.width = `${mbProgress}%`;
+        document.getElementById('modLevelYieldProgressPercent').style.width = `${mbYieldProgress}%`;
+        document.getElementById('modLevelProgressPercent').innerHTML = `${mbProgress}%`;
+        document.getElementById('modLevelYieldProgressPercent').innerHTML = `+${mbYieldProgress}%`;
     }
     else {
 

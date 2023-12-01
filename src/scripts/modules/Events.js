@@ -13,6 +13,8 @@ import { ParseClass } from './ParseClass.js';
 import { getNextTuesday } from './GetNextReset.js';
 import { FetchBungieUser } from '../oauth/FetchBungieUser.js';
 import { relationsTable } from './relationsTable.js';
+import { yieldsData } from './ParseProgressItems.js';
+import { AddYieldValues } from './AddYieldValues.js';
 
 
 // Misc
@@ -128,6 +130,23 @@ export async function AddEventListeners() {
         LoadCharacter(characterId, UserProfile.characters, false, false);
 
     }, 'class');
+
+    // Listen for checkbox change
+    AddListener('checkboxUseModifiers', 'change', async function() {
+
+        if (this.checked) {
+            CacheChangeItem('useModifiers', true);
+            yieldsData.useModifiers = true;
+            await AddYieldValues(yieldsData);
+            document.getElementById('checkboxUseModifiersSlider').style.backgroundColor = accentColor.currentAccentColor; // Change slider color
+            return;
+        };
+
+        CacheChangeItem('useModifiers', false);
+        yieldsData.useModifiers = false;
+        document.getElementById('checkboxUseModifiersSlider').style.backgroundColor = '#1b1c1c';
+        await AddYieldValues(yieldsData);
+    });
 
 
     // Top and Bottom character selects

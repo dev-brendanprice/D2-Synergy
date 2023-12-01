@@ -32,6 +32,7 @@ import { ParseStatistics } from './ParseStatistics.js';
 import { CreateSeasonalChallenge } from './CreateSeasonalChallenge.js';
 
 export let seasonPassProgressionStats = {};
+export let yieldsData = {};
 
 let challengesCounter = 0;
 let completeChallengesCounter = 0;
@@ -461,29 +462,12 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
 
     // Use modifiers toggle
-    let yieldsData = {
+    yieldsData = {
         artifact: artifact,
         base: totalXpYield,
         modified: totalXpYieldWithModifiers,
         useModifiers: true // Default
     };
-
-    // Listen for checkbox change
-    AddListener('checkboxUseModifiers', 'change', async function() {
-
-        if (this.checked) {
-            CacheChangeItem('useModifiers', true);
-            yieldsData.useModifiers = true;
-            await AddYieldValues(yieldsData);
-            document.getElementById('checkboxUseModifiersSlider').style.backgroundColor = accentColor.currentAccentColor; // Change slider color
-            return;
-        };
-
-        CacheChangeItem('useModifiers', false);
-        yieldsData.useModifiers = false;
-        document.getElementById('checkboxUseModifiersSlider').style.backgroundColor = '#1b1c1c';
-        await AddYieldValues(yieldsData);
-    });
 
     // Check for cache item
     await CacheReturnItem('useModifiers')
