@@ -38,13 +38,6 @@ const ToggleSettingsMenu = function () {
 };
 
 
-// Control states for challenges section
-let controlStates = { // defaults
-    curGrpName: 'Week 1',
-    curDrpName: 'Week_1'
-};
-
-
 // Event listener wrapper
 export const AddListener = function (elementName, event, callback, selectorType) {
 
@@ -821,7 +814,6 @@ export async function AddEventListeners() {
 
         // Check for boolean, open/close accordingly
         let container = document.getElementById('groupsDropdownForChallenges');
-        log(challsFilterModalOpen);
         if (challsFilterModalOpen) {
             container.style.display = 'none'; // Hide dropdown
             challsFilterModalOpen = false;
@@ -832,12 +824,34 @@ export async function AddEventListeners() {
         };
     });
 
+    // Control states for challenges section
+    let controlStates = { // defaults
+        curGrpName: 'Week 1',
+        curDrpName: 'Week_1',
+        curGrpHtml: document.getElementsByClassName('groupsDropdownButtonTextSections')[2].parentNode
+    }; // Bit dodgy, sometimes the DOM might be a quick load, thus this will error
+
+    // Change the first group's border by default
+    document.getElementsByClassName('groupsDropdownButtonTextSections')[2].parentNode.style.border = '1px solid white';
+
     // Dropdown for challenge groups (week 1,2,3 or all)
     AddListener('groupsDropdownButtonTextSections', 'click', function () {
 
         // Show corresponding group container, hide current one
         let selectedGroup = this.getAttribute('data-groupname');
         let previousGroup = controlStates.curGrpName;
+
+        // Retain selected dropdown item border
+        this.parentNode.style.border = '1px solid white';
+
+        // Check if first selection
+        if (selectedGroup !== controlStates.curGrpName) {
+
+            // Remove border from previous selected item
+            controlStates.curGrpHtml.style.border = '1px solid #676767';
+            controlStates.curGrpHtml = this.parentNode; // Save currently selected dropdown item
+        };
+
 
         // Hide previously selected groups
         document.getElementById(`compact_${previousGroup}`).style.display = 'none';
@@ -1136,6 +1150,7 @@ export async function BuildWorkspace() {
                 document.getElementById(pageName).style.display = 'block';
 
                 // Hide/show subheading statistics
+                log(pageName);
                 if (pageName == 'bountiesContainer') {
                     document.getElementById('bountiesSubheadingStatistics').style.display = 'flex';
                     document.getElementById('challengesSubheadingStatistics').style.display = 'none';
@@ -1146,10 +1161,15 @@ export async function BuildWorkspace() {
                     document.getElementById('challengesSubheadingStatistics').style.display = 'flex';
                     document.getElementsByClassName('dropdownModalText')[0].innerHTML = 'Challenges';
                 }
-                else {
+                else if (pageName == 'statisticsContainer') {
                     document.getElementById('bountiesSubheadingStatistics').style.display = 'none';
                     document.getElementById('challengesSubheadingStatistics').style.display = 'none';
                     document.getElementsByClassName('dropdownModalText')[0].innerHTML = 'Statistics';
+                }
+                else { // Do default
+                    document.getElementById('bountiesSubheadingStatistics').style.display = 'flex';
+                    document.getElementById('challengesSubheadingStatistics').style.display = 'none';
+                    document.getElementsByClassName('dropdownModalText')[0].innerHTML = 'Bounties';
                 };
             })
             .catch((error) => {

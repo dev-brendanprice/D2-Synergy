@@ -926,7 +926,7 @@ input:checked+.slider:before {
 }
 
 .dropdownButton:hover {
-    border: 1px solid white;
+    border: 1px solid white !important;
 }
 
 .dropdownModalText {
