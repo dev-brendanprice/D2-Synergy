@@ -651,20 +651,20 @@ h2 {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { /* Width */
+/* ::-webkit-scrollbar {
     width: 7px;
-}s
-::-webkit-scrollbar-track { /* Track */
+}
+::-webkit-scrollbar-track {
     background: none;
 }
-::-webkit-scrollbar-thumb { /* Handle */
+::-webkit-scrollbar-thumb {
     background: #747474; 
     border-radius: 12px;
 }
-::-webkit-scrollbar-thumb:hover { /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
-::-webkit-scrollbar { /* Temporary? */
+} */
+::-webkit-scrollbar {
     display: none;
 }
 

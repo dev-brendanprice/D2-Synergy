@@ -6,7 +6,6 @@
 
 body {
     height: 100vh;
-    /* overflow-y: scroll; */
     background: radial-gradient(#2d2d2d, #202020);
 }
 
@@ -23,7 +22,6 @@ body {
 #userMainContainer {
     margin-top: 60px;
     z-index: 0;
-    overflow-y: scroll;
 }
 
 #githubIcon {
@@ -1040,7 +1038,7 @@ input:checked+.slider:before {
 }
 
 .hyperlinkBlue {
-    color: rgb(146, 171, 230);
+    color: rgb(78, 112, 192);
 }
 
 .pre {
