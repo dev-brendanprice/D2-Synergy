@@ -6,7 +6,8 @@ require('dotenv').config();
 module.exports = {
   root: './src',
   buildOptions: {
-    out: './build'
+    out: './build',
+    
   },
   devOptions: {
     port: 5500,
