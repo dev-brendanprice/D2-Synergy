@@ -13,3 +13,9 @@
 
 # Ignore build directory
 /build
+
+# misc MacOS files
+.DS_Store
+src/.DS_Store
+src/static/.DS_Store
+src/static/ico/.DS_Store
