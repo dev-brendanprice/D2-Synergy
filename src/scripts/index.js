@@ -209,7 +209,8 @@ if (document.readyState !== 'loading') {
     // Check for server availability, else do error (error code inside MakeRequest too)
     MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
     .then((response) => {
-        console.log(response);
+        // console.log(response);
+        if (response.status === 200) console.log('bnet available');
     })
     .catch((error) => {
         console.error(error);
@@ -220,53 +221,38 @@ if (document.readyState !== 'loading') {
 
     if (!serverDown) {
 
-        // Request definitions objects (one-off thing, does not affect user.js)
+        // request definitions
         let navlang = window.navigator.language.split('-')[0];
-        let manifest;
-        axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`)
-        .then((response) => {
-            manifest = response;
-        });
+        let manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`)
+            .then((response) => {
+                return response;
+            });
         let components = manifest.data.Response.jsonWorldComponentContentPaths[navlang];
 
-        let seasonDefinitions = axios.get(`https://bungie.net${components.DestinySeasonDefinition}`)
-        .then((response) => {
-            return response.json();
-        })
-        .catch((error) => {
-            console.error(error);
-            return axios.get(`https://www.bungie.net/${components.DestinySeasonDefinition}?cachebust=${GenerateRandomString(24)}`); // CORS error widlcard handling
-        });
+        // get season and season pass definitions
+        let seasonDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonDefinition}?cachebust=${GenerateRandomString(8)}`)
+            .then((response) => {
+                return response;
+            });
         seasonDefinitions = seasonDefinitions.data;
     
-        let seasonPassDefinitions = axios.get(`https://www.bungie.net${components.DestinySeasonPassDefinition}`)
-        .then((response) => {
-            return response.json();
-        })
-        .catch((error) => {
-            console.error(error);
-            return axios.get(`https://www.bungie.net/${components.DestinySeasonPassDefinition}?cachebust=${GenerateRandomString(24)}`); // CORS error widlcard handling
-        });
+        let seasonPassDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonPassDefinition}?cachebust=${GenerateRandomString(8)}`)
+            .then((response) => {
+                return response;
+            });
         seasonPassDefinitions = seasonPassDefinitions.data;
 
-        let commendationsNodeDefinitions = axios.get(`https://www.bungie.net${components.DestinySocialCommendationNodeDefinition}`)
-        .then((response) => {
-            return response.json();
-        })
-        .catch((error) => {
-            console.error(error);
-            return axios.get(`https://www.bungie.net/${components.DestinySocialCommendationNodeDefinition}?cachebust=${GenerateRandomString(24)}`); // CORS error widlcard handling
-        });
+        // get commendations and record definitions
+        let commendationsNodeDefinitions = await axios.get(`https://www.bungie.net${components.DestinySocialCommendationNodeDefinition}?cachebust=${GenerateRandomString(8)}`)
+            .then((response) => {
+                return response;
+            });
         commendationsNodeDefinitions = commendationsNodeDefinitions.data;
 
-        let recordDefinitions = axios.get(`https://www.bungie.net${components.DestinyRecordDefinition}`)
-        .then((response) => {
-            return response.json();
-        })
-        .catch((error) => {
-            console.error(error);
-            return axios.get(`https://www.bungie.net/${components.DestinyRecordDefinition}?cachebust=${GenerateRandomString(24)}`); // CORS error widlcard handling
-        });
+        let recordDefinitions = await axios.get(`https://www.bungie.net${components.DestinyRecordDefinition}?cachebust=${GenerateRandomString(8)}`)
+            .then((response) => {
+                return response;
+            });
         recordDefinitions = recordDefinitions.data;
 
 
@@ -290,7 +276,7 @@ if (document.readyState !== 'loading') {
         for (let btn of authButtons) {
             btn.addEventListener('click', () => {
                 localStorage.setItem('stateCode', stateCode);
-                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}&randomqueryparam=${GenerateRandomString(128)}`;
+                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
             });
         };
     }

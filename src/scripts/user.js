@@ -24,7 +24,7 @@ import { LoadCharacters } from './modules/LoadCharacters.js';
 import { CacheChangeItem } from './modules/CacheChangeItem.js';
 import { StopLoad } from './modules/StopLoad.js';
 import { StartLoad } from './modules/StartLoad.js';
-// import { PostMessage, PostMessageFSync, RegisterServiceWorker } from './sw/RegisterServiceWorker.js';
+// import { PostMessage, PostMessageSync, RegisterServiceWorker } from './sw/RegisterServiceWorker.js';
 
 console.log(`%cD2 SYNERGY ${import.meta.env.version}`, 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice on Twitter.');
@@ -375,28 +375,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Test server availability
     await MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {"X-API-Key": requestHeaders.ApiKey}}, {avoidCache: true})
-    .then((response) => {
-        log(`${response.status}OK - Bungie.net is online`);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+        .then((response) => {
+            // console.log(response);
+            if (response.status === 200) console.log('bnet available');
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
     // Build workspace -- default fields etc.
     await BuildWorkspace()
-    .catch((error) => {
-        console.error(error);
-    });
+        .catch((error) => {
+            console.error(error);
+        });
 
     // Build definitions using service worker
     // await RegisterServiceWorker()
-    // .catch((error) => {
-    //     console.error(`🥝 Service Worker Error: ${error}`);
-    // });
+    //     .catch((error) => {
+    //         console.error(`🥝 Service Worker Error: ${error}`);
+    //     });
 
     // Run main
     MainEntryPoint()
-    .catch((error) => {
-        console.error(error);
-    });
+        .catch((error) => {
+            console.error(error);
+        });
 });
