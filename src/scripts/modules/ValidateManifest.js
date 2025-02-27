@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { get, set } from 'idb-keyval';
-import { log } from '../user.js';
 import { GenerateRandomString } from './GenerateRandomString.js';
 
 const requiredManifestTables = [
@@ -72,7 +71,7 @@ const FixTables = async () => {
 // Check manifest version
 export const ValidateManifest = async () => {
 
-    log('-> ValidateManifest Called');
+    console.log('-> ValidateManifest Called');
 
     // Fetch manifest
     let localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
@@ -81,10 +80,10 @@ export const ValidateManifest = async () => {
     manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
 
     // Check for new version, if so delete definitions and re-fetch, then do normal FixTables
-    log(localStorageManifestVersion, manifest.data.Response.version);
+    console.log(localStorageManifestVersion, manifest.data.Response.version);
     if (localStorageManifestVersion !== manifest.data.Response.version) {
         
-        log('📚 New manifest found');
+        console.log('📚 New manifest found');
         indexedDB.deleteDatabase('keyval-store'); // Delete definitions
         window.localStorage.setItem('destinyManifestVersion', manifest.data.Response.version); // Store current version in localStorage
 
@@ -93,7 +92,7 @@ export const ValidateManifest = async () => {
     };
 
     // Remove timeout, just in the case overlapping instructions
-    log('-> ValidateManifest Finished');
+    console.log('-> ValidateManifest Finished');
 };
 
 

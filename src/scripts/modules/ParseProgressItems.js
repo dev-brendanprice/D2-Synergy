@@ -13,7 +13,7 @@ import {
     UserProfile,
     profileWideData,
     userTrasistoryData,
-    seasonPassLevelStructure, accentColor, log } from '../user.js';
+    seasonPassLevelStructure, accentColor } from '../user.js';
 import { MakeBountyElement } from './MakeBountyElement.js';
 import { ParseSeasonalChallenges } from './ParseSeasonalChallenges.js';
 import { ReturnSeasonPassProgressionStats } from './ReturnSeasonPassProgressionStats.js';
@@ -75,10 +75,11 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Get all seasonal challenges
     let currentSeasonalChallenges = await ParseSeasonalChallenges(UserProfile.currentSeasonHash, seasonProgressionInfo);
+    console.log(currentSeasonalChallenges);
     returnObj.challenges = {};
 
     // Build group containers and seasonal challenges UI section
-    let groupNames = []; log(currentSeasonalChallenges);
+    let groupNames = [];
     for (let weekString in currentSeasonalChallenges) {
         
         // Get week data 
@@ -90,7 +91,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
             groupNames.push(button.getAttribute('data-groupname'));
         };
 
-        // log(weekString, weekData.challenges);
+        // console.log(weekString, weekData.challenges);
         if (!groupNames.includes(weekString)) {
 
             // Create div elements
@@ -391,7 +392,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     // Check if weekly progress surpasses that of the well-rested buff
     if ((500_000 - weeklyProgress) / 2 < 0) {
 
-        log('🍋 Well rested expired');
+        console.log('🍋 Well rested expired');
 
         totalXpYieldWithModifiers = totalXpYield * xpModifier;
         document.getElementById('wellRestedCheckmarkIcon').src = './static/ico/crossmark.svg';
@@ -401,7 +402,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     }
     else {
 
-        log('🍋 Well rested active');
+        console.log('🍋 Well rested active');
 
         /*
             if the upper limit is being met with the current xp on hand, do else
@@ -538,7 +539,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     // Check if useProfilewide is active
     if (useProfilewide) {
         
-        log('🧵 Profile-wide Checked');
+        console.log('🧵 Profile-wide Checked');
 
         let data = profileWideData.allYieldData;
         // ..
@@ -597,6 +598,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         };
     };
 
-    log('-> ParseProgressionalItems Done');
+    console.log('-> ParseProgressionalItems Done');
     return returnObj;
 };

@@ -1,30 +1,28 @@
-import { requestHeaders, log } from '../user.js';
-import axios from 'axios';
 
 // Authorize with Bungie.net
 // @string {authCode}
 export async function AuthorizeUserWithBungie (authCode) {
     
-    let AccessToken = {},
-        RefreshToken = {},
-        components = {},
-        AuthConfig = {
-            headers: {
-                'X-API-Key': requestHeaders.ApiKey,
-                Authorization: `Basic ${requestHeaders.Authorization}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        };
+    let AccessToken = {};
+    let RefreshToken = {};
+    let components = {};
 
-    // Authorize user and get credentials (first time sign-on usually)
-    await axios.post('https://www.bungie.net/platform/app/oauth/token', `grant_type=authorization_code&code=${authCode}`, AuthConfig)
-        .then(res => {
+    const client_id = parseInt(import.meta.env.CLIENT_ID);
+    const client_secret = import.meta.env.AUTH;
+    const headers = { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" };
+    const body = new URLSearchParams({ grant_type: "authorization_code", code: authCode, client_id: client_id, client_secret: client_secret });
 
-            let data = res.data;
+    await fetch('https://www.bungie.net/platform/app/oauth/token', {
+        method: 'POST',
+        headers: headers,
+        body: body
+    }).then(res => res.json())
+        .then(data => {
+
+            console.log(data);
 
             // Store components
-            // components['membership_id'] = data['membership_id'];
-            components['membership_id'] = 4611686018449662397;
+            components['membership_id'] = data['membership_id'];
             components['token_type'] = data['token_type'];
 
             // Store Access token info
@@ -42,17 +40,18 @@ export async function AuthorizeUserWithBungie (authCode) {
             window.localStorage.setItem('components', JSON.stringify(components));
             window.localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
 
-            log('-> Authorized with Bungie.net');
-        })
-        .catch((error) => {
+            console.log('-> Authorized with Bungie.net');
 
-            // switch (err.response.data) {
-            //     case 'AuthorizationCodeInvalid':
-            //     case 'AuthorizationCodeStale':
-            //         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
-            //     case 'ApplicationTokenKeyIdDoesNotExist':
-            //         CheckUserTokens();
-            // };
-            console.error(error);
+        })
+        .catch(err => {
+
+            switch (err.response.data) {
+                case 'AuthorizationCodeInvalid':
+                case 'AuthorizationCodeStale':
+                    window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${client_id}&response_type=code`;
+                case 'ApplicationTokenKeyIdDoesNotExist':
+                    CheckUserTokens(false);
+            };
+            console.error(err);
         });
 };

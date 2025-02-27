@@ -1,11 +1,9 @@
-import axios from 'axios';
-import { requestHeaders, log, homeUrl } from '../user.js';
 import { ClearApplicationData } from './ClearApplicationData.js';
 
 // Check tokens for expiration
 export async function CheckUserTokens () {
 
-    log('-> CheckUserTokens Called');
+    console.log('-> CheckUserTokens Called');
     
     let acToken = JSON.parse(window.localStorage.getItem('accessToken'));
     let rsToken = JSON.parse(window.localStorage.getItem('refreshToken'));
@@ -13,20 +11,24 @@ export async function CheckUserTokens () {
     let RefreshToken = {};
     let AccessToken = {};
     let components = {};
-    let AuthConfig = {
-            headers: {
-                Authorization: `Basic ${requestHeaders.Authorization}`,
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
-        };
+    const client_id = parseInt(import.meta.env.CLIENT_ID);
+    const client_secret = import.meta.env.AUTH;
 
     // Self function to refresh tokens
     const RefreshTokens = async function () {
-        log('---> Tokens expired');
-        await axios.post('https://www.bungie.net/Platform/App/OAuth/token/', `grant_type=refresh_token&refresh_token=${rsToken.value}`, AuthConfig)
-            .then(res => {
 
-                let data = res.data;
+        console.log('--> Tokens expired');
+
+        const headers = { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" };
+        const body = new URLSearchParams({ grant_type: "refresh_token", refresh_token: rsToken.value, client_id: client_id, client_secret: client_secret });
+
+        await fetch('https://www.bungie.net/platform/app/oauth/token', {
+            method: 'POST',
+            headers: headers,
+            body: body
+        }).then(res => res.json())
+            .then(data => {
+                
                 components['membership_id'] = data['membership_id'];
                 components['token_type'] = data['token_type'];
 
@@ -50,11 +52,12 @@ export async function CheckUserTokens () {
                     case 'AuthorizationCodeInvalid':
                     case 'AuthorizationCodeStale':
                     case 'ProvidedTokenNotValidRefreshToken':
-                        ClearApplicationData();
-                        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code`;
+                        ClearApplicationData(false);
+                        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${client_id}&response_type=code`;
                 };
             });
-            log('---> Tokens refreshed');
+        
+        console.log('--> Tokens refreshed');
     };
 
 
@@ -65,7 +68,9 @@ export async function CheckUserTokens () {
 
     // If any of the tokens dont exist, redirect to home
     if (!rsToken || !acToken || !comps) {
-        ClearApplicationData(false, true);
+        console.log('-> Tokens missing');
+        ClearApplicationData(false);
+        window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${client_id}&response_type=code`;
     };
 
     // Check for, and remove, foregin objects in window storage
@@ -96,5 +101,5 @@ export async function CheckUserTokens () {
         // If either tokens have expired
         await RefreshTokens();
     };
-    log('-> CheckUserTokens Finished');
+    console.log('-> CheckUserTokens Finished');
 };

@@ -1,6 +1,5 @@
 import { AuthorizeUserWithBungie } from './AuthorizeUserWithBungie.js';
 import { CheckUserTokens } from './CheckUserTokens.js';
-import { log, homeUrl } from '../user.js';
 import { ClearApplicationData } from './ClearApplicationData.js';
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -8,15 +7,15 @@ const urlParams = new URLSearchParams(window.location.search);
 // Main OAuth flow mechanism
 export async function CheckUserAuthState() {
     
-    log('-> CheckUserAuthState Called');
+    console.log('-> CheckUserAuthState Called');
 
     let rsToken = JSON.parse(window.localStorage.getItem('refreshToken'));
     let acToken = JSON.parse(window.localStorage.getItem('accessToken'));
     let comps = JSON.parse(window.localStorage.getItem('components'));
     let authCode = urlParams.get('code'); // One time use
 
-        // Remove state and auth code from url (clean URL)
-        window.history.pushState({}, window.location.host, window.location.pathname);
+    // Remove state and auth code from url (clean URL)
+    window.history.pushState({}, window.location.host, window.location.pathname);
         
     // Catch errors
     try {
@@ -46,5 +45,5 @@ export async function CheckUserAuthState() {
     catch (error) {
         console.error(error);
     };
-    log(`-> CheckUserAuthState Finished`);
+    console.log(`-> CheckUserAuthState Finished`);
 };

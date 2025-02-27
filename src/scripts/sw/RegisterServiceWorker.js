@@ -1,4 +1,3 @@
-import { log } from '../user.js';
 
 let serviceWorker;
 
@@ -16,18 +15,18 @@ export async function RegisterServiceWorker () {
     // Check if service worker is supported
     if ('serviceWorker' in navigator) {
 
-        log('🥝 Installing Service Worker');
+        console.log('🥝 Installing Service Worker');
 
         try {
 
             serviceWorker = await navigator.serviceWorker.register('./sw.js', { scope: '../../', type: 'module' });
             if (serviceWorker.active) {
 
-                log('🥝 Service Worker Active');
+                console.log('🥝 Service Worker Active');
         
                 // Listen for messages from service worker
                 navigator.serviceWorker.addEventListener('message', (event) => {
-                    log(event.data);
+                    console.log(event.data);
                 });
             };
         }

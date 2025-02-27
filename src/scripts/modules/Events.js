@@ -18,9 +18,8 @@ import { AddYieldValues } from './AddYieldValues.js';
 
 
 // Misc
-const log = console.log.bind(console),
-      localStorage = window.localStorage,
-      sessionStorage = window.sessionStorage;
+const localStorage = window.localStorage;
+const sessionStorage = window.sessionStorage;
 
 // Menu variables
 let currentSettingsMenu = 'generalSettingsContainer';
@@ -520,7 +519,7 @@ export async function AddEventListeners() {
 
     // Dropdown selection
     AddListener('defaultViewDropdown', 'change', function () {
-        log(this.value);
+        console.log(this.value);
         const contentViewsThatINeedToChange = [
             'bountiesContainer', 
             'seasonalChallengesContainer',
@@ -740,7 +739,7 @@ export async function AddEventListeners() {
     AddListener('checkboxShowPopup', 'change', function () {
 
         // Toggle boolean
-        log(this.checked);
+        console.log(this.checked);
         if (this.checked) {
             CacheChangeItem('showPopup', true);
             return;
@@ -1150,7 +1149,7 @@ export async function BuildWorkspace() {
                 document.getElementById(pageName).style.display = 'block';
 
                 // Hide/show subheading statistics
-                log(pageName);
+                console.log(pageName);
                 if (pageName == 'bountiesContainer') {
                     document.getElementById('bountiesSubheadingStatistics').style.display = 'flex';
                     document.getElementById('challengesSubheadingStatistics').style.display = 'none';

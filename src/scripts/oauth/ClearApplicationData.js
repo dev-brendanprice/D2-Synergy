@@ -1,7 +1,8 @@
 
 // Log user out on request
 // @deleteDefinitions {boolean}, @authorizeAgain {boolean}
-export async function ClearApplicationData(deleteDefinitions = true, authorizeAgain = false) {
+export async function ClearApplicationData(deleteDefinitions = false, authorizeAgain = false) {
+    
     window.localStorage.clear();
     window.sessionStorage.clear();
 

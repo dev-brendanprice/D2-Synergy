@@ -33,9 +33,6 @@ console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice
 VerifyState();
 StartLoad();
 
-// Utilities
-export const log = console.log.bind(console);
-
 
 // Defintion objects
 export var progressionDefinitions = {},
@@ -325,7 +322,7 @@ export async function MainEntryPoint(isPassiveReload) {
     // Check for passive reload
     if (isPassiveReload) {
         StartLoad(isPassiveReload);
-        log(`-> Passive Reload Called`);
+        console.log(`-> Passive Reload Called`);
     };
 
     // Change notification label content
@@ -359,7 +356,7 @@ export async function MainEntryPoint(isPassiveReload) {
     // Check for passive reload
     if (isPassiveReload) {
         StopLoad();
-        log(`-> Passive Reload Finished`);
+        console.log(`-> Passive Reload Finished`);
         return;
     };
 

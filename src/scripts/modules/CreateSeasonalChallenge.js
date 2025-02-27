@@ -1,5 +1,5 @@
 
-import { itemDefinitions, objectiveDefinitions, log } from '../user.js';
+import { itemDefinitions, objectiveDefinitions } from '../user.js';
 
 // Function creates two challenges, one in compact and the other wide
 //      it will then append both to the corresponding hierarchies

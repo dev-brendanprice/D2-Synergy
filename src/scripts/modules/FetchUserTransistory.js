@@ -3,7 +3,7 @@ import {
     UserProfile,
     UserXpModifiers,
     userTrasistoryData,
-    seasonDefinitions, log } from '../user.js';
+    seasonDefinitions } from '../user.js';
 import { MakeRequest } from './MakeRequest.js';
 import { GenerateRandomString } from './GenerateRandomString.js';
 import { FetchPrimaryUserMembership } from './FetchPrimaryUserMembership.js';
@@ -32,7 +32,7 @@ export async function FetchUserTransistory() {
         if (transistoryData.data) {
             if (transistoryData.data.partyMembers.length > 1) {
 
-                log('📚 User in a fireteam');
+                console.log('📚 User in a fireteam');
 
                 // Store fireteam members
                 fireteamMembers = transistoryData.data.partyMembers;
@@ -49,7 +49,7 @@ export async function FetchUserTransistory() {
         };
 
         // Else, user is not in a fireteam
-        log('📚 User not in a fireteam');
+        console.log('📚 User not in a fireteam');
 
     })
     .catch((error) => {

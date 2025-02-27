@@ -1,6 +1,5 @@
 import { AddValueToElementInner } from './AddValueToElementInner.js';
 import { InsertSeperators } from './InsertSeperators.js';
-const log = console.log.bind(console);
 
 // Add yield values to all required fields in the yield section (under character selection)
 export async function AddYieldValues (yieldsData) {
@@ -87,7 +86,7 @@ export async function AddYieldValues (yieldsData) {
     };
 
     // Use overheadxp to calculate how many levels are earned, past the current one
-    log(overheadxp);
+    console.log(overheadxp);
 
 
     // Change ratio bar

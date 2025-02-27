@@ -1,5 +1,4 @@
 import { CacheReturnItem } from './CacheReturnItem.js';
-import { log } from '../user';
 
 // Calculate total XP gain from (active) bounties
 // @array {bountyArr}, @array {itemTypeKeys}, @object {baseYields}, @object {petraYields}
@@ -10,7 +9,7 @@ export async function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYiel
 
     // Get corresponding xp
     function DiffXP(bounty, bountyType) {
-        // log(bounty, bountyType);
+        // console.log(bounty, bountyType);
         // Dreaming city bounties grant half xp
         if (bounty.inventory.stackUniqueLabel.includes('dreaming_city')) {
             totalXP += petraYields[bountyType];

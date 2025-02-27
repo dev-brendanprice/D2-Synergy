@@ -1,5 +1,3 @@
-import { log } from '../user.js';
-
 /*
 
     This needs to be re-done because it doesn't work
@@ -46,7 +44,7 @@ export function ReplaceNamedStringVariables(descriptor) {
                 let substringToReplace = descriptor.slice(indices[i], indices[i+1]+1);
                 descriptor = descriptor.replace(substringToReplace, variableNameElement);
 
-                // log(descriptor);
+                // console.log(descriptor);
             };
         };
     };

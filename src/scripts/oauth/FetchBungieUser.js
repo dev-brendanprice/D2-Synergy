@@ -1,14 +1,13 @@
 import { CheckUserTokens } from './CheckUserTokens';
-import { requestHeaders, log, UserProfile, UserProfileProgressions } from '../user.js';
+import { requestHeaders, UserProfile, UserProfileProgressions } from '../user.js';
 import { MakeRequest } from '../modules/MakeRequest';
 import { FetchPrimaryUserMembership } from '../modules/FetchPrimaryUserMembership.js';
-import axios from 'axios';
 
 // Fetch bungie user data
 // @checkTokens {boolean}
 export async function FetchBungieUser(checkTokens = true) {
 
-    log('-> FetchBungieUser Called');
+    console.log('-> FetchBungieUser Called');
 
     // Check user tokens, as we need to use the access token to fetch the user data
     if (checkTokens) {
@@ -63,5 +62,5 @@ export async function FetchBungieUser(checkTokens = true) {
     UserProfile.AssignDestinyMembershipId(destinyMembershipId);
     UserProfile.AssignMembershipType(membershipType);
     
-    log(`-> FetchBungieUser Finished`);
+    console.log(`-> FetchBungieUser Finished`);
 };

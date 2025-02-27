@@ -4,7 +4,7 @@ import {
     seasonPassDefinitions,
     progressionDefinitions,
     UserXpModifiers,
-    UserProfile, log } from '../user.js';
+    UserProfile } from '../user.js';
 import { ParseProgressionalItems } from './ParseProgressItems.js';
 import { ReturnSeasonPassLevel } from './ReturnSeasonPassLevel.js';
 import { ParseProgressionalRelations } from './ParseProgressRelations.js';
@@ -49,7 +49,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
 
         if (!isAlternate) {
 
-            log('-> LoadCharacter Called');
+            console.log('-> LoadCharacter Called');
 
             // Get fireteam data (shared wisdom modifier)
             FetchUserTransistory();
@@ -63,7 +63,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
             document.getElementById('overlays').innerHTML = '';
         }
         else {
-            log(`--> LoadCharacter Called - ${characterId}`);
+            console.log(`--> LoadCharacter Called - ${characterId}`);
         };
 
 
@@ -294,10 +294,10 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
     };
 
     if (!isAlternate) {
-        log('-> LoadCharacter Done');
+        console.log('-> LoadCharacter Done');
     }
     else {
-        log(`--> LoadCharacter Done - ${characterId}`);
+        console.log(`--> LoadCharacter Done - ${characterId}`);
     };
 
     StopLoad();

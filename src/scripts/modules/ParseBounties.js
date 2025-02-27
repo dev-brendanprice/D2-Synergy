@@ -1,4 +1,4 @@
-import { excludedBountiesByVendor, log } from '../user.js';
+import { excludedBountiesByVendor } from '../user.js';
 import { VendorHashesByLabel, progressionItemGroupTypes } from './SynergyDefinitions.js';
 import { stringMatchProgressionItem } from './StringMatchProgressionItem.js';
 import { ReplaceStringVariables } from './ReplaceStringVariables.js';

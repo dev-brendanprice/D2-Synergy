@@ -3,7 +3,7 @@ import {
     itemDefinitions,
     objectiveDefinitions,
     profileWideData,
-    UserProfileProgressions, log } from '../user.js';
+    UserProfileProgressions } from '../user.js';
 import { ReturnSeasonPassProgressionStats } from './ReturnSeasonPassProgressionStats.js';
 import { ParseBounties } from './ParseBounties.js';
 import { CalcXpYield } from './CalcXpYield.js';
@@ -56,5 +56,5 @@ export async function GetYieldData(CharacterObjectives, CharacterInventories, ch
         profileWideData.AddYieldData('seasonPassLevels', totalXpYield / 100_000);
     };
 
-    log('🧵 GetYieldData Done');
+    console.log('🧵 GetYieldData Done');
 };

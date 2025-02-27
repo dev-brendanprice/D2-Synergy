@@ -6,7 +6,7 @@
 */
 
 import { itemTypeKeys } from "./SynergyDefinitions.js";
-import { allProgressionProperties, UserProfile, log } from "../user.js";
+import { allProgressionProperties, UserProfile } from "../user.js";
 import { LoadCharacter } from './LoadCharacter.js';
 
 // Capitalize First letter of string
@@ -66,5 +66,5 @@ export function CountProgressionItemProperties(charBounties, seasonalChallenges,
 
     // Sort progressionPropertiesPercentages by percentage in descending order
     progressionPropertiesPercentages.sort((a,b) => b[1] - a[1]);
-    log(progressionPropertiesPercentages);
+    console.log(progressionPropertiesPercentages);
 };

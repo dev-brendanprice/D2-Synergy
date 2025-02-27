@@ -5,8 +5,7 @@ import {
     recordDefinitions,
     presentationNodeDefinitions,
     progressionDefinitions,
-    UserProfile, log 
-} from '../user.js';
+    UserProfile } from '../user.js';
 
 /*
     Return recordDefinition of current the seasons' challenges

@@ -1,5 +1,4 @@
 import { messages } from '../../data/supporterMessages.js';
-const log = console.log.bind(console);
 
 export function createCellDat(profile) {
 

@@ -3,7 +3,6 @@ import { FetchPrimaryUserMembership } from './FetchPrimaryUserMembership.js';
 import { ReturnSeasonPassLevel } from './ReturnSeasonPassLevel.js';
 import { ParseGender } from './ParseGender.js';
 
-const log = console.log.bind(console);
 const requestHeaders = { headers: { "X-API-Key": import.meta.env.API_KEY } };
 
 export async function LoadPartialProfile(memship, definitions) {
@@ -35,7 +34,7 @@ export async function LoadPartialProfile(memship, definitions) {
         return res.data.Response;
     }).catch(e => console.error(e));
 
-    // log(user);
+    // console.log(user);
     // Get current season/season pass -> Get user season rank
     let pchar = Object.values(user.characters.data).sort((a,b) => new Date(b.dateLastPlayed) - new Date(a.dateLastPlayed))[0]; // Get primary character by date last played
     let season = seasonDefinitions[user.profile.data.currentSeasonHash];
@@ -89,12 +88,12 @@ export async function LoadPartialProfile(memship, definitions) {
             let gildRecord = user.profileRecords.data.records[title.titleInfo.gildingTrackingRecordHash];
             if (gildRecord.objectives[0].complete) {
 
-                // log(gildRecord);
-                // log(!!(gildRecord.state & 1));
+                // console.log(gildRecord);
+                // console.log(!!(gildRecord.state & 1));
 
                 // Check if gild has been claimed
                 // let state = Boolean(gildRecord.state & 1);
-                // log(gildRecord.state);
+                // console.log(gildRecord.state);
                 // if (state) {
                 //     gild = true;
                 // };

@@ -1,4 +1,3 @@
-import { log } from '../user.js';
 import { progressionItemGroupTypes } from './SynergyDefinitions.js';
 
 // Function to find all the relations between progressional items
@@ -34,7 +33,7 @@ export async function ParseProgressionalRelations(progressionalItems) {
     //             });
 
     //             if (groupFirstBounty !== undefined && groupSecondBounty !== undefined && groupFirstBounty === groupSecondBounty) {
-    //                 log(groupFirstBounty, groupSecondBounty);
+    //                 console.log(groupFirstBounty, groupSecondBounty);
     //             };
 
     //             // ..

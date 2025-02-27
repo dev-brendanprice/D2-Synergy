@@ -1,4 +1,4 @@
-import { itemDisplay, log } from '../user.js';
+import { itemDisplay } from '../user.js';
 import { ReplaceNamedStringVariables } from './ReplaceNamedStringVariables.js';
 
 
