@@ -8,7 +8,7 @@ console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice on Twitter.');
 
 const localStorage = window.localStorage;
-const clientId = import.meta.env.CLIENT_ID;
+const client_id = import.meta.env.CLIENT_ID;
 const apiKey = import.meta.env.API_KEY;
 let serverDown = false;
 
@@ -154,7 +154,6 @@ function recreateNode(el, withChildren) {
 
 
 // Listen for page ready state
-console.log(document.readyState !== 'loading' ? 'Ready' : 'Unready');
 if (document.readyState !== 'loading') {
 
     // Put version number in navbar
@@ -205,7 +204,7 @@ if (document.readyState !== 'loading') {
         toggleContainers(true);
     });
 
-    // Check for server availability, else do error (error code inside MakeRequest too)
+    // Check for bnet api availability, else do error (error code inside MakeRequest too)
     MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
     .then((response) => {
         // console.log(response);
@@ -220,7 +219,29 @@ if (document.readyState !== 'loading') {
 
     if (!serverDown) {
 
-        // request definitions
+        // Check for a pre-existing session
+        CheckSession();
+
+        // Redirect user to bungie.net sign in portal on auth button click
+        const stateCode = GenerateRandomString(128);
+        const authButtons = document.getElementsByClassName('auth-button');
+        for (let btn of authButtons) {
+            btn.addEventListener('click', () => {
+                localStorage.setItem('stateCode', stateCode);
+                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${client_id}&response_type=code&state=${stateCode}`;
+            });
+        };
+        
+        // self definitions fetch
+        async function fetchDefinition(definitionPath) {
+
+            const url = `https://www.bungie.net${definitionPath}?cachebust=${GenerateRandomString(8)}`;
+            return await fetch(url)
+                .then(response => response.json())
+                .then(data => { return data; });
+        };
+
+        // request definitions for supporters section (don't store these in idb)
         let navlang = window.navigator.language.split('-')[0];
         let manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`)
             .then((response) => {
@@ -229,55 +250,20 @@ if (document.readyState !== 'loading') {
         let components = manifest.data.Response.jsonWorldComponentContentPaths[navlang];
 
         // get season and season pass definitions
-        let seasonDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonDefinition}?cachebust=${GenerateRandomString(8)}`)
-            .then((response) => {
-                return response;
-            });
-        seasonDefinitions = seasonDefinitions.data;
-    
-        let seasonPassDefinitions = await axios.get(`https://www.bungie.net${components.DestinySeasonPassDefinition}?cachebust=${GenerateRandomString(8)}`)
-            .then((response) => {
-                return response;
-            });
-        seasonPassDefinitions = seasonPassDefinitions.data;
+        let seasonDefinitions = await fetchDefinition(components.DestinySeasonDefinition);
+        let seasonPassDefinitions = await fetchDefinition(components.DestinySeasonPassDefinition);
 
         // get commendations and record definitions
-        let commendationsNodeDefinitions = await axios.get(`https://www.bungie.net${components.DestinySocialCommendationNodeDefinition}?cachebust=${GenerateRandomString(8)}`)
-            .then((response) => {
-                return response;
-            });
-        commendationsNodeDefinitions = commendationsNodeDefinitions.data;
+        let commendationsNodeDefinitions = await fetchDefinition(components.DestinySocialCommendationNodeDefinition);
+        let recordDefinitions = await fetchDefinition(components.DestinyRecordDefinition);
 
-        let recordDefinitions = await axios.get(`https://www.bungie.net${components.DestinyRecordDefinition}?cachebust=${GenerateRandomString(8)}`)
-            .then((response) => {
-                return response;
-            });
-        recordDefinitions = recordDefinitions.data;
-
-
-        // Make obj
-        let definitions = {
+        // Load support page DOM content
+        loadSupportPageContent({
             seasonDefinitions: seasonDefinitions,
             seasonPassDefinitions: seasonPassDefinitions,
             commendationsNodeDefinitions: commendationsNodeDefinitions,
             recordDefinitions: recordDefinitions
-        };
-
-        // Check for a pre-existing session
-        CheckSession();
-
-        // Load support page DOM content
-        loadSupportPageContent(definitions);
-
-        // Redirect user to bungie.net sign in portal on auth button click
-        const stateCode = GenerateRandomString(128);
-        const authButtons = document.getElementsByClassName('auth-button');
-        for (let btn of authButtons) {
-            btn.addEventListener('click', () => {
-                localStorage.setItem('stateCode', stateCode);
-                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${clientId}&response_type=code&state=${stateCode}`;
-            });
-        };
+        });
     }
     else {
 
