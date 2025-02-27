@@ -7,7 +7,6 @@ import axios from 'axios';
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice on Twitter.');
 
-const log = console.log.bind(console);
 const localStorage = window.localStorage;
 const clientId = import.meta.env.CLIENT_ID;
 const apiKey = import.meta.env.API_KEY;
@@ -27,7 +26,7 @@ async function CheckSession() {
 
     // Redirect user through if localStorage has items
     if (acToken && rsToken && comps) {
-        log('-> Session Exists, Redirecting..');
+        console.log('-> Session Exists, Redirecting..');
         window.location.href = 'user';
     };
 };
@@ -155,7 +154,7 @@ function recreateNode(el, withChildren) {
 
 
 // Listen for page ready state
-log(document.readyState !== 'loading' ? 'Ready' : 'Unready');
+console.log(document.readyState !== 'loading' ? 'Ready' : 'Unready');
 if (document.readyState !== 'loading') {
 
     // Put version number in navbar
