@@ -154,132 +154,135 @@ function recreateNode(el, withChildren) {
 
 
 // Listen for page ready state
-if (document.readyState !== 'loading') {
+async function main() {
+    if (document.readyState !== 'loading') {
 
-    // Put version number in navbar
-    document.getElementById('version-text').innerHTML = `${import.meta.env.version}`;
-
-    // Toggle home/supporters containers
-    function toggleContainers(goHome = false) {
-
-        const supportersContainer = document.getElementById('center-con');
-        const homepageContainer = document.getElementById('center-support');
-        const supportersButton = document.getElementsByClassName('supportbox-dialogue-main-container')[0];
-        const homepageButton = document.getElementsByClassName('supportbox-dialogue-goback-container')[0];
-
-        // If nav icon button is clicked
-        if (goHome) {
-            homepageContainer.style.display = 'none'; // Toggle containers
-            supportersContainer.style.display = 'flex';
-            homepageButton.style.display = 'none';
-            supportersButton.style.display = 'flex';
-            return;
+        // Put version number in navbar
+        document.getElementById('version-text').innerHTML = `${import.meta.env.version}`;
+    
+        // Toggle home/supporters containers
+        function toggleContainers(goHome = false) {
+    
+            const supportersContainer = document.getElementById('center-con');
+            const homepageContainer = document.getElementById('center-support');
+            const supportersButton = document.getElementsByClassName('supportbox-dialogue-main-container')[0];
+            const homepageButton = document.getElementsByClassName('supportbox-dialogue-goback-container')[0];
+    
+            // If nav icon button is clicked
+            if (goHome) {
+                homepageContainer.style.display = 'none'; // Toggle containers
+                supportersContainer.style.display = 'flex';
+                homepageButton.style.display = 'none';
+                supportersButton.style.display = 'flex';
+                return;
+            };
+    
+            // Home page is the one that is being shown
+            if (homepageContainer.style.display === 'flex') {
+                homepageContainer.style.display = 'none'; // Toggle containers
+                supportersContainer.style.display = 'flex';
+                homepageButton.style.display = 'none';
+                supportersButton.style.display = 'flex';
+            }
+            else {
+                homepageContainer.style.display = 'flex'; // Toggle containers
+                supportersContainer.style.display = 'none';
+                homepageButton.style.display = 'flex';
+                supportersButton.style.display = 'none';
+            };
         };
-
-        // Home page is the one that is being shown
-        if (homepageContainer.style.display === 'flex') {
-            homepageContainer.style.display = 'none'; // Toggle containers
-            supportersContainer.style.display = 'flex';
-            homepageButton.style.display = 'none';
-            supportersButton.style.display = 'flex';
+    
+        // Support/Home page nav button (vice versa)
+        document.getElementsByClassName('supportbox-dialogue-main-container')[0].addEventListener('click', function() {
+            toggleContainers();
+        });
+        document.getElementsByClassName('supportbox-dialogue-goback-container')[0].addEventListener('click', function() {
+            toggleContainers();
+        });
+    
+        // Listen for nav icon container click, show home page container, instead of supporters container
+        document.getElementById('nav-icon').addEventListener('click', () => {
+            toggleContainers(true);
+        });
+    
+        // Check for bnet api availability, else do error (error code inside MakeRequest too)
+        MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
+        .then((response) => {
+            // console.log(response);
+            if (response.status === 200) console.log('bnet available');
+        })
+        .catch((error) => {
+            console.error(error);
+            if (error.ErrorCode === 5) {
+                serverDown = true;
+            };
+        });
+    
+        if (!serverDown) {
+    
+            // Check for a pre-existing session
+            CheckSession();
+    
+            // Redirect user to bungie.net sign in portal on auth button click
+            const stateCode = GenerateRandomString(128);
+            const authButtons = document.getElementsByClassName('auth-button');
+            for (let btn of authButtons) {
+                btn.addEventListener('click', () => {
+                    localStorage.setItem('stateCode', stateCode);
+                    window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${client_id}&response_type=code&state=${stateCode}`;
+                });
+            };
+            
+            // self definitions fetch
+            async function fetchDefinition(definitionPath) {
+    
+                const url = `https://www.bungie.net${definitionPath}?cachebust=${GenerateRandomString(8)}`;
+                return await fetch(url)
+                    .then(response => response.json())
+                    .then(data => { return data; });
+            };
+    
+            // request definitions for supporters section (don't store these in idb)
+            let navlang = window.navigator.language.split('-')[0];
+            let manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`)
+                .then((response) => {
+                    return response;
+                });
+            let components = manifest.data.Response.jsonWorldComponentContentPaths[navlang];
+    
+            // get season and season pass definitions
+            let seasonDefinitions = await fetchDefinition(components.DestinySeasonDefinition);
+            let seasonPassDefinitions = await fetchDefinition(components.DestinySeasonPassDefinition);
+    
+            // get commendations and record definitions
+            let commendationsNodeDefinitions = await fetchDefinition(components.DestinySocialCommendationNodeDefinition);
+            let recordDefinitions = await fetchDefinition(components.DestinyRecordDefinition);
+    
+            // Load support page DOM content
+            loadSupportPageContent({
+                seasonDefinitions: seasonDefinitions,
+                seasonPassDefinitions: seasonPassDefinitions,
+                commendationsNodeDefinitions: commendationsNodeDefinitions,
+                recordDefinitions: recordDefinitions
+            });
         }
         else {
-            homepageContainer.style.display = 'flex'; // Toggle containers
-            supportersContainer.style.display = 'none';
-            homepageButton.style.display = 'flex';
-            supportersButton.style.display = 'none';
+    
+            // Show server out container
+            document.getElementsByClassName('server-out-container')[0].style.display = 'flex';
+    
+            // Remove event listeners from authenticate buttons
+            const authButtons = document.getElementsByClassName('auth-button');
+            for (let btn of authButtons) {
+                recreateNode(btn, true);
+            };
+    
+            // Load empty support page grid when server down
+            loadEmptySupportPageGrid();
         };
+    
+        // Omit query params from URL on reload
+        window.history.pushState({}, window.location.host, `${import.meta.env.HOME_URL}`);
     };
-
-    // Support/Home page nav button (vice versa)
-    document.getElementsByClassName('supportbox-dialogue-main-container')[0].addEventListener('click', function() {
-        toggleContainers();
-    });
-    document.getElementsByClassName('supportbox-dialogue-goback-container')[0].addEventListener('click', function() {
-        toggleContainers();
-    });
-
-    // Listen for nav icon container click, show home page container, instead of supporters container
-    document.getElementById('nav-icon').addEventListener('click', () => {
-        toggleContainers(true);
-    });
-
-    // Check for bnet api availability, else do error (error code inside MakeRequest too)
-    MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
-    .then((response) => {
-        // console.log(response);
-        if (response.status === 200) console.log('bnet available');
-    })
-    .catch((error) => {
-        console.error(error);
-        if (error.ErrorCode === 5) {
-            serverDown = true;
-        };
-    });
-
-    if (!serverDown) {
-
-        // Check for a pre-existing session
-        CheckSession();
-
-        // Redirect user to bungie.net sign in portal on auth button click
-        const stateCode = GenerateRandomString(128);
-        const authButtons = document.getElementsByClassName('auth-button');
-        for (let btn of authButtons) {
-            btn.addEventListener('click', () => {
-                localStorage.setItem('stateCode', stateCode);
-                window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${client_id}&response_type=code&state=${stateCode}`;
-            });
-        };
-        
-        // self definitions fetch
-        async function fetchDefinition(definitionPath) {
-
-            const url = `https://www.bungie.net${definitionPath}?cachebust=${GenerateRandomString(8)}`;
-            return await fetch(url)
-                .then(response => response.json())
-                .then(data => { return data; });
-        };
-
-        // request definitions for supporters section (don't store these in idb)
-        let navlang = window.navigator.language.split('-')[0];
-        let manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`)
-            .then((response) => {
-                return response;
-            });
-        let components = manifest.data.Response.jsonWorldComponentContentPaths[navlang];
-
-        // get season and season pass definitions
-        let seasonDefinitions = await fetchDefinition(components.DestinySeasonDefinition);
-        let seasonPassDefinitions = await fetchDefinition(components.DestinySeasonPassDefinition);
-
-        // get commendations and record definitions
-        let commendationsNodeDefinitions = await fetchDefinition(components.DestinySocialCommendationNodeDefinition);
-        let recordDefinitions = await fetchDefinition(components.DestinyRecordDefinition);
-
-        // Load support page DOM content
-        loadSupportPageContent({
-            seasonDefinitions: seasonDefinitions,
-            seasonPassDefinitions: seasonPassDefinitions,
-            commendationsNodeDefinitions: commendationsNodeDefinitions,
-            recordDefinitions: recordDefinitions
-        });
-    }
-    else {
-
-        // Show server out container
-        document.getElementsByClassName('server-out-container')[0].style.display = 'flex';
-
-        // Remove event listeners from authenticate buttons
-        const authButtons = document.getElementsByClassName('auth-button');
-        for (let btn of authButtons) {
-            recreateNode(btn, true);
-        };
-
-        // Load empty support page grid when server down
-        loadEmptySupportPageGrid();
-    };
-
-    // Omit query params from URL on reload
-    window.history.pushState({}, window.location.host, `${import.meta.env.HOME_URL}`);
 };
+main();
