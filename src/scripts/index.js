@@ -1,7 +1,5 @@
 import { MakeRequest } from './modules/MakeRequest.js';
 import { loadSupportPageContent, loadEmptySupportPageGrid } from './modules/LoadSupportPage.js';
-import axios from 'axios';
-import { get, set } from 'idb-keyval';
 
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice on Twitter.');
