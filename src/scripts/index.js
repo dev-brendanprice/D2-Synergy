@@ -1,20 +1,24 @@
 import { MakeRequest } from './modules/MakeRequest.js';
-import { LoadPartialProfile } from './modules/LoadPartialProfile.js';
-import { createCellDat } from './modules/CreateCellData.js';
-import { playerids } from '.././data/supporterMessages.js';
+import { loadSupportPageContent, loadEmptySupportPageGrid } from './modules/LoadSupportPage.js';
 import axios from 'axios';
+import { get, set } from 'idb-keyval';
 
 console.log('%cD2 SYNERGY', 'font-weight: bold;font-size: 40px;color: white;');
 console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice on Twitter.');
 
 const localStorage = window.localStorage;
 const client_id = import.meta.env.CLIENT_ID;
-const apiKey = import.meta.env.API_KEY;
-let serverDown = false;
+const api_key = import.meta.env.API_KEY;
+let serverDown = false; // nuke this boolean please
 
-// Check for empty cached profiles object in localStorage cache
-if (!JSON.parse(localStorage.getItem('cachedprofiles'))) {
+// make sure cachedprofiles has empty array if it doesnt exist
+let cachedprofiles = localStorage.getItem('cachedprofiles');
+if (!cachedprofiles) {
     localStorage.setItem('cachedprofiles', '[]');
+    loadDefsForSuportPage();
+}
+else {
+    loadSupportPageContent();
 };
 
 // Check localStorage to determine if user has signed in already
@@ -28,102 +32,6 @@ async function CheckSession() {
     if (acToken && rsToken && comps) {
         console.log('-> Session Exists, Redirecting..');
         window.location.href = 'user';
-    };
-};
-
-// Count of rows on grid
-let rows = 6; // Edit this value to change cell count
-let n = rows * 17;
-
-// Load support page DOM content
-async function loadSupportPageContent(definitions) {
-
-    let playeridCounter = 0; // Count index of current playerid
-    let promiseArr = [];
-
-    // Arr with numbers, denoting to random coords on the grid
-    let ranarr = [];
-    for (let i=0; i<playerids.length; i++) {
-
-        // Ensure that no duplicate numbers are pushed
-        function addInt() {
-            let ranint = Math.floor(Math.random() * n);
-            if (ranarr.includes(ranint)) {
-                addInt();
-            } else ranarr.push(ranint);
-        };
-        addInt();
-    };
-
-
-    // Check if user is in cache, if not -> add to cache
-    const cacheArr = JSON.parse(localStorage.getItem('cachedprofiles'));
-    const memshipArr = cacheArr.map(v => v.profile.memship);
-    for (let memship of playerids) {
-
-        if (memshipArr.includes(memship)) {
-            let profile = cacheArr.filter(v => v.profile.memship === memship)[0].profile;
-            promiseArr.push(profile);
-        }
-        else {
-            promiseArr.push(LoadPartialProfile(memship, definitions)); // Load profile
-        };
-    };
-
-    // Loop over promise result array
-    let result = await Promise.all(promiseArr);
-    for (let i=0; i<n; i++) {
-
-        // Check if i is in the random integer array
-        if (ranarr.includes(i)) {
-
-            // Get profile and create cell
-            const profile = result.filter(v => v.memship === playerids[playeridCounter])[0];
-            createCellDat(profile);
-
-
-            // Check if memship exists in cache
-            let cache = JSON.parse(localStorage.getItem('cachedprofiles')).filter(v => v.profile.memship === playerids[playeridCounter]);
-            if (!cache[0]) {
-
-                // Push to cache
-                localStorage.setItem('cachedprofiles', JSON.stringify([
-                    ...JSON.parse(localStorage.getItem('cachedprofiles') ?? '[]'),
-                    { profile }
-                ]));
-            };
-
-            playeridCounter++; // Increment playeridCounter
-        }
-        else {
-
-            // Create cell
-            let img = document.createElement('img');
-
-            // Add style and content to cell
-            img.classList = 'support-cell';
-            img.src = './static/images/UI/non_loaded_cell.png';
-
-            // Add cell to DOM
-            document.getElementsByClassName('support-page-grid-container')[0].append(img);
-        };
-    };
-};
-
-// Load support page grid (when server is down its empty)
-async function loadEmptySupportPageGrid() {
-
-    for (let i=0; i<n; i++) {
-
-        // Create cell
-        let img = document.createElement('img');
-
-        // Add style and content to cell
-        img.classList = 'support-cell';
-        img.src = './static/images/UI/non_loaded_cell.png';
-
-        // Add cell to DOM
-        document.getElementsByClassName('support-page-grid-container')[0].append(img);
     };
 };
 
@@ -150,6 +58,43 @@ function recreateNode(el, withChildren) {
         while (el.hasChildNodes()) newEl.appendChild(el.firstChild);
         el.parentNode.replaceChild(newEl, el);
     };
+};
+
+// load definitions for supporter page
+async function loadDefsForSuportPage() {
+
+    // self definitions fetch
+    async function fetchDefinition(definitionPath) {
+    
+        const url = `https://www.bungie.net${definitionPath}?cachebust=${GenerateRandomString(8)}`;
+        return await fetch(url)
+            .then(response => response.json())
+            .then(data => { return data; });
+    };
+        
+    // request definitions for supporters section
+    let manifest = await fetch(`https://www.bungie.net/Platform/Destiny2/Manifest/`, { method: 'get' })
+        .then(res => res.json())
+        .then(response => { return response; });
+    
+    let navigatorLanguage = window.navigator.language.split('-')[0];
+    let components = manifest.Response.jsonWorldComponentContentPaths[navigatorLanguage];
+        
+    // get season and season pass definitions
+    let seasonDefinitions = await fetchDefinition(components.DestinySeasonDefinition);
+    let seasonPassDefinitions = await fetchDefinition(components.DestinySeasonPassDefinition);
+        
+    // get commendations and record definitions
+    let commendationsNodeDefinitions = await fetchDefinition(components.DestinySocialCommendationNodeDefinition);
+    let recordDefinitions = await fetchDefinition(components.DestinyRecordDefinition);
+        
+    // Load support page DOM content
+    loadSupportPageContent({
+        seasonDefinitions: seasonDefinitions,
+        seasonPassDefinitions: seasonPassDefinitions,
+        commendationsNodeDefinitions: commendationsNodeDefinitions,
+        recordDefinitions: recordDefinitions
+    });
 };
 
 
@@ -197,7 +142,7 @@ async function main() {
             toggleContainers();
         });
         document.getElementsByClassName('supportbox-dialogue-goback-container')[0].addEventListener('click', function() {
-            toggleContainers();
+            toggleContainers(true);
         });
     
         // Listen for nav icon container click, show home page container, instead of supporters container
@@ -206,7 +151,7 @@ async function main() {
         });
     
         // Check for bnet api availability, else do error (error code inside MakeRequest too)
-        MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': apiKey}}, {scriptOrigin: 'index', avoidCache: true})
+        MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {'X-API-Key': api_key}}, {scriptOrigin: 'index', avoidCache: true})
         .then((response) => {
             // console.log(response);
             if (response.status === 200) console.log('bnet available');
@@ -232,39 +177,7 @@ async function main() {
                     window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${client_id}&response_type=code&state=${stateCode}`;
                 });
             };
-            
-            // self definitions fetch
-            async function fetchDefinition(definitionPath) {
-    
-                const url = `https://www.bungie.net${definitionPath}?cachebust=${GenerateRandomString(8)}`;
-                return await fetch(url)
-                    .then(response => response.json())
-                    .then(data => { return data; });
-            };
-    
-            // request definitions for supporters section (don't store these in idb)
-            let navlang = window.navigator.language.split('-')[0];
-            let manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`)
-                .then((response) => {
-                    return response;
-                });
-            let components = manifest.data.Response.jsonWorldComponentContentPaths[navlang];
-    
-            // get season and season pass definitions
-            let seasonDefinitions = await fetchDefinition(components.DestinySeasonDefinition);
-            let seasonPassDefinitions = await fetchDefinition(components.DestinySeasonPassDefinition);
-    
-            // get commendations and record definitions
-            let commendationsNodeDefinitions = await fetchDefinition(components.DestinySocialCommendationNodeDefinition);
-            let recordDefinitions = await fetchDefinition(components.DestinyRecordDefinition);
-    
-            // Load support page DOM content
-            loadSupportPageContent({
-                seasonDefinitions: seasonDefinitions,
-                seasonPassDefinitions: seasonPassDefinitions,
-                commendationsNodeDefinitions: commendationsNodeDefinitions,
-                recordDefinitions: recordDefinitions
-            });
+
         }
         else {
     

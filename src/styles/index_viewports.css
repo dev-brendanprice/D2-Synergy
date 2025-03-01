@@ -17,10 +17,9 @@
     }
 }
 
-@media screen and (max-height: 940px) {
+/* @media screen and (max-width: 940px) {
     #center-support {
         margin-top: 10px;
-        /* width: 90vw; */
     }
 
     .support-page-text {
@@ -35,7 +34,7 @@
     .onhoverContainer {
         display: none;
     }
-}
+} */
 
 @media screen and (max-height: 760px) {
     #center-con {
