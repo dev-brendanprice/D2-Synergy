@@ -16,7 +16,8 @@ export async function AuthorizeUserWithBungie (authCode) {
         method: 'POST',
         headers: headers,
         body: body
-    }).then(res => res.json())
+    })
+        .then(res => res.json())
         .then(data => {
 
             console.log(data);
@@ -45,6 +46,7 @@ export async function AuthorizeUserWithBungie (authCode) {
         })
         .catch(err => {
 
+            console.error(err);
             switch (err.response.data) {
                 case 'AuthorizationCodeInvalid':
                 case 'AuthorizationCodeStale':
@@ -52,6 +54,5 @@ export async function AuthorizeUserWithBungie (authCode) {
                 case 'ApplicationTokenKeyIdDoesNotExist':
                     CheckUserTokens(false);
             };
-            console.error(err);
         });
 };
