@@ -1,6 +1,3 @@
-
-const log = console.log.bind(console);
-
 self.addEventListener('message', function(event) {
     
     self.clients.matchAll().then( function(clients) {
