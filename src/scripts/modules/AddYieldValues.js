@@ -87,6 +87,7 @@ export async function AddYieldValues (yieldsData) {
 
     // Use overheadxp to calculate how many levels are earned, past the current one
     console.log(overheadxp);
+    // I HAVE NO IDEA
 
 
     // Change ratio bar

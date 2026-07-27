@@ -20,8 +20,6 @@ export async function AuthorizeUserWithBungie (authCode) {
         .then(res => res.json())
         .then(data => {
 
-            console.log(data);
-
             // Store components
             components['membership_id'] = data['membership_id'];
             components['token_type'] = data['token_type'];
@@ -40,8 +38,6 @@ export async function AuthorizeUserWithBungie (authCode) {
             window.localStorage.setItem('accessToken', JSON.stringify(AccessToken));
             window.localStorage.setItem('components', JSON.stringify(components));
             window.localStorage.setItem('refreshToken', JSON.stringify(RefreshToken));
-
-            console.log('-> Authorized with Bungie.net');
 
         })
         .catch(err => {

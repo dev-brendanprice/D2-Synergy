@@ -2,8 +2,6 @@ import { ClearApplicationData } from './ClearApplicationData.js';
 
 // Check tokens for expiration
 export async function CheckUserTokens () {
-
-    console.log('-> CheckUserTokens Called');
     
     let acToken = JSON.parse(window.localStorage.getItem('accessToken'));
     let rsToken = JSON.parse(window.localStorage.getItem('refreshToken'));
@@ -16,8 +14,6 @@ export async function CheckUserTokens () {
 
     // Self function to refresh tokens
     const RefreshTokens = async function () {
-
-        console.log('--> Tokens expired');
 
         const headers = { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" };
         const body = new URLSearchParams({ grant_type: "refresh_token", refresh_token: rsToken.value, client_id: client_id, client_secret: client_secret });
@@ -56,8 +52,6 @@ export async function CheckUserTokens () {
                         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${client_id}&response_type=code`;
                 };
             });
-        
-        console.log('--> Tokens refreshed');
     };
 
 
@@ -68,7 +62,6 @@ export async function CheckUserTokens () {
 
     // If any of the tokens dont exist, redirect to home
     if (!rsToken || !acToken || !comps) {
-        console.log('-> Tokens missing');
         ClearApplicationData(false);
         window.location.href = `https://www.bungie.net/en/oauth/authorize?&client_id=${client_id}&response_type=code`;
     };
@@ -101,5 +94,4 @@ export async function CheckUserTokens () {
         // If either tokens have expired
         await RefreshTokens();
     };
-    console.log('-> CheckUserTokens Finished');
 };

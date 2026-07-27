@@ -11,7 +11,6 @@ export async function loadSupportPageContent(definitions) {
 
     const cacheArr = JSON.parse(localStorage.getItem('cachedprofiles'));
     const memshipArr = cacheArr.map(v => v.profile.memship);
-    console.log(memshipArr);
     let playeridCounter = 0; // Count index of current playerid
     let promiseArr = [];
 
@@ -34,7 +33,6 @@ export async function loadSupportPageContent(definitions) {
     for (let memship of playerids) {
 
         if (memshipArr.includes(memship)) {
-            console.log(true);
             let profile = cacheArr.filter(v => v.profile.memship === memship)[0].profile;
             promiseArr.push(profile);
         }

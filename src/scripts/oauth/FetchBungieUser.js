@@ -7,8 +7,6 @@ import { FetchPrimaryUserMembership } from '../modules/FetchPrimaryUserMembershi
 // @checkTokens {boolean}
 export async function FetchBungieUser(checkTokens = true) {
 
-    console.log('-> FetchBungieUser Called');
-
     // Check user tokens, as we need to use the access token to fetch the user data
     if (checkTokens) {
         await CheckUserTokens();
@@ -61,6 +59,4 @@ export async function FetchBungieUser(checkTokens = true) {
 
     UserProfile.AssignDestinyMembershipId(destinyMembershipId);
     UserProfile.AssignMembershipType(membershipType);
-    
-    console.log(`-> FetchBungieUser Finished`);
 };

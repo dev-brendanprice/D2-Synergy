@@ -26,8 +26,10 @@ import { StopLoad } from './modules/StopLoad.js';
 import { StartLoad } from './modules/StartLoad.js';
 // import { PostMessage, PostMessageSync, RegisterServiceWorker } from './sw/RegisterServiceWorker.js';
 
-console.log(`%cD2 SYNERGY ${import.meta.env.version}`, 'font-weight: bold;font-size: 40px;color: white;');
-console.log('// Welcome to D2Synergy, Please report any errors to @_brendanprice on Twitter.');
+console.log(`%cD2 Synergy ${import.meta.env.version}`, 'font-weight: bold;font-size: 1.75em;');
+console.log("%cIf you have issues loading the Manifest/Definitions, please hard-reload the page with 'Ctrl + Shift + R' or submit a GitHub issue", 'font-size: 1.2em;');
+console.log("%chttps://github.com/dev-brendanprice/D2-Synergy/issues/new (you'll have to copy this one into a new tab, soz)", 'font-style: italic;');
+console.log("\n%cMade with ❤️ by Brendan\nIGN: brendanprice#4702", 'font-size: 1em;font-style: italic;');
 
 // Validate state parameter + start load animation
 VerifyState();
@@ -322,7 +324,6 @@ export async function MainEntryPoint(isPassiveReload) {
     // Check for passive reload
     if (isPassiveReload) {
         StartLoad(isPassiveReload);
-        console.log(`-> Passive Reload Called`);
     };
 
     // Change notification label content
@@ -356,7 +357,6 @@ export async function MainEntryPoint(isPassiveReload) {
     // Check for passive reload
     if (isPassiveReload) {
         StopLoad();
-        console.log(`-> Passive Reload Finished`);
         return;
     };
 
@@ -372,10 +372,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Test server availability
     await MakeRequest(`https://www.bungie.net/Platform/Destiny2/1/Profile/4611686018447977370/?components=100`, {headers: {"X-API-Key": requestHeaders.ApiKey}}, {avoidCache: true})
-        .then((response) => {
-            // console.log(response);
-            if (response.status === 200) console.log('bnet available');
-        })
         .catch((error) => {
             console.error(error);
         });

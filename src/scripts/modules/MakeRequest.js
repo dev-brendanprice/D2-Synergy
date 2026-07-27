@@ -27,9 +27,6 @@ export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user'
                     const btnAuth = document.getElementById('auth-buttonmain');
                     btnAuth.classList.remove('header-authenticate-con');
                     btnAuth.classList.add('header-authenticate-con-off');
-
-                    console.log('Bungie.net API is unavailable...');
-                    
                     return error;
                 };
 

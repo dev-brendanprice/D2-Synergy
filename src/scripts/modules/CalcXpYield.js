@@ -9,7 +9,7 @@ export async function CalcXpYield(bountyArr, itemTypeKeys, baseYields, petraYiel
 
     // Get corresponding xp
     function DiffXP(bounty, bountyType) {
-        // console.log(bounty, bountyType);
+
         // Dreaming city bounties grant half xp
         if (bounty.inventory.stackUniqueLabel.includes('dreaming_city')) {
             totalXP += petraYields[bountyType];

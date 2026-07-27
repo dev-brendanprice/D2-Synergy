@@ -71,8 +71,6 @@ const FixTables = async () => {
 // Check manifest version
 export const ValidateManifest = async () => {
 
-    console.log('-> ValidateManifest Called');
-
     // Fetch manifest
     let localStorageManifestVersion = window.localStorage.getItem('destinyManifestVersion');
 
@@ -80,7 +78,6 @@ export const ValidateManifest = async () => {
     manifest = await axios.get(`https://www.bungie.net/Platform/Destiny2/Manifest/`);
 
     // Check for new version, if so delete definitions and re-fetch, then do normal FixTables
-    console.log(localStorageManifestVersion, manifest.data.Response.version);
     if (localStorageManifestVersion !== manifest.data.Response.version) {
         
         console.log('📚 New manifest found');
@@ -90,9 +87,6 @@ export const ValidateManifest = async () => {
         // Re-Validate tables
         await FixTables();
     };
-
-    // Remove timeout, just in the case overlapping instructions
-    console.log('-> ValidateManifest Finished');
 };
 
 

@@ -55,6 +55,4 @@ export async function GetYieldData(CharacterObjectives, CharacterInventories, ch
         profileWideData.AddYieldData('xp', totalXpYield);
         profileWideData.AddYieldData('seasonPassLevels', totalXpYield / 100_000);
     };
-
-    console.log('🧵 GetYieldData Done');
 };

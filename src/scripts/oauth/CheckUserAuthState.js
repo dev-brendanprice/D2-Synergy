@@ -6,8 +6,7 @@ const urlParams = new URLSearchParams(window.location.search);
 
 // Main OAuth flow mechanism
 export async function CheckUserAuthState() {
-    
-    console.log('-> CheckUserAuthState Called');
+
 
     let rsToken = JSON.parse(window.localStorage.getItem('refreshToken'));
     let acToken = JSON.parse(window.localStorage.getItem('accessToken'));
@@ -45,5 +44,4 @@ export async function CheckUserAuthState() {
     catch (error) {
         console.error(error);
     };
-    console.log(`-> CheckUserAuthState Finished`);
 };

@@ -32,8 +32,6 @@ export async function FetchUserTransistory() {
         if (transistoryData.data) {
             if (transistoryData.data.partyMembers.length > 1) {
 
-                console.log('📚 User in a fireteam');
-
                 // Store fireteam members
                 fireteamMembers = transistoryData.data.partyMembers;
 
@@ -47,9 +45,6 @@ export async function FetchUserTransistory() {
                 return;
             };
         };
-
-        // Else, user is not in a fireteam
-        console.log('📚 User not in a fireteam');
 
     })
     .catch((error) => {

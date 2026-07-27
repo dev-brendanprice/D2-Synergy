@@ -49,8 +49,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
 
         if (!isAlternate) {
 
-            console.log('-> LoadCharacter Called');
-
             // Get fireteam data (shared wisdom modifier)
             FetchUserTransistory();
 
@@ -61,11 +59,7 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
             // Clear (emtpy fields that are going to change) DOM content
             document.getElementById('seasonalChallengeItems').innerHTML = '';
             document.getElementById('overlays').innerHTML = '';
-        }
-        else {
-            console.log(`--> LoadCharacter Called - ${characterId}`);
         };
-
 
         // Globals in this scope
         let CharacterProgressions,
@@ -74,7 +68,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
             CharacterEquipment,
             primaryCharacter,
             ItemSockets;
-
 
 
         // Get chosen character via characterId
@@ -291,13 +284,6 @@ export async function LoadCharacter(characterId, characters, isFirstTimeLoad = t
         };
 
         characterLoadToggled = false;
-    };
-
-    if (!isAlternate) {
-        console.log('-> LoadCharacter Done');
-    }
-    else {
-        console.log(`--> LoadCharacter Done - ${characterId}`);
     };
 
     StopLoad();

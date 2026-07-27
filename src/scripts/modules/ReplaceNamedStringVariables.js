@@ -43,8 +43,6 @@ export function ReplaceNamedStringVariables(descriptor) {
                 // Splice image back into place of the named variable
                 let substringToReplace = descriptor.slice(indices[i], indices[i+1]+1);
                 descriptor = descriptor.replace(substringToReplace, variableNameElement);
-
-                // console.log(descriptor);
             };
         };
     };

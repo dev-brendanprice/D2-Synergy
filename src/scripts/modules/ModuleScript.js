@@ -66,5 +66,4 @@ export function CountProgressionItemProperties(charBounties, seasonalChallenges,
 
     // Sort progressionPropertiesPercentages by percentage in descending order
     progressionPropertiesPercentages.sort((a,b) => b[1] - a[1]);
-    console.log(progressionPropertiesPercentages);
 };

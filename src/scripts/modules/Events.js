@@ -519,7 +519,6 @@ export async function AddEventListeners() {
 
     // Dropdown selection
     AddListener('defaultViewDropdown', 'change', function () {
-        console.log(this.value);
         const contentViewsThatINeedToChange = [
             'bountiesContainer', 
             'seasonalChallengesContainer',
@@ -739,7 +738,6 @@ export async function AddEventListeners() {
     AddListener('checkboxShowPopup', 'change', function () {
 
         // Toggle boolean
-        console.log(this.checked);
         if (this.checked) {
             CacheChangeItem('showPopup', true);
             return;
@@ -1149,7 +1147,6 @@ export async function BuildWorkspace() {
                 document.getElementById(pageName).style.display = 'block';
 
                 // Hide/show subheading statistics
-                console.log(pageName);
                 if (pageName == 'bountiesContainer') {
                     document.getElementById('bountiesSubheadingStatistics').style.display = 'flex';
                     document.getElementById('challengesSubheadingStatistics').style.display = 'none';

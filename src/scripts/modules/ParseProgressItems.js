@@ -75,7 +75,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Get all seasonal challenges
     let currentSeasonalChallenges = await ParseSeasonalChallenges(UserProfile.currentSeasonHash, seasonProgressionInfo);
-    console.log(currentSeasonalChallenges);
     returnObj.challenges = {};
 
     // Build group containers and seasonal challenges UI section
@@ -91,7 +90,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
             groupNames.push(button.getAttribute('data-groupname'));
         };
 
-        // console.log(weekString, weekData.challenges);
+        // ...
         if (!groupNames.includes(weekString)) {
 
             // Create div elements
@@ -392,8 +391,7 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     // Check if weekly progress surpasses that of the well-rested buff
     if ((500_000 - weeklyProgress) / 2 < 0) {
 
-        console.log('🍋 Well rested expired');
-
+        // well-rested expired
         totalXpYieldWithModifiers = totalXpYield * xpModifier;
         document.getElementById('wellRestedCheckmarkIcon').src = './static/ico/crossmark.svg';
         document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
@@ -402,13 +400,12 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     }
     else {
 
-        console.log('🍋 Well rested active');
-
         /*
             if the upper limit is being met with the current xp on hand, do else
             if the upper limit is NOT being met, then double xp, within the upper limit
         */
 
+        // well rested active
         let wellRestedLimit = (500_000 - weeklyProgress) / 2;
 
         // check for well rested upper and lower limit
@@ -538,8 +535,6 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
 
     // Check if useProfilewide is active
     if (useProfilewide) {
-        
-        console.log('🧵 Profile-wide Checked');
 
         let data = profileWideData.allYieldData;
         // ..
@@ -598,6 +593,5 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
         };
     };
 
-    console.log('-> ParseProgressionalItems Done');
     return returnObj;
 };
