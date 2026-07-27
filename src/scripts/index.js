@@ -15,11 +15,11 @@ let serverDown = false; // nuke this boolean please
 let cachedprofiles = localStorage.getItem('cachedprofiles');
 if (!cachedprofiles) {
     localStorage.setItem('cachedprofiles', '[]');
-    loadDefsForSuportPage();
 }
 else {
-    loadSupportPageContent();
+    // loadSupportPageContent(definitions);
 };
+loadDefsForSuportPage();
 
 // Check localStorage to determine if user has signed in already
 async function CheckSession() {

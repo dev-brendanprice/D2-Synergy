@@ -44,7 +44,7 @@ export const MakeRequest = function (url, config, utils = { scriptOrigin: 'user'
         if (utils.avoidCache) {
             url += `&cachebust=${GenerateRandomString(10)}`;
         };
-
+        
         // Make request, return if successful, else check for error status
         await axios.get(url, config)
         .then((response) => {

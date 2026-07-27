@@ -6,7 +6,7 @@ import { ParseGender } from './ParseGender.js';
 const requestHeaders = { headers: { "X-API-Key": import.meta.env.API_KEY } };
 
 export async function LoadPartialProfile(memship, definitions) {
-
+    console.log(definitions);
     // Parse defs
     const {
         seasonDefinitions,
@@ -22,26 +22,30 @@ export async function LoadPartialProfile(memship, definitions) {
     }).catch(e => console.error(e));
 
 
-    // Get user clan name
+    // Get users' clan info
     let clan = await axios.get(`https://www.bungie.net/Platform/GroupV2/User/${memshipType}/${memship}/0/1/`, requestHeaders)
-    .then((res) => {
-        return res.data.Response.results[0].group;
-    }).catch(e => console.error(e));
+        .then((res) => {
+            // console.log(res);
+            return res.data.Response.results[0]?.group;
+        })
+        .catch(err => console.error(err));
 
     // Get user info
     let user = await axios.get(`https://www.bungie.net/Platform/Destiny2/${memshipType}/Profile/${memship}/?components=100,1400,900,202,200,104`, requestHeaders)
     .then((res) => {
         return res.data.Response;
-    }).catch(e => console.error(e));
+    }).catch(err => console.error(err));
 
     // Get current season/season pass -> Get user season rank
-    let pchar = Object.values(user.characters.data).sort((a,b) => new Date(b.dateLastPlayed) - new Date(a.dateLastPlayed))[0]; // Get primary character by date last played
-    let season = seasonDefinitions[user.profile.data.currentSeasonHash];
-    let seasonpass = seasonPassDefinitions[season.seasonPassHash];
+    let primaryCharacter = Object.values(user.characters.data).sort((a,b) => new Date(b.dateLastPlayed) - new Date(a.dateLastPlayed))[0]; // Get primary character by date last played
 
-    // Get required progression hashes
-    let seasonProgressionHash = season.seasonPassProgressionHash;
-    let prestigeSeasonProgressionHash = seasonpass.prestigeProgressionHash;
+    // get current seasons' data/hashes via user profile
+    const currentSeasonPassHash = user.profile.data.currentSeasonPassHash;
+    const currentSeasonPass = seasonPassDefinitions[currentSeasonPassHash];
+
+    const prestigeProgressionHash = currentSeasonPass.prestigeProgressionHash;
+    const seasonProgressionHash = currentSeasonPass.rewardProgressionHash;
+
 
     // Check if profile is private by proxy
     let seasonProgression = 0;
@@ -50,7 +54,7 @@ export async function LoadPartialProfile(memship, definitions) {
 
         // Get progression data
         seasonProgression = Object.values(user.characterProgressions.data)[0].progressions[seasonProgressionHash];
-        prestigeSeasonProgression = Object.values(user.characterProgressions.data)[0].progressions[prestigeSeasonProgressionHash];
+        prestigeSeasonProgression = Object.values(user.characterProgressions.data)[0].progressions[prestigeProgressionHash];
     };
 
 
@@ -74,10 +78,10 @@ export async function LoadPartialProfile(memship, definitions) {
     // Check if a title is equipped
     let title = false;
     let gild = false;
-    if (pchar.titleRecordHash) {
+    if (primaryCharacter.titleRecordHash) {
 
         // Get title and title hash
-        let titleHash = pchar.titleRecordHash;
+        let titleHash = primaryCharacter.titleRecordHash;
         title = recordDefinitions[titleHash];
 
         // Check if title can be gilded
@@ -98,8 +102,13 @@ export async function LoadPartialProfile(memship, definitions) {
         };
 
         // Get title name, via character gender (localization purposes)
-        let charGender = ParseGender(pchar.genderType);
+        let charGender = ParseGender(primaryCharacter.genderType);
         title = title.titleInfo.titlesByGender[charGender];
+    };
+
+    // if user is not in a clan
+    if (!clan || clan === undefined) {
+        clan = { name: 'No Clan' };
     };
 
 
@@ -108,9 +117,9 @@ export async function LoadPartialProfile(memship, definitions) {
         memship: memship,
         uname: user.profile.data.userInfo.bungieGlobalDisplayName,
         displayCode: user.profile.data.userInfo.bungieGlobalDisplayNameCode,
-        light: pchar.light,
-        emblemPath: pchar.emblemPath,
-        emblemBackgroundPath: pchar.emblemBackgroundPath,
+        light: primaryCharacter.light,
+        emblemPath: primaryCharacter.emblemPath,
+        emblemBackgroundPath: primaryCharacter.emblemBackgroundPath,
         guardianRank: user.profile.data.currentGuardianRank,
         tscore: user.profileRecords.data ? user.profileRecords.data.activeScore : 0,
         splevel: await ReturnSeasonPassLevel(seasonProgression, prestigeSeasonProgression),

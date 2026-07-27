@@ -1,5 +1,5 @@
 import { LoadPartialProfile } from './LoadPartialProfile.js';
-import { createCellDat } from './CreateCellData.js';
+import { createCellData } from './CreateCellData.js';
 import { playerids } from '../../data/supporterMessages.js';
 
 // Count of rows on grid
@@ -14,7 +14,7 @@ export async function loadSupportPageContent(definitions) {
     let playeridCounter = 0; // Count index of current playerid
     let promiseArr = [];
 
-    // Arr with numbers, denoting to random coords on the grid
+    // generate random coords for this user on the grid
     let ranarr = [];
     for (let i=0; i<playerids.length; i++) {
 
@@ -50,7 +50,7 @@ export async function loadSupportPageContent(definitions) {
 
             // Get profile and create cell
             const profile = result.filter(v => v.memship === playerids[playeridCounter])[0];
-            createCellDat(profile);
+            createCellData(profile);
 
 
             // Check if memship exists in cache

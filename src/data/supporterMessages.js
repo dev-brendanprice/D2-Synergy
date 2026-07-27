@@ -3,7 +3,7 @@
 export const messages =  {
     '4611686018482180535': { ico: 'cdn.d2synergy.com/static/png/bounty_image.png', msg: 'change da world. my final message. Goodb ye' },
     '4611686018447977370': { ico: 'cdn.d2synergy.com/static/png/bounty_image.png', msg: 'hi' },
-    '4611686018474337076': { ico: 'cdn.d2synergy.com/static/png/bounty_image.png', msg: 'when ikora is a patient' },
+    '4611686018474337076': { ico: 'cdn.d2synergy.com/static/png/bounty_image.png', msg: '[redacted]' },
     '4611686018471667515': { ico: 'cdn.d2synergy.com/static/png/bounty_image.png', msg: 'Have you heard of the mcgangbang?' },
     '4611686018435149063': {},
     '4611686018482510393': {},

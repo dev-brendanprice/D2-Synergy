@@ -1,6 +1,6 @@
 import { messages } from '../../data/supporterMessages.js';
 
-export function createCellDat(profile) {
+export function createCellData(profile) {
 
     let memship = profile.memship; // get memship for ez access
 
@@ -376,7 +376,7 @@ export function createCellDat(profile) {
 
 
     // Create event listener for mouse move event
-    img.addEventListener('mousemove', function(e) {
+    img.addEventListener('mousemove', function (e) {
 
         containerForOverlay.style.display = 'block';
         containerForOverlay.style.top = `${e.clientY + 45}px`;
