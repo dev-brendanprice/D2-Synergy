@@ -947,9 +947,9 @@ export async function BuildWorkspace() {
     .then((result) => {
 
         if (result === undefined) {
-            document.getElementById('loadpopupContainer').style.display = 'block';
-            document.getElementById('loadpopupBackplate').style.display = 'block';
-            document.getElementById('firstTimeLoadPopupContent').style.display = 'block'; // Show corresponding content
+            // document.getElementById('loadpopupContainer').style.display = 'block';
+            // document.getElementById('loadpopupBackplate').style.display = 'block';
+            // document.getElementById('firstTimeLoadPopupContent').style.display = 'block'; // Show corresponding content
             CacheChangeItem('isFirstTimeVisit', false); // Change cache object
             CacheChangeItem('showPopup', false); // Change cache object
         };
@@ -974,8 +974,8 @@ export async function BuildWorkspace() {
             if (newVersion !== curVersion) {
 
                 // Show "What's New" container
-                document.getElementById('loadpopupContainer').style.display = 'block';
-                document.getElementById('loadpopupBackplate').style.display = 'block';
+                // document.getElementById('loadpopupContainer').style.display = 'block';
+                // document.getElementById('loadpopupBackplate').style.display = 'block';
 
                 // Update cache
                 CacheChangeItem('storedVersion', newVersion);
