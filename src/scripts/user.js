@@ -28,7 +28,7 @@ import { StartLoad } from './modules/StartLoad.js';
 
 console.log(`%cD2 Synergy ${import.meta.env.version}`, 'font-weight: bold;font-size: 1.75em;');
 console.log("%cIf you have issues loading the Manifest/Definitions, please hard-reload the page with 'Ctrl + Shift + R' or submit a GitHub issue", 'font-size: 1.2em;');
-console.log("%chttps://github.com/dev-brendanprice/D2-Synergy/issues/new (you'll have to copy this one into a new tab, soz)", 'font-style: italic;');
+console.log("%chttps://github.com/dev-brendanprice/D2-Synergy/issues/new?template=bug-report.md (you'll have to copy this one into a new tab, soz)", 'font-style: italic;');
 console.log("\n%cMade with ❤️ by Brendan\nIGN: brendanprice#4702", 'font-size: 1em;font-style: italic;');
 
 // Validate state parameter + start load animation
