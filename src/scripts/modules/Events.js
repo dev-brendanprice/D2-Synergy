@@ -825,11 +825,11 @@ export async function AddEventListeners() {
     let controlStates = { // defaults
         curGrpName: 'Week 1',
         curDrpName: 'Week_1',
-        curGrpHtml: document.getElementsByClassName('groupsDropdownButtonTextSections')[2].parentNode
+        curGrpHtml: document.getElementsByClassName('groupsDropdownButtonTextSections')[0].parentNode
     }; // Bit dodgy, sometimes the DOM might be a quick load, thus this will error
 
     // Change the first group's border by default
-    document.getElementsByClassName('groupsDropdownButtonTextSections')[2].parentNode.style.border = '1px solid white';
+    document.getElementsByClassName('groupsDropdownButtonTextSections')[0].parentNode.style.border = '1px solid white';
 
     // Dropdown for challenge groups (week 1,2,3 or all)
     AddListener('groupsDropdownButtonTextSections', 'click', function () {

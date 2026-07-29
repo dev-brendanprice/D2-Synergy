@@ -11,7 +11,7 @@ import { FetchPrimaryUserMembership } from './FetchPrimaryUserMembership.js';
 // Fetch transistory data from current user
 export async function FetchUserTransistory() {
 
-    // Fetch config + Query params
+    // request config
     const membershipType = UserProfile.membershipType;
     const destinyMembershipId = UserProfile.destinyMembershipId;
     const requestConfig = {
@@ -54,7 +54,7 @@ export async function FetchUserTransistory() {
 
 async function FindHighestUser(fireteamMembers) {
 
-    // Config
+    // request config
     let highestSeasonRankFromMembers = 0;
     const requestConfig = {
         headers: {

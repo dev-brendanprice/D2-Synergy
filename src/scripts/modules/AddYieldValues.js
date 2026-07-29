@@ -28,8 +28,10 @@ export async function AddYieldValues (yieldsData) {
     let pb = yieldsData.artifact.powerBonusProgression;
 
     // Calculate percentages
-    let pbProgress = parseInt(pb.progressToNextLevel / pb.nextLevelAt * 100).toFixed(0);
-    let pbYieldProgress = parseInt(gain / pb.nextLevelAt * 100).toFixed(0);
+    // let pbProgress = parseInt(pb.progressToNextLevel / pb.nextLevelAt * 100).toFixed(0);
+    let pbProgress = 0;
+    // let pbYieldProgress = parseInt(gain / pb.nextLevelAt * 100).toFixed(0);
+    let pbYieldProgress = 0;
 
     // Cap value and store any overhead
     if (pbYieldProgress > 100 - pbProgress) {

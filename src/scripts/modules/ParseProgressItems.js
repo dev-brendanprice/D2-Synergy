@@ -73,122 +73,125 @@ export async function ParseProgressionalItems(CharacterObjectives, CharacterInve
     document.getElementById('wellRestedCheckmarkIcon').style.filter = filterToResetCheckmark;
     document.getElementById('ghostModsCheckmarkIcon').style.filter = filterToResetCheckmark;
 
-    // Get all seasonal challenges
-    let currentSeasonalChallenges = await ParseSeasonalChallenges(UserProfile.currentSeasonHash, seasonProgressionInfo);
-    returnObj.challenges = {};
+    const challengesAreRemoved = true;
+    if (!challengesAreRemoved) { // lame band-aid fix for when they removed season challenges
 
-    // Build group containers and seasonal challenges UI section
-    let groupNames = [];
-    for (let weekString in currentSeasonalChallenges) {
-        
-        // Get week data 
-        let weekData = currentSeasonalChallenges[weekString];
+        // Get all seasonal challenges
+        let currentSeasonalChallenges = await ParseSeasonalChallenges(UserProfile.currentSeasonHash, seasonProgressionInfo);
+        returnObj.challenges = {};
 
-        // Get current groups from modal and store
-        let modalButtons = document.getElementsByClassName('groupsDropdownButtonTextSections');
-        for (let button of modalButtons) {
-            groupNames.push(button.getAttribute('data-groupname'));
-        };
+        // Build group containers and seasonal challenges UI section
+        let groupNames = [];
+        for (let weekString in currentSeasonalChallenges) {
+            
+            // Get week data 
+            let weekData = currentSeasonalChallenges[weekString];
 
-        // ...
-        if (!groupNames.includes(weekString)) {
-
-            // Create div elements
-            const listItemContainer = document.createElement('div');
-            const listItemContent = document.createElement('div');
-            listItemContent.setAttribute('data-groupname', weekString); // Set data attr
-            listItemContent.innerHTML = weekString; // Add innerHTML
-
-            // Add classes an ids
-            listItemContainer.classList.add('dropdownButton');
-            listItemContent.classList.add('groupsDropdownButtonTextSections');
-            listItemContent.id = `${weekString.split(' ')[0]}_${weekString.split(' ')[1]}`;
-
-            // Append hierarchy
-            listItemContainer.appendChild(listItemContent);
-            document.getElementById('groupsDropdownForChallenges').appendChild(listItemContainer);
-
-            // Containers for groups and data attr
-            const compactChallengesGroupContainer = document.createElement('div');
-            compactChallengesGroupContainer.id = `compact_${weekString}`;
-            const wideChallengesGroupContainer = document.createElement('div');
-            wideChallengesGroupContainer.id = `wide_${weekString}`;
-
-            // TEMPORARY
-            if (weekString !== 'Week 1') {
-                compactChallengesGroupContainer.style.display = 'none';
-                wideChallengesGroupContainer.style.display = 'none';
+            // Get current groups from modal and store
+            let modalButtons = document.getElementsByClassName('groupsDropdownButtonTextSections');
+            for (let button of modalButtons) {
+                groupNames.push(button.getAttribute('data-groupname'));
             };
 
-            // Append group containers to DOM
-            document.getElementsByClassName('gridCompact')[0].appendChild(compactChallengesGroupContainer);
-            document.getElementsByClassName('gridWide')[0].appendChild(wideChallengesGroupContainer);
+            // ...
+            if (!groupNames.includes(weekString)) {
 
-            // Build each challenge in group
-            for (let challengeData of weekData.challenges) {
+                // Create div elements
+                const listItemContainer = document.createElement('div');
+                const listItemContent = document.createElement('div');
+                listItemContent.setAttribute('data-groupname', weekString); // Set data attr
+                listItemContent.innerHTML = weekString; // Add innerHTML
 
-                challengesCounter++; // Increment counter
+                // Add classes an ids
+                listItemContainer.classList.add('dropdownButton');
+                listItemContent.classList.add('groupsDropdownButtonTextSections');
+                listItemContent.id = `${weekString.split(' ')[0]}_${weekString.split(' ')[1]}`;
 
-                // Push objectives to challenge
-                let objectivesDat = characterRecords[challengeData.hash];
-                challengeData.objectives = [];
+                // Append hierarchy
+                listItemContainer.appendChild(listItemContent);
+                document.getElementById('groupsDropdownForChallenges').appendChild(listItemContainer);
 
-                // Check if challenge is redacted
-                if (challengeData.redacted) {
-                    CreateSeasonalChallenge(challengeData, weekString, true);
-                    break;
+                // Containers for groups and data attr
+                const compactChallengesGroupContainer = document.createElement('div');
+                compactChallengesGroupContainer.id = `compact_${weekString}`;
+                const wideChallengesGroupContainer = document.createElement('div');
+                wideChallengesGroupContainer.id = `wide_${weekString}`;
+
+                // TEMPORARY
+                if (weekString !== 'Week 1') {
+                    compactChallengesGroupContainer.style.display = 'none';
+                    wideChallengesGroupContainer.style.display = 'none';
                 };
-                
-                Array.prototype.push.apply(challengeData.objectives, objectivesDat.objectives);
 
-                // Get progress of combined (all) challenge objectives
-                let completionValue = 0;
-                let progressionValue = 0;
+                // Append group containers to DOM
+                document.getElementsByClassName('gridCompact')[0].appendChild(compactChallengesGroupContainer);
+                document.getElementsByClassName('gridWide')[0].appendChild(wideChallengesGroupContainer);
 
-                for (const obj of challengeData.objectives) {
-                    completionValue += obj.completionValue;
-                    progressionValue += obj.progress;
-                };
+                // Build each challenge in group
+                for (let challengeData of weekData.challenges) {
 
-                // Calculate percentage and change width of bar
-                const percent = Math.trunc((progressionValue / completionValue) * 100);
+                    challengesCounter++; // Increment counter
 
-                // Push values to challenge
-                challengeData.progressionPercent = percent;
-                challengeData.isComplete = false;
-                if (percent >= 100) {
+                    // Push objectives to challenge
+                    let objectivesDat = characterRecords[challengeData.hash];
+                    challengeData.objectives = [];
 
-                    challengeData.isComplete = true;
-                    challengeData.progressionPercent = 100;
-                    completeChallengesCounter++; // Increment completed challengers counter
+                    // Check if challenge is redacted
+                    if (challengeData.redacted) {
+                        CreateSeasonalChallenge(challengeData, weekString, true);
+                        break;
+                    };
+                    
+                    Array.prototype.push.apply(challengeData.objectives, objectivesDat.objectives);
 
-                    // Get claimed state
-                    let stateInfo = characterRecords[challengeData.hash];
+                    // Get progress of combined (all) challenge objectives
+                    let completionValue = 0;
+                    let progressionValue = 0;
 
-                    if (stateInfo) {
+                    for (const obj of challengeData.objectives) {
+                        completionValue += obj.completionValue;
+                        progressionValue += obj.progress;
+                    };
 
-                        // Get enum val from state enum
-                        let state = Boolean(stateInfo.state & 1);
+                    // Calculate percentage and change width of bar
+                    const percent = Math.trunc((progressionValue / completionValue) * 100);
 
-                        challengeData.isClaimed = false;
-                        if (state) { // Compare
-                            challengeData.isClaimed = true;
+                    // Push values to challenge
+                    challengeData.progressionPercent = percent;
+                    challengeData.isComplete = false;
+                    if (percent >= 100) {
+
+                        challengeData.isComplete = true;
+                        challengeData.progressionPercent = 100;
+                        completeChallengesCounter++; // Increment completed challengers counter
+
+                        // Get claimed state
+                        let stateInfo = characterRecords[challengeData.hash];
+
+                        if (stateInfo) {
+
+                            // Get enum val from state enum
+                            let state = Boolean(stateInfo.state & 1);
+
+                            challengeData.isClaimed = false;
+                            if (state) { // Compare
+                                challengeData.isClaimed = true;
+                            };
                         };
                     };
+
+                    // Create challenge
+                    CreateSeasonalChallenge(challengeData, weekString);
                 };
-
-                // Create challenge
-                CreateSeasonalChallenge(challengeData, weekString);
+                
             };
-            
+
+            // Push HTML fields for challenges header stats
+            document.getElementById('challengesTotalField').innerHTML = `${challengesCounter}`;
+            document.getElementById('challengesCompletedField').innerHTML = `${completeChallengesCounter}`;
+
         };
-
-        // Push HTML fields for challenges header stats
-        document.getElementById('challengesTotalField').innerHTML = `${challengesCounter}`;
-        document.getElementById('challengesCompletedField').innerHTML = `${completeChallengesCounter}`;
-
     };
-
 
     // Sort challenges by completion percentage, in ascending order (so the completed ones are at the end)
     // let sortedChallenges = Object.values(allSeasonalChallengesAndTheirDivs).sort((a, b) => a.challenge.completionPercentage - b.challenge.completionPercentage);

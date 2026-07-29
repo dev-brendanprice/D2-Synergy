@@ -25,7 +25,6 @@ export async function LoadPartialProfile(memship, definitions) {
     // Get users' clan info
     let clan = await axios.get(`https://www.bungie.net/Platform/GroupV2/User/${memshipType}/${memship}/0/1/`, requestHeaders)
         .then((res) => {
-            // console.log(res);
             return res.data.Response.results[0]?.group;
         })
         .catch(err => console.error(err));
