@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+:root {
+  --bg: #15151c;
+  font-synthesis: none;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --general-font: "Roboto Mono", monospace;
+  --ui-font:'SF Pro Display', sans-serif;
+  /* change this to the "Destiny" font */
+}
+
+body {
+  padding: 20px;
+  background-color: var(--bg) !important;
+  color: white !important;
+  font-family: var(--general-font) !important;
+}

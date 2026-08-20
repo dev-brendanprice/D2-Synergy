@@ -1,0 +1,3 @@
+# Disable automatic .env file loading
+# Vite.js HATES this one feature...
+env = false

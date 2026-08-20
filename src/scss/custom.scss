@@ -1,0 +1,202 @@
+// Import all of Bootstrap’s CSS
+@import "bootstrap/scss/bootstrap";
+
+.btn-primary {
+  background-color: #A37A37;
+  border: 1px solid #DABD8E;
+  transition: border 0.1s, background-color 50ms ease-in-out;
+  width: 116px;
+
+  &:hover {
+    background-color: rgb(163 122 55 / 0.3);
+    border: 1px solid #A37A37;
+    transition: border 0.1s, background-color 50ms ease-in-out;
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #A37A37 !important;
+    border: 1px solid #DABD8E !important;
+  }
+
+  &:disabled {
+    background-color: #A37A37;
+    border: 1px solid #DABD8E;
+  }
+}
+
+.primary-profile-badge {
+  margin-bottom: 2px;
+}
+
+.button-compare-seals {
+  margin-top: 20px;
+  width: fit-content;
+}
+
+.table-compare-seals {
+  margin-top: 30px;
+}
+
+.form-control {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid rgb(255 255 255 / 0.5);
+  color: rgb(255 255 255 / 0.7);
+  border-radius: unset;
+  width: 100%;
+  caret-color: #A37A37;
+  transition: border-color 0.1s ease-in-out;
+  padding-left: 0px;
+
+  &:hover {
+    background-color: transparent;
+  }
+
+  &:focus {
+    background-color: transparent;
+    border-bottom: 1px solid #A37A37;
+    transition: border-color 0.1s ease-in-out;
+    box-shadow: none;
+    color: white;
+
+    &::placeholder {
+      transition: color 0.1s ease-in-out;
+      color: rgb(255 255 255 / 0.7);
+    }
+  }
+
+  &::placeholder {
+    transition: color 0.1s ease-in-out;
+    color: #848f9b;
+  }
+}
+
+.form-spinner {
+  margin-left: -40px;
+  margin-right: 10px;
+  opacity: 0;
+  transition: opacity 0.1s ease-in-out;
+  width: 20px;
+  filter: contrast(0%);
+
+  &.active {
+    opacity: 1;
+    transition: opacity 0.1s ease-in-out;
+  }
+}
+
+.roster-spinner {
+  width: 20px;
+  filter: contrast(0%);
+}
+
+.list-group-heading {
+  display: flex;
+  margin-bottom: -10px;
+  margin-top: 20px;
+  color: #E2E2E2;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 1rem;
+
+  --border-style: 1px solid #727280;
+
+  > :first-child {
+    border:  var(--border-style);
+    border-radius: var(--bs-list-group-border-radius);
+  }
+
+  > :not(:first-child) {
+    border: var(--border-style);
+    border-radius: var(--bs-list-group-border-radius);
+  }
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2D2D3F;
+  color: whitesmoke;
+  height: 42px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.list-user-platform {
+  width: 22px;
+}
+
+.list-user-descriptors {
+  display: flex;
+  gap: 10px;
+}
+
+.list-user-text {
+  display: flex;
+  align-items: flex-end;
+  user-select: none;
+  gap: 10px;
+
+  .list-item-type {
+    color: gray;
+    font-size: 14px;
+  }
+}
+
+.list-item-action {
+  display: flex;
+  border: 1px solid #A37A37;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  background-color: transparent;
+  transition: background-color 0.1s ease-in-out;
+
+  &:hover {
+    background-color: rgb(163 122 55 / 0.3);
+    transition: background-color 0.1s ease-in-out;
+    cursor: pointer;
+  }
+
+  > img {
+    width: 16px;
+    transition: filter 0.1s ease-in-out;
+    filter: invert(60%) sepia(10%) saturate(2202%) hue-rotate(3deg) brightness(91%) contrast(84%);
+  }
+
+  &:hover > img {
+    transition: filter 0.1s ease-in-out;
+    filter: invert(90%) sepia(10%) saturate(2202%) hue-rotate(3deg) brightness(100%) contrast(84%);
+  }
+}
+
+.form-check-input {
+  border: none;
+  outline: 0;
+  background-color: rgb(217 217 217 / 0.1);
+
+  &:checked {
+    background-color: #A37A37;
+    outline: 0;
+    box-shadow: none !important;
+  }
+
+  &:focus {
+    border: none;
+    box-shadow: none !important;
+    accent-color: red;
+  }
+
+  &::before {
+    box-shadow: none !important;
+    accent-color: red;
+  }
+}

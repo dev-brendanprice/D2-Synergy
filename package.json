@@ -1,38 +1,33 @@
 {
-  "name": "d2-synergy",
-  "version": "0.6.3",
-  "description": "[![Version](https://img.shields.io/badge/Version-ALPHA-yellow)](https://github.com/brendanprice2003/D2Synergy_v0.3)\r [![API](https://img.shields.io/badge/API-Bungie.net-blue)](https://bungie-net.github.io/multi/index.html)",
-  "main": "index.js",
+  "name": "poc3",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "npx snowpack dev",
-    "build": "npx snowpack build"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
-  "keywords": [
-    "Destiny",
-    "Bungie.net",
-    "Bungie.net API",
-    "Destiny 2",
-    "D2Synergy",
-    "Synergy"
-  ],
-  "author": "brendanprice2003",
-  "license": "ISC",
   "dependencies": {
-    "@csstools/postcss-sass": "^5.0.1",
-    "@snowpack/plugin-postcss": "^1.4.3",
-    "axios": "^1.1.2",
-    "dotenv": "^16.0.2",
-    "idb-keyval": "^6.2.0",
-    "postcss-cli": "^10.1.0",
-    "postcss-scss": "^4.0.6",
-    "snowpack": "^3.8.8"
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8",
+    "idb-keyval": "^6.3.0",
+    "react": "^19.2.8",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.2",
+    "sass": "^1.102.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/brendanprice2003/D2-Synergy.git"
-  },
-  "bugs": {
-    "url": "https://github.com/brendanprice2003/D2-Synergy/issues"
-  },
-  "homepage": "https://github.com/brendanprice2003/D2-Synergy#readme"
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "eslint": "^10.8.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "vite": "^8.2.0"
+  }
 }
