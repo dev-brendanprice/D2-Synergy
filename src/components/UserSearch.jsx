@@ -13,8 +13,8 @@ function UserSearch({setSearchResults}) {
         // get entered text from field
         const formData = new FormData(e.target);
         const formDataObj = Object.fromEntries(formData.entries());
-        const results = await SearchPlayer(formDataObj.submittedUsername);
-        setSearchResults(results); // search for player
+        const playerSearchResults = await SearchPlayer(formDataObj.submittedUsername);
+        setSearchResults(playerSearchResults); // search for player
 
         document.getElementsByClassName("form-spinner")[0].classList.remove("active");
     }

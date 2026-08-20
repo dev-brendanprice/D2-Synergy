@@ -1,23 +1,29 @@
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import {PlatformIcons} from "../lib/manifest.js";
 
 
-function TriumphCounter({ triumphCompletions, profiles, item}) {
+function TriumphCounter({ triumphCompletions, profiles, seal}) {
 
     // different message depending on if all guardians or some have completed a triumph 
-    const overlayMessage = triumphCompletions[item?.hash]?.profilesThatDidNotComplete.length ?
+    const overlayMessage = triumphCompletions[seal?.hash]?.profilesThatDidNotComplete.length ?
         <Tooltip>
             <strong>incomplete: </strong>
-            {triumphCompletions[item.hash]?.profilesThatDidNotComplete?.map(p => {
-                return p?.profile?.bungieGlobalDisplayName
-            }).join(", ")}
+            {triumphCompletions[seal.hash]?.profilesThatDidNotComplete?.map(profile => {
+                return (
+                    <div key={seal.hash}>
+                        <img src={PlatformIcons[profile.profile.membershipType]} />
+                        {profile?.profile?.bungieGlobalDisplayName}
+                    </div>
+                )
+            })}
         </Tooltip> :
         <Tooltip>All guardians completed</Tooltip>
 
     return (
         <OverlayTrigger placement="top" container={document.body} overlay={overlayMessage}>
             <div className="triumph-counter">
-                { triumphCompletions[item?.hash]?.amountOfCompletions }/
+                { triumphCompletions[seal?.hash]?.amountOfCompletions }/
                 { Object.entries(profiles || {}).length }
             </div>
         </OverlayTrigger>

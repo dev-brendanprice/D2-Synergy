@@ -10,7 +10,7 @@ function RosterPucks({profiles, RemoveProfile}) {
             return (
                 <div className="roster-puck" key={profileKey} onClick={() => RemoveProfile(profileKey, profiles)}>
                     <div className="roster-puck-attrs">
-                        <img className="roster-puck-pfp" src={PlatformIcons[profile.membershipType]}/>
+                        <img className="roster-puck-platform" src={PlatformIcons[profile.membershipType]}/>
                         <div className="roster-puck-uname">{profile.bungieGlobalDisplayName}</div>
                     </div>
                     <img className="roster-puck-rm" src={CrossIcon}/>

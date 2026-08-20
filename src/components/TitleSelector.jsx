@@ -21,8 +21,6 @@ function TitleSelector({searchParams, setSearchParams}) {
             });
     }, []);
 
-    console.log(showUnobtainable)
-
     return (
         <div className="seals-selector-container">
             <div>
@@ -47,7 +45,7 @@ function TitleSelector({searchParams, setSearchParams}) {
                     <OverlayTrigger key={seal.hash} placement="bottom" container={document.body}
                         overlay={ <Tooltip>{seal.displayProperties.uiName}</Tooltip> }>
 
-                        <img className={"seal-icon" + 
+                        <img className={"seal-icon" +
                                         (searchParams.get("seal") === seal.displayProperties.uiName ? " active-seal" : "") +
                                         (!seal.isObtainable && !showUnobtainable ? " not-obtainable" : " not-obtainable-show")
                                     }

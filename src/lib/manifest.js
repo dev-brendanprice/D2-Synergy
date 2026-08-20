@@ -20,23 +20,6 @@ export const UnobtainableSeals = Object.freeze(
     }
 );
 
-// deprecate this?
-export const PlatformTypes = Object.freeze(
-    {
-        0: "Unknown Platform",
-        1: "Xbox",
-        2: "PSN",
-        3: "Steam",
-        4: "Battle.net",
-        5: "Stadia",
-        6: "Epic Games",
-        10: "TigerDemon",
-        20: "GoliathGame",
-        254: "Bungie",
-        "-1": "All"
-    }
-);
-
 export const PlatformIcons = Object.freeze(
     {
         0: "Unknown Platform",

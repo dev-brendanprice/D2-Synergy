@@ -18,7 +18,10 @@ export async function FetchMemberships(memshipType, memshipId) {
 
 
 // search the Bungie.net API for the submitted username
-export async function SearchPlayer(username) {
+export async function SearchPlayer(submittedString) {
+
+    const [ submittedUsername, submittedID ] = submittedString.split("#"); // ignore when user submits ID
+    console.log(submittedUsername, submittedID);
 
     // create request data and query API to search for player
     const requestConfig = {
@@ -28,13 +31,14 @@ export async function SearchPlayer(username) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            "displayNamePrefix": username
+            "displayNamePrefix": submittedUsername
         })
     };
 
     const response = await fetch('https://www.bungie.net/Platform/User/Search/GlobalName/0/', requestConfig);
     const parsed = await response.json(); // parse the response to JSON
     const foundPlayers = parsed?.Response?.searchResults;
+    console.log(foundPlayers);
 
     // if no results found
     if (foundPlayers.length === 0) {
