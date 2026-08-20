@@ -134,6 +134,10 @@
   display: none;
 }
 
+.show-completed {
+  display: none !important;
+}
+
 .active-seal {
   border: 1px solid white;
 }

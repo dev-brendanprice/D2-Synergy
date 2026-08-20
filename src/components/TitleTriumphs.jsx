@@ -1,38 +1,40 @@
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import Form from 'react-bootstrap/Form';
 import useDestinySeals from "../hooks/useDestinySeals.js";
 import aggregateTriumphs from "../lib/aggregateTriumphs.js";
 import PersonIcon from '../assets/person-icon.svg';
 import TriumphCounter from "./TriumphCounter.jsx";
 
 function TitleTriumphs({profiles, searchParams}) {
+
+    const [ showCompleted, setShowCompleted ] = useState(false);
     const destinySeals = useDestinySeals();
 
     // get & save selected seal
-    const selectedSeal = useMemo(() => {
+    const { selectedSeal, triumphCompletions } = useMemo(() => {
+
         const sealNameInQueryParam = searchParams.get("seal");
-        return destinySeals.find(seal => seal?.displayProperties?.uiName === sealNameInQueryParam);
-    }, [searchParams, destinySeals])
+        // return destinySeals.find(seal => seal?.displayProperties?.uiName === sealNameInQueryParam);
 
-    // iterate over profiles
-    // iterate over seals
-    // iterate over triumphs
-    // has this profile completed this triumph?
-    //     yes +1, no return
-
-    const triumphCompletions = useMemo(() => {
-        return aggregateTriumphs(profiles, destinySeals);
-    }, [profiles, destinySeals]);
-    console.log(triumphCompletions);
+        return {
+            selectedSeal: destinySeals.find(seal => seal?.displayProperties?.uiName === sealNameInQueryParam),
+            triumphCompletions: aggregateTriumphs(profiles, destinySeals),
+        }
+    }, [profiles, searchParams, destinySeals]);
 
     return (
         <div className="compare-container">
             <h5>Triumphs:</h5>
+            <Form.Check type="switch" id="show-completed-toggled" label="show completed"
+                onChange={(e) => {setShowCompleted(e.target.checked)}} />
             <div className="triumphs-outer-container">
                 {selectedSeal?.children?.records?.map(seal => {
+                    // console.log(triumphCompletions[seal.hash], Object.keys(profiles).length);
                     return (
-                        <div className="triumph-container" key={seal.hash}>
+                        <div className={!showCompleted && triumphCompletions[seal.hash].amountOfCompletions === Object.keys(profiles).length ?
+                            "triumph-container show-completed" : "triumph-container"} key={seal.hash} >
                             <div className="triumph-attrs-container">
                                 <img className="triumph-icon"
                                  src={`https://www.bungie.net${seal?.displayProperties?.icon}`} />

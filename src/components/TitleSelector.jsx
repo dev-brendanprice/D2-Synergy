@@ -33,8 +33,8 @@ function TitleSelector({searchParams, setSearchParams}) {
                 <div className="seal-selector-text">Selected seal: {searchParams.get("seal")}</div>
             </div>
             <div className="seals-selector-toggles">
-                <Form.Check type="switch" id="custom-switch" label="show unobtainable" 
-                            onChange={(e) => { setShowUnobtainable(e.target.checked) }} />
+                <Form.Check type="switch" id="seal-selector-switch" label="show unobtainable"
+                    onChange={(e) => { setShowUnobtainable(e.target.checked) }} />
                 <OverlayTrigger placement="top" container={document.body} overlay={ <Tooltip>Some titles were time-gated 
                     to a specific event, meaning they're no longer obtainable.</Tooltip> }>
                     <img className="seals-toggle-icon" src={QuestionIcon} />
