@@ -4,6 +4,7 @@ import GetDestinySeals from "./destinySeals.js";
 import XboxIcon from '../assets/xbox-icon.svg';
 import PSNIcon from '../assets/psn-icon.svg';
 import SteamIcon from '../assets/steam-icon.svg';
+import BlizzardIcon from '../assets/blizzard-icon.svg';
 import StadiaIcon from '../assets/stadia-icon.svg';
 import EGSIcon from '../assets/egs-icon.svg';
 import BungieIcon from '../assets/bungie-icon.svg';
@@ -26,7 +27,7 @@ export const PlatformIcons = Object.freeze(
         1: XboxIcon,
         2: PSNIcon,
         3: SteamIcon,
-        4: "Battle.net",
+        4: BlizzardIcon,
         5: StadiaIcon,
         6: EGSIcon,
         10: "TigerDemon",
