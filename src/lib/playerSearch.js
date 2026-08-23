@@ -22,7 +22,7 @@ export async function SearchForPlayer(submittedString) {
     const [ username, displayNameCode ] = submittedString.split('#');
     const requestConfig = { method: 'GET' }
 
-    const searchResults = await fetch(`http://localhost:3001/api/search?query=${username}&count=50`, requestConfig)
+    const searchResults = await fetch(`${import.meta.env.VITE_API_BASEURL}/api/search?query=${username}&count=50`, requestConfig)
         .then(res => res.json())
         .then(response => { return response })
 
