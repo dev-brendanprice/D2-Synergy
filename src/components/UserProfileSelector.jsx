@@ -4,7 +4,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { PlatformIcons } from '../lib/manifest.js';
 import PlusIcon from '../assets/plus-icon.svg';
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
-import Badge from 'react-bootstrap/Badge';
 import getPlayerSeals from "../lib/playerSeals.js";
 
 function UserProfileSelector({ profiles, setProfileData, searchResults }) {
@@ -40,6 +39,31 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
             })
     }
 
+    function GetTimeAgo(dateString) {
+        const now = new Date();
+        const date = new Date(dateString);
+        const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+        const intervals = [
+            [60, 's'],
+            [60, 'm'],
+            [24, 'hr'],
+            [7, 'd'],
+            [4.34524, 'w'],
+            [12, 'mo'],
+            [Number.POSITIVE_INFINITY, 'yr'],
+        ];
+
+        let i = 0;
+        let count = seconds;
+        while (i < intervals.length - 1 && count >= intervals[i][0]) {
+            count /= intervals[i][0];
+            i++;
+        }
+        count = Math.floor(count);
+        const label = intervals[i][1];
+        return count === 1 ? `1${label} ago` : `${count}${label}s ago`;
+    }
+
     // user hasn't searched anything yet
     if (searchResults === null) return
 
@@ -52,15 +76,20 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
         <div className="list-group-heading">Select a profile</div>
         <ListGroup>
             {searchResults.map((profile) => {
+                // console.log(profile);
                 return (
                     <ListGroup.Item key={profile.membershipId}>
-                        <div className="list-user-descriptors">
-                            <img className="list-user-platform" src={PlatformIcons[profile.membershipType]} />
-                            <div className="list-user-text">
-                                <div className="list-item-name">{profile.bungieGlobalDisplayName}</div>
-                                { profile.isCrossSavePrimary &&
-                                    <Badge className="primary-profile-badge" pill
-                                           variant="Info">Primary Profile</Badge> }
+                        <div className="list-user-container">
+                            <img className="list-user-emblem-preview" src={"https://bungie.net/" + profile.iconPath} />
+                            <div className="list-user-attributes">
+                                <div>
+                                    {profile.bungieGlobalDisplayName}
+                                    <span className="list-user-displaynamecode">#{profile.bungieGlobalDisplayNameCode}</span>
+                                </div>
+                                <div className="list-user-info">
+                                    <img className="list-user-platform" src={PlatformIcons[profile.membershipType]} />
+                                    <span className="list-user-lastseen">{GetTimeAgo(profile.lastSeen)}</span>
+                                </div>
                             </div>
                         </div>
                         <div className="list-item-action" onClick={() => AddProfile(profile)}>

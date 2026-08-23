@@ -12,7 +12,7 @@ export default async function getPlayerSeals(memshipType, memshipId) {
     const config = {
         method: 'GET',
         headers: {
-            'X-Api-Key': import.meta.env.VITE_KEY
+            'X-Api-Key': import.meta.env.VITE_API_KEY
         }
     };
 

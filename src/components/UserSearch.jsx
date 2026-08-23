@@ -1,20 +1,20 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import {SearchPlayer} from "../lib/playerSearch.js";
+import {SearchForPlayer} from "../lib/playerSearch.js";
 import Spinner from "../assets/spinner-icon.svg";
 
 function UserSearch({setSearchResults}) {
 
-    // handles form submission
     async function handleSubmit(e) {
         e.preventDefault();
         document.getElementsByClassName("form-spinner")[0].classList.add("active");
 
         // get entered text from field
         const formData = new FormData(e.target);
-        const formDataObj = Object.fromEntries(formData.entries());
-        const playerSearchResults = await SearchPlayer(formDataObj.submittedUsername);
-        setSearchResults(playerSearchResults); // search for player
+        const formDataObject = Object.fromEntries(formData.entries());
+        const searchResults = await SearchForPlayer(formDataObject.submittedUsername);
+        console.log(searchResults);
+        setSearchResults(searchResults);
 
         document.getElementsByClassName("form-spinner")[0].classList.remove("active");
     }

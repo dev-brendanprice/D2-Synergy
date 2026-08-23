@@ -26,6 +26,7 @@
 }
 
 .primary-profile-badge {
+  margin-left: 10px;
   margin-bottom: 2px;
 }
 
@@ -123,18 +124,46 @@
   align-items: center;
   background-color: #2D2D3F;
   color: whitesmoke;
-  height: 42px;
+  height: 52px;
   padding-left: 10px;
   padding-right: 10px;
 }
 
-.list-user-platform {
-  width: 22px;
-}
-
-.list-user-descriptors {
+.list-user-container {
   display: flex;
   gap: 10px;
+}
+
+.list-user-emblem-preview {
+  width: 32px;
+  border-radius: 7px;
+  align-self: center
+}
+
+.list-user-attributes {
+  display: flex;
+  flex-direction: column;
+  gap: -15px;
+}
+
+.list-user-displaynamecode {
+  color: #AAAAAA;
+}
+
+.list-user-info {
+  display: flex;
+  gap: 5px;
+  margin-top: -3px;
+}
+
+.list-user-platform {
+  width: 18px;
+}
+
+.list-user-lastseen {
+  color: #AAAAAA;
+  font-style: italic;
+  font-size: 14px;
 }
 
 .list-user-text {

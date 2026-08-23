@@ -35,8 +35,9 @@ function TitleSelector({searchParams, setSearchParams}) {
             <div className="seals-selector-toggles">
                 <Form.Check type="switch" id="seal-selector-switch" label="show unobtainable"
                     onChange={(e) => { setShowUnobtainable(e.target.checked) }} />
-                <OverlayTrigger placement="top" container={document.body} overlay={ <Tooltip>Some titles were time-gated 
-                    to a specific event, meaning they're no longer obtainable.</Tooltip> }>
+                <OverlayTrigger placement="top" container={document.body} overlay={
+                    <Tooltip>Some titles are tied to a specific event, meaning they're no longer obtainable
+                        after monument of triumph</Tooltip> }>
                     <img className="seals-toggle-icon" src={QuestionIcon} />
                 </OverlayTrigger>
             </div>

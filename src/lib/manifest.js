@@ -48,7 +48,7 @@ export async function ValidateManifest() {
     const requestConfig = {
         method: 'GET',
         headers: {
-            'X-Api-Key': import.meta.env.VITE_KEY
+            'X-Api-Key': import.meta.env.VITE_API_KEY
         }
     };
 
