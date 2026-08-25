@@ -21,17 +21,30 @@
   width: 100%;
 }
 
-.roster-message {
-  margin-top: 20px;
-  color: darkgray;
+.roster-outer-container {
+  margin-top: 25px;
+}
+
+.roster-heading-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .roster-heading {
   margin-bottom: 5px;
 }
 
-.roster-outer-container {
-  margin-top: 25px;
+.roster-message {
+  margin-top: 20px;
+  color: darkgray;
+}
+
+.roster-spinner {
+  display: flex;
+  width: 20px;
+  filter: contrast(0%);
+  margin-top: -5px;
 }
 
 .roster-inner-container {

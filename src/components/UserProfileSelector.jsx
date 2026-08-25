@@ -76,7 +76,6 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
         <div className="list-group-heading">Select a profile</div>
         <ListGroup>
             {searchResults.map((profile) => {
-                // console.log(profile);
                 return (
                     <ListGroup.Item key={profile.membershipId}>
                         <div className="list-user-container">

@@ -37,16 +37,20 @@ function UserRoster({profiles, setProfileData}) {
             <div className="roster-message">Please search for a Destiny 2 profile..</div>
         );
     }
-
+    console.log(Object.keys(profiles || {}).length &&
+        <RosterPucks profiles={profiles} setProfileData={setProfileData} RemoveProfile={RemoveProfile} />);
     // create roster pucks
     return (
         <div className="roster-outer-container">
-            <div className="roster-heading">Your roster ({profilesInURL?.length})</div>
+            <div className="roster-heading-container">
+                <div className="roster-heading">Your roster ({profilesInURL?.length})</div>
+                {Object.keys(profiles || {}).length !== profilesInURL.length ?
+                    <img className="roster-spinner" src={Spinner} /> : "" }
+            </div>
+
             <div className="roster-inner-container">
-                {Object.keys(profiles || {}).length ?
-                    <RosterPucks profiles={profiles} setProfileData={setProfileData} RemoveProfile={RemoveProfile} /> :
-                    <img className="roster-spinner" src={Spinner} />
-                }
+                {(Object.keys(profiles || {}).length || "") &&
+                    <RosterPucks profiles={profiles} setProfileData={setProfileData} RemoveProfile={RemoveProfile} /> }
             </div>
             <hr className="roster-divider" />
         </div>
