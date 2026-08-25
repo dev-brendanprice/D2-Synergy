@@ -61,7 +61,7 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
         }
         count = Math.floor(count);
         const label = intervals[i][1];
-        return count === 1 ? `1${label} ago` : `${count}${label}s ago`;
+        return count === 1 ? `1${label} ago` : `${count}${label} ago`;
     }
 
     // user hasn't searched anything yet
