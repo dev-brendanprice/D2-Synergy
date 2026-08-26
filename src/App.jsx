@@ -14,6 +14,10 @@ function App() {
     // handle the URL path state
     useEffect(() => {
         HandleUrlPathing().then(setProfileData);
+
+        window.addEventListener("popstate", () => {
+            HandleUrlPathing().then(setProfileData);
+        });
     }, [searchResults]);
 
     return <div className="toplevel">
