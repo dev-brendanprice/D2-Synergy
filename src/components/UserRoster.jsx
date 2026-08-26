@@ -10,7 +10,7 @@ function UserRoster({profiles, setProfileData}) {
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    // remove profile from URL path, roster view, and username for localStorage
+    // remove profile from URL path, roster view and username
     function RemoveProfile(profileKey, temporaryProfilesObject) {
 
         // remove profile from URL path

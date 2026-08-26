@@ -1,19 +1,25 @@
 // noinspection HtmlRequiredAltAttribute
 
 import ListGroup from 'react-bootstrap/ListGroup';
+import Placeholder from 'react-bootstrap/Placeholder';
 import { PlatformIcons } from '../lib/manifest.js';
 import PlusIcon from '../assets/plus-icon.svg';
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import getPlayerSeals from "../lib/playerSeals.js";
+import getTimeAgo from "../lib/getTimeAgo.js";
+import {FetchMemberships} from "../lib/playerSearch.js";
+import {useMemo, useState} from "react";
+
 
 function UserProfileSelector({ profiles, setProfileData, searchResults }) {
 
+    const [ profilesLastSeen, setProfilesLastSeen ] = useState({});
     // user can navigate backwards/forwards in browser history
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const [ searchParams ] = useSearchParams();
 
-    // add profile to URL path, roster view, and username for localStorage
+    // add profile to URL path, roster view and username
      function AddProfile(profile) {
 
         // profileKey is used for URL pathing
@@ -39,31 +45,6 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
             })
     }
 
-    function GetTimeAgo(dateString) {
-        const now = new Date();
-        const date = new Date(dateString);
-        const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-        const intervals = [
-            [60, 's'],
-            [60, 'm'],
-            [24, 'hr'],
-            [7, 'd'],
-            [4.34524, 'w'],
-            [12, 'mo'],
-            [Number.POSITIVE_INFINITY, 'yr'],
-        ];
-
-        let i = 0;
-        let count = seconds;
-        while (i < intervals.length - 1 && count >= intervals[i][0]) {
-            count /= intervals[i][0];
-            i++;
-        }
-        count = Math.floor(count);
-        const label = intervals[i][1];
-        return count === 1 ? `1${label} ago` : `${count}${label} ago`;
-    }
-
     // user hasn't searched anything yet
     if (searchResults === null) return
 
@@ -71,6 +52,14 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
     else if (searchResults.length === 0) {
         return "No players found."
     }
+
+    searchResults.forEach(p => {
+        FetchMemberships(p.membershipType, p.membershipId)
+            .then(res => {
+                setProfilesLastSeen(Object.assign(profilesLastSeen,
+                    { [p.membershipId]: res.find(v => v.membershipType === p.membershipType).dateLastPlayed }))
+            })
+    })
 
     return <>
         <div className="list-group-heading">Select a profile</div>
@@ -87,7 +76,11 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
                                 </div>
                                 <div className="list-user-info">
                                     <img className="list-user-platform" src={PlatformIcons[profile.membershipType]} />
-                                    <span className="list-user-lastseen">{GetTimeAgo(profile.lastSeen)}</span>
+                                    <span className="list-user-lastseen">
+                                        {profilesLastSeen[profile.membershipId] ?
+                                            <div>{getTimeAgo(profilesLastSeen[profile.membershipId])}</div> :
+                                            <Placeholder animation="glow"><Placeholder xs={6} /></Placeholder>}
+                                    </span>
                                 </div>
                             </div>
                         </div>
