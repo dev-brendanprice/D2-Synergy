@@ -1,7 +1,7 @@
 import { get } from 'idb-keyval';
 import { UnobtainableSeals } from '../lib/manifest';
 
-export default async function GetDestinySeals() {
+async function GetDestinySeals() {
 
     const DestinyPresentationNodeDefinition = await get('DestinyPresentationNodeDefinition');
     const DestinyRecordDefinition = await get('DestinyRecordDefinition');
@@ -22,4 +22,6 @@ export default async function GetDestinySeals() {
     });
 
     return seals;
-};
+}
+
+export default GetDestinySeals;

@@ -2,7 +2,7 @@ import { get } from 'idb-keyval';
 import CombineAllRecords from "./allRecords.js";
 
 // get records (seal triumphs) for the specified profile
-export default async function getPlayerSeals(memshipType, memshipId) {
+async function getPlayerSeals(memshipType, memshipId) {
 
     // pull required definition entries for this function
     const RecordDefinitions = await get('DestinyRecordDefinition');
@@ -47,4 +47,6 @@ export default async function getPlayerSeals(memshipType, memshipId) {
     });
 
     return DestinySeals;
-};
+}
+
+export default getPlayerSeals;

@@ -8,7 +8,7 @@ import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import getPlayerSeals from "../lib/playerSeals.js";
 import getTimeAgo from "../lib/getTimeAgo.js";
 import {FetchMemberships} from "../lib/playerSearch.js";
-import {useMemo, useState} from "react";
+import {useState} from "react";
 
 
 function UserProfileSelector({ profiles, setProfileData, searchResults }) {
