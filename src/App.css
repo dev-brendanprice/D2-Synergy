@@ -3,6 +3,7 @@
   flex-direction: column;
   width: 100%;
   min-height: 100svh;
+  padding: 20px;
 }
 
 .main {
@@ -158,6 +159,7 @@
 
 .compare-container {
   margin-top: 20px;
+  margin-bottom: 20px;
   padding: 10px;
   width: 100%;
   border: 1px solid #7c7c7c;
@@ -236,4 +238,32 @@ hr.triumph-divider {
 
 .triumph-counter-icon {
   width: 24px;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  width: 100%;
+  max-width: 1200px;
+  color: rgb(170 170 170 / 0.5);
+}
+
+.footer-links-container {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-link {
+  text-decoration: underline dotted;
+  color: rgb(170 170 170 / 0.5);
+  transition: color 0.1s ease-in-out;
+}
+
+.footer-link:hover {
+  text-decoration: underline dotted;
+  cursor: pointer;
+  color: #DABD8E;
+  transition: color 0.1s ease-in-out;
+  user-select: none;
 }

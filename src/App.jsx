@@ -1,6 +1,7 @@
 import UserSearch from "./components/UserSearch.jsx";
 import UserRoster from "./components/UserRoster.jsx";
 import './App.css'
+import './index.css'
 import HandleUrlPathing from "./lib/handleUrlPathing.js";
 import {useEffect, useState} from "react";
 import TitleOverview from "./components/TitleOverview.jsx";
@@ -28,7 +29,15 @@ function App() {
             <UserRoster profiles={profiles} setProfileData={setProfileData} />
             <TitleOverview profiles={profiles} />
         </div>
-        <footer>Made with love by brendanprice</footer>
+
+        <footer>
+            <div>Made with ❤️ by brendanprice</div>
+            <div className="footer-links-container">
+                <a className="footer-link" href="https://github.com/dev-brendanprice/D2-Synergy"
+                   target="_blank">GitHub</a>
+                <a className="footer-link" href="https://ko-fi.com/brendanprice" target="_blank">Donate</a>
+            </div>
+        </footer>
     </div>
 }
 
