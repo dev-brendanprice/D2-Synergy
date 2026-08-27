@@ -1,5 +1,5 @@
 import {PlatformIcons} from "../lib/manifest.js";
-import CrossIcon from "../assets/cross-icon.svg";
+import CrossIcon from "../../public/cross-icon.svg";
 
 function RosterPucks({profiles, RemoveProfile}) {
     return (

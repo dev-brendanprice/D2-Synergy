@@ -3,7 +3,7 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import Placeholder from 'react-bootstrap/Placeholder';
 import { PlatformIcons } from '../lib/manifest.js';
-import PlusIcon from '../assets/plus-icon.svg';
+import PlusIcon from '../../public/plus-icon.svg';
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import getPlayerSeals from "../lib/playerSeals.js";
 import getTimeAgo from "../lib/getTimeAgo.js";

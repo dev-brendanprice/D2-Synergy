@@ -1,7 +1,7 @@
 // noinspection HtmlRequiredAltAttribute,JSUnresolvedReference
 
 import {useLocation, useNavigate} from "react-router-dom";
-import Spinner from "../assets/spinner-icon.svg";
+import Spinner from "../../public/spinner-icon.svg";
 import RosterPucks from "./RosterPucks.jsx";
 
 function UserRoster({profiles, setProfileData}) {

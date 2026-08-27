@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {SearchForPlayer} from "../lib/playerSearch.js";
-import Spinner from "../assets/spinner-icon.svg";
+import Spinner from "../../public/spinner-icon.svg";
 
 function UserSearch({setSearchResults}) {
 

@@ -1,13 +1,13 @@
 import { set } from 'idb-keyval';
 import GetDestinySeals from "./destinySeals.js";
 
-import XboxIcon from '../assets/xbox-icon.svg';
-import PSNIcon from '../assets/psn-icon.svg';
-import SteamIcon from '../assets/steam-icon.svg';
-import BlizzardIcon from '../assets/blizzard-icon.svg';
-import StadiaIcon from '../assets/stadia-icon.svg';
-import EGSIcon from '../assets/egs-icon.svg';
-import BungieIcon from '../assets/bungie-icon.svg';
+import XboxIcon from '../../public/xbox-icon.svg';
+import PSNIcon from '../../public/psn-icon.svg';
+import SteamIcon from '../../public/steam-icon.svg';
+import BlizzardIcon from '../../public/blizzard-icon.svg';
+import StadiaIcon from '../../public/stadia-icon.svg';
+import EGSIcon from '../../public/egs-icon.svg';
+import BungieIcon from '../../public/bungie-icon.svg';
 
 export const UnobtainableSeals = Object.freeze(
     {

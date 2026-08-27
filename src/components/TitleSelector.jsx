@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import {useState, useEffect} from "react";
 import {get} from "idb-keyval";
 import filterSealsBySearch from "../lib/filterSeals.js";
-import QuestionIcon from "../assets/question-icon.svg";
+import QuestionIcon from "../../public/question-icon.svg";
 
 function TitleSelector({searchParams, setSearchParams}) {
 
