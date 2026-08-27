@@ -34,7 +34,7 @@ function UserRoster({profiles, setProfileData}) {
     // if no profile(s) have been selected
     if (!profilesInURL.length) {
         return (
-            <div className="roster-message">Please search for a Destiny 2 profile..</div>
+            <div className="roster-message">Please search/select a Destiny 2 profile..</div>
         );
     }
 
