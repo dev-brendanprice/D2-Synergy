@@ -8,7 +8,7 @@ import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import getPlayerSeals from "../lib/playerSeals.js";
 import getTimeAgo from "../lib/getTimeAgo.js";
 import {FetchMemberships} from "../lib/playerSearch.js";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 function UserProfileSelector({ profiles, setProfileData, searchResults }) {
@@ -18,6 +18,18 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const [ searchParams ] = useSearchParams();
+
+    useEffect(() => {
+        searchResults?.forEach(p => {
+            FetchMemberships(p.membershipType, p.membershipId)
+                .then(res => {
+                    const lastSeenForThisProfile = {
+                        [p.membershipId]: getTimeAgo(res.find(v => v.membershipType === p.membershipType).dateLastPlayed)
+                    };
+                    setProfilesLastSeen({...lastSeenForThisProfile});
+                })
+        })
+    }, [searchResults])
 
     // add profile to URL path, roster view and username
      function AddProfile(profile) {
@@ -53,14 +65,6 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
         return "No players found."
     }
 
-    searchResults.forEach(p => {
-        FetchMemberships(p.membershipType, p.membershipId)
-            .then(res => {
-                setProfilesLastSeen(Object.assign(profilesLastSeen,
-                    { [p.membershipId]: res.find(v => v.membershipType === p.membershipType).dateLastPlayed }))
-            })
-    })
-
     return <>
         <div className="list-group-heading">Select a profile</div>
         <ListGroup>
@@ -77,8 +81,8 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
                                 <div className="list-user-info">
                                     <img className="list-user-platform" src={PlatformIcons[profile.membershipType]} />
                                     <span className="list-user-lastseen">
-                                        {profilesLastSeen[profile.membershipId] ?
-                                            <div>{getTimeAgo(profilesLastSeen[profile.membershipId])}</div> :
+                                        {Object.keys(profilesLastSeen).includes(profile.membershipId) ?
+                                            <div>{profilesLastSeen[profile.membershipId]}</div> :
                                             <Placeholder animation="glow"><Placeholder xs={6} /></Placeholder>}
                                     </span>
                                 </div>
