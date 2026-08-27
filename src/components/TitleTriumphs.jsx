@@ -4,7 +4,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Form from 'react-bootstrap/Form';
 import useDestinySeals from "../hooks/useDestinySeals.js";
 import aggregateTriumphs from "../lib/aggregateTriumphs.js";
-import PersonIcon from '../../public/person-icon.svg';
+import PersonIcon from '../static/person-icon.svg';
 import TriumphCounter from "./TriumphCounter.jsx";
 
 function TitleTriumphs({profiles, searchParams}) {
