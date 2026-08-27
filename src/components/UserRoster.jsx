@@ -13,7 +13,6 @@ function UserRoster({profiles, setProfileData}) {
     // remove profile from URL path, roster view and username
     function RemoveProfile(profileKey, temporaryProfilesObject) {
 
-        // remove profile from URL path
         const [, urlProfileSegment] = pathname.split("/");
         const current = urlProfileSegment || "";
         const profilesInURL = current ? current.split(",") : []; // don't join empty items
@@ -26,6 +25,12 @@ function UserRoster({profiles, setProfileData}) {
         // remove profile from state
         delete temporaryProfilesObject[profileKey];
         setProfileData(temporaryProfilesObject);
+    }
+
+    // remove all profiles from URL and state
+    function RemoveAllProfiles() {
+        navigate("/");
+        setProfileData([]);
     }
 
     let [ , urlPath ] = pathname.split("/");
@@ -42,7 +47,8 @@ function UserRoster({profiles, setProfileData}) {
     return (
         <div className="roster-outer-container">
             <div className="roster-heading-container">
-                <div className="roster-heading">Your roster ({profilesInURL?.length})</div>
+                <div>Your roster ({profilesInURL?.length})</div>
+                <div className="roster-button-clear" onClick={() => RemoveAllProfiles()}>Clear</div>
                 {Object.keys(profiles || {}).length !== profilesInURL.length ?
                     <img className="roster-spinner" src={Spinner} /> : "" }
             </div>

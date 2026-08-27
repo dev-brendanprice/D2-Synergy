@@ -30,10 +30,21 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  margin-bottom: 5px;
 }
 
-.roster-heading {
-  margin-bottom: 5px;
+.roster-button-clear {
+  font-size: 12px;
+  text-decoration: underline dotted;
+  color: #AAAAAA;
+  user-select: none;
+  transition: color 0.1s ease-in-out;
+}
+
+.roster-button-clear:hover {
+  cursor: pointer;
+  color: white;
+  transition: color 0.1s ease-in-out;
 }
 
 .roster-message {
