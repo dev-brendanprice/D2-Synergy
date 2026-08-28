@@ -15,6 +15,10 @@
   /* change this to the "Destiny" font */
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
   padding: 0;
