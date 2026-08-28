@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import {SearchForPlayer} from "../lib/playerSearch.js";
 import Spinner from "../static/spinner-icon.svg";
 
-function UserSearch({setSearchResults, setProfileSelect}) {
+function UserSearch({setSearchResults, setShowProfileSelector}) {
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -17,20 +17,17 @@ function UserSearch({setSearchResults, setProfileSelect}) {
         const searchResultsResponse = await SearchForPlayer(formDataObject.submittedUsername);
         setSearchResults(searchResultsResponse);
         document.getElementsByClassName("form-spinner")[0].classList.remove("active");
+        setShowProfileSelector(true);
     }
 
-    return (
-        <>
-            <Form className="form-container" onSubmit={handleSubmit}>
-                <Form.Control type="text" name="submittedUsername" placeholder="guardian#0001"
-                              defaultValue="brendanprice#4702" />
-                <img className="form-spinner" src={Spinner} />
-                <Button variant="primary" type="submit">
-                    Search
-                </Button>
-            </Form>
-        </>
-    )
+    return <Form className="form-container" onSubmit={handleSubmit}>
+        <Form.Control type="text" name="submittedUsername" placeholder="guardian#0001"
+                      defaultValue="brendanprice#4702" />
+        <img className="form-spinner" src={Spinner} />
+        <Button variant="primary" type="submit">
+            Search
+        </Button>
+    </Form>
 }
 
 export default UserSearch

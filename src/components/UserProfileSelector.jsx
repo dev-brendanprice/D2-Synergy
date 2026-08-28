@@ -8,7 +8,7 @@ import getPlayerSeals from "../lib/playerSeals.js";
 import getTimeAgo from "../lib/getTimeAgo.js";
 
 
-function UserProfileSelector({ profiles, setProfileData, searchResults }) {
+function UserProfileSelector({ profiles, setProfileData, searchResults, setShowProfileSelector }) {
 
     // user can navigate backwards/forwards in browser history
     const navigate = useNavigate();
@@ -39,10 +39,8 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
                     [profileKey]: { profile, seals: sealsArray }
                 })
             })
+        setShowProfileSelector(false);
     }
-
-    // user hasn't searched anything yet
-    if (searchResults === null) return
 
     // user hasn't made a search or nothing was returned
     if (!searchResults?.players?.length) {

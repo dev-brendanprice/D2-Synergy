@@ -20,14 +20,12 @@ function TriumphCounter({ triumphCompletions, profiles, seal}) {
         </Tooltip> :
         <Tooltip>All guardians completed</Tooltip>
 
-    return (
-        <OverlayTrigger placement="top" container={document.body} overlay={overlayMessage}>
-            <div className="triumph-counter">
-                { triumphCompletions[seal?.hash]?.amountOfCompletions }/
-                { Object.entries(profiles || {}).length }
-            </div>
-        </OverlayTrigger>
-    )
+    return <OverlayTrigger placement="top" container={document.body} overlay={overlayMessage}>
+        <div className="triumph-counter">
+            { triumphCompletions[seal?.hash]?.amountOfCompletions }/
+            { Object.entries(profiles || {}).length }
+        </div>
+    </OverlayTrigger>
 }
 
 export default TriumphCounter;

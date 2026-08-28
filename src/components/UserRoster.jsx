@@ -40,22 +40,20 @@ function UserRoster({profiles, setProfileData}) {
     if (!profilesInURL.length) return
 
     // create roster pucks
-    return (
-        <div className="roster-outer-container">
-            <div className="roster-heading-container">
-                <div>Your roster ({profilesInURL?.length})</div>
-                <div className="roster-button-clear" onClick={() => RemoveAllProfiles()}>Clear</div>
-                {Object.keys(profiles || {}).length !== profilesInURL.length ?
-                    <img className="roster-spinner" src={Spinner} /> : "" }
-            </div>
-
-            <div className="roster-inner-container">
-                {(Object.keys(profiles || {}).length || "") &&
-                    <RosterPucks profiles={profiles} setProfileData={setProfileData} RemoveProfile={RemoveProfile} /> }
-            </div>
-            <hr className="roster-divider" />
+    return <div className="roster-outer-container">
+        <div className="roster-heading-container">
+            <div>Your roster ({profilesInURL?.length})</div>
+            <div className="roster-button-clear" onClick={() => RemoveAllProfiles()}>Clear</div>
+            {Object.keys(profiles || {}).length !== profilesInURL.length ?
+                <img className="roster-spinner" src={Spinner} /> : "" }
         </div>
-    )
+
+        <div className="roster-inner-container">
+            {(Object.keys(profiles || {}).length || "") &&
+                <RosterPucks profiles={profiles} setProfileData={setProfileData} RemoveProfile={RemoveProfile} /> }
+        </div>
+        <hr className="roster-divider" />
+    </div>
 }
 
 export default UserRoster

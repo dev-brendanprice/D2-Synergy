@@ -11,6 +11,7 @@ function App() {
 
     const [ searchResults, setSearchResults ] = useState(null);
     const [ profiles, setProfileData ] = useState({});
+    const [ showProfileSelector, setShowProfileSelector ] = useState(false);
 
     // handle the URL path state
     useEffect(() => {
@@ -23,9 +24,11 @@ function App() {
 
     return <div className="toplevel">
         <div className="main">
-            <UserSearch setSearchResults={setSearchResults} />
-            <UserProfileSelector profiles={profiles} setProfileData={setProfileData}
-                                 searchResults={ searchResults } />
+            <UserSearch setSearchResults={setSearchResults} setShowProfileSelector={setShowProfileSelector} />
+            {showProfileSelector &&
+                <UserProfileSelector profiles={profiles} setProfileData={setProfileData} searchResults={searchResults}
+                                     showProfileSelector={showProfileSelector}
+                                     setShowProfileSelector={setShowProfileSelector} />}
             <UserRoster profiles={profiles} setProfileData={setProfileData} />
             <TitleOverview profiles={profiles} />
         </div>
