@@ -1,41 +1,25 @@
 // noinspection HtmlRequiredAltAttribute
 
 import ListGroup from 'react-bootstrap/ListGroup';
-import Placeholder from 'react-bootstrap/Placeholder';
 import { PlatformIcons } from '../lib/manifest.js';
 import PlusIcon from '../static/plus-icon.svg';
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import getPlayerSeals from "../lib/playerSeals.js";
 import getTimeAgo from "../lib/getTimeAgo.js";
-import {FetchMemberships} from "../lib/playerSearch.js";
-import {useEffect, useState} from "react";
 
 
 function UserProfileSelector({ profiles, setProfileData, searchResults }) {
 
-    const [ profilesLastSeen, setProfilesLastSeen ] = useState({});
     // user can navigate backwards/forwards in browser history
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const [ searchParams ] = useSearchParams();
 
-    useEffect(() => {
-        searchResults?.forEach(p => {
-            FetchMemberships(p.membershipType, p.membershipId)
-                .then(res => {
-                    const lastSeenForThisProfile = {
-                        [p.membershipId]: getTimeAgo(res.find(v => v.membershipType === p.membershipType).dateLastPlayed)
-                    };
-                    setProfilesLastSeen({...lastSeenForThisProfile});
-                })
-        })
-    }, [searchResults])
-
     // add profile to URL path, roster view and username
      function AddProfile(profile) {
 
         // profileKey is used for URL pathing
-        const profileKey = `${profile.membershipType}-${profile.membershipId}`;
+        const profileKey = `${profile.mtype}-${profile.mid}`;
 
         // add profile to URL path
         const [, urlProfileSegment] = pathname.split("/");
@@ -48,7 +32,7 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
         }
 
         // fetch profile seals, save to profile state
-        getPlayerSeals(profile.membershipType, profile.membershipId)
+        getPlayerSeals(profile.mtype, profile.mid)
             .then(sealsArray => {
                 setProfileData({
                     ...profiles,
@@ -60,31 +44,29 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
     // user hasn't searched anything yet
     if (searchResults === null) return
 
-    // no search results found
-    else if (searchResults.length === 0) {
-        return "No players found."
+    // user hasn't made a search or nothing was returned
+    if (!searchResults?.players?.length) {
+        return (
+            <div className="roster-message">Please search & select a Destiny 2 profile...</div>
+        );
     }
 
-    return <>
+    return <div>
         <div className="list-group-heading">Select a profile</div>
         <ListGroup>
-            {searchResults.map((profile) => {
+            {searchResults.players.map(profile => {
                 return (
-                    <ListGroup.Item key={profile.membershipId}>
+                    <ListGroup.Item key={profile.mid}>
                         <div className="list-user-container">
-                            <img className="list-user-emblem-preview" src={"https://bungie.net/" + profile.iconPath} />
+                            <img className="list-user-emblem-preview" src={profile.emblemIcon} />
                             <div className="list-user-attributes">
                                 <div>
-                                    {profile.bungieGlobalDisplayName}
-                                    <span className="list-user-displaynamecode">#{profile.bungieGlobalDisplayNameCode}</span>
+                                    {profile.name}
+                                    <span className="list-user-displaynamecode">#{profile.code}</span>
                                 </div>
                                 <div className="list-user-info">
-                                    <img className="list-user-platform" src={PlatformIcons[profile.membershipType]} />
-                                    <span className="list-user-lastseen">
-                                        {Object.keys(profilesLastSeen).includes(profile.membershipId) ?
-                                            <div>{profilesLastSeen[profile.membershipId]}</div> :
-                                            <Placeholder animation="glow"><Placeholder xs={6} /></Placeholder>}
-                                    </span>
+                                    <img className="list-user-platform" src={PlatformIcons[profile.mtype]} />
+                                    <span className="list-user-lastseen">{getTimeAgo(profile.lastPlayed)}</span>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +77,8 @@ function UserProfileSelector({ profiles, setProfileData, searchResults }) {
                 )
             })}
         </ListGroup>
-    </>
+    </div>
+
 }
 
 export default UserProfileSelector;

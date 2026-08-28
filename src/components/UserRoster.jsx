@@ -37,11 +37,7 @@ function UserRoster({profiles, setProfileData}) {
     const profilesInURL = urlPath ? urlPath.split(",") : [];
 
     // if no profile(s) have been selected
-    if (!profilesInURL.length) {
-        return (
-            <div className="roster-message">Please search/select a Destiny 2 profile..</div>
-        );
-    }
+    if (!profilesInURL.length) return
 
     // create roster pucks
     return (

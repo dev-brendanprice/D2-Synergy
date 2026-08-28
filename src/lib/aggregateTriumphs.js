@@ -1,6 +1,5 @@
 // returns number of profiles that completed each seal triumph
 function aggregateTriumphs (profiles, destinySeals) {
-
     let triumphCompletions = {};
     
     // iterate over profiles, seals, and then triumphs for said seals

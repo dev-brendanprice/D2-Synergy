@@ -95,6 +95,14 @@
   width: 20px;
 }
 
+.roster-puck-uname {
+  font-size: 15px;
+}
+
+.roster-puck-code {
+  color: #AAAAAA;
+}
+
 .roster-puck-rm {
   width: 12px;
 }

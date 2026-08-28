@@ -1,6 +1,6 @@
 
 // take the memshipId + type and find the main memberships associated with this account => show user these memberships
-export async function FetchMemberships(memshipType, memshipId) {
+export async function FetchMemberships(mtype, mid) {
 
     // create request data and query API to fetch user profiles
     const requestConfig = {
@@ -10,10 +10,36 @@ export async function FetchMemberships(memshipType, memshipId) {
         }
     };
 
-    const url = `https://www.bungie.net/Platform/Destiny2/${memshipType}/Profile/${memshipId}/LinkedProfiles/?getAllMemberships=true`;
+    const url =
+        `https://www.bungie.net/Platform/Destiny2/${mtype}/Profile/${mid}/LinkedProfiles/?getAllMemberships=true`;
     const response = await fetch(url, requestConfig);
     const parsed = await response.json();
     return parsed?.Response?.profiles;
+}
+
+export async function GetPlayer(mtype, mid) {
+
+    const requestConfig = {
+        method: 'GET',
+        headers: {
+            'X-Api-Key': import.meta.env.VITE_API_KEY
+        }
+    };
+
+    const url =
+        `https://www.bungie.net/Platform/Destiny2/${mtype}/Profile/${mid}/LinkedProfiles/?getAllMemberships=true`;
+    const response = await fetch(url, requestConfig);
+    const searchResults = await response.json();
+    const playerProfile = searchResults.Response.profiles.filter(p => p.membershipId === mid)[0];
+
+    // change key names
+    delete Object.assign(playerProfile, {"mtype": playerProfile.membershipType }).membershipType
+    delete Object.assign(playerProfile, {"mid": playerProfile.membershipId }).membershipId
+    delete Object.assign(playerProfile, {"name": playerProfile.bungieGlobalDisplayName }).bungieGlobalDisplayName
+    delete Object.assign(playerProfile, {"code": playerProfile.bungieGlobalDisplayNameCode }).bungieGlobalDisplayNameCode
+
+    // filter entry by mid and mtype
+    return searchResults.Response.profiles.filter(p => p.mid === mid)[0]
 }
 
 // in preparation to use RaidHubs' API
@@ -21,23 +47,16 @@ export async function SearchForPlayer(submittedString) {
 
     const [ username, displayNameCode ] = submittedString.split('#');
     const requestConfig = { method: 'GET' }
-
-    const searchResults = await fetch(`${import.meta.env.VITE_API_BASEURL}/api/search?query=${username}&count=50`, requestConfig)
+    const searchResults = await fetch(`${import.meta.env.VITE_API_BASEURL}/api/search?q=${username}`,
+        requestConfig)
         .then(res => res.json())
         .then(response => { return response })
 
-    // filter out profiles with null displayName, displayNameCode and Stadia profiles (R.I.P)
-    searchResults.response.results = searchResults.response.results.filter(p =>
-        (p.bungieGlobalDisplayName !== null && p.bungieGlobalDisplayNameCode !== null) &&
-        p.membershipType !== 5
-    );
-
-    // only filter by displayNameCode if supplied by user
-    let profilesFilteredByNameCode;
+    // filter entry by displayNameCode, if supplied
     if (displayNameCode) {
-        profilesFilteredByNameCode =
-            searchResults?.response?.results?.filter(p => p.bungieGlobalDisplayNameCode === displayNameCode);
+        searchResults.players = searchResults.players.filter(p => p.code === parseInt(displayNameCode))
+        return searchResults
     }
 
-    return profilesFilteredByNameCode ? profilesFilteredByNameCode : searchResults?.response?.results;
-} // no lie this function took me over 2 weeks to get it working successfully
+    return searchResults
+}

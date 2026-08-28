@@ -6,12 +6,13 @@ function RosterPucks({profiles, RemoveProfile}) {
         Object.entries(profiles).map((entry) => {
             const profileKey = entry[0];
             const { profile } = entry[1];
-
             return (
                 <div className="roster-puck" key={profileKey} onClick={() => RemoveProfile(profileKey, profiles)}>
                     <div className="roster-puck-attrs">
-                        <img className="roster-puck-platform" src={PlatformIcons[profile.membershipType]}/>
-                        <div className="roster-puck-uname">{profile.bungieGlobalDisplayName}</div>
+                        <img className="roster-puck-platform" src={PlatformIcons[profile.mtype]}/>
+                        <div className="roster-puck-uname">{profile.name}
+                            <span className="roster-puck-code">#{profile.code}</span>
+                        </div>
                     </div>
                     <img className="roster-puck-rm" src={CrossIcon}/>
                 </div>

@@ -11,9 +11,9 @@ function TriumphCounter({ triumphCompletions, profiles, seal}) {
             <strong>incomplete: </strong>
             {triumphCompletions[seal.hash]?.profilesThatDidNotComplete?.map(profile => {
                 return (
-                    <div key={profile.profile.membershipId}>
-                        <img src={PlatformIcons[profile.profile.membershipType]} />
-                        {profile?.profile?.bungieGlobalDisplayName}
+                    <div key={profile.profile.mid}>
+                        <img src={PlatformIcons[profile.profile.mtype]} />
+                        {profile?.profile?.name}
                     </div>
                 )
             })}

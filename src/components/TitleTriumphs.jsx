@@ -14,10 +14,7 @@ function TitleTriumphs({profiles, searchParams}) {
 
     // get & save selected seal
     const { selectedSeal, triumphCompletions } = useMemo(() => {
-
         const sealNameInQueryParam = searchParams.get("seal");
-        // return destinySeals.find(seal => seal?.displayProperties?.uiName === sealNameInQueryParam);
-
         return {
             selectedSeal: destinySeals.find(seal => seal?.displayProperties?.uiName === sealNameInQueryParam),
             triumphCompletions: aggregateTriumphs(profiles, destinySeals),

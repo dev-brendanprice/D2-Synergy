@@ -1,15 +1,16 @@
-function getTimeAgo(dateString) {
+function getTimeAgo(dateInput) {
+
     const now = new Date();
-    const date = new Date(dateString);
+    const date = new Date(dateInput * 1000);
     const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
     const intervals = [
         [60, 's'],
         [60, 'm'],
-        [24, 'hr'],
+        [24, 'h'],
         [7, 'd'],
         [4.34524, 'w'],
         [12, 'mo'],
-        [Number.POSITIVE_INFINITY, 'yr'],
+        [Number.POSITIVE_INFINITY, 'y'],
     ];
 
     let i = 0;
