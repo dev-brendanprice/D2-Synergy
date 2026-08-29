@@ -42,11 +42,8 @@ function UserProfileSelector({ profiles, setProfileData, searchResults, setShowP
         setShowProfileSelector(false);
     }
 
-    // user hasn't made a search or nothing was returned
     if (!searchResults?.players?.length) {
-        return (
-            <div className="roster-message">Please search & select a Destiny 2 profile...</div>
-        );
+        return <div className="roster-message">No profiles could be found with "{searchResults.query}"</div>
     }
 
     return <div>

@@ -27,7 +27,6 @@ function TitleTriumphs({profiles, searchParams}) {
             onChange={(e) => {setShowCompleted(e.target.checked)}} />
         <div className="triumphs-outer-container">
             {selectedSeal?.children?.records?.map(seal => {
-                // console.log(triumphCompletions[seal.hash], Object.keys(profiles).length);
                 return (
                     <div className={!showCompleted && triumphCompletions[seal.hash].amountOfCompletions === Object.keys(profiles).length ?
                         "triumph-container show-completed" : "triumph-container"} key={seal.hash} >

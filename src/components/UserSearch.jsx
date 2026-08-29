@@ -11,18 +11,17 @@ function UserSearch({setSearchResults, setShowProfileSelector}) {
         // get entered text from field
         const formData = new FormData(e.target);
         const formDataObject = Object.fromEntries(formData.entries());
-        if (!formDataObject.submittedUsername) return; // ignore empty submission
+        if (!formDataObject.submittedString) return; // ignore empty submission
 
         document.getElementsByClassName("form-spinner")[0].classList.add("active"); // how the fuck else do I do this
-        const searchResultsResponse = await SearchForPlayer(formDataObject.submittedUsername);
-        setSearchResults(searchResultsResponse);
-        document.getElementsByClassName("form-spinner")[0].classList.remove("active");
+        const searchResponse = await SearchForPlayer(formDataObject.submittedString);
+        setSearchResults(searchResponse);
         setShowProfileSelector(true);
+        document.getElementsByClassName("form-spinner")[0].classList.remove("active");
     }
 
     return <Form className="form-container" onSubmit={handleSubmit}>
-        <Form.Control type="text" name="submittedUsername" placeholder="guardian#0001"
-                      defaultValue="brendanprice#4702" />
+        <Form.Control type="text" name="submittedString" placeholder="search for guardian" />
         <img className="form-spinner" src={Spinner} />
         <Button variant="primary" type="submit">
             Search
