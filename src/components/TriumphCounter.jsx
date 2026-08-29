@@ -8,10 +8,10 @@ function TriumphCounter({ triumphCompletions, profiles, seal}) {
     // different message depending on if all guardians or some have completed a triumph 
     const overlayMessage = triumphCompletions[seal?.hash]?.profilesThatDidNotComplete.length ?
         <Tooltip>
-            <strong>incomplete: </strong>
+            <strong>Incomplete: </strong>
             {triumphCompletions[seal.hash]?.profilesThatDidNotComplete?.map(profile => {
                 return (
-                    <div key={profile.profile.mid}>
+                    <div key={profile.profile.mid} className="triumph-player">
                         <img src={PlatformIcons[profile.profile.mtype]} />
                         {profile?.profile?.name}
                     </div>

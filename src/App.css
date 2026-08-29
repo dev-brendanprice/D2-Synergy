@@ -249,6 +249,12 @@ hr.triumph-divider {
   align-self: flex-end;
 }
 
+.triumph-player {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
 .triumph-counter {
   cursor: help;
   width: fit-content;
