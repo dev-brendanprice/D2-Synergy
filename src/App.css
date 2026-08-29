@@ -293,3 +293,10 @@ footer {
   transition: color 0.1s ease-in-out;
   user-select: none;
 }
+
+@media screen and (max-width: 450px) {
+  footer {
+    flex-direction: column;
+    font-size: 11px;
+  }
+}
