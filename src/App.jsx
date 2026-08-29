@@ -6,14 +6,17 @@ import HandleUrlPathing from "./lib/handleUrlPathing.js";
 import {useEffect, useState} from "react";
 import TitleOverview from "./components/TitleOverview.jsx";
 import UserProfileSelector from './components/UserProfileSelector.jsx'
+import FirstLoadModal from "./components/FirstLoadModal.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
 
     const [ searchResults, setSearchResults ] = useState(null);
     const [ profiles, setProfileData ] = useState({});
     const [ showProfileSelector, setShowProfileSelector ] = useState(false);
+    const [ showModal, setShowModal ] = useState(false);
 
-    // handle the URL path state
+    // handle the URL path state and modal
     useEffect(() => {
         HandleUrlPathing().then(setProfileData);
 
@@ -22,7 +25,15 @@ function App() {
         });
     }, [searchResults]);
 
+    // only show modal on first load
+    if (localStorage.getItem("hasModalAppeared") === null) {
+        setShowModal(true);
+        localStorage.setItem("hasModalAppeared", (new Date()).toString());
+    }
+
     return <div className="toplevel">
+        <FirstLoadModal show={showModal} onHide={() => setShowModal(false)} />
+
         <div className="main">
             <UserSearch setSearchResults={setSearchResults} setShowProfileSelector={setShowProfileSelector} />
             {showProfileSelector &&
@@ -33,14 +44,7 @@ function App() {
             <TitleOverview profiles={profiles} />
         </div>
 
-        <footer>
-            <div>Made with ❤️ by brendanprice</div>
-            <div className="footer-links-container">
-                <a className="footer-link" href="https://github.com/dev-brendanprice/D2-Synergy"
-                   target="_blank">GitHub</a>
-                <a className="footer-link" href="https://ko-fi.com/brendanprice" target="_blank">Donate</a>
-            </div>
-        </footer>
+        <Footer />
     </div>
 }
 

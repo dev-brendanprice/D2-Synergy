@@ -33,7 +33,7 @@ function UserRoster({profiles, setProfileData}) {
         setProfileData([]);
     }
 
-    let [ , urlPath ] = pathname.split("/");
+    const [ , urlPath ] = pathname.split("/");
     const profilesInURL = urlPath ? urlPath.split(",") : [];
 
     // if no profile(s) have been selected

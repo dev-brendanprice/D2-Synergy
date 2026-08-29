@@ -230,3 +230,15 @@
     accent-color: red;
   }
 }
+
+.modal-content {
+  color: white;
+  background-color: #25253d;
+  border: 1px solid #4d4d62;
+  user-select: none;
+}
+
+.btn-close {
+  color: white;
+  filter: brightness(0) saturate(100%) invert(99%) sepia(4%) saturate(982%) hue-rotate(251deg) brightness(118%) contrast(100%);
+}
