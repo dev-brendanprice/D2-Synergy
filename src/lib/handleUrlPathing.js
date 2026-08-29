@@ -1,4 +1,4 @@
-import {GetPlayer} from "./playerSearch.js";
+import {SearchForPlayer} from "./playerSearch.js";
 import getPlayerSeals from "./playerSeals.js";
 
 // pulls profile information from URL paths /:profiles
@@ -15,7 +15,7 @@ async function HandleUrlPathing() {
     // fetch memberships and save new userPair
     for (let profileKey of profileKeys) {
         const [ type, id ] = profileKey.split("-");
-        const playerProfile = await GetPlayer(type, id);
+        const playerProfile = await SearchForPlayer(id, true); // true = memshipId is passed in, not a username
         const profileSeals = await getPlayerSeals(type, id);
 
         profilesObject[profileKey] = {
