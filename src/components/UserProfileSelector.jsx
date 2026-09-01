@@ -43,7 +43,7 @@ function UserProfileSelector({ profiles, setProfileData, searchResults, setShowP
     }
 
     if (!searchResults?.players?.length) {
-        return <div className="roster-message">No profiles could be found with "{searchResults.query}"</div>
+        return <div className="search-message">No profiles could be found with "{searchResults.query}"</div>
     }
 
     return <div>

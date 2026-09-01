@@ -47,9 +47,10 @@
   transition: color 0.1s ease-in-out;
 }
 
-.roster-message {
+.search-message {
   margin-top: 20px;
   color: darkgray;
+  user-select: none;
 }
 
 .roster-spinner {
@@ -273,6 +274,7 @@ footer {
   width: 100%;
   max-width: 1182px;
   color: rgb(170 170 170 / 0.5);
+  user-select: none;
 }
 
 .footer-links-container {

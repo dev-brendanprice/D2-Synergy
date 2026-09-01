@@ -21,7 +21,7 @@ function UserSearch({setSearchResults, setShowProfileSelector}) {
     }
 
     return <Form className="form-container" onSubmit={handleSubmit}>
-        <Form.Control type="text" name="submittedString" placeholder="search for guardian" />
+        <Form.Control type="text" name="submittedString" placeholder="Guardian#1234" />
         <img className="form-spinner" src={Spinner} />
         <Button variant="primary" type="submit">
             Search

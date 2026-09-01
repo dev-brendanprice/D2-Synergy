@@ -9,7 +9,7 @@ async function HandleUrlPathing() {
     const profileKeys = pathname?.slice(1)?.split(",");
 
     // if no URL path, anything after / is considered ""
-    if (profileKeys[0] === "") return;
+    if (profileKeys[0] === "") return {};
     const profilesObject = {};
 
     // fetch memberships and save new userPair

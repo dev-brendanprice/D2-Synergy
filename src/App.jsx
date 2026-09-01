@@ -36,6 +36,8 @@ function App() {
 
         <div className="main">
             <UserSearch setSearchResults={setSearchResults} setShowProfileSelector={setShowProfileSelector} />
+            <div className="search-message">{(searchResults || Object.keys(profiles).length) ?
+                "" : "Search for a Destiny 2 profile..."}</div>
             {showProfileSelector &&
                 <UserProfileSelector profiles={profiles} setProfileData={setProfileData} searchResults={searchResults}
                                      showProfileSelector={showProfileSelector}
