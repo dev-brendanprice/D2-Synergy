@@ -22,7 +22,7 @@ async function getPlayerSeals(memshipType, memshipId) {
     const allRecords = CombineAllRecords(profile);
 
     // get completion progress for each seal
-    DestinySeals = DestinySeals.map((seal) => {
+    return DestinySeals.map((seal) => {
 
         // get completion status & set name that appears for title in-game
         seal.completion = allRecords[seal.completionRecordHash];
@@ -38,15 +38,16 @@ async function getPlayerSeals(memshipType, memshipId) {
             const triumphObjectives = allRecords[triumph.hash];
             if (!triumphObjectives) return;
 
-            triumph.isComplete =
+            triumph.isTriumphComplete =
                 triumphObjectives?.objectives?.every(i => i.complete) ||
                 triumphObjectives?.intervalObjectives?.every(i => i.complete);
         });
 
+        seal.completion.percentComplete = Math.trunc((seal.children.records.filter(t => t.isTriumphComplete).length /
+            seal.children.records.length) * 100);
+        // seal.isTitleComplete = seal.children.records.every(t => t.isTriumphComplete);
         return seal;
     });
-
-    return DestinySeals;
 }
 
 export default getPlayerSeals;

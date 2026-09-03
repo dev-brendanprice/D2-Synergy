@@ -212,6 +212,7 @@
   border: none;
   outline: 0;
   background-color: rgb(217 217 217 / 0.1);
+  user-select: none;
 
   &:checked {
     background-color: #A37A37;

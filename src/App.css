@@ -122,6 +122,11 @@
   padding: 10px;
 }
 
+.seals-selector-filters-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .seals-selector-toggles {
   display: flex;
   gap: 10px;

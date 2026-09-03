@@ -18,13 +18,13 @@ function aggregateTriumphs (profiles, destinySeals) {
                         profilesThatDidNotComplete: []
                     }
                 }
-                
+
                 // if triumph is complete
-                if (triumphFromPlayerSeal.isComplete) {
+                if (triumphFromPlayerSeal.isTriumphComplete) {
                     triumphCompletions[triumph.hash].amountOfCompletions++;
                     triumphCompletions[triumph.hash].completeProfiles.push(profile);
                 }
-                else if (!triumphFromPlayerSeal.isComplete) {
+                else if (!triumphFromPlayerSeal.isTriumphComplete) {
                     triumphCompletions[triumph.hash].profilesThatDidNotComplete.push(profile);
                 }
             }

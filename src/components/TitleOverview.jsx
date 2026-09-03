@@ -10,7 +10,7 @@ function TitleOverview({profiles}) {
     }
 
     return <>
-        <TitleSelector searchParams={searchParams} setSearchParams={setSearchParams} />
+        <TitleSelector profiles={profiles} searchParams={searchParams} setSearchParams={setSearchParams} />
         <TitleTriumphs profiles={profiles} searchParams={searchParams} />
     </>
 }
