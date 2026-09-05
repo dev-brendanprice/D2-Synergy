@@ -15,15 +15,33 @@ function TitleSelector({profiles, searchParams, setSearchParams}) {
     const [ showUnobtainable, setShowUnobtainable ] = useState(false);
     const [ activeSort, setActiveSort ] = useState("Progress");
     // sorts: "Progress" (default, sorts by roster-wide progress), "ABC" (alphabetical)
-    // I could use 0,1,2 or True,False for this, but the dropdown label *is* the same as the sort name/string
 
     // get DestinySeals from idb (async)
     useEffect(() => {
         get('DestinySeals').then(data => {
-                setOriginalSealsArray(data);
-                setMutableSealsArray(data);
+
+            // calculate roster completion percentage
+            const numberOfProfiles = Object.values(profiles)?.length;
+            data.map(seal => {
+                const totalPercentSHit = Object.values(profiles).reduce((sum, profile) => {
+                    const match = profile.seals.find(s => s.hash === seal.hash);
+                    return sum + (match ? match.completion.percentComplete : 0);
+                }, 0);
+                seal.rosterPercentComplete = numberOfProfiles > 0 ? totalPercentSHit / numberOfProfiles : 0;
             });
-    }, []);
+
+            // sort by progress or alphabetical
+            const sortedSeals = activeSort === "Progress" ?
+                data.sort((a, b) => b.rosterPercentComplete - a.rosterPercentComplete) :
+                data.sort((a, b) =>
+                    a.displayProperties.uiName.localeCompare(b.displayProperties.uiName));
+
+            setOriginalSealsArray(sortedSeals);
+            setMutableSealsArray(sortedSeals);
+        });
+
+    }, [activeSort, profiles]);
+
 
     return <div className="seals-selector-container">
         <div>

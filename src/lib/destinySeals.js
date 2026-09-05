@@ -11,15 +11,19 @@ async function GetDestinySeals() {
                 .filter(n => n.parentNodeHashes.includes(616318467)); // check for "Titles" parent
 
     // translate triumphs and add title names that appear in-game (e.g. above a guardian)
-    return seals.map(seal => {
+    let sealsUnsortedABC = seals.map(seal => {
         seal.children.records = seal?.children?.records?.map(triumph => {
             return DestinyRecordDefinition[triumph?.recordHash];
         });
 
         seal.displayProperties.uiName = DestinyRecordDefinition[seal?.completionRecordHash]?.titleInfo?.titlesByGender?.Male;
-        seal.isObtainable = !Object.keys(UnobtainableSeals).includes((seal.hash).toString()); // seal exists here then it's unobtainable
+        seal.isObtainable = !Object.keys(UnobtainableSeals).includes((seal.hash).toString());
+        // seal exists here then it's unobtainable
         return seal;
     });
+
+    return sealsUnsortedABC.sort((a, b) =>
+        a.displayProperties.uiName.localeCompare(b.displayProperties.uiName));
 }
 
 export default GetDestinySeals;

@@ -77,6 +77,7 @@ export async function ValidateManifest() {
 
     // get & store list of Destiny seals - easier and lighter on resources to get & save beforehand
     const seals = await GetDestinySeals();
+    console.log(seals);
     await set('DestinySeals', seals);
     console.log('manifest updated');
 }
