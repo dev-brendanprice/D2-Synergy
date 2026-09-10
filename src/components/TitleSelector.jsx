@@ -10,9 +10,10 @@ import TitlesSort from "./TitlesSort.jsx";
 function TitleSelector({profiles, searchParams, setSearchParams}) {
 
     // store two state variables so we can revert the filtered list when the input box is empty etc.
-    const [ originalSealsArray, setOriginalSealsArray ] = useState([]); // copy of original, dont change
+    const [ originalSealsArray, setOriginalSealsArray ] = useState([]); // original copy, dont change
     const [ mutableSealsArray, setMutableSealsArray ] = useState([]); // change this one instead
     const [ showUnobtainable, setShowUnobtainable ] = useState(false);
+    const [ hoveredId, setHoveredId ] = useState(null);
     const [ activeSort, setActiveSort ] = useState("Progress");
     // sorts: "Progress" (default, sorts by roster-wide progress), "ABC" (alphabetical)
 
@@ -58,7 +59,8 @@ function TitleSelector({profiles, searchParams, setSearchParams}) {
                         setMutableSealsArray={setMutableSealsArray} profiles={profiles} />
             <div className="seals-selector-toggles">
                 <Form.Check type="switch" id="seal-selector-switch" label="show unobtainable"
-                            onChange={(e) => { setShowUnobtainable(e.target.checked) }} />
+                            onChange={(e) =>
+                            { setShowUnobtainable(e.target.checked) }} />
                 <OverlayTrigger placement="top" container={document.body} overlay={
                     <Tooltip>Some titles are tied to a specific event, meaning they're no longer obtainable
                         after monument of triumph</Tooltip> }>
@@ -68,16 +70,18 @@ function TitleSelector({profiles, searchParams, setSearchParams}) {
         </div>
         <div className="seals-list">
             {mutableSealsArray?.map(seal => (
-                <OverlayTrigger key={seal.hash} placement="bottom" container={document.body}
-                    overlay={ <Tooltip>{seal.displayProperties.uiName}</Tooltip> }>
+                <OverlayTrigger key={seal.hash} container={document.body} rootClose placement="bottom"
+                                overlay={ <Tooltip>{seal.displayProperties.uiName}</Tooltip> }
+                                show={hoveredId === seal.hash} 
+                                onToggle={(nextShow) => setHoveredId(nextShow ? seal.hash : null)} >
 
                     <img className={"seal-icon" +
                                     (searchParams.get("seal") === seal.displayProperties.uiName ? " active-seal" : "") +
-                                    (!seal.isObtainable && !showUnobtainable ? " not-obtainable" : " not-obtainable-show")
+                                    (!seal.isObtainable && !showUnobtainable ?
+                                        " not-obtainable-hide" : " not-obtainable-show")
                                 }
                         src={`https://www.bungie.net${seal.originalIcon}`} alt={seal.displayProperties.uiName}
                         onClick={() => setSearchParams({ seal: seal.displayProperties.uiName })} />
-
                 </OverlayTrigger>
             ))}
         </div>

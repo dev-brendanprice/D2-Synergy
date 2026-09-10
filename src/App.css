@@ -170,7 +170,7 @@
   transition: opacity 0.1s ease-in-out;
 }
 
-.not-obtainable {
+.not-obtainable-hide {
   display: none;
 }
 
