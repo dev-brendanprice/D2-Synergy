@@ -33,9 +33,8 @@ function TitleSelector({profiles, searchParams, setSearchParams}) {
 
             // sort by progress or alphabetical
             const sortedSeals = activeSort === "Progress" ?
-                data.sort((a, b) => b.rosterPercentComplete - a.rosterPercentComplete) :
-                data.sort((a, b) =>
-                    a.displayProperties.uiName.localeCompare(b.displayProperties.uiName));
+                data.sort((a, b) => a.rosterPercentComplete - b.rosterPercentComplete) :
+                data.sort((a, b) => a.displayProperties.uiName.localeCompare(b.displayProperties.uiName));
 
             setOriginalSealsArray(sortedSeals);
             setMutableSealsArray(sortedSeals);

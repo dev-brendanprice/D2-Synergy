@@ -45,6 +45,7 @@ async function getPlayerSeals(memshipType, memshipId) {
 
         seal.completion.percentComplete = Math.trunc((seal.children.records.filter(t => t.isTriumphComplete).length /
             seal.children.records.length) * 100);
+
         return seal;
     });
 }

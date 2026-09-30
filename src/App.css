@@ -124,7 +124,8 @@
 
 .seals-selector-filters-container {
   display: flex;
-  flex-direction: row;
+  align-items: baseline;
+  gap: 20px;
 }
 
 .seals-selector-toggles {
@@ -191,6 +192,24 @@
   background-color: rgb(124 124 124 / 0.1);
 }
 
+.show-complete-toggle-container {
+  display: flex;
+  gap: 15px;
+}
+
+.show-complete-warning {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-style: italic;
+  color: #b6b6b6;
+  cursor: help;
+}
+
+.warning-icon {
+  width: 16px;
+}
+
 hr.triumph-divider {
   flex-shrink: 0;
   margin: 3px 0 3px 0;
@@ -201,7 +220,6 @@ hr.triumph-divider {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 10px;
 }
 
 .triumph-container {

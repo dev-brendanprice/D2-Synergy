@@ -1,18 +1,15 @@
 import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function TitlesSort({activeSort, setActiveSort}) {
-    return <Dropdown data-bs-theme="dark">
-        <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
-            {activeSort}
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
+    return (
+        <DropdownButton id="dropdown-basic-button" title={activeSort}>
             <Dropdown.Item active={activeSort === "Progress"}
                            onClick={() => setActiveSort("Progress")}>Progress</Dropdown.Item>
             <Dropdown.Item active={activeSort === "ABC"}
                            onClick={() => setActiveSort("ABC")}>ABC</Dropdown.Item>
-        </Dropdown.Menu>
-    </Dropdown>
+        </DropdownButton>
+    )
 }
 
 export default TitlesSort;

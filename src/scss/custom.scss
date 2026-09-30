@@ -25,6 +25,18 @@
   }
 }
 
+.dropdown-toggle {
+  height: 36px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  &.btn {
+    background-color: #A37A37;
+    border: 1px solid #DABD8E;
+  }
+}
+
 .primary-profile-badge {
   margin-left: 10px;
   margin-bottom: 2px;
