@@ -44,18 +44,13 @@ function TitleSelector({profiles, searchParams, setSearchParams}) {
 
 
     return <div className="seals-selector-container">
-        <div>
-            <input className="seal-selector-search" type="text" placeholder="Search seals.."
-               onChange={el => {
-                   filterSealsBySearch(el.target.value, {
-                       originalSealsArray, mutableSealsArray, setMutableSealsArray
-                   })
-               }}/>
-            <div className="seal-selector-text">Selected seal:
-                {searchParams.get("seal") === null ? <span> None</span> : ` ${searchParams.get("seal")}`}
-            </div>
-        </div>
         <div className="seals-selector-filters-container">
+            <input className="seal-selector-search" type="text" placeholder="Search seals.."
+                   onChange={el => {
+                       filterSealsBySearch(el.target.value, {
+                           originalSealsArray, mutableSealsArray, setMutableSealsArray
+                       })
+                   }}/>
             <TitlesSort activeSort={activeSort} setActiveSort={setActiveSort} mutableSealsArray={mutableSealsArray}
                         setMutableSealsArray={setMutableSealsArray} profiles={profiles} />
             <div className="seals-selector-toggles">
@@ -69,6 +64,11 @@ function TitleSelector({profiles, searchParams, setSearchParams}) {
                 </OverlayTrigger>
             </div>
         </div>
+
+        <div className="seal-selector-text">Selected seal:
+            {searchParams.get("seal") === null ? <span> None</span> : ` ${searchParams.get("seal")}`}
+        </div>
+
         <div className="seals-list">
             {mutableSealsArray?.map(seal => (
                 <OverlayTrigger key={seal.hash} container={document.body} rootClose placement="bottom"

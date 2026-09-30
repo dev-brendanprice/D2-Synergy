@@ -118,21 +118,19 @@
   border: 1px solid #7c7c7c;
   background-color: rgb(124 124 124 / 0.1);
   width: 100%;
-  margin-top: 20px;
   padding: 10px;
 }
 
 .seals-selector-filters-container {
   display: flex;
-  align-items: baseline;
-  gap: 20px;
+  align-items: center;
+  gap: 15px;
 }
 
 .seals-selector-toggles {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
-  align-items: center;
+  /*align-items: center;*/
   user-select: none;
 }
 
@@ -149,8 +147,7 @@
 }
 
 .seal-selector-text {
-  display: inline-block;
-  margin-left: 10px;
+  margin-top: 10px;
 
   & span {
     font-style: italic;
