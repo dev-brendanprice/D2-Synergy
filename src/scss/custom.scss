@@ -5,7 +5,6 @@
   background-color: #A37A37;
   border: 1px solid #DABD8E;
   transition: border 0.1s, background-color 50ms ease-in-out;
-  width: 116px;
 
   &:hover {
     background-color: rgb(163 122 55 / 0.3);
@@ -26,14 +25,22 @@
 }
 
 .dropdown-toggle {
-  height: 36px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+  height: 28px;
+  font-size: 14px;
+  padding: 0 10px;
+  width: 110px;
 
   &.btn {
     background-color: #A37A37;
     border: 1px solid #DABD8E;
+  }
+
+  & img {
+    margin-left: 5px;
+  }
+
+  &::after {
+    display: none;
   }
 }
 
