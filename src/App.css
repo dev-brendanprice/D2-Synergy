@@ -151,6 +151,11 @@
 .seal-selector-text {
   display: inline-block;
   margin-left: 10px;
+
+  & span {
+    font-style: italic;
+    color: darkgray;
+  }
 }
 
 .seals-list {
@@ -190,6 +195,10 @@
   width: 100%;
   border: 1px solid #7c7c7c;
   background-color: rgb(124 124 124 / 0.1);
+
+  &.hide {
+    display: none;
+  }
 }
 
 .show-complete-toggle-container {

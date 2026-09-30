@@ -22,7 +22,7 @@ function TitleTriumphs({profiles, searchParams}) {
         }
     }, [profiles, searchParams, destinySeals]);
 
-    return <div className="compare-container">
+    return <div className={selectedSeal ? "compare-container" : "compare-container hide"}>
         <h5>Triumphs:</h5>
         <div className="show-complete-toggle-container">
             <Form.Check type="switch" id="show-completed-toggled" label="show completed"

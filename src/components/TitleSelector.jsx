@@ -51,7 +51,9 @@ function TitleSelector({profiles, searchParams, setSearchParams}) {
                        originalSealsArray, mutableSealsArray, setMutableSealsArray
                    })
                }}/>
-            <div className="seal-selector-text">Selected seal: {searchParams.get("seal")}</div>
+            <div className="seal-selector-text">Selected seal:
+                {searchParams.get("seal") === null ? <span> None</span> : ` ${searchParams.get("seal")}`}
+            </div>
         </div>
         <div className="seals-selector-filters-container">
             <TitlesSort activeSort={activeSort} setActiveSort={setActiveSort} mutableSealsArray={mutableSealsArray}
